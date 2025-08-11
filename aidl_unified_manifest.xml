@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote name="rdkcentral"
+          fetch="ssh://git@rdkcentral-github.com/rdkcentral" />
+
+  <default revision="main"
+           remote="rdkcentral"
+           sync-j="4" />
+
+  <project name="rdk-halif-aidl-test-avbuffer"
+           path="vts_hal_test_components/avbuffer"
+           revision="develop" />
+
+  <project name="rdk-halif-aidl-test-audiodecoder"
+           path="vts_hal_test_components/audiodecoder"
+           revision="develop" />
+
+  <project name="rdk-halif-aidl-test-videodecoder"
+           path="vts_hal_test_components/videodecoder"
+           revision="develop" />
+
+  <project name="rdk-halif-aidl-test-audiosink"
+           path="vts_hal_test_components/audiosink"
+           revision="develop" />
+
+  <project name="rdk-halif-aidl-test-videosink"
+           path="vts_hal_test_components/videosink"
+           revision="develop" />
+
+   <project name="rdk-halif-aidl-test-avclock"
+           path="vts_hal_test_components/avclock"
+	   revision="develop" />
+
+   <project name="rdk-halif-aidl-test-planecontrol"
+           path="vts_hal_test_components/planecontrol"
+	   revision="develop" />
+</manifest>
+
