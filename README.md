@@ -2,8 +2,8 @@
 
 ## Build Steps
 
-<<<<<<< HEAD
-=======
+
+
 ### Setup
 
 - To avoid conflict between your organization GitHub and RDK Central GitHub, add the following in your ssh config (`~/.ssh/config`):
@@ -17,7 +17,7 @@
 
   - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account>
 
->>>>>>> 8b0d3d6 (gh #1 added manifest with develop revision)
+
 ### 1. Build linux binder
 
 The test suite depends on the Linux binder with `AIDL` support. Follow these steps to build it:
@@ -41,11 +41,9 @@ sc docker run vdevice-docker /bin/bash
 Clone and build the test suite:
 
 ```bash
-<<<<<<< HEAD
-repo init -b feature/gh4_create_manifest_avmodules -m avmodule.xml -u git@rdkcentral-github.com:rdkcentral/rdk-halif-unified-vts.git -q
-=======
+
 repo init -b develop -m avmodule.xml -u git@rdkcentral-github.com:rdkcentral/rdk-halif-aidl-unified-vts.git -q
->>>>>>> 8b0d3d6 (gh #1 added manifest with develop revision)
+
 
 repo sync -cd -j 16 --no-repo-verify -q
 ```
@@ -69,11 +67,7 @@ Set below environment variable:
 Example:
 
 ```bash
-<<<<<<< HEAD
-export UT_CORE_VERSION=4.7.0
-=======
 export UT_CORE_VERSION=4.7.2
->>>>>>> 8b0d3d6 (gh #1 added manifest with develop revision)
 export RDK_HALIF_AIDL_VERSION=0.7.1
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path//linux_binder_idl/local/
