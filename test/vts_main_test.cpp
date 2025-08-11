@@ -91,66 +91,73 @@ int main(int argc, char **argv)
     UT_LOG_INFO("\t VTS UNIFIED Video Sink HALIF Test Version: \033[0;32m%s\033[0m",VIDEOSINK_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED AVBuffer HALIF Test Version: \033[0;32m%s\033[0m",AVBUFFER_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED AV Clock HALIF Test Version: \033[0;32m%s\033[0m",AVCLOCK_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED Plane Control_VERSIONHALIF Test Version: \033[0;32m%s\033[0m",PLANECONTROL_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED Plane Control HALIF Test Version: \033[0;32m%s\033[0m",PLANECONTROL_VERSION);
     UT_LOG_INFO("==========================================================================");
 
     result = VTS_AVBuffer_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AVBuffer");
-        goto exit;
+        return UT_STATUS_FAILURE;
     }
 
     result = VTS_AudioDecoder_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AudioDecoder");
-        goto exit;
+        return UT_STATUS_FAILURE;
     }
 
     result = VTS_VideoDecoder_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize VideoDecoder");
-        goto exit;
+        VTS_AudioDecoder_destroy();
+        return UT_STATUS_FAILURE;
     }
 
     result = VTS_AudioSink_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AudioSink");
-        goto exit;
+        VTS_AudioDecoder_destroy();
+        VTS_VideoDecoder_destroy();
+        return UT_STATUS_FAILURE;
     }
 
     result = VTS_VideoSink_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize VideoSink");
-        goto exit;
+        VTS_AudioDecoder_destroy();
+        VTS_VideoDecoder_destroy();
+        VTS_AudioSink_destroy();
+        return UT_STATUS_FAILURE;
     }
 
     result = VTS_AVClock_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AV Clock");
-        goto exit;
+        VTS_AudioDecoder_destroy();
+        VTS_VideoDecoder_destroy();
+        VTS_AudioSink_destroy();
+        VTS_VideoSink_destroy();
+        return UT_STATUS_FAILURE;
     }
 
     result = VTS_PlaneControl_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AV Clock");
-        goto exit;
+        VTS_AudioDecoder_destroy();
+        VTS_VideoDecoder_destroy();
+        VTS_AudioSink_destroy();
+        VTS_VideoSink_destroy();
+        return UT_STATUS_FAILURE;
     }
 
     result = UT_run_tests();
-
-exit:
-    VTS_AudioDecoder_destroy();
-    VTS_VideoDecoder_destroy();
-    VTS_AudioSink_destroy();
-    VTS_VideoSink_destroy();
-
     return result;
 }
 

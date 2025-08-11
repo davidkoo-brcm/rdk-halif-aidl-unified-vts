@@ -34,21 +34,5 @@
    <project name="rdk-halif-aidl-test-planecontrol"
            path="vts_hal_test_components/planecontrol"
 	   revision="develop" />
-
-   <project name="rdk-halif-unified-vts"
-	  path="manifest"
-           revision="feature/gh4_create_manifest_avmodules">
-    <copyfile src="build.sh" dest="build.sh" />
-    <copyfile src="run.sh" dest="run.sh" />
-    <copyfile src="Makefile" dest="Makefile" />
-    <copyfile src="common/avbufferhelper_skeleton/CMakeLists.txt" dest="common/avbufferhelper_skeleton/CMakeLists.txt" />
-    <copyfile src="common/avbufferhelper_skeleton/generate_skeleton.sh" dest="common/avbufferhelper_skeleton/generate_skeleton.sh" />
-    <copyfile src="common/avbufferhelper_skeleton/IAVBufferHelper.h" dest="common/avbufferhelper_skeleton/IAVBufferHelper.h" />
-    <copyfile src="common/helper_functions/vts_helper_functions.cpp" dest="common/helper_functions/vts_helper_functions.cpp" />
-    <copyfile src="common/helper_functions/vts_helper_functions.h" dest="common/helper_functions/vts_helper_functions.h" />
-    <copyfile src="profiles/hfp-vdevice.yaml" dest="profiles/hfp-vdevice.yaml" />
-    <copyfile src="test/vts_main_test.cpp" dest="test/vts_main_test.cpp" />
-    <copyfile src="aidl_lib/Makefile" dest="aidl_lib/Makefile" />
-  </project>
 </manifest>
 

@@ -42,10 +42,8 @@ Clone and build the test suite:
 
 ```bash
 
-repo init -b develop -m avmodule.xml -u git@rdkcentral-github.com:rdkcentral/rdk-halif-aidl-unified-vts.git -q
+git clone git@github.com:rdkcentral/rdk-halif-aidl-unified-vts.git`
 
-
-repo sync -cd -j 16 --no-repo-verify -q
 ```
 
 Docker is required to build the test suite:

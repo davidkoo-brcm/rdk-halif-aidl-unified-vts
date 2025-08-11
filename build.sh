@@ -84,6 +84,17 @@ declare -r AIDL_BIN=`realpath ${AIDL_BIN}`
 declare -r LINUX_BINDER_OUT_DIR=`realpath ${LINUX_BINDER_OUT_DIR}`
 
 ###############################################################################
+# Function to clone  unified VTS repo's
+###############################################################################
+unified_manifest()
+{
+    echo "repo init unified manifest"
+    repo init -b develop -m aidl_unified_manifest.xml -u git@rdkcentral-github.com:rdkcentral/rdk-halif-aidl-unified-vts.git -q
+    repo sync -cd -j 16 --no-repo-verify -q
+}
+
+
+###############################################################################
 # Function to install linux-binder service manager, headers, and libraries
 ###############################################################################
 install_linux_binder()
@@ -261,6 +272,7 @@ dist_clean_test()
     rm -rf $RDK_HAL_DIR
     rm -rf ${UT_CORE_DIR}
     rm -rf test/*.o
+    rm -rf vts_hal_test_components
     for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/mockservice/src/*.o
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/src/*.o
@@ -300,6 +312,7 @@ elif [ "$1" == "dist_clean" ]; then
 elif [ "$1" == "help" ]; then
     help
 elif [ "$1" == "all" ]; then
+    unified_manifest
     install_linux_binder
     generate_hal_interfaces
     build_aidl_libs
