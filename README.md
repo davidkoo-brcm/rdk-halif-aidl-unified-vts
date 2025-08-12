@@ -42,7 +42,7 @@ Clone and build the test suite:
 
 ```bash
 
-git clone git@github.com:rdkcentral/rdk-halif-aidl-unified-vts.git`
+git clone git@rdkcentral-github.com:rdkcentral/rdk-halif-aidl-unified-vts.git`
 
 ```
 
@@ -65,7 +65,7 @@ Set below environment variable:
 Example:
 
 ```bash
-export UT_CORE_VERSION=4.7.2
+export UT_CORE_VERSION=4.7.3
 export RDK_HALIF_AIDL_VERSION=0.7.1
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path//linux_binder_idl/local/
@@ -126,3 +126,9 @@ Execute the run.sh script as root:
 ```bash
 sudo ./run.sh -p profiles/hfp-vdevice.yaml
 ```
+
+## Setting Python environment for running the L1, L2 and L3 automation test cases
+
+- For running the L1 L2 and L3 test suite, a host PC with a Python environment is required.
+- Install Python Environment and Activation Scripts as detailed in [Python Installation](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite)
+- To run the `L1`, `L2` and `L3` test cases of AV Modules follow the `L1` `L2` and `L3` Test Procedure document - [L1_L2_L3_TestProcedure.md](docs/L1_L2_L3_TestProcedure.md)
