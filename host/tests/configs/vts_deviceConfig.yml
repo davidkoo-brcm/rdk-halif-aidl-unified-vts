@@ -34,7 +34,7 @@ deviceConfig:
         asink_process_name: "AudioSinkService"
         adecoder_process_name: "AudioDecoderService"
         avClock_process_name:  "RDKAVClockService"
-        planeCtrl_process_name:
+        planeCtrl_process_name: "RDKVideoSinkAndPCService"
         process_path: "/usr/bin/" # path where the service files present
         AVBuffer_Restart: 1 # flag to restart avbuffer service
         prompt: "~#" # Prompt string on console

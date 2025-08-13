@@ -36,10 +36,9 @@ from raft.framework.plugins.ut_raft.utBaseUtils import utBaseUtils
 
 class  AVModule_Tests(utHelperClass):
     """
-    Test class to run the L1 and L2 tests on the device.
-
-    This class uses the `tvSettingsClass` to interact with the device
-
+    Runs automated L1, L2, and L3 AV module tests on the target device.
+    Handles setup, service restarts, asset management, and multi-instance execution.
+    Collects and aggregates test results for pass/fail reporting.
     """
     def __init__(self, log:logModule=None):
         """
