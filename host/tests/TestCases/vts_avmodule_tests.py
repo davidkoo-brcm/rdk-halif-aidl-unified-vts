@@ -81,8 +81,8 @@ class  AVModule_Tests(utHelperClass):
         self.targetWorkspace = targetWorkspace
 
         # Load test setup configuration
-        testSetupPath = os.path.join(dir_path, "AVModule_setup.yaml" )
-        self.testConfigFile = os.path.join(dir_path, "AVModule_testConfig.yaml")
+        testSetupPath = os.path.join(dir_path, "vts_avmodule_setup.yaml" )
+        self.testConfigFile = os.path.join(dir_path, "vts_avmodule_testConfig.yaml")
         self.testSetup = ConfigRead(testSetupPath, self.moduleName)
         self.restartRequired = self.testSetup.fields.get('restart_required')
         self.hal_session_0 = self.dut.getConsoleSession("ssh_hal_test_0")
@@ -122,8 +122,8 @@ class  AVModule_Tests(utHelperClass):
                 # Single instance, use original file path
                 finalProfile = os.path.join(directory_path, filename)
             else:
-                # Multiple instances: create filenames like ..._1.yaml, _2.yaml, etc.
-                finalProfile = os.path.join(directory_path, f"{name}_{instanceNum}{extension}")
+                # Multiple instances: create filenames like ...instance_1.yaml, instance_2.yaml, etc.
+                finalProfile = os.path.join(directory_path, f"{name}_instance_{instanceNum}{extension}")
             self.moduleConfigProfileFiles.append(finalProfile)
 
             # Forming the profile path /tmp/<modulename>/bin/profiles/hfp-profile.yaml

@@ -40,13 +40,13 @@ passwd root
 
 ```
 
-Then, update the same password in the example_rack_config.yaml file.
+Then, update the same password in the vts_rack_config.yml file.
 
 Note: Currently, the Python paramiko library does not support empty passwords on vDevice, so setting a password is necessary
 
 ### Update Configuration Files
 
-Example Rack Configuration File: [example_rack_config.yml](../host/tests/configs/example_rack_config.yml)
+Example Rack Configuration File: [vts_rack_config.yml](../host/tests/configs/vts_rack_config.yml)
 
 For more details refer [RAFT](https://github.com/rdkcentral/python_raft/blob/1.0.0/README.md) and [example_rack_config.yml](https://github.com/rdkcentral/python_raft/blob/1.0.0/examples/configs/example_rack_config.yml)
 
@@ -84,7 +84,7 @@ rackConfig:
 
 #### Device Configuration File
 
-Example Device configuration File: [deviceConfig.yml](../host/tests/configs/deviceConfig.yml)
+Example Device configuration File: [vts_deviceConfig.yml](../host/tests/configs/vts_deviceConfig.yml)
 
 For more details refer [RAFT](https://github.com/rdkcentral/python_raft/blob/1.0.0/README.md) and [example_device_config.yml](https://github.com/rdkcentral/python_raft/blob/1.0.0/examples/configs/example_device_config.yml)
 
@@ -92,7 +92,7 @@ Update below fields in the device configuration file:
 
 - Set the path for `target_directory` where `HAL` binaries will be copied onto the device.
 - Specify the device profile path in `profiles/<device profile>.yaml`
-- Ensure the `platform` should match with the `DUT` `platform` in example_rack_config.yml
+- Ensure the `platform` should match with the `DUT` `platform` in vts_rack_config.yml
 - Make sure to specify the correct stream download URL to enable downloading streams for L3 test cases.
 
 ```yaml
@@ -112,7 +112,7 @@ deviceConfig:
 
 #### Test Setup Configuration File
 
-Example Test Setup configuration File: [AVModule_setup.yml](../host/tests/TestCases/AVModule_setup.yaml)
+Example Test Setup configuration File: [vts_avmodule_setup.yaml](../host/tests/TestCases/vts_avmodule_setup.yaml)
 
 This `yaml` contains the list of test_suites and test_cases to run
 
@@ -154,7 +154,7 @@ The `number_of_instances` field in the test setup configuration specifies how ma
 
 #### Test Configuration
 
-Example Test Setup configuration File: [AVModule_testConfig.yml](../host/tests/TestCases/AVModule_testConfig.yaml)
+Example Test Setup configuration File: [vts_avmodule_testConfig.yaml](../host/tests/TestCases/vts_avmodule_testConfig.yaml)
 
 Execute command to run the HAL binary was provided in this file. The created binary tar file should be placed in the artifacts section so that it can be fetched by the RAFT automation.
 
@@ -194,4 +194,4 @@ To run the AVModule L1, L2, and L3 tests in a Windows environment, follow these 
 Once the environment is set up, you can execute the test cases with the following command
 
 ```bash
-python AVModule_Tests.py --config </PATH>/host/tests/configs/example_rack_config.yml --deviceConfig </PATH>/host/tests/configs/deviceConfig.yml
+python vts_avmodule_tests.py --config </PATH>/host/tests/configs/vts_rack_config.yml --deviceConfig </PATH>/host/tests/configs/vts_deviceConfig.yml
