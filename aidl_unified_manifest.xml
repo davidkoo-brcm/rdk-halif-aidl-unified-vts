@@ -13,7 +13,7 @@
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
-           revision="feature/gh37_commonChangesWithYaml" />
+           revision="develop" />
 
   <project name="rdk-halif-aidl-test-videodecoder"
            path="vts_hal_test_components/videodecoder"
@@ -21,11 +21,11 @@
 
   <project name="rdk-halif-aidl-test-audiosink"
            path="vts_hal_test_components/audiosink"
-           revision="feature/gh30_AudiosinkYamlChange" />
+           revision="develop" />
 
   <project name="rdk-halif-aidl-test-videosink"
            path="vts_hal_test_components/videosink"
-           revision="feature/gh34_Videosink_Streampath" />
+           revision="develop" />
 
    <project name="rdk-halif-aidl-test-avclock"
            path="vts_hal_test_components/avclock"
