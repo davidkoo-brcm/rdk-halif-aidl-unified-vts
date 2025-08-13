@@ -238,6 +238,9 @@ install_test()
         if [ -d "${RDK_HAL_TEST_DIR}/${component}/stream_configuration" ]; then
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/stream_configuration ${INSTALL_PATH}/
         fi
+        if [ -d "${RDK_HAL_TEST_DIR}/${component}/${component}_stream_configuration" ]; then
+            cp -rf ${RDK_HAL_TEST_DIR}/${component}/${component}_stream_configuration ${INSTALL_PATH}/
+        fi
         if [ -d "${RDK_HAL_TEST_DIR}/${component}/profiles" ]; then
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/profiles ${INSTALL_PATH}/
         fi
