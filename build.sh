@@ -83,6 +83,23 @@ fi
 declare -r AIDL_BIN=`realpath ${AIDL_BIN}`
 declare -r LINUX_BINDER_OUT_DIR=`realpath ${LINUX_BINDER_OUT_DIR}`
 
+# Parse Target argument (e.g., Target=arm or target=linux)
+# Default to 'linux' if not provided
+TARGET="linux"
+for arg in "$@"; do
+    if [[ $arg == [Tt]arget=* ]]; then
+        TARGET="${arg#*=}"
+    fi
+done
+
+# Validate TARGET
+valid_targets=("linux" "arm")
+if [[ ! " ${valid_targets[@]} " =~ " ${TARGET} " ]]; then
+    echo -e "${BOLD}${RED}Invalid Target: $TARGET. Valid targets are: ${valid_targets[@]}${RESET}"
+    help
+    exit 1
+fi
+
 ###############################################################################
 # Function to clone  unified VTS repo's
 ###############################################################################
@@ -118,7 +135,7 @@ generate_hal_interfaces()
         git clone -b $RDK_HALIF_AIDL_VERSION 'http://git@github.com/rdkcentral/rdk-halif-aidl.git' $RDK_HAL_DIR
     fi
 
-    # Iterate through the HALIF compoenents
+    # Iterate through the HALIF components
     for component in "${!HALIF_COMPONENTS[@]}"; do
         version=${HALIF_COMPONENTS[$component]}
         echo "Component: $component, Version: $version"
@@ -142,7 +159,7 @@ generate_hal_interfaces()
 build_aidl_libs()
 {
     pushd ${AIDL_LIB_DIR}
-    make -j`nproc`
+    make -j`nproc` TARGET=$TARGET VARIANT=CPP
     echo "AIDL Build completed successfully."
     popd
 }
@@ -170,7 +187,8 @@ build_ut_core()
 
     git checkout $UT_CORE_VERSION
 
-    ./build.sh TARGET=linux VARIANT=CPP
+    # Use the user-provided TARGET or default to 'linux'
+    ./build.sh TARGET=$TARGET VARIANT=CPP
     if [ $? -ne 0 ]; then
         echo "Build script failed. Exiting."
         exit 1
@@ -178,7 +196,6 @@ build_ut_core()
 
     echo "Build completed successfully."
     popd
-
 }
 
 ###############################################################################
@@ -215,7 +232,7 @@ build_mock_services()
 build_halif_test()
 {
     # Build the tests
-    make -j`nproc` -C ${TOP}
+    make -j`nproc` -C ${TOP} TARGET=$TARGET VARIANT=CPP
 }
 
 ###############################################################################
@@ -288,19 +305,19 @@ help()
     echo -e "${BOLD}${CYAN}Usage:${RESET}"
 
     echo -e "${BOLD}╔════════════════════════════════════════════════════════════════════╗${RESET}"
-    echo -e "${BOLD}* ${GREEN}$0 all${RESET}            ${YELLOW}- Builds the test${RESET}                        ${BOLD}*${RESET}"
+    echo -e "${BOLD}* ${GREEN}$0 Target=<target>${RESET} ${YELLOW}- Builds the test for specified target (e.g., arm, linux)${RESET} ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 clean${RESET}          ${YELLOW}- Cleans the build folder${RESET}                ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 dist_clean${RESET}     ${YELLOW}- Deletes all build and checkout folders${RESET} ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 help/-h/--help${RESET} ${YELLOW}- Prints this message${RESET}                    ${BOLD}*${RESET}"
     echo -e "${BOLD}╚════════════════════════════════════════════════════════════════════╝${RESET}"
 }
 
-
 echo -e "${BOLD}${GREEN}VTS Version            : ${RESET}${YELLOW}$(git rev-parse --abbrev-ref HEAD)${RESET}"
 echo -e "${BOLD}${GREEN}UT_CORE_VERSION        : ${RESET}${YELLOW}$UT_CORE_VERSION${RESET}"
 echo -e "${BOLD}${GREEN}RDK_HALIF_AIDL_VERSION : ${RESET}${YELLOW}$RDK_HALIF_AIDL_VERSION${RESET}"
 echo -e "${BOLD}${GREEN}AIDL_BIN               : ${RESET}${YELLOW}$AIDL_BIN${RESET}"
 echo -e "${BOLD}${GREEN}LINUX_BINDER_OUT_DIR   : ${RESET}${YELLOW}$LINUX_BINDER_OUT_DIR${RESET}"
+echo -e "${BOLD}${GREEN}TARGET                 : ${RESET}${YELLOW}$TARGET${RESET}"
 
 ###############################################################################
 # Main script execution starts here
@@ -309,9 +326,9 @@ if [ "$1" == "clean" ]; then
     clean_test
 elif [ "$1" == "dist_clean" ]; then
     dist_clean_test
-elif [ "$1" == "help" ]; then
+elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     help
-elif [ "$1" == "all" ]; then
+elif [[ "$1" == [Tt]arget=* ]]; then
     unified_manifest
     install_linux_binder
     generate_hal_interfaces
@@ -322,10 +339,6 @@ elif [ "$1" == "all" ]; then
     build_halif_test
     install_test
 else
-	# Colors
-    RED='\033[0;31m'
-    BOLD='\033[1m'
-    RESET='\033[0m'
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"
     help
 fi

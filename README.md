@@ -1,10 +1,10 @@
 # Unified Vendor Testing Suite For AIDL HAL
 
-## Build Steps
+This document outlines the steps to build and run the Unified Vendor Testing Suite (VTS) for AIDL HAL, targeting Linux or ARM platforms. The test suite depends on the Linux Binder with AIDL support and requires specific setup, build, and execution steps.
 
+## Setup
 
-
-### Setup
+### Configure SSH for GitHub
 
 - To avoid conflict between your organization GitHub and RDK Central GitHub, add the following in your ssh config (`~/.ssh/config`):
 
@@ -17,8 +17,7 @@
 
   - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account>
 
-
-### 1. Build linux binder
+## Build linux binder for Target Linux
 
 The test suite depends on the Linux binder with `AIDL` support. Follow these steps to build it:
 
@@ -36,20 +35,30 @@ sc docker run vdevice-docker /bin/bash
 ./build-linux-binder-aidl.sh 64
 ```
 
-### 2. Build Unified VTS
+**Use Prebuilt Linux Binder for ARM :**
 
-Clone and build the test suite:
+## Build Unified VTS
+
+### Clone the Repository
 
 ```bash
 
-git clone git@github.com:rdkcentral/rdk-halif-aidl-unified-vts.git`
-
+git clone git@rdkcentral-github.com:rdkcentral/rdk-halif-aidl-unified-vts.git
+cd rdk-halif-aidl-unified-vts
 ```
 
-Docker is required to build the test suite:
+### Set Up Docker Environment
+
+**for Linux:**
 
 ```bash
 sc docker run vdevice-docker /bin/bash
+```
+
+**for ARM:**
+
+```bash
+sc docker run rdk-kirkstone /bin/bash
 ```
 
 Set below environment variable:
@@ -65,7 +74,7 @@ Set below environment variable:
 Example:
 
 ```bash
-export UT_CORE_VERSION=4.7.2
+export UT_CORE_VERSION=4.7.3
 export RDK_HALIF_AIDL_VERSION=0.7.1
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path//linux_binder_idl/local/
@@ -80,12 +89,12 @@ export ENABLE_UT_INFO_LOGGING=1
 Run the build script:
 
 ```bash
-./build.sh all
+./build.sh Target=arm
 ```
 
 The build.sh script:
 
-- Clones the `rdk-halif-aidl` repository and UT-Core framework.
+- Clones the `rdk-halif-aidl` repository, Vendor test modules and UT-Core framework.
 
 - Compiles the test suite.
 
@@ -122,6 +131,7 @@ cd bin
 
 - Run the Test:
 Execute the run.sh script as root:
+Please use platform specific profile
 
 ```bash
 sudo ./run.sh -p profiles/hfp-vdevice.yaml
