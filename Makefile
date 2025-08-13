@@ -70,6 +70,8 @@ $(info AVBUFFER_VERSION: $(AVBUFFER_VERSION))
 $(info AVCLOCK_VERSION: $(AVCLOCK_VERSION))
 $(info PLANECONTROL_VERSION: $(PLANECONTROL_VERSION))
 $(info BUILD_TIMESTAMP: $(BUILD_TIMESTAMP))
+$(info TARGET: $(TARGET))
+$(info VARIANT: $(VARIANT))
 
 # Read RDK_HALIF_AIDL_VERSION from environment, default to 'main'
 RDK_HALIF_AIDL_VERSION ?= main
@@ -112,8 +114,8 @@ INC_DIRS += $(ROOT_DIR)/common/avbufferhelper_skeleton/
 INC_DIRS += $(SRC_DIRS)
 
 XLDFLAGS := -L$(ROOT_DIR)/build/usr/lib
-XLDFLAGS += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib -Wl,--export-dynamic
-XLDFLAGS += -lssl -lcrypto -lbinder -lutils
+XLDFLAGS += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib
+XLDFLAGS += -lbinder -lutils
 XLDFLAGS += -laidl_client
 XLDFLAGS += -lavbufferhelper
 
@@ -128,6 +130,7 @@ endif
 
 UT_CORE_DIR := $(CURDIR)/ut-core
 
+export VARIANT
 export BIN_DIR
 export LIB_DIR
 export BUILD_DIR
@@ -136,6 +139,7 @@ export TARGET_EXEC
 export INC_DIRS
 export XLDFLAGS
 export CXXFLAGS
+export TARGET
 
 .PHONY: all clean
 
