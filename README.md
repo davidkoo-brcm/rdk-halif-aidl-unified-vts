@@ -140,4 +140,4 @@ sudo ./run.sh -p profiles/hfp-vdevice.yaml
 
 - For running the L1 L2 and L3 test suite, a host PC with a Python environment is required.
 - Install Python Environment and Activation Scripts as detailed in [Python Installation](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite)
-- To run the `L1`, `L2` and `L3` test cases of AV Modules follow the `L1` `L2` and `L3` Test Procedure document - [L1_L2_L3_TestProcedure.md](docs/L1_L2_L3_TestProcedure.md)
+- To run the `L1`, `L2` and `L3` test cases of AV Modules follow the `L1` `L2` and `L3` Test Procedure document - [vts_avmodule_L1_L2_L3_TestProcedure.md](docs/vts_avmodule_L1_L2_L3_TestProcedure.md)
