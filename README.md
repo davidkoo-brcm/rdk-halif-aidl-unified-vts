@@ -11,7 +11,9 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 <!-- -->
 
     Host rdkcentral-github.com
-        IdentityFile <GitHub SSH key>
+      Hostname github.com
+      User
+      IdentityFile ~/.ssh/
 
 - The instruction to generate SSK key for GitHub:
 
@@ -58,6 +60,7 @@ sc docker run vdevice-docker /bin/bash
 
 ```bash
 sc docker run rdk-kirkstone /bin/bash
+source /opt/toolchains/rdk-glibc-x86_64-arm-toolchain/environment-setup-armv7vet2hf-neon-oe-linux-gnueabi
 ```
 
 Set below environment variable:
