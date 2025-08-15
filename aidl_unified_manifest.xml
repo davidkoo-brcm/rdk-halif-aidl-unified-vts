@@ -33,6 +33,7 @@
 
    <project name="rdk-halif-aidl-test-planecontrol"
            path="vts_hal_test_components/planecontrol"
-	   revision="develop" />
+           revision="develop" />
+
 </manifest>
 

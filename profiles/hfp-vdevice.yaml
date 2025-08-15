@@ -1,3 +1,6 @@
+AVModule:
+  description: "hfp profiles all av modules"
+
 include_0: profiles/hfp-audiodecoder_vdevice.yaml
 include_1: profiles/hfp-audiosink_vdevice.yaml
 include_2: profiles/hfp-avbuffer-vdevice.yaml

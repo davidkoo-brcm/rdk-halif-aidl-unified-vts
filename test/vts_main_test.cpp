@@ -158,6 +158,12 @@ int main(int argc, char **argv)
     }
 
     result = UT_run_tests();
+
+    VTS_AudioDecoder_destroy();
+    VTS_VideoDecoder_destroy();
+    VTS_AudioSink_destroy();
+    VTS_VideoSink_destroy();
+
     return result;
 }
 
