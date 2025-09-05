@@ -98,66 +98,59 @@ int main(int argc, char **argv)
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AVBuffer");
-        return UT_STATUS_FAILURE;
+        result = UT_STATUS_FAILURE;
     }
 
     result = VTS_AudioDecoder_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AudioDecoder");
-        return UT_STATUS_FAILURE;
+        result = UT_STATUS_FAILURE;
     }
 
     result = VTS_VideoDecoder_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize VideoDecoder");
-        VTS_AudioDecoder_destroy();
-        return UT_STATUS_FAILURE;
+        result = UT_STATUS_FAILURE;
     }
 
     result = VTS_AudioSink_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AudioSink");
-        VTS_AudioDecoder_destroy();
-        VTS_VideoDecoder_destroy();
-        return UT_STATUS_FAILURE;
+        result = UT_STATUS_FAILURE;
     }
 
     result = VTS_VideoSink_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize VideoSink");
-        VTS_AudioDecoder_destroy();
-        VTS_VideoDecoder_destroy();
-        VTS_AudioSink_destroy();
-        return UT_STATUS_FAILURE;
+        result = UT_STATUS_FAILURE;
     }
 
     result = VTS_AVClock_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AV Clock");
-        VTS_AudioDecoder_destroy();
-        VTS_VideoDecoder_destroy();
-        VTS_AudioSink_destroy();
-        VTS_VideoSink_destroy();
-        return UT_STATUS_FAILURE;
+        result = UT_STATUS_FAILURE;
     }
 
     result = VTS_PlaneControl_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AV Clock");
-        VTS_AudioDecoder_destroy();
-        VTS_VideoDecoder_destroy();
-        VTS_AudioSink_destroy();
-        VTS_VideoSink_destroy();
-        return UT_STATUS_FAILURE;
+        result = UT_STATUS_FAILURE;
     }
 
-    result = UT_run_tests();
+    UT_status_t ut_result = UT_run_tests();
+
+    if (result != UT_STATUS_OK || ut_result != UT_STATUS_OK) {
+        result = UT_STATUS_FAILURE;
+    } else {
+        result = UT_STATUS_OK;
+    }
+
 
     VTS_AudioDecoder_destroy();
     VTS_VideoDecoder_destroy();
