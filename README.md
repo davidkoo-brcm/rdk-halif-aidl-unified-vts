@@ -10,7 +10,7 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 
 <!-- -->
 
-    Host rdkcentral-github.com
+    Host github.code.rdkcentral.com
       Hostname github.com
       User
       IdentityFile ~/.ssh/
@@ -23,12 +23,12 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 
 The test suite depends on the Linux binder with `AIDL` support. Follow these steps to build it:
 
-For detail build instruction, please refer to [Linux Binder](https://github.com/rdk-e/linux_binder_idl/tree/main)
+For detail build instruction, please refer to [Linux Binder](https://github.com/rdkcentral/linux_binder_idl)
 
 Here outline the simplest steps are
 
 ```bash
-git clone -b develop 'ssh://git@github.com/rdk-e/linux_binder_idl.git'
+git clone -b develop 'git@github.com:rdkcentral/linux_binder_idl.git'
 
 cd linux_binder_idl
 
@@ -44,7 +44,7 @@ sc docker run vdevice-docker /bin/bash
 ### Clone the Repository
 
 ```bash
-git clone git@rdkcentral-github.com:rdkcentral/rdk-halif-aidl-unified-vts.git
+git clone git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.git
 cd rdk-halif-aidl-unified-vts
 ```
 
@@ -79,7 +79,7 @@ Example:
 export UT_CORE_VERSION=4.7.3
 export RDK_HALIF_AIDL_VERSION=0.7.1
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
-export LINUX_BINDER_OUT_DIR=/path//linux_binder_idl/local/
+export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
 ```
 
 By default, UT logs are disabled. To enable them, Set below environment variable
@@ -88,10 +88,18 @@ By default, UT logs are disabled. To enable them, Set below environment variable
 export ENABLE_UT_INFO_LOGGING=1
 ```
 
-Run the build script:
+Run the build script for Target ARM:
 
 ```bash
+sc docker run rdk-kirkstone /bin/bash
 ./build.sh Target=arm
+```
+
+Run the build script for Target Linux:
+
+```bash
+sc docker run vdevice-docker /bin/bash
+./build.sh Target=linux
 ```
 
 The build.sh script:

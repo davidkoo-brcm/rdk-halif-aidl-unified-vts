@@ -30,7 +30,7 @@ RESET='\033[0m'
 declare -r TOP=`dirname $(realpath $0)`
 declare -r HALIF_VERSION=current
 RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION="main"}"
-RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-binder-test-"
+RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-aidl-test-"
 
 declare -A HALIF_COMPONENTS=(
   [avbuffer]="current"
@@ -106,7 +106,7 @@ fi
 unified_manifest()
 {
     echo "repo init unified manifest"
-    repo init -b develop -m aidl_unified_manifest.xml -u git@rdkcentral-github.com:rdkcentral/rdk-halif-aidl-unified-vts.git -q
+    repo init -b develop -m aidl_unified_manifest.xml -u git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
     repo sync -cd -j 16 --no-repo-verify -q
 }
 
