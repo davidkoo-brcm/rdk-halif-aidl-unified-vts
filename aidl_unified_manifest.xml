@@ -13,11 +13,11 @@
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
-           revision="refs/tags/0.3.4" />
+           revision="feature/gh50_changes_support_l4_testcases" />
 
   <project name="rdk-halif-aidl-test-videodecoder"
            path="vts_hal_test_components/videodecoder"
-           revision="refs/tags/0.3.3" />
+           revision="feature/gh46_changes_support_l4_testcases" />
 
   <project name="rdk-halif-aidl-test-audiosink"
            path="vts_hal_test_components/audiosink"
