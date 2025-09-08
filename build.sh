@@ -61,6 +61,10 @@ declare -r AIDL_LIB_DIR=${TOP}/aidl_lib
 declare -r RDK_HAL_DIR=${TOP}/rdk-halif-aidl
 declare -r RDK_HAL_TEST_DIR=${TOP}/vts_hal_test_components
 declare -r PROFILES_DIR=${TOP}/profiles
+declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/av_l4_tests
+
+#TODO: change to server path
+declare -r GST_PATH="${TOP}/../gstreamer_pkg"
 
 DEF_LINUX_BINDER="`realpath ${TOP}/../`/linux_binder_idl"
 # AIDL_BIN: path of aidl compiler
@@ -85,20 +89,27 @@ declare -r LINUX_BINDER_OUT_DIR=`realpath ${LINUX_BINDER_OUT_DIR}`
 
 # Parse Target argument (e.g., Target=arm or target=linux)
 # Default to 'linux' if not provided
-TARGET="linux"
-for arg in "$@"; do
-    if [[ $arg == [Tt]arget=* ]]; then
-        TARGET="${arg#*=}"
-    fi
-done
+declare -r TARGET="linux"
 
-# Validate TARGET
-valid_targets=("linux" "arm")
-if [[ ! " ${valid_targets[@]} " =~ " ${TARGET} " ]]; then
-    echo -e "${BOLD}${RED}Invalid Target: $TARGET. Valid targets are: ${valid_targets[@]}${RESET}"
-    help
-    exit 1
-fi
+###############################################################################
+# Function to validate TARGET option
+###############################################################################
+validate_target()
+{
+    for arg in "$@"; do
+        if [[ $arg == [Tt]arget=* ]]; then
+            TARGET="${arg#*=}"
+        fi
+    done
+
+    # Validate TARGET
+    valid_targets=("linux" "arm")
+    if [[ ! " ${valid_targets[@]} " =~ " ${TARGET} " ]]; then
+        echo -e "${BOLD}${RED}Invalid Target: $TARGET. Valid targets are: ${valid_targets[@]}${RESET}"
+        help
+        exit 1
+    fi
+}
 
 ###############################################################################
 # Function to clone  unified VTS repo's
@@ -121,6 +132,15 @@ install_linux_binder()
     install -t ${BUILD_INSTALL_PREFIX}/bin ${LINUX_BINDER_OUT_DIR}/bin/*
     install -t ${BUILD_INSTALL_PREFIX}/lib ${LINUX_BINDER_OUT_DIR}/lib/*
     cp -apr ${LINUX_BINDER_OUT_DIR}/include/* ${BUILD_INSTALL_PREFIX}/include/
+}
+
+###############################################################################
+# Function to install gstreamer headers, and libraries
+###############################################################################
+install_gstreamer_pacakge()
+{
+    cp -r ${GST_PATH}/usr/lib/* ${TOP_BUILD_DIR}/usr/lib/
+    cp -r ${GST_PATH}/usr/include/* ${TOP_BUILD_DIR}/usr/include/
 }
 
 ###############################################################################
@@ -150,6 +170,13 @@ generate_hal_interfaces()
         -DAIDL_TARGET=$component  \
         -B ${HAL_TOP_BUILD_DIR} \
         $RDK_HAL_DIR
+
+        if [ $? -ne 0 ]; then
+            echo -e "${BOLD}╔══════════════════════════════════════════════════════════════════════╗${RESET}"
+            echo -e "${BOLD}* ${RED}Failed to Convert AIDL files for ${component}. Exiting.${RESET}"
+            echo -e "${BOLD}╚══════════════════════════════════════════════════════════════════════╝${RESET}"
+            exit 1
+        fi
     done
 }
 
@@ -160,7 +187,12 @@ build_aidl_libs()
 {
     pushd ${AIDL_LIB_DIR}
     make -j`nproc` TARGET=$TARGET VARIANT=CPP
-    echo "AIDL Build completed successfully."
+    if [ $? -ne 0 ]; then
+        echo -e "${BOLD}╔══════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to build the AIDL Lib. Exiting.${RESET}       ${BOLD}*${RESET}"
+        echo -e "${BOLD}╚══════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
     popd
 }
 
@@ -190,11 +222,12 @@ build_ut_core()
     # Use the user-provided TARGET or default to 'linux'
     ./build.sh TARGET=$TARGET VARIANT=CPP
     if [ $? -ne 0 ]; then
-        echo "Build script failed. Exiting."
+        echo -e "${BOLD}╔══════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to build the UT Core. Exiting.${RESET}        ${BOLD}*${RESET}"
+        echo -e "${BOLD}╚══════════════════════════════════════════════╝${RESET}"
         exit 1
     fi
 
-    echo "Build completed successfully."
     popd
 }
 
@@ -208,7 +241,20 @@ generate_avbufferhelper_skeleton()
     cd $AVBUFFER_HELPER_DIR/build
 
     cmake ..
+    if [ $? -ne 0 ]; then
+        echo -e "${BOLD}╔═══════════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to generate av buffer skeleton. Exiting.${RESET}"
+        echo -e "${BOLD}╚═══════════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
+
     make
+    if [ $? -ne 0 ]; then
+        echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to generate av buffer skeleton Lib. Exiting.${RESET}"
+        echo -e "${BOLD}╚══════════════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
 
     cp libavbufferhelper.so ${TOP_BUILD_DIR}/usr/lib/
     cd -
@@ -223,6 +269,12 @@ build_mock_services()
     for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
         # Build the mock component
         make -j"$(nproc)" -C "${RDK_HAL_TEST_DIR}/${component}/mockservice" BUILD_DIR="${TOP_BUILD_DIR}"
+        if [ $? -ne 0 ]; then
+            echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
+            echo -e "${BOLD}* ${RED}Failed to build the mock ${component}. Exiting.${RESET}"
+            echo -e "${BOLD}╚══════════════════════════════════════════════════════╝${RESET}"
+            exit 1
+        fi
     done
 }
 
@@ -233,6 +285,12 @@ build_halif_test()
 {
     # Build the tests
     make -j`nproc` -C ${TOP} TARGET=$TARGET VARIANT=CPP
+    if [ $? -ne 0 ]; then
+        echo -e "${BOLD}╔════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to build the main tests. Exiting.${RESET}"
+        echo -e "${BOLD}╚════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
 }
 
 ###############################################################################
@@ -262,6 +320,7 @@ install_test()
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/profiles ${INSTALL_PATH}/
         fi
     done
+    cp -rf ${AV_L4_TEST_DIR}/av_test_configuration ${INSTALL_PATH}/
 
     mkdir -p ${INSTALL_PATH}/assets/streams/input
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
@@ -274,12 +333,13 @@ install_test()
 clean_test()
 {
     echo -e "${BOLD}removing *.o${RESET}"
-    rm -rf $BUILD_DIR
+
     rm -rf test/*.o
     for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/mockservice/src/*.o
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/src/*.o
     done
+    rm -rf ${AV_L4_TEST_DIR}/src/*.o
     rm -rf ${COMMON_DIR}/helper_functions/*.o
 }
 
@@ -307,12 +367,12 @@ help()
 {
     echo -e "${BOLD}${CYAN}Usage:${RESET}"
 
-    echo -e "${BOLD}╔════════════════════════════════════════════════════════════════════╗${RESET}"
-    echo -e "${BOLD}* ${GREEN}$0 Target=<target>${RESET} ${YELLOW}- Builds the test for specified target (e.g., arm, linux)${RESET} ${BOLD}*${RESET}"
-    echo -e "${BOLD}* ${GREEN}$0 clean${RESET}          ${YELLOW}- Cleans the build folder${RESET}                ${BOLD}*${RESET}"
-    echo -e "${BOLD}* ${GREEN}$0 dist_clean${RESET}     ${YELLOW}- Deletes all build and checkout folders${RESET} ${BOLD}*${RESET}"
-    echo -e "${BOLD}* ${GREEN}$0 help/-h/--help${RESET} ${YELLOW}- Prints this message${RESET}                    ${BOLD}*${RESET}"
-    echo -e "${BOLD}╚════════════════════════════════════════════════════════════════════╝${RESET}"
+    echo -e "${BOLD}╔════════════════════════════════════════════════════════════════════════════════╗${RESET}"
+    echo -e "${BOLD}* ${GREEN}$0 TARGET=<target>${RESET} ${YELLOW}- Builds the test for specified target (arm, linux)${RESET} ${BOLD}*${RESET}"
+    echo -e "${BOLD}* ${GREEN}$0 clean${RESET}           ${YELLOW}- Cleans the build folder${RESET}                           ${BOLD}*${RESET}"
+    echo -e "${BOLD}* ${GREEN}$0 dist_clean${RESET}      ${YELLOW}- Deletes all build and checkout folders${RESET}            ${BOLD}*${RESET}"
+    echo -e "${BOLD}* ${GREEN}$0 help/-h/--help${RESET}  ${YELLOW}- Prints this message${RESET}                               ${BOLD}*${RESET}"
+    echo -e "${BOLD}╚════════════════════════════════════════════════════════════════════════════════╝${RESET}"
 }
 
 echo -e "${BOLD}${GREEN}VTS Unified Version    : ${RESET}${YELLOW}$(git rev-parse --abbrev-ref HEAD)${RESET}"
@@ -332,15 +392,16 @@ elif [ "$1" == "dist_clean" ]; then
 elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     help
 elif [[ "$1" == [Tt]arget=* ]]; then
+    validate_target
     unified_manifest
-    install_linux_binder
-    generate_hal_interfaces
-    build_aidl_libs
-    build_ut_core
-    generate_avbufferhelper_skeleton
-    #build_mock_services
-    build_halif_test
-    install_test
+    #install_linux_binder
+    #install_gstreamer_pacakge
+    #generate_hal_interfaces
+    #build_aidl_libs
+    #build_ut_core
+    #generate_avbufferhelper_skeleton
+    #build_halif_test
+    #install_test
 else
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"
     help

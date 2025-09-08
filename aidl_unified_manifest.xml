@@ -35,5 +35,9 @@
            path="vts_hal_test_components/planecontrol"
            revision="refs/tags/0.2.2" />
 
+   <project name="rdk-halif-aidl-L4-Vendor"
+           path="vts_hal_test_components/av_l4_tests"
+           revision="feature/gh3_develop_L4_testcases" />
+
 </manifest>
 
