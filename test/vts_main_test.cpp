@@ -73,7 +73,7 @@
 #include "vts_videodecoder_init.h"
 #include "vts_avclock_init.h"
 #include "vts_planecontrol_init.h"
-
+#include "vts_av_l4_init.h"
 
 int main(int argc, char **argv)
 {
@@ -143,14 +143,23 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
-    UT_status_t ut_result = UT_run_tests();
-
-    if (result != UT_STATUS_OK || ut_result != UT_STATUS_OK) {
+    result = VTS_AV_init();
+    if(result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize AV L4 Tests");
         result = UT_STATUS_FAILURE;
-    } else {
-        result = UT_STATUS_OK;
     }
 
+    UT_status_t ut_result = UT_run_tests();
+
+    if (result != UT_STATUS_OK || ut_result != UT_STATUS_OK)
+    {
+        result = UT_STATUS_FAILURE;
+    }
+    else
+    {
+        result = UT_STATUS_OK;
+    }
 
     VTS_AudioDecoder_destroy();
     VTS_VideoDecoder_destroy();

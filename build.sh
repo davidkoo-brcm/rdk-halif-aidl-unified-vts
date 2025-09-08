@@ -64,7 +64,8 @@ declare -r PROFILES_DIR=${TOP}/profiles
 declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/av_l4_tests
 
 #TODO: change to server path
-declare -r GST_PATH="${TOP}/../gstreamer_pkg"
+declare -r DEF_GST_PATH="${TOP}/../gstreamer_pkg"
+GST_PATH=${GST_PATH:-${DEF_GST_PATH}}
 
 DEF_LINUX_BINDER="`realpath ${TOP}/../`/linux_binder_idl"
 # AIDL_BIN: path of aidl compiler
@@ -117,7 +118,7 @@ validate_target()
 unified_manifest()
 {
     echo "repo init unified manifest"
-    repo init -b main -m aidl_unified_manifest.xml -u git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
+    repo init -b $(git rev-parse --abbrev-ref HEAD) -m aidl_unified_manifest.xml -u git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
     repo sync -cd -j 16 --no-repo-verify -q
 }
 
@@ -332,15 +333,14 @@ install_test()
 ###############################################################################
 clean_test()
 {
-    echo -e "${BOLD}removing *.o${RESET}"
-
-    rm -rf test/*.o
+    rm -rf ${TOP}/test/*.o
     for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/mockservice/src/*.o
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/src/*.o
     done
     rm -rf ${AV_L4_TEST_DIR}/src/*.o
     rm -rf ${COMMON_DIR}/helper_functions/*.o
+    rm -rf ${COMMON_DIR}/vts_player/*.o
 }
 
 ###############################################################################
@@ -348,16 +348,12 @@ clean_test()
 ###############################################################################
 dist_clean_test()
 {
+    clean_test
     rm -rf $TOP_BUILD_DIR
     rm -rf $RDK_HAL_DIR
     rm -rf ${UT_CORE_DIR}
-    rm -rf test/*.o
-    rm -rf vts_hal_test_components
-    for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
-        rm -rf ${RDK_HAL_TEST_DIR}/${component}/mockservice/src/*.o
-        rm -rf ${RDK_HAL_TEST_DIR}/${component}/src/*.o
-    done
-    rm -rf ${COMMON_DIR}/helper_functions/*.o
+    rm -rf $RDK_HAL_TEST_DIR
+    rm -rf .repo
 }
 
 ###############################################################################
@@ -394,14 +390,14 @@ elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
 elif [[ "$1" == [Tt]arget=* ]]; then
     validate_target
     unified_manifest
-    #install_linux_binder
-    #install_gstreamer_pacakge
-    #generate_hal_interfaces
-    #build_aidl_libs
-    #build_ut_core
-    #generate_avbufferhelper_skeleton
-    #build_halif_test
-    #install_test
+    install_linux_binder
+    install_gstreamer_pacakge
+    generate_hal_interfaces
+    build_aidl_libs
+    build_ut_core
+    generate_avbufferhelper_skeleton
+    build_halif_test
+    install_test
 else
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"
     help
