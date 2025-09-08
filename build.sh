@@ -61,7 +61,8 @@ declare -r AIDL_LIB_DIR=${TOP}/aidl_lib
 declare -r RDK_HAL_DIR=${TOP}/rdk-halif-aidl
 declare -r RDK_HAL_TEST_DIR=${TOP}/vts_hal_test_components
 declare -r PROFILES_DIR=${TOP}/profiles
-declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/av_l4_tests
+declare -r L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests
+declare -r AV_L4_TEST_DIR==${RDK_HAL_TEST_DIR}/l4_tests/src/av/
 
 #TODO: change to server path
 declare -r DEF_GST_PATH="${TOP}/../gstreamer_pkg"
@@ -321,7 +322,7 @@ install_test()
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/profiles ${INSTALL_PATH}/
         fi
     done
-    cp -rf ${AV_L4_TEST_DIR}/av_test_configuration ${INSTALL_PATH}/
+    cp -rf ${L4_TEST_DIR}/av_test_configuration ${INSTALL_PATH}/
 
     mkdir -p ${INSTALL_PATH}/assets/streams/input
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
@@ -338,7 +339,7 @@ clean_test()
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/mockservice/src/*.o
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/src/*.o
     done
-    rm -rf ${AV_L4_TEST_DIR}/src/*.o
+    rm -rf ${AV_L4_TEST_DIR}/*.o
     rm -rf ${COMMON_DIR}/helper_functions/*.o
     rm -rf ${COMMON_DIR}/vts_player/*.o
 }
@@ -364,7 +365,7 @@ help()
     echo -e "${BOLD}${CYAN}Usage:${RESET}"
 
     echo -e "${BOLD}╔════════════════════════════════════════════════════════════════════════════════╗${RESET}"
-    echo -e "${BOLD}* ${GREEN}$0 TARGET=<target>${RESET} ${YELLOW}- Builds the test for specified target (arm, linux)${RESET} ${BOLD}*${RESET}"
+    echo -e "${BOLD}* ${GREEN}$0 Target=<target>${RESET} ${YELLOW}- Builds the test for specified target (arm, linux)${RESET} ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 clean${RESET}           ${YELLOW}- Cleans the build folder${RESET}                           ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 dist_clean${RESET}      ${YELLOW}- Deletes all build and checkout folders${RESET}            ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 help/-h/--help${RESET}  ${YELLOW}- Prints this message${RESET}                               ${BOLD}*${RESET}"
@@ -390,14 +391,14 @@ elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
 elif [[ "$1" == [Tt]arget=* ]]; then
     validate_target
     unified_manifest
-    install_linux_binder
-    install_gstreamer_pacakge
-    generate_hal_interfaces
-    build_aidl_libs
-    build_ut_core
-    generate_avbufferhelper_skeleton
-    build_halif_test
-    install_test
+    #install_linux_binder
+    #install_gstreamer_pacakge
+    #generate_hal_interfaces
+    #build_aidl_libs
+    #build_ut_core
+    #generate_avbufferhelper_skeleton
+    #build_halif_test
+    #install_test
 else
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"
     help

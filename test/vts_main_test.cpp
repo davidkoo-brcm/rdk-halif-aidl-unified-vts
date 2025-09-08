@@ -92,6 +92,7 @@ int main(int argc, char **argv)
     UT_LOG_INFO("\t VTS UNIFIED AVBuffer HALIF Test Version: \033[0;32m%s\033[0m",AVBUFFER_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED AV Clock HALIF Test Version: \033[0;32m%s\033[0m",AVCLOCK_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED Plane Control HALIF Test Version: \033[0;32m%s\033[0m",PLANECONTROL_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED HALIF L4 Test Version: \033[0;32m%s\033[0m",L4_TESTS_VERSION);
     UT_LOG_INFO("==========================================================================");
 
     result = VTS_AVBuffer_init();
