@@ -9,7 +9,7 @@
 
   <project name="rdk-halif-aidl-test-avbuffer"
            path="vts_hal_test_components/avbuffer"
-           revision="refs/tags/0.2.3" />
+           revision="feature/gh47_changes_support_l4_testcases" />
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
@@ -21,11 +21,11 @@
 
   <project name="rdk-halif-aidl-test-audiosink"
            path="vts_hal_test_components/audiosink"
-           revision="refs/tags/0.3.3" />
+           revision="feature/gh42_changes_support_l4_testcases" />
 
   <project name="rdk-halif-aidl-test-videosink"
            path="vts_hal_test_components/videosink"
-           revision="refs/tags/0.3.3" />
+           revision="feature/gh42_changes_support_l4_testcases" />
 
    <project name="rdk-halif-aidl-test-avclock"
            path="vts_hal_test_components/avclock"

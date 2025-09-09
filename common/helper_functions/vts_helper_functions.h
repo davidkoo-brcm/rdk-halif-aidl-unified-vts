@@ -58,6 +58,7 @@
 #include <ut.h>
 #include <ut_kvp_profile.h>
 #include <ut_log.h>
+#include <ut_control_plane.h>
 #include <binder/IServiceManager.h>
 #include <binder/ProcessState.h>
 #include <binder/IPCThreadState.h>
@@ -81,6 +82,9 @@ using android::binder::Status;
 
 using namespace com::rdk::hal;
 using namespace com::rdk::hal::audiodecoder;
+
+extern const ut_control_keyStringMapping_t statusException_mapTable[];
+extern const ut_control_keyStringMapping_t bool_mapTable[];
 
 size_t vts_bytesPerSample(audiodecoder::PCMFormat format);
 //size_t vts_bytesPerPixel(PixelFormat format);
