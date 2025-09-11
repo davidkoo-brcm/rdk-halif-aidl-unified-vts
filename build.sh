@@ -91,27 +91,24 @@ declare -r LINUX_BINDER_OUT_DIR=`realpath ${LINUX_BINDER_OUT_DIR}`
 
 # Parse Target argument (e.g., Target=arm or target=linux)
 # Default to 'linux' if not provided
-declare -r TARGET="linux"
+TARGET="linux"
 
 ###############################################################################
 # Function to validate TARGET option
 ###############################################################################
-validate_target()
-{
-    for arg in "$@"; do
-        if [[ $arg == [Tt]arget=* ]]; then
-            TARGET="${arg#*=}"
-        fi
-    done
-
-    # Validate TARGET
-    valid_targets=("linux" "arm")
-    if [[ ! " ${valid_targets[@]} " =~ " ${TARGET} " ]]; then
-        echo -e "${BOLD}${RED}Invalid Target: $TARGET. Valid targets are: ${valid_targets[@]}${RESET}"
-        help
-        exit 1
+for arg in "$@"; do
+    if [[ $arg == [Tt]arget=* ]]; then
+        TARGET="${arg#*=}"
     fi
-}
+done
+
+# Validate TARGET
+valid_targets=("linux" "arm")
+if [[ ! " ${valid_targets[@]} " =~ " ${TARGET} " ]]; then
+    echo -e "${BOLD}${RED}Invalid Target: $TARGET. Valid targets are: ${valid_targets[@]}${RESET}"
+    help
+    exit 1
+fi
 
 ###############################################################################
 # Function to clone  unified VTS repo's
@@ -390,7 +387,6 @@ elif [ "$1" == "dist_clean" ]; then
 elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     help
 elif [[ "$1" == [Tt]arget=* ]]; then
-    validate_target
     unified_manifest
     install_linux_binder
     install_gstreamer_pacakge
