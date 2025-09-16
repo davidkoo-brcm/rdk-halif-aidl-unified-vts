@@ -83,7 +83,7 @@ RDK_HALIF_AIDL_VERSION ?= main
 $(info RDK_HALIF_AIDL_VERSION: $(RDK_HALIF_AIDL_VERSION))
 
 # Compiler flags with version and debug info
-CXXFLAGS := -std=c++17 -g3 -O0 \
+CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DHALIF_TEST_PROJECT_VERSION=\"$(VERSION)\" \
             -DRDK_HALIF_AIDL_VERSION=\"$(RDK_HALIF_AIDL_VERSION)\" \
             -DAUDIODECODER_VERSION=\"$(AUDIODECODER_VERSION)\" \

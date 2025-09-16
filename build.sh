@@ -340,6 +340,8 @@ clean_test()
     rm -rf ${AV_L4_TEST_DIR}/*.o
     rm -rf ${COMMON_DIR}/helper_functions/*.o
     rm -rf ${COMMON_DIR}/vts_player/*.o
+
+    find "$TOP_BUILD_DIR" -type f -name "*.o" -delete
 }
 
 ###############################################################################

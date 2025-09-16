@@ -153,6 +153,7 @@ size_t vts_bytesPerSample(audiodecoder::PCMFormat format)
         case audiodecoder::PCMFormat::S8:
         case audiodecoder::PCMFormat::U8: return 1;
     }
+    return 0;
 }
 
 videodecoder::Codec videoDecoderStringToCodec(const std::string& codecStr)
