@@ -1,0 +1,24 @@
+AVModule:
+  stream_download_path: "http://<>/streams" # URL path to download the test streams
+  input_streams_path: "assets/streams/input" # Target path where input streams are stored
+  player: "gstreamer"
+  L4:
+    - tcid: VTS_L4_H264_AAC1001
+      action: normal_play
+      stream_name: vts_h264_1080i_sdr_50.0f_BT709_yuv420p_10M_aac_48k_2ch_512k_a2814_v3000_60sec.mp4
+    - tcid: VTS_L4_H264_AAC1002
+      action: normal_play
+      stream_name: vts_h264_1080i_sdr_50.0f_BT709_yuv420p_10M_aac_48k_6ch_512k_a2814_v3000_60sec.mp4
+    - tcid: VTS_L4_H264_AAC1003
+      action: normal_play
+      stream_name:  vts_h264_1080i_sdr_50.0f_BT709_yuv420p_10M_aac_48k_8ch_512k_a2814_v3000_60sec.mp4
+    - tcid: VTS_L4_H264_AAC1004
+      action: normal_play
+      stream_name: vts_h264_1080i_sdr_50.0f_BT709_yuv422p_10M_aac_48k_2ch_512k_a2814_v3000_60sec.mp4
+    - tcid: VTS_L4_H264_AAC1005
+      action: normal_play
+      stream_name: vts_h264_1080i_sdr_50.0f_BT709_yuv422p_10M_aac_48k_6ch_512k_a2814_v3000_60sec.mp4
+    - tcid: VTS_L4_H264_AAC1006
+      action: normal_play
+      stream_name: vts_h264_1080i_sdr_50.0f_BT709_yuv422p_10M_aac_48k_8ch_512k_a2814_v3000_60sec.mp4
+

@@ -1,0 +1,16 @@
+# This is a sample test configuration file. Users can customize the YAML entries as needed
+# This test configuration file includes sample YAML entries for executing various combinations
+AVModule:
+  description: "AVModule L4 setup"
+  restart_required: False
+  num_of_instances: 1
+  test_suites: # List of L4
+    #######################################
+    # Entries to run individual test cases
+    #######################################
+    - name: "VTS_L4_AVMODULE"
+      test_cases:
+        - NoramlPlay
+        - playBackWithTrickModes
+
+
