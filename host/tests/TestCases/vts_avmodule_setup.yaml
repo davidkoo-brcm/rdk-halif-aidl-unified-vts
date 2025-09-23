@@ -316,6 +316,30 @@ AVModule:
         - con_sec_videopool_notify
         - con_sec_videopool_readwrite
         - con_sec_videopool_sha1
+        - seq_nonsec_audio_videopool
+        - seq_nonsec_audio_videopool_alloc
+        - seq_nonsec_audio_videopool_trim
+        - seq_nonsec_audio_videopool_notify
+        - seq_nonsec_audio_videopool_readwrite
+        - seq_nonsec_audio_videopool_sha1
+        - seq_sec_audio_videopool
+        - seq_sec_audio_videopool_alloc
+        - seq_sec_audio_videopool_trim
+        - seq_sec_audio_videopool_notify
+        - seq_sec_audio_videopool_readwrite
+        - seq_sec_audio_videopool_sha1
+        - con_nonsec_audio_videopool
+        - con_nonsec_audio_videopool_alloc
+        - con_nonsec_audio_videopool_trim
+        - con_nonsec_audio_videopool_notify
+        - con_nonsec_audio_videopool_readwrite
+        - con_nonsec_audio_videopool_sha1
+        - con_sec_audio_videopool
+        - con_sec_audio_videopool_alloc
+        - con_sec_audio_videopool_trim
+        - con_sec_audio_videopool_notify
+        - con_sec_audio_videopool_readwrite
+        - con_sec_audio_videopool_sha1
 
     ######################################
     # Entry to run all test case
@@ -491,7 +515,6 @@ AVModule:
         - getState_pos
         - getProperty_pos
         - getProperty_neg
-        - setProperty_pos
         - setProperty_neg
         - open_pos
         - open_neg
