@@ -9,31 +9,31 @@
 
   <project name="rdk-halif-aidl-test-avbuffer"
            path="vts_hal_test_components/avbuffer"
-           revision="refs/develop" />
+	   revision="develop" />
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
-           revision="refs/develop" />
+	   revision="develop" />
 
   <project name="rdk-halif-aidl-test-videodecoder"
            path="vts_hal_test_components/videodecoder"
-           revision="refs/develop" />
+	   revision="develop" />
 
   <project name="rdk-halif-aidl-test-audiosink"
            path="vts_hal_test_components/audiosink"
-           revision="refs/develop" />
+	   revision="develop" />
 
   <project name="rdk-halif-aidl-test-videosink"
            path="vts_hal_test_components/videosink"
-           revision="refs/develop" />
+	   revision="develop" />
 
    <project name="rdk-halif-aidl-test-avclock"
            path="vts_hal_test_components/avclock"
-	   revision="refs/develop" />
+	   revision="develop" />
 
    <project name="rdk-halif-aidl-test-planecontrol"
            path="vts_hal_test_components/planecontrol"
-           revision="refs/develop" />
+	   revision="develop" />
 
 </manifest>
 
