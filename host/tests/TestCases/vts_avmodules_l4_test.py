@@ -34,6 +34,7 @@ from raft.framework.plugins.ut_raft import utHelperClass
 from raft.framework.plugins.ut_raft.utPlayer import utPlayer
 from raft.framework.plugins.ut_raft.utBaseUtils import utBaseUtils
 from raft.framework.plugins.ut_raft.utSuiteNavigator import UTSuiteNavigatorClass
+from raft.framework.plugins.ut_raft.configRead import ConfigRead
 
 
 class L4TestClass(AVModuleTestHelperClass):
@@ -73,6 +74,7 @@ class L4TestClass(AVModuleTestHelperClass):
         results = []
         test_suite_name = "VTS_L4_AVMODULE"
         self.waitTime = self.cpe.get("wait_time")
+        self.module_name = "AVModule"
         socVendor = self.cpe.get("soc_vendor")
 
         self.player_session = self.dut.getConsoleSession("ssh_player")
@@ -83,7 +85,6 @@ class L4TestClass(AVModuleTestHelperClass):
         cmd = """
         systemctl restart hal-av_buffer.service
         sleep 3
-        systemd-cat -t hal-v-sink /usr/bin/RDKVideoDecoderService
         """
         self.writeCommands(cmd, self.player_session)
 
@@ -103,6 +104,7 @@ class L4TestClass(AVModuleTestHelperClass):
             data = yaml.safe_load(f)
 
         l4_tests = data.get("AVModule", {}).get("L4", [])
+        manual_verification = False
 
         if not self.restart_required:
             for i, ut_menu in enumerate(self.ut_menu):
@@ -115,6 +117,16 @@ class L4TestClass(AVModuleTestHelperClass):
             stream_name = test_case.get("stream_name")
             target_stream_name = stream_name
             self.log.testStart(test_suite_name, tcid)
+
+            if self.restart_required:
+                cmd = """
+                systemctl restart hal-av_buffer.service
+                sleep 3
+                """
+                self.writeCommands(cmd, self.player_session)
+                for i, ut_menu in enumerate(self.ut_menu):
+                    self.log.info(f"[Instance {i}] Starting test case...")
+                    ut_menu.start()
 
             # Map action to test case name
             action_to_test_case = {
@@ -139,12 +151,36 @@ class L4TestClass(AVModuleTestHelperClass):
                 final_result = False
                 continue
 
-            # Run the test case
-            if self.restart_required:
-                self.restart_services(test_suite_name)
-            #result = self.run_action(test_suite_name, test_case_name, target_stream_name, use_all_wait_time=True)
-            output = ut_menu.select(test_suite_name, test_case_name, None, self.waitTime, False)
+            self.stream_info = ConfigRead(stream_config_path, "AVStreams")
+
+            duration = self.stream_info.get(f"{tcid}_mp4.duration")
+            if duration is None:
+                self.log.info(f"No stream duration found for {tcid}_mp4 in stream config")
+                wait_time = self.wait_time  # fallback
+            else:
+                wait_time = duration #
+
+            output = ut_menu.select(test_suite_name, test_case_name, None, wait_time, False)
             outputs.append(output)
+
+            # Check if the playback verification prompt exists in the output
+            if "Is the stream playback good (Y/N)?" in output:
+                # Call manual verification (will ask user Y/N)
+                result1 = not self.testVerifyAVPlayback(True)
+                self.restart_required = False
+
+                # You can handle the result here
+                if result1:
+                    self.log.info("Playback verification failed.")
+                else:
+                    self.log.info("Playback verification passed.")
+            else:
+                self.restart_required = True
+
+            if not self.restart_required:
+                for i, ut_menu in enumerate(self.ut_menu):
+                    self.log.info(f"[Instance {i}] Stopping test case...")
+                    ut_menu.stop()
 
             result = ut_menu.collect_results(output, True)
             if result is None:
@@ -154,9 +190,6 @@ class L4TestClass(AVModuleTestHelperClass):
 
             # Clean up streams after each test case
             self.test_clean_all_assets()
-
-            if self.restart_required:
-                self.restart_services(test_suite_name)
 
             self.log.testResult(f'{test_suite_name} Finished')
 

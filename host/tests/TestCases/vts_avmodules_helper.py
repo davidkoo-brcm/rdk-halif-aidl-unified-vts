@@ -34,6 +34,7 @@ from raft.framework.plugins.ut_raft import utHelperClass
 from raft.framework.core.logModule import logModule
 from raft.framework.plugins.ut_raft.utSuiteNavigator import UTSuiteNavigatorClass
 from raft.framework.plugins.ut_raft.utBaseUtils import utBaseUtils
+from raft.framework.plugins.ut_raft.utUserResponse import utUserResponse
 
 
 class AVModuleTestHelperClass(utHelperClass):
@@ -128,6 +129,8 @@ class AVModuleTestHelperClass(utHelperClass):
             self.ut_menu.append(ut_menu)
 
         self.utilities = utBaseUtils()
+        # Create user response Class
+        self.testUserResponse = utUserResponse()
         self.test_streams = []
 
     def parse_stream_name(self, stream_name: str, tcid: str) -> dict:
@@ -141,65 +144,53 @@ class AVModuleTestHelperClass(utHelperClass):
         Returns:
             dict: Extracted stream information.
         """
-        try:
-            # Remove .mp4 extension for parsing
-            base_name = stream_name.replace(".mp4", "")
 
-            # Pattern to match: ..._aXXX_vYYY_ZZsec where:
-            # aXXX = audio frames (e.g., a939)
-            # vYYY = video frames (e.g., v1439)
-            # ZZsec = duration in seconds (e.g., 61sec)
-            # Optional: aeXXX = audio error frames, veYYY = video error frames
+        # Remove .mp4 extension for parsing
+        base_name = stream_name.replace(".mp4", "")
 
-            pattern = r'^(.*?)_a(\d+)_v(\d+)_(\d+)sec(_ae(\d+))?(_ve(\d+))?$'
-            match = re.match(pattern, base_name)
+        # Pattern to match: ..._aXXX_vYYY_ZZsec where:
+        # aXXX = audio frames (e.g., a939)
+        # vYYY = video frames (e.g., v1439)
+        # ZZsec = duration in seconds (e.g., 61sec)
+        # Optional: aeXXX = audio error frames, veYYY = video error frames
 
-            if not match:
-                self.log.warning(f"Could not parse stream name pattern: {stream_name}")
-                # Return defaults if parsing fails
-                return {
-                    "input": stream_name,
-                    "duration": 1,
-                    "audio_frames": 48,
-                    "video_frames": 60,
-                    "audio_error_frames": 0,
-                    "video_error_frames": 0
-                }
+        pattern = r'^(.*?)_a(\d+)_v(\d+)_(\d+)sec(_ae(\d+))?(_ve(\d+))?$'
+        match = re.match(pattern, base_name)
 
-            # Extract groups from regex match
-            groups = match.groups()
-            audio_frames = int(groups[1])  # aXXX
-            video_frames = int(groups[2])  # vYYY
-            duration = int(groups[3])       # ZZsec
-
-            # Check for error frames (optional groups)
-            audio_error_frames = int(groups[5]) if groups[5] else 0  # aeXXX
-            video_error_frames = int(groups[7]) if groups[7] else 0  # veYYY
-            str_name = f"{self.tcid}.mp4"
-
-            stream_info = {
-                "input": str_name,  # Original stream name with .mp4
-                "duration": duration,
-                "audio_frames": audio_frames,
-                "video_frames": video_frames,
-                "audio_error_frames": audio_error_frames,
-                "video_error_frames": video_error_frames
-            }
-
-            self.log.debug(f"Parsed stream {stream_name}: duration={duration}s, audio_frames={audio_frames}, video_frames={video_frames}, audio_errors={audio_error_frames}, video_errors={video_error_frames}")
-            return stream_info
-
-        except Exception as e:
-            self.log.error(f"Error parsing stream name {stream_name}: {str(e)}")
-            # Return defaults on parsing error
+        if not match:
+            self.log.info(f"Could not parse stream name pattern: {stream_name}")
+            # Return defaults if parsing fails
             return {
-                "input": str_name,
-                "duration": 1,
+                "input": stream_name,
+                "duration": 60,
                 "audio_frames": 48,
                 "video_frames": 60,
                 "audio_error_frames": 0,
                 "video_error_frames": 0
             }
+
+        # Extract groups from regex match
+        groups = match.groups()
+        audio_frames = int(groups[1])  # aXXX
+        video_frames = int(groups[2])  # vYYY
+        duration = int(groups[3])       # ZZsec
+
+        # Check for error frames (optional groups)
+        audio_error_frames = int(groups[5]) if groups[5] else 0  # aeXXX
+        video_error_frames = int(groups[7]) if groups[7] else 0  # veYYY
+        str_name = f"{self.tcid}.mp4"
+
+        stream_info = {
+            "input": str_name,  # Original stream name with .mp4
+            "duration": duration,
+            "audio_frames": audio_frames,
+            "video_frames": video_frames,
+            "audio_error_frames": audio_error_frames,
+            "video_error_frames": video_error_frames
+        }
+
+        self.log.debug(f"Parsed stream {stream_name}: duration={duration}s, audio_frames={audio_frames}, video_frames={video_frames}, audio_errors={audio_error_frames}, video_errors={video_error_frames}")
+        return stream_info
 
     def generate_l4_yaml_files_for_test_case(self, test_case: dict, test_config_path: str, stream_config_path: str):
         """
@@ -260,10 +251,12 @@ class AVModuleTestHelperClass(utHelperClass):
                     }
                 }
             }
+            # Generate vts_l4_av_stream_config.yaml
+            stream_info = self.parse_stream_name(original_stream_name, self.tcid)
 
             if test_case_name == "NoramlPlay":
                 test_config["AVModule"]["L4"][test_case_name]["controls"]["trick_modes"] = [
-                    {"action": "play", "duration": 2147483647}
+                    {"action": "play", "duration": stream_info["duration"]}
                 ]
             elif test_case_name == "playBackWithTrickModes":
                 test_config["AVModule"]["L4"][test_case_name]["controls"]["trick_modes"] = [
@@ -283,8 +276,6 @@ class AVModuleTestHelperClass(utHelperClass):
                     {"action": "play", "duration": 30, "speed": 1.0}
                 ]
 
-            # Generate vts_l4_av_stream_config.yaml
-            #stream_info = self.parse_stream_name(original_stream_name, self.tcid)
             # Generate vts_l4_av_stream_config.yaml
             stream_config = {
                 "AVStreams": {
@@ -323,8 +314,8 @@ class AVModuleTestHelperClass(utHelperClass):
         """
         try:
             # Copy YAML files to target_workspace
-            target_test_config = os.path.join(self.target_workspace,self.test_config_path)#.replace("\\", "/")
-            target_stream_config = os.path.join(self.target_workspace,self.test_config_path)#.replace("\\", "/")
+            target_test_config = os.path.join(self.target_workspace,self.test_config_path).replace("\\", "/")
+            target_stream_config = os.path.join(self.target_workspace,self.test_config_path).replace("\\", "/")
 
             self.utilities.sftpCopy(self.hal_sessions[0], test_config_path, target_test_config)
             self.utilities.sftpCopy(self.hal_sessions[0], stream_config_path, target_stream_config)
@@ -344,6 +335,24 @@ class AVModuleTestHelperClass(utHelperClass):
             return True
         except Exception as e:
             self.log.error(f"Failed to copy YAML files or stream for TCID {tcid}: {str(e)}")
+            return False
+
+    #TODO: Current version supports only manual verification.
+    def testVerifyAVPlayback(self, manual=False):
+        """
+        Verifies whether video is being AV playback is fine without artifacts or not.
+
+        Args:
+            manual (bool, optional): Indicates if manual verification is required.
+                                     Defaults to False (automatic verification).
+
+        Returns:
+            bool: Verification result (True if the AV playback is fine without artifacts, False otherwise).
+        """
+        if manual == True:
+            return self.testUserResponse.getUserYN("Is AV playback is fine without artifacts (Y/N):")
+        else :
+            #TODO: Add automation verification methods
             return False
 
     def copy_binaries(self):
@@ -454,33 +463,7 @@ class AVModuleTestHelperClass(utHelperClass):
             self.log.error(f"Failed to clean up streams: {str(e)}")
             return False
 
-    def restart_services(self, test_suite: str):
-        """
-        Restarts AV-related services for the specified test suite.
-
-        Args:
-            test_suite (str): Name of the test suite (e.g., "VTS_L4_AVMODULE").
-        """
-        module = test_suite.lower().split("_")[-1]
-        for i, session in enumerate(self.hal_sessions):
-            if self.restart_required:
-                services = {
-                    "videosink": (self.vSink_process_name, self.process_path, "VideoSink"),
-                    "videodecoder": (self.vDecoder_process_name, self.process_path, "VideoDecoder"),
-                    "audiosink": (self.aSink_process_name, self.process_path, "AudioSink"),
-                    "audiodecoder": (self.aDecoder_process_name, self.process_path, "AudioDecoder"),
-                    "avclock": (self.avClock_process_name, self.process_path, "AVClock"),
-                    "planecontrol": (self.planeCtrl_process_name, self.process_path, "PlaneControl"),
-                }
-                if module in services:
-                    proc_name, proc_path, label = services[module]
-                    if proc_name and proc_path:
-                        self.log.info(f"[Instance {i}] Restarting {label} process: {proc_name}")
-                        self.utilities.restart_process_by_name(session, proc_name, proc_path)
-                    else:
-                        self.log.info(f"[Instance {i}] {label} process name or path is None — skipping")
-
-    def run_test(self, test_suite: str, test_case: str, use_all_wait_time: bool = False):
+    def runTest(self, test_suite: str, test_case: str, use_all_wait_time: bool = False):
         """
         Runs a specific test case for the given test suite.
 
@@ -530,45 +513,6 @@ class AVModuleTestHelperClass(utHelperClass):
             bool: True if all tests pass, False otherwise.
         """
         return self.run_test(test_suite, None, use_all_wait_time)
-
-    def run_action(self, test_suite: str, action: str, stream_name: str, use_all_wait_time: bool = False):
-        """
-        Runs a specific action (e.g., NoramlPlay, playBackWithTrickModes) with a stream for the given test suite.
-
-        Args:
-            test_suite (str): Name of the test suite.
-            action (str): Action to perform (e.g., "NoramlPlay", "playBackWithTrickModes").
-            stream_name (str): Name of the stream to use (e.g., "VTS_L4_H264_AAC1001.mp4").
-            use_all_wait_time (bool): Use all_wait_time instead of wait_time.
-
-        Returns:
-            bool: True if the action passes, False otherwise.
-        """
-        outputs = []
-        results = []
-
-        if self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Starting action: {action} with stream {stream_name}...")
-                ut_menu.start()
-
-        wait_time = self.all_wait_time if use_all_wait_time else self.wait_time
-        for i, ut_menu in enumerate(self.ut_menu):
-            self.log.info(f"[Instance {i}] Running action: {action} with stream {stream_name} in suite {test_suite}...")
-            output = ut_menu.select(test_suite, action, f"-s {stream_name}", wait_time, False)
-            outputs.append(output)
-
-        if self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Stopping action...")
-                ut_menu.stop()
-
-        for i, (ut_menu, output) in enumerate(zip(self.ut_menu, outputs)):
-            result = ut_menu.collect_results(output, True)
-            results.append(result if result is not None else False)
-            self.log.info(f"[Instance {i}] Result: {result}")
-
-        return all(results)
 
     def test_cleanup(self):
         """
