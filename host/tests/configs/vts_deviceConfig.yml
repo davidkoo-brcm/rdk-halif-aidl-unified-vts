@@ -39,6 +39,7 @@ deviceConfig:
         AVBuffer_Restart: 1 # flag to restart avbuffer service
         prompt: "~#" # Prompt string on console
         download_path: "assets/streams/input/" #Download path where streams are saved inside the bin folder
+        playback_manual_verification: 1 # flag to enable manual playback verification
         test_config_path: "bin/av_test_configurations"
         wait_time: 240 #Configurable timeout value to limit the total duration of individual tests
         all_wait_time: 2400 #Configurable timeout value to limit the total duration of individual suite

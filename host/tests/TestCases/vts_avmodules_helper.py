@@ -230,7 +230,7 @@ class AVModuleTestHelperClass(utHelperClass):
 
             # Map action to test case name
             action_to_test_case = {
-                "normal_play": "NoramlPlay",
+                "normal_play": "NormalPlay",
                 "trick_play": "playBackWithTrickModes"
             }
             test_case_name = action_to_test_case.get(action, action)
@@ -241,6 +241,7 @@ class AVModuleTestHelperClass(utHelperClass):
                     "stream_download_path": stream_download_path,
                     "input_streams_path": input_streams_path,
                     "player": player,
+                    "userChoice": self.cpe.get("playback_manual_verification", 1) == 1,  # Convert to boolean: 1->true, 0->false
                     "L4": {
                         test_case_name: {
                             "controls": {
@@ -254,7 +255,7 @@ class AVModuleTestHelperClass(utHelperClass):
             # Generate vts_l4_av_stream_config.yaml
             stream_info = self.parse_stream_name(original_stream_name, self.tcid)
 
-            if test_case_name == "NoramlPlay":
+            if test_case_name == "NormalPlay":
                 test_config["AVModule"]["L4"][test_case_name]["controls"]["trick_modes"] = [
                     {"action": "play", "duration": stream_info["duration"]}
                 ]

@@ -24,6 +24,7 @@ import os
 import yaml
 import sys
 from pathlib import Path
+import re
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dir_path, "../"))
@@ -38,17 +39,9 @@ from raft.framework.plugins.ut_raft.configRead import ConfigRead
 
 
 class L4TestClass(AVModuleTestHelperClass):
-    """
-    Test class for running L4 tests for the AV module (e.g., playback, trickmode tests).
-    """
+    """Test class for running L4 AV module tests (playback + trick modes)."""
 
     def __init__(self, log: logModule = None):
-        """
-        Initializes the L4 test class.
-
-        Args:
-            log (logModule, optional): Parent log class. Defaults to None.
-        """
         super().__init__(
             module_name="AVModule",
             test_name="L4_AVModule",
@@ -101,9 +94,58 @@ class L4TestClass(AVModuleTestHelperClass):
             return False
 
         with open(self.l4_yaml_path, 'r') as f:
-            data = yaml.safe_load(f)
+            data = yaml.safe_load(f) or {}
 
-        l4_tests = data.get("AVModule", {}).get("L4", [])
+        av_root = data.get("AVModule", {})
+
+        # Collect include_* keys
+        include_pattern = re.compile(r"include_\d+")
+        include_files = [av_root[k] for k in av_root.keys() if include_pattern.fullmatch(k)]
+
+        # Resolve relative paths relative to repo root or current dir path
+        resolved_include_files = []
+        for inc in include_files:
+            if not os.path.isabs(inc):
+                # Try relative to repository root (two levels up) then current dir
+                candidate1 = os.path.join(dir_path, inc)
+                candidate2 = os.path.join(os.getcwd(), inc)
+                if os.path.exists(candidate1):
+                    resolved_include_files.append(candidate1)
+                elif os.path.exists(candidate2):
+                    resolved_include_files.append(candidate2)
+                else:
+                    self.log.warn(f"Include file not found: {inc}")
+            else:
+                if os.path.exists(inc):
+                    resolved_include_files.append(inc)
+                else:
+                    self.log.warn(f"Include file not found: {inc}")
+
+        # Base tests from primary file
+        l4_tests = list(av_root.get("L4", []))
+
+        # Merge from included files (supports 'L4' and legacy 'L4Test')
+        seen_tcids = {tc.get('tcid') for tc in l4_tests if tc.get('tcid')}
+        for inc_file in resolved_include_files:
+            try:
+                with open(inc_file, 'r') as f_inc:
+                    inc_data = yaml.safe_load(f_inc) or {}
+                inc_av = inc_data.get("AVModule", {})
+                for key in ("L4", "L4Test"):
+                    extra_list = inc_av.get(key, [])
+                    if isinstance(extra_list, list):
+                        for tc in extra_list:
+                            tcid = tc.get('tcid')
+                            if not tcid:
+                                continue
+                            if tcid in seen_tcids:
+                                self.log.info(f"Skipping duplicate TCID from include {inc_file}: {tcid}")
+                                continue
+                            l4_tests.append(tc)
+                            seen_tcids.add(tcid)
+                self.log.info(f"Merged tests from include file: {inc_file}")
+            except Exception as e:
+                self.log.error(f"Failed processing include file {inc_file}: {e}")
         manual_verification = False
 
         if not self.restart_required:
@@ -130,7 +172,7 @@ class L4TestClass(AVModuleTestHelperClass):
 
             # Map action to test case name
             action_to_test_case = {
-                "normal_play": "NoramlPlay",
+                "normal_play": "NormalPlay",
                 "trick_play": "playBackWithTrickModes"
             }
             test_case_name = action_to_test_case.get(action, action)
@@ -158,23 +200,34 @@ class L4TestClass(AVModuleTestHelperClass):
                 self.log.info(f"No stream duration found for {tcid}_mp4 in stream config")
                 wait_time = self.wait_time  # fallback
             else:
-                wait_time = duration #
+                wait_time = duration + 10 #
 
             output = ut_menu.select(test_suite_name, test_case_name, None, wait_time, False)
             outputs.append(output)
 
             # Check if the playback verification prompt exists in the output
             if "Is the stream playback good (Y/N)?" in output:
-                # Call manual verification (will ask user Y/N)
-                result1 = not self.testVerifyAVPlayback(True)
-                self.restart_required = False
-
-                # You can handle the result here
-                if result1:
+                # Decide manual vs auto based on device config flag
+                playback_verification_flag = self.cpe.get("playback_manual_verification", 1)
+                if playback_verification_flag == 1:
+                    # Manual verification path (interactive)
+                    failed = not self.testVerifyAVPlayback(True)
+                    self.restart_required = False
+                else:
+                    # Auto mode: send 'Y' to proceed (simulate user confirming good playback)
+                    self.log.info("playback_manual_verification=0 -> auto-sending 'Y' to playback prompt")
+                    try:
+                        self.writeCommands("Y\n", self.player_session)
+                        self.restart_required = True
+                    except Exception as e:
+                        self.log.warn(f"Failed to send auto 'Y' response: {e}")
+                    failed = False
+                if failed:
                     self.log.info("Playback verification failed.")
                 else:
                     self.log.info("Playback verification passed.")
             else:
+                # If expected prompt not found, request restart next iteration
                 self.restart_required = True
 
             if not self.restart_required:

@@ -10,7 +10,7 @@ AVModule:
     #######################################
     - name: "VTS_L4_AVMODULE"
       test_cases:
-        - NoramlPlay
+        - NormalPlay
         - playBackWithTrickModes
 
 
