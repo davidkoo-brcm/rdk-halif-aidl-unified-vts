@@ -13,22 +13,37 @@ from Combopicker import Combopicker
 # Default parameter options
 # -------------------------------
 video_params = {
-    "Resolution": ["3840x2160", "2560x1440", "1920x1080", "1280x720", "960x540", "640x360", "320x240"],
+    "Resolution": ["3840x2160", "2560x1440", "1920x1080", "1280x720", "960x540", "720x480", "720x576", "640x360", "320x240"],
     "Codec": ["libx264", "libx265", "mpeg1video", "mpeg2video", "vp9"],
     "Profile": ["main", "main10", "None"],
     "Framerate": [23.976, 24, 25, 29.97, 30, 50, 59.94, 60],
     "Dynamic Range": ["SDR", "HDR10", "HDR10+", "HLG"],
     "Color Space": ["BT.601", "BT.709", "BT.2020"],
-    "pixel Format": ["YCbCr4:4:4", "YCbCr4:2:2", "YCbCr4:2:0"],
+    "pixel Format": ["yuv444p", "yuv422p", "yuv420p"],
     "Frame Type": ["Progressive", "Interlaced"],
-    "Bitrate": ["300k", "700k", "1M", "1.5M", "2.5M", "5M", "18M", "35M", "60M"]
+    "Bitrate": ["300k", "700k", "1M", "1.5M", "2.5M", "5M", "8M", "10M", "12M", "15M", "18M", "20M" , "25M", "35M", "60M"]
 }
 
 audio_params = {
     "Codec": ["aac", "mp3", "ac3", "flac", "pcm_s16le"],
-    "Sample Rate": [8000, 16000, 32000, 44100, 48000, 96000],
-    "Channels": [1, 2, 6, 8],
+    "Sample Rate": [8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000, 64000, 88200, 96000],
+    "Channels": [1, 2, 3, 6, 8],
     "Bitrate": ["32k", "64k", "128k", "256k", "512k", "1024k"]
+}
+
+samplerate_mapping = {
+    8000: "8k",
+    11025: "11.025k",
+    12000: "12k",
+    16000: "16k",
+    22050: "22.05k",
+    24000: "24k",
+    32000: "32k",
+    44100: "44.1k",
+    48000: "48k",
+    64000: "64k",
+    88200: "88.2k",
+    96000: "96k"
 }
 
 fileformat_mapping = {
@@ -72,7 +87,8 @@ def get_color_params(video_selection):
     if dynamic_range in ["HDR10", "HDR10+", "HLG"]:
         pix_fmt = "yuv420p10le"
     else:
-        pix_fmt = "yuv420p"
+        pix_fmt =  video_selection.get("pixel Format", "yuv420p")
+
 
     color_param = {
         "pix_fmt": pix_fmt
@@ -81,10 +97,19 @@ def get_color_params(video_selection):
     # Color mapping
     if dynamic_range == "SDR":
         color_param.update({
-            "color_primaries": "bt709" if colorspace == "BT.709" else "bt601",
-            "color_trc": "bt709",
-            "colorspace": "bt709" if colorspace == "BT.709" else "smpte170m"
+            "color_trc": "bt709"
         })
+        if colorspace == "BT.709":
+            color_param.update({
+                "color_primaries": "bt709",
+                "colorspace": "bt709"
+            })
+        if colorspace == "BT.2020":
+            color_param.update({
+                "color_primaries": "bt2020",
+                "colorspace": "bt2020_ncl"
+            })
+
     elif dynamic_range == "HDR10":
         color_param.update({
             "color_primaries": "bt2020",
@@ -158,6 +183,12 @@ def generate_ffmpeg_command(vid_dict=None, aud_dict=None, video_input="", audio_
                 "-color_trc", color_param["color_trc"],
                 "-colorspace", color_param["colorspace"]]
 
+        if(vid_dict["Frame Type"] == "Interlaced"):
+            if vid_dict["Codec"] == "libx264" or vid_dict["Codec"] == "libx265":
+                video_opt_cmd += ["-vf", "tinterlace=interleave_top", "-x264opts", "tff=1", "-flags", "+ildct+ilme"]
+            elif vid_dict["Codec"] == "mpeg2video":
+                video_opt_cmd += ["-vf", "tinterlace=interleave_top", "-flags", "+ildct+ilme", "-top", "1"]
+
         if "x265_params" in color_param:
             video_opt_cmd += ["-x265-params", color_param["x265_params"],
                     "-master-display", color_param["master_display"],
@@ -179,7 +210,7 @@ def generate_ffmpeg_command(vid_dict=None, aud_dict=None, video_input="", audio_
             vid_dict['Codec'].replace("libx", "h").replace("video", ""),  # h264, h265
             res_label,
             vid_dict['Dynamic Range'].lower(),
-            f"{int(framerate)}f",
+            f"{framerate}f",
             vid_dict['Color Space'].replace(".", ""),
             vid_dict['pixel Format'].replace(":", ""),
             vid_dict['Bitrate']
@@ -210,7 +241,7 @@ def generate_ffmpeg_command(vid_dict=None, aud_dict=None, video_input="", audio_
         # File name parts
         output_file_parts += [
             aud_dict['Codec'],
-            aud_dict['Sample Rate'],
+            samplerate_mapping[int(aud_dict['Sample Rate'])],
             f"{aud_dict['Channels']}ch",
             aud_dict['Bitrate']
         ]
@@ -368,7 +399,7 @@ def run_ffmpeg(video_options, audio_options, video_enabled, audio_enabled, video
             if(vid_dict):
                 vid_dict["gop_size"] = gop_size_sec
                 vid_dict["key_sec"] = key_sec
-            cmd, outputfile = generate_ffmpeg_command(vid_dict, aud_dict, input_files["video"], input_files["audio"], "testsrc", "sine", duration, volume_level, fileFormat, output_directory)
+            cmd, outputfile = generate_ffmpeg_command(vid_dict, aud_dict, input_files["video"], input_files["audio"], video_source, "sine", duration, volume_level, fileFormat, output_directory)
             if not cmd or not outputfile:
                 continue
             print("Running:", " ".join(cmd))
