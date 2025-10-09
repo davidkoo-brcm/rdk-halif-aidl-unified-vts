@@ -106,7 +106,7 @@ fi
 unified_manifest()
 {
     echo "repo init unified manifest"
-    repo init -b develop -m aidl_unified_manifest.xml -u git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
+    repo init -b $(git rev-parse --abbrev-ref HEAD) -m aidl_unified_manifest.xml -u git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
     repo sync -cd -j 16 --no-repo-verify -q
 }
 
