@@ -9,23 +9,23 @@
 
   <project name="rdk-halif-aidl-test-avbuffer"
            path="vts_hal_test_components/avbuffer"
-           revision="feature/gh47_changes_support_l4_testcases" />
+	   revision="refs/tags/0.2.4" />
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
-           revision="feature/gh50_changes_support_l4_testcases" />
+	   revision="refs/tags/0.3.5" />
 
   <project name="rdk-halif-aidl-test-videodecoder"
            path="vts_hal_test_components/videodecoder"
-           revision="feature/gh46_changes_support_l4_testcases" />
+	   revision="refs/tags/0.3.4" />
 
   <project name="rdk-halif-aidl-test-audiosink"
            path="vts_hal_test_components/audiosink"
-           revision="feature/gh42_changes_support_l4_testcases" />
+	   revision="refs/tags/0.3.4" />
 
   <project name="rdk-halif-aidl-test-videosink"
            path="vts_hal_test_components/videosink"
-           revision="feature/gh42_changes_support_l4_testcases" />
+	   revision="refs/tags/0.3.4" />
 
    <project name="rdk-halif-aidl-test-avclock"
            path="vts_hal_test_components/avclock"
@@ -33,11 +33,11 @@
 
    <project name="rdk-halif-aidl-test-planecontrol"
            path="vts_hal_test_components/planecontrol"
-           revision="refs/tags/0.2.2" />
+	   revision="refs/tags/0.2.2" />
 
    <project name="rdk-halif-aidl-L4-Vendor"
            path="vts_hal_test_components/l4_tests"
-           revision="feature/gh3_develop_L4_testcases" />
+           revision="refs/tags/0.1.0" />
 
 </manifest>
 
