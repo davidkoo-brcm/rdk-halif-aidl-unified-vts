@@ -1,0 +1,529 @@
+#!/usr/bin/env python3
+#** *****************************************************************************
+# *
+# * If not stated otherwise in this file or this component's LICENSE file the
+# * following copyright and licenses apply:
+# *
+# * Copyright 2025 RDK Management
+# *
+# * Licensed under the Apache License, Version 2.0 (the "License");
+# * you may not use this file except in compliance with the License.
+# * You may obtain a copy of the License at
+# *
+# * http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * Unless required by applicable law or agreed to in writing, software
+# * distributed under the License is distributed on an "AS IS" BASIS,
+# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# * See the License for the specific language governing permissions and
+# * limitations under the License.
+# *
+#* ******************************************************************************
+
+import os
+import sys
+import yaml
+import re
+from pathlib import Path
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(dir_path, "../"))
+
+from raft.framework.plugins.ut_raft.configRead import ConfigRead
+from raft.framework.plugins.ut_raft import utHelperClass
+from raft.framework.core.logModule import logModule
+from raft.framework.plugins.ut_raft.utSuiteNavigator import UTSuiteNavigatorClass
+from raft.framework.plugins.ut_raft.utBaseUtils import utBaseUtils
+from raft.framework.plugins.ut_raft.utUserResponse import utUserResponse
+
+
+class AVModuleTestHelperClass(utHelperClass):
+    """
+    Helper class for AV module test classes (L1, L2, L3, L4).
+    Provides common functionality for environment setup, binary copying, test execution, cleanup,
+    and L4 YAML generation.
+    """
+
+    def __init__(self, module_name: str, test_name: str, qc_id: str,
+                 test_suites: list = None, l4_yaml_path: str = None, log: logModule = None):
+        """
+        Initializes the helper class.
+
+        Args:
+            module_name (str): Name of the module (e.g., "AVModule").
+            test_name (str): Name of the test (e.g., "L4_AVModule").
+            qc_id (str): QC ID for the test (e.g., "L4_001").
+            test_suites (list, optional): List of test suite names to run. If None, runs all suites.
+            l4_yaml_path (str, optional): Path to L4 input YAML file for generating YAML files.
+            log (logModule, optional): Parent log class. Defaults to None.
+        """
+        super().__init__(test_name, qc_id, log)
+        self.log = log or logModule(self.__class__.__name__, level=logModule.INFO)
+        self.module_name = module_name
+        self.test_name = test_name
+        self.qc_id = qc_id
+        self.test_suites = test_suites or []
+        self.l4_yaml_path = l4_yaml_path or os.path.join(dir_path, "vts_l4_test_info.yaml")
+        self.rack_device = "dut"
+
+        # Load configurations
+        self.test_setup_path = os.path.join(dir_path, "vts_l4_setup.yaml")
+        self.test_config_path = os.path.join(dir_path, "vts_l4_testConfig.yaml")
+        self.test_setup = ConfigRead(self.test_setup_path, self.module_name)
+        self.test_config = ConfigRead(self.test_config_path, self.module_name)
+
+        # Device settings
+        device_test_setup = self.cpe.get("test")
+        self.target_workspace = self.cpe.get("target_directory")
+        self.test_config_path = self.cpe.get("test_config_path")
+        self.prompt = self.cpe.get("prompt")
+        self.wait_time = self.cpe.get("wait_time")
+        self.all_wait_time = self.cpe.get("all_wait_time")
+        self.stream_download_url = device_test_setup.get("streams_download_url")
+        self.download_path = self.cpe.get("download_path")
+
+        # Service restart settings
+        self.restart_required = self.test_setup.fields.get("restart_required", False)
+        self.vSink_process_name = self.cpe.get("vsink_process_name")
+        self.vDecoder_process_name = self.cpe.get("vdecoder_process_name")
+        self.aSink_process_name = self.cpe.get("asink_process_name")
+        self.aDecoder_process_name = self.cpe.get("adecoder_process_name")
+        self.process_path = self.cpe.get("process_path")
+        self.avClock_process_name = self.cpe.get("avClock_process_name")
+        self.planeCtrl_process_name = self.cpe.get("planeCtrl_process_name")
+
+        # Initialize sessions
+        self.instance_list = self.test_setup.fields.get("num_of_instances", 1)
+        self.hal_sessions = [self.dut.getConsoleSession(f"ssh_hal_test_{i}") for i in range(self.instance_list)]
+        for session in self.hal_sessions:
+            session.prompt = self.prompt
+
+        # Setup test environment
+        self.bin_path = "bin/"
+        self.profile_path = "profiles/"
+        self.target_workspace = os.path.join(self.target_workspace, self.module_name).replace("\\", "/")
+        self.run_path = os.path.join(self.target_workspace, self.bin_path).replace("\\", "/")
+        self.download_path = os.path.join(self.run_path, self.download_path)
+
+        # Profile and test menu setup
+        profile = device_test_setup.get("profile")
+        directory, filename = os.path.split(profile)
+        name, ext = os.path.splitext(filename)
+        self.module_config_profile_files = []
+        self.ut_menu = []
+        self.copied_binaries = []  # Track copied binaries for cleanup
+
+        for i in range(self.instance_list):
+            if self.instance_list == 1:
+                final_profile = os.path.join(directory, filename)
+            else:
+                final_profile = os.path.join(directory, f"{name}_instance_{i+1}{ext}")
+            self.module_config_profile_files.append(final_profile)
+
+            profile_file_path = os.path.join(self.profile_path, os.path.basename(final_profile)).replace("\\", "/")
+            #test_config = ConfigRead(self.test_config_path, self.module_name)
+            self.test_config.test.execute = self.test_config.test.execute + f" -p {profile_file_path}"
+
+            hal_session = self.hal_sessions[i]
+            ut_menu = UTSuiteNavigatorClass(self.test_config, None, hal_session)
+            self.ut_menu.append(ut_menu)
+
+        self.utilities = utBaseUtils()
+        # Create user response Class
+        self.testUserResponse = utUserResponse()
+        self.test_streams = []
+
+    def parse_stream_name(self, stream_name: str, tcid: str) -> dict:
+        """
+        Parses stream name to extract metadata from the filename pattern.
+
+        Args:
+            stream_name (str): Stream name (e.g., "vts_h264_1440p_sdr_23f_BT709_YCbCr420_18M_aac_16000_1ch_1024k_a939_v1439_61sec.mp4").
+            tcid (str): Test case ID (e.g., "VTS_L4_H264_AAC1001").
+
+        Returns:
+            dict: Extracted stream information.
+        """
+
+        # Remove .mp4 extension for parsing
+        base_name = stream_name.replace(".mp4", "")
+
+        # Pattern to match: ..._aXXX_vYYY_ZZsec where:
+        # aXXX = audio frames (e.g., a939)
+        # vYYY = video frames (e.g., v1439)
+        # ZZsec = duration in seconds (e.g., 61sec)
+        # Optional: aeXXX = audio error frames, veYYY = video error frames
+
+        pattern = r'^(.*?)_a(\d+)_v(\d+)_(\d+)sec(_ae(\d+))?(_ve(\d+))?$'
+        match = re.match(pattern, base_name)
+
+        if not match:
+            self.log.info(f"Could not parse stream name pattern: {stream_name}")
+            # Return defaults if parsing fails
+            return {
+                "input": stream_name,
+                "duration": 60,
+                "audio_frames": 48,
+                "video_frames": 60,
+                "audio_error_frames": 0,
+                "video_error_frames": 0
+            }
+
+        # Extract groups from regex match
+        groups = match.groups()
+        audio_frames = int(groups[1])  # aXXX
+        video_frames = int(groups[2])  # vYYY
+        duration = int(groups[3])       # ZZsec
+
+        # Check for error frames (optional groups)
+        audio_error_frames = int(groups[5]) if groups[5] else 0  # aeXXX
+        video_error_frames = int(groups[7]) if groups[7] else 0  # veYYY
+        str_name = f"{self.tcid}.mp4"
+
+        stream_info = {
+            "input": str_name,  # Original stream name with .mp4
+            "duration": duration,
+            "audio_frames": audio_frames,
+            "video_frames": video_frames,
+            "audio_error_frames": audio_error_frames,
+            "video_error_frames": video_error_frames
+        }
+
+        self.log.debug(f"Parsed stream {stream_name}: duration={duration}s, audio_frames={audio_frames}, video_frames={video_frames}, audio_errors={audio_error_frames}, video_errors={video_error_frames}")
+        return stream_info
+
+    def generate_l4_yaml_files_for_test_case(self, test_case: dict, test_config_path: str, stream_config_path: str):
+        """
+        Generates vts_l4_av_test_config.yaml and vts_l4_av_stream_config.yaml for a single test case.
+
+        Args:
+            test_case (dict): Test case data with tcid, action, and stream_name.
+            test_config_path (str): Path to output vts_l4_av_test_config.yaml.
+            stream_config_path (str): Path to output vts_l4_av_stream_config.yaml.
+
+        Returns:
+            bool: True if generation is successful, False otherwise.
+        """
+        try:
+            # Read L4 input YAML to get stream_download_path, input_streams_path, player
+            if not os.path.exists(self.l4_yaml_path):
+                self.log.error(f"L4 input YAML file {self.l4_yaml_path} does not exist")
+                return False
+
+            with open(self.l4_yaml_path, 'r') as f:
+                data = yaml.safe_load(f)
+
+            av_module = data.get("AVModule", {})
+            stream_download_path = av_module.get("stream_download_path")
+            input_streams_path = av_module.get("input_streams_path")
+            player = av_module.get("player")
+
+            self.tcid = test_case.get("tcid")
+            action = test_case.get("action")
+            # Get original stream name with .mp4 extension
+            original_stream_name = test_case.get("stream_name")
+
+            # Create stream_name without tcid_mp4 extension for YAML key
+            stream_name = [f"{self.tcid}_mp4"]
+            #stream_name = test_case.get("stream_name")
+
+
+            # Map action to test case name
+            action_to_test_case = {
+                "normal_play": "NormalPlay",
+                "trick_play": "playBackWithTrickModes"
+            }
+            test_case_name = action_to_test_case.get(action, action)
+
+            # Generate vts_l4_av_test_config.yaml
+            test_config = {
+                "AVModule": {
+                    "stream_download_path": stream_download_path,
+                    "input_streams_path": input_streams_path,
+                    "player": player,
+                    "userChoice": self.cpe.get("playback_manual_verification", 1) == 1,  # Convert to boolean: 1->true, 0->false
+                    "L4": {
+                        test_case_name: {
+                            "controls": {
+                                "delay_between_play": 100
+                            },
+                            "streams": stream_name # Use stream_name without .mp4
+                        }
+                    }
+                }
+            }
+            # Generate vts_l4_av_stream_config.yaml
+            stream_info = self.parse_stream_name(original_stream_name, self.tcid)
+
+            if test_case_name == "NormalPlay":
+                test_config["AVModule"]["L4"][test_case_name]["controls"]["trick_modes"] = [
+                    {"action": "play", "duration": stream_info["duration"]}
+                ]
+            elif test_case_name == "playBackWithTrickModes":
+                test_config["AVModule"]["L4"][test_case_name]["controls"]["trick_modes"] = [
+                    {"action": "play", "duration": 20},
+                    {"action": "seek", "duration": 20, "position": 30},
+                    {"action": "trick_mode", "duration": 20, "speed": 2.0},
+                    {"action": "play", "duration": 20, "speed": 1.0},
+                    {"action": "trick_mode", "duration": 20, "speed": 0.5},
+                    {"action": "seek", "duration": 20, "position": -60},
+                    {"action": "trick_mode", "duration": 20, "speed": 8.0},
+                    {"action": "seek", "duration": 20, "position": -120},
+                    {"action": "trick_mode", "duration": 20, "speed": 4.0},
+                    {"action": "seek", "duration": 20, "position": 200},
+                    {"action": "trick_mode", "duration": 20, "speed": 2.0},
+                    {"action": "play", "duration": 20, "speed": 1.0},
+                    {"action": "seek", "duration": 30, "position": 570},
+                    {"action": "play", "duration": 30, "speed": 1.0}
+                ]
+
+            # Generate vts_l4_av_stream_config.yaml
+            stream_config = {
+                "AVStreams": {
+                    f"{self.tcid}_mp4": self.parse_stream_name(original_stream_name, self.tcid)
+                }
+            }
+
+            # Add include_0 entry
+            test_config["include_0"] = "av_test_configurations/vts_l4_av_stream_config.yaml"
+            # Write vts_l4_av_test_config.yaml
+            with open(test_config_path, 'w') as f:
+                yaml.safe_dump(test_config, f, default_flow_style=False)
+
+            # Write vts_l4_av_stream_config.yaml
+            with open(stream_config_path, 'w') as f:
+                yaml.safe_dump(stream_config, f, default_flow_style=False)
+
+            self.log.info(f"Generated {test_config_path} and {stream_config_path} for TCID: {self.tcid}")
+            return True
+        except Exception as e:
+            self.log.error(f"Failed to generate L4 YAML files for TCID {self.tcid}: {str(e)}")
+            return False
+
+    def copy_yaml_and_stream(self, test_config_path: str, stream_config_path: str, stream_name: str, tcid: str):
+        """
+        Copies the generated YAML files and the stream file to the DUT.
+
+        Args:
+            test_config_path (str): Path to vts_l4_av_test_config.yaml.
+            stream_config_path (str): Path to vts_l4_av_stream_config.yaml.
+            stream_name (str): Original stream name (e.g., "vts_h264_1440p_...").
+            tcid (str): Test case ID for the target stream name (e.g., "VTS_L4_H264_AAC1001").
+
+        Returns:
+            bool: True if copying is successful, False otherwise.
+        """
+        try:
+            # Copy YAML files to target_workspace
+            target_test_config = os.path.join(self.target_workspace,self.test_config_path).replace("\\", "/")
+            target_stream_config = os.path.join(self.target_workspace,self.test_config_path).replace("\\", "/")
+
+            self.utilities.sftpCopy(self.hal_sessions[0], test_config_path, target_test_config)
+            self.utilities.sftpCopy(self.hal_sessions[0], stream_config_path, target_stream_config)
+            self.log.info(f"Copied {test_config_path} to {target_test_config}")
+            self.log.info(f"Copied {stream_config_path} to {target_stream_config}")
+
+            # Copy stream file to input_streams_path
+            stream_url = os.path.join(self.stream_download_url, stream_name.lstrip("/"))
+            target_stream_path = os.path.join(self.download_path, f"{self.tcid}.mp4")
+            self.downloadToDevice([stream_url], self.download_path, self.rack_device, True)
+            str_name = stream_name.lstrip("/")
+            cmd = f"mv {self.download_path}{str_name} {target_stream_path}"
+            self.writeCommands(cmd,self.hal_sessions[0])
+            self.test_streams.append(target_stream_path)
+            self.log.info(f"Copied stream {stream_name} to {target_stream_path}")
+
+            return True
+        except Exception as e:
+            self.log.error(f"Failed to copy YAML files or stream for TCID {tcid}: {str(e)}")
+            return False
+
+    #TODO: Current version supports only manual verification.
+    def testVerifyAVPlayback(self, manual=False):
+        """
+        Verifies whether video is being AV playback is fine without artifacts or not.
+
+        Args:
+            manual (bool, optional): Indicates if manual verification is required.
+                                     Defaults to False (automatic verification).
+
+        Returns:
+            bool: Verification result (True if the AV playback is fine without artifacts, False otherwise).
+        """
+        if manual == True:
+            return self.testUserResponse.getUserYN("Is AV playback is fine without artifacts (Y/N):")
+        else :
+            #TODO: Add automation verification methods
+            return False
+
+    def copy_binaries(self):
+        """
+        Copies binaries specified in the test configuration to the DUT.
+
+        Returns:
+            bool: True if all binaries are copied successfully, False otherwise.
+        """
+        try:
+            artifacts = self.test_config.test.artifacts
+            if not artifacts:
+                self.log.warning("No artifacts specified in the configuration file.")
+                return True
+
+            self.log.info(f"Copying {len(artifacts)} binaries to {self.target_workspace}...")
+            for artifact in artifacts:
+                artifact_path = os.path.normpath(os.path.join(dir_path, artifact))
+                if not os.path.exists(artifact_path):
+                    self.log.error(f"Artifact file {artifact_path} does not exist")
+                    return False
+
+                # Copy the artifact to the DUT
+                self.utilities.sftpCopy(self.hal_sessions[0], artifact_path, self.target_workspace)
+                self.copied_binaries.append(os.path.join(self.target_workspace, os.path.basename(artifact_path)))
+                self.log.info(f"Copied {artifact_path} to {self.target_workspace}")
+                self.utilities.change_directory(self.hal_sessions[0], self.target_workspace)
+
+
+                # Extract if the artifact is a tar.gz file
+                self.utilities.untar(self.hal_sessions[0], os.path.basename(artifact_path), self.target_workspace)
+                self.log.info(f"Extracted {artifact_path} in {self.target_workspace}")
+
+            # Ensure run.sh is executable
+                self.utilities.change_directory(self.hal_sessions[0], self.run_path)
+            return True
+        except Exception as e:
+            self.log.error(f"Failed to copy binaries: {str(e)}")
+            return False
+
+    def clean_binaries(self):
+        """
+        Removes copied binaries from the DUT.
+
+        Returns:
+            bool: True if cleanup is successful, False otherwise.
+        """
+        try:
+            if not self.copied_binaries:
+                self.log.info("No binaries to clean up.")
+                return True
+
+            self.log.info("Cleaning up binaries from DUT...")
+            self.deleteFromDevice(self.copied_binaries, self.rack_device)
+            self.copied_binaries = []
+            self.log.info("Binary cleanup completed.")
+            return True
+        except Exception as e:
+            self.log.error(f"Failed to clean up binaries: {str(e)}")
+            return False
+
+    def test_prepare_function(self):
+        """
+        Prepares the environment by copying binaries and setting up the test.
+
+        Returns:
+            bool: True if preparation is successful, False otherwise.
+        """
+        self.log.testStart(self.test_name, self.qc_id)
+
+        # Copy binaries to DUT
+        if not self.copy_binaries():
+            self.log.error("Failed to copy binaries to DUT")
+            return False
+
+        # Change to run directory
+        for session in self.hal_sessions:
+            self.utilities.change_directory(session, self.run_path)
+
+        return True
+
+    def test_download_all_assets(self):
+        """
+        Placeholder for downloading all assets (not used since streams are copied per test case).
+
+        Returns:
+            bool: True (no-op).
+        """
+        self.log.info("Stream downloading handled per test case in L4TestClass")
+        return True
+
+    def test_clean_all_assets(self):
+        """
+        Removes all downloaded streams from the DUT.
+
+        Returns:
+            bool: True if cleanup is successful, False otherwise.
+        """
+        try:
+            if self.test_streams:
+                self.log.info("Cleaning up downloaded streams...")
+                self.deleteFromDevice(self.test_streams, self.rack_device, False)
+                self.test_streams = []
+            else:
+                self.log.info("No streams to clean up")
+            return True
+        except Exception as e:
+            self.log.error(f"Failed to clean up streams: {str(e)}")
+            return False
+
+    def runTest(self, test_suite: str, test_case: str, use_all_wait_time: bool = False):
+        """
+        Runs a specific test case for the given test suite.
+
+        Args:
+            test_suite (str): Name of the test suite.
+            test_case (str): Specific test case to run.
+            use_all_wait_time (bool): Use all_wait_time instead of wait_time for L2/L3/L4 tests.
+
+        Returns:
+            bool: True if the test passes, False otherwise.
+        """
+        outputs = []
+        results = []
+
+        if self.restart_required:
+            for i, ut_menu in enumerate(self.ut_menu):
+                self.log.info(f"[Instance {i}] Starting test case...")
+                ut_menu.start()
+
+        wait_time = self.all_wait_time if use_all_wait_time else self.wait_time
+        for i, ut_menu in enumerate(self.ut_menu):
+            self.log.info(f"[Instance {i}] Running test case: {test_case} in suite {test_suite}...")
+            output = ut_menu.select(test_suite, test_case, None, wait_time, False)
+            outputs.append(output)
+
+        if self.restart_required:
+            for i, ut_menu in enumerate(self.ut_menu):
+                self.log.info(f"[Instance {i}] Stopping test case...")
+                ut_menu.stop()
+
+        for i, (ut_menu, output) in enumerate(zip(self.ut_menu, outputs)):
+            result = ut_menu.collect_results(output, True)
+            results.append(result if result is not None else False)
+            self.log.info(f"[Instance {i}] Result: {result}")
+
+        return all(results)
+
+    def run_all(self, test_suite: str, use_all_wait_time: bool = False):
+        """
+        Runs all test cases in the specified test suite.
+
+        Args:
+            test_suite (str): Name of the test suite.
+            use_all_wait_time (bool): Use all_wait_time instead of wait_time for L2/L3/L4 tests.
+
+        Returns:
+            bool: True if all tests pass, False otherwise.
+        """
+        return self.run_test(test_suite, None, use_all_wait_time)
+
+    def test_cleanup(self):
+        """
+        Cleans up after test execution.
+
+        Returns:
+            bool: True if cleanup is successful, False otherwise.
+        """
+        #self.log.testStart(self.test_name, self.tcid)
+        self.test_clean_all_assets()
+        self.clean_binaries()
+        #self.log.testResult(f'{self.test_name} Finished')
+        return True
