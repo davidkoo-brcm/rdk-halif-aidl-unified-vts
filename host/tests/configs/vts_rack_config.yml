@@ -94,6 +94,12 @@ rackConfig:
                             username: "root"
                             ip: "" #IP address
                             password:
+                        - ssh_player:
+                            type: "ssh"
+                            port:
+                            username: "root"
+                            ip: "" #IP address
+                            password:
                     outbound:
                         download_url: "tftp://tftp-server.com/rack1/slot1/"    # download location for the CPE device
                         upload_url: "sftp://server-address/home/workspace/tftp/rack1/slot1/" # upload location
