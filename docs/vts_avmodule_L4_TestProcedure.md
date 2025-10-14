@@ -47,9 +47,7 @@ In this file, update the configuration to define the console sessions for the `D
 |Console Session|Description|
 |---------------|-----------|
 |default|Used by raft to download artifacts and streams|
-|ssh_hal_test_0|Execute the `HAL` binary of first instance|
-|ssh_hal_test_1|Used to execute `HAL` binary if there is second instance mentioned in [vts_l4_setup.yaml](../host/tests/TestCases/vts_l4_setup.yaml)|
-|ssh_hal_test_N|keep adding similar sessions if test need to run for multiple instances, where N=2,3,4,5...|
+|ssh_hal_test_0|Executes the `HAL` binary|
 |ssh_player|Plays the stream required for test case|
 
 ```yaml
@@ -66,12 +64,6 @@ rackConfig:
             ip: "XXX.XXX.XXX" # IP address of the device
             password:
         - ssh_hal_test_0:
-            type: "ssh"
-            port:
-            username: "root"
-            ip: "XXX.XXX.XXX" # IP address of the device
-            password:
-        - ssh_hal_test_1:
             type: "ssh"
             port:
             username: "root"
@@ -146,14 +138,6 @@ AVModule:
 
 Note: By default, all AV L4 test cases are added in the setup file.
 
-#### Number of Instances
-
-The `num_of_instances` field in the test setup configuration specifies how many parallel instances of the test should run at the same time.
-
-- If set to `1`, the test runs in a single instance.
-- If set to `2`, the framework will open two SSH connections to the DUT, run the HAL test binary in both instances, and execute the test cases in parallel.
-- Increasing the number of instances can speed up overall execution time by leveraging parallel testing, provided the DUT and test environment support concurrent runs.
-
 #### Test Configuration
 
 Example Test Setup configuration File: [vts_l4_testConfig.yaml](../host/tests/TestCases/vts_l4_testConfig.yaml)
@@ -178,11 +162,11 @@ AVModule:
 
 To run the AVModule L4 tests in a Windows environment, follow these additional steps after checking out the repository and compiling the code:
 
-1. Install the `host` folder and update the rack configuration files as usual in your Linux environment.
+1. Install the `raft` folder and Python Environment using install/activation scripts in `host` folder and make a tar of `build/bin`.
 
-2. Move the entire project folder (including `host`) to your Windows machine.
+2. Move the entire project folder (including `host`) to your Windows machine preferably by making a tar.
 
-3. Open the file located at `framework/plugins/ut_raft/interactive_shell.py`.
+3. Open the file located at `host/tests/raft/framework/plugins/ut_raft/interactive_shell.py`.
 
    - Comment out or remove the following import lines to avoid errors on Windows:
 
