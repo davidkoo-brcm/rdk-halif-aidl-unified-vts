@@ -30,8 +30,11 @@ VIDEO_SINK_TEST_DIR := $(VTS_TEST_DIR)/videosink
 AV_BUFFER_TEST_DIR := $(VTS_TEST_DIR)/avbuffer
 AV_CLOCK_TEST_DIR := $(VTS_TEST_DIR)/avclock
 PLANE_CONTROL_TEST_DIR := $(VTS_TEST_DIR)/planecontrol
+L4_TEST_DIR := $(VTS_TEST_DIR)/l4_tests
+AV_L4_TESTS_DIR := $(L4_TEST_DIR)/src/av
 
 COMMON_DIR := $(ROOT_DIR)/common
+VTS_PLAYER := $(COMMON_DIR)/vts_player
 HELPER_FUNCTIONS_DIR := $(COMMON_DIR)/helper_functions
 BIN_DIR := $(ROOT_DIR)/build/bin
 LIB_DIR := $(ROOT_DIR)/build/$(TARGET)/lib
@@ -59,6 +62,7 @@ VIDEOSINK_VERSION := $(shell cd $(VIDEO_SINK_TEST_DIR) && git describe --tags --
 AVBUFFER_VERSION := $(shell cd $(AV_BUFFER_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 AVCLOCK_VERSION := $(shell cd $(AV_CLOCK_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 PLANECONTROL_VERSION := $(shell cd $(PLANE_CONTROL_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+L4_TESTS_VERSION := $(shell cd $(L4_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 BUILD_TIMESTAMP := $(shell date +"%Y-%m-%d_%H:%M:%S")
 
 # Print module versions
@@ -69,6 +73,7 @@ $(info VIDEOSINK_VERSION: $(VIDEOSINK_VERSION))
 $(info AVBUFFER_VERSION: $(AVBUFFER_VERSION))
 $(info AVCLOCK_VERSION: $(AVCLOCK_VERSION))
 $(info PLANECONTROL_VERSION: $(PLANECONTROL_VERSION))
+$(info L4_TESTS_VERSION: $(L4_TESTS_VERSION))
 $(info BUILD_TIMESTAMP: $(BUILD_TIMESTAMP))
 $(info TARGET: $(TARGET))
 $(info VARIANT: $(VARIANT))
@@ -78,7 +83,7 @@ RDK_HALIF_AIDL_VERSION ?= main
 $(info RDK_HALIF_AIDL_VERSION: $(RDK_HALIF_AIDL_VERSION))
 
 # Compiler flags with version and debug info
-CXXFLAGS := -std=c++17 -g3 -O0 \
+CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DHALIF_TEST_PROJECT_VERSION=\"$(VERSION)\" \
             -DRDK_HALIF_AIDL_VERSION=\"$(RDK_HALIF_AIDL_VERSION)\" \
             -DAUDIODECODER_VERSION=\"$(AUDIODECODER_VERSION)\" \
@@ -87,7 +92,9 @@ CXXFLAGS := -std=c++17 -g3 -O0 \
             -DVIDEOSINK_VERSION=\"$(VIDEOSINK_VERSION)\" \
             -DAVBUFFER_VERSION=\"$(AVBUFFER_VERSION)\" \
             -DAVCLOCK_VERSION=\"$(AVCLOCK_VERSION)\" \
-            -DPLANECONTROL_VERSION=\"$(PLANECONTROL_VERSION)\"
+            -DPLANECONTROL_VERSION=\"$(PLANECONTROL_VERSION)\" \
+            -DL4_TESTS_VERSION=\"$(L4_TESTS_VERSION)\"
+
 $(info CXXFLAGS: $(CXXFLAGS))
 CXXFLAGS += -DBUILD_TIMESTAMP=\"$(BUILD_TIMESTAMP)\"
 
@@ -105,7 +112,9 @@ SRC_DIRS += $(VIDEO_DECODER_TEST_DIR)/src
 SRC_DIRS += $(VIDEO_SINK_TEST_DIR)/src
 SRC_DIRS += $(AV_CLOCK_TEST_DIR)/src
 SRC_DIRS += $(PLANE_CONTROL_TEST_DIR)/src
+SRC_DIRS += $(AV_L4_TESTS_DIR)
 SRC_DIRS += $(HELPER_FUNCTIONS_DIR)
+SRC_DIRS += $(VTS_PLAYER)
 SRC_DIRS += $(ROOT_DIR)/test
 
 INC_DIRS := $(ROOT_DIR)/build/current/h/
@@ -115,11 +124,16 @@ INC_DIRS += $(ROOT_DIR)/build/usr/include
 INC_DIRS += $(ROOT_DIR)/common/avbufferhelper_skeleton/
 INC_DIRS += $(SRC_DIRS)
 
+INC_DIRS += $(ROOT_DIR)/build/usr/include/gstreamer-1.0/
+INC_DIRS += $(ROOT_DIR)/build/usr/include/glib-2.0/
+INC_DIRS += $(ROOT_DIR)/build/usr/lib/glib-2.0/include/
+
 XLDFLAGS := -L$(ROOT_DIR)/build/usr/lib
 XLDFLAGS += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib
 XLDFLAGS += -lbinder -lutils
 XLDFLAGS += -laidl_client
 XLDFLAGS += -lavbufferhelper
+XLDFLAGS += -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lpcre
 
 # required for std::optional
 CXXFLAGS += -std=c++17
