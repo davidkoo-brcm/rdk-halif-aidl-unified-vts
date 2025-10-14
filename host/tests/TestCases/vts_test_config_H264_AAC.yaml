@@ -1145,3 +1145,15 @@ AVModule:
   - tcid: VTS_L4_H264_AAC1381
     action: normal_play
     stream_name: vts_h264_720p_sdr_60.0f_BT709_yuv444p_8M_a0_v3600_60sec.mp4
+  - tcid: VTS_L4_H264_AAC1382
+    action: trick_play
+    stream_name: vts_h264_1080p_sdr_30.0f_BT709_yuv420p_20M_aac_48k_6ch_512k_a28126_v18000_600sec.mp4
+  - tcid: VTS_L4_H264_AAC1383
+    action: trick_play
+    stream_name: vts_h264_1080p_sdr_60.0f_BT709_yuv420p_20M_aac_48k_6ch_512k_a28126_v36000_600sec.mp4
+  - tcid: VTS_L4_H264_AAC1384
+    action: trick_play
+    stream_name: vts_h264_2160p_sdr_30.0f_BT709_yuv420p_20M_aac_48k_6ch_512k_a28126_v18000_600sec.mp4
+  - tcid: VTS_L4_H264_AAC1385
+    action: trick_play
+    stream_name: vts_h264_2160p_sdr_60.0f_BT709_yuv420p_20M_aac_48k_6ch_512k_a28126_v36000_600sec.mp4
