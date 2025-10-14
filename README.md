@@ -73,6 +73,8 @@ Set below environment variable:
 
 - RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.7.1). Defaults to the latest HEAD.
 
+- Ensure that the pre-built GStreamer libraries are placed in the `build/usr/` directory before compiling the L4 test cases.
+
 Example:
 
 ```bash
@@ -147,8 +149,15 @@ Please use platform specific profile
 sudo ./run.sh -p profiles/hfp-vdevice.yaml
 ```
 
-## Setting Python environment for running the L1, L2 and L3 automation test cases
+## Setting Python environment for L1, L2, L3 and L4 automation test cases
 
-- For running the L1 L2 and L3 test suite, a host PC with a Python environment is required.
+- For running the L1, L2, L3 and L4 test suite, a host PC with a Python environment is required.
 - Install Python Environment and Activation Scripts as detailed in [Python Installation](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite)
+
+## Running L1, L2 and L3 automation test cases
+
 - To run the `L1`, `L2` and `L3` test cases of AV Modules follow the `L1` `L2` and `L3` Test Procedure document - [vts_avmodule_L1_L2_L3_TestProcedure.md](docs/vts_avmodule_L1_L2_L3_TestProcedure.md)
+
+## Running L4 automation test cases
+
+- To run the `L4` test cases of AV Modules follow the `L4` Test Procedure document - [vts_avmodule_L4_TestProcedure.md](docs/vts_avmodule_L4_TestProcedure.md)
