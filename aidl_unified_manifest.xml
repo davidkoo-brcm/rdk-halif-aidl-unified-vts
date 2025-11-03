@@ -9,7 +9,7 @@
 
   <project name="rdk-halif-aidl-test-avbuffer"
            path="vts_hal_test_components/avbuffer"
-	   revision="refs/tags/0.2.4" />
+	   revision="feature/gh59_uplift_0_7_to_0_12_aidl_header" />
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
