@@ -25,7 +25,7 @@
 
   <project name="rdk-halif-aidl-test-videosink"
            path="vts_hal_test_components/videosink"
-	   revision="develop" />
+	   revision="feature/gh52_Move_Video_SinkTest_Class" />
 
    <project name="rdk-halif-aidl-test-avclock"
            path="vts_hal_test_components/avclock"
@@ -33,7 +33,7 @@
 
    <project name="rdk-halif-aidl-test-planecontrol"
            path="vts_hal_test_components/planecontrol"
-	   revision="develop" />
+	   revision="feature/gh36_planecontrol_l3_implementation" />
 
    <project name="rdk-halif-aidl-L4-Vendor"
            path="vts_hal_test_components/l4_tests"

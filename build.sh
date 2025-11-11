@@ -67,6 +67,9 @@ declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests/src/av/
 #TODO: change to server path
 declare -r DEF_GST_PATH="${TOP}/../gstreamer_pkg"
 GST_PATH=${GST_PATH:-${DEF_GST_PATH}}
+#TODO: change to server path
+declare -r DEF_EGL_PATH="${TOP}/../egl_pkg"
+EGL_PATH=${EGL_PATH:-${DEF_EGL_PATH}}
 
 DEF_LINUX_BINDER="`realpath ${TOP}/../`/linux_binder_idl"
 # AIDL_BIN: path of aidl compiler
@@ -140,6 +143,14 @@ install_gstreamer_pacakge()
 {
     cp -r ${GST_PATH}/usr/lib/* ${TOP_BUILD_DIR}/usr/lib/
     cp -r ${GST_PATH}/usr/include/* ${TOP_BUILD_DIR}/usr/include/
+}
+###############################################################################
+# Function to install gstreamer headers, and libraries
+###############################################################################
+install_egl_pacakge()
+{
+    cp -r ${EGL_PATH}/usr/lib/* ${TOP_BUILD_DIR}/usr/lib/
+    cp -r ${EGL_PATH}/usr/include/* ${TOP_BUILD_DIR}/usr/include/
 }
 
 ###############################################################################
@@ -392,6 +403,7 @@ elif [[ "$1" == [Tt]arget=* ]]; then
     unified_manifest
     install_linux_binder
     install_gstreamer_pacakge
+    install_egl_pacakge
     generate_hal_interfaces
     build_aidl_libs
     build_ut_core
