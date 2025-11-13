@@ -1,0 +1,135 @@
+#** *****************************************************************************
+# *
+# * If not stated otherwise in this file or this component's LICENSE file the
+# * following copyright and licenses apply:
+# *
+# * Copyright 2025 RDK Management
+# *
+# * Licensed under the Apache License, Version 2.0 (the "License");
+# * you may not use this file except in compliance with the License.
+# * You may obtain a copy of the License at
+# *
+# *
+# * http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * Unless required by applicable law or agreed to in writing, software
+# * distributed under the License is distributed on an "AS IS" BASIS,
+# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# * See the License for the specific language governing permissions and
+# * limitations under the License.
+# *
+#** ******************************************************************************
+
+# This is a sample test configuration file. Users can customize the YAML entries as needed
+# This test configuration file includes sample YAML entries for executing various combinations
+AVModule:
+  Planecontrol_Swapping:
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Swapping: Did the planes get swapped ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Swapping: Did the planes get swapped ?"
+      input: "user_prompt"
+  Planecontrol_Aspectratio:
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Aspectratio: did AspectRatio changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Aspectratio: did AspectRatio changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Aspectratio: did AspectRatio changed ?"
+      input: "user_prompt"
+  Planecontrol_Zorder:
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Zorder: did Zorder of the plane changed?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Zorder: did Zorder of the plane changed?"
+      input: "user_prompt"
+  Planecontrol_Visibility:
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Visibility: did plane visibility changed ?"
+      input: "user_prompt"
+  Planecontrol_Overscan:
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Overscan: did plane overscan changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Overscan: did plane overscan changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Overscan: did plane overscan changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Overscan: did plane overscan changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Overscan: did plane overscan changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Overscan: did plane overscan changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Overscan: did plane overscan changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Overscan: did plane overscan changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Overscan: did plane overscan changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Overscan: did plane overscan changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Overscan: did plane overscan changed ?"
+      input: "user_prompt"
+  Planecontrol_Alpha:
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Alpha: did plane alpha changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Alpha: did plane alpha changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Alpha: did plane alpha changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Alpha: did plane alpha changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Alpha: did plane alpha changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Alpha: did plane alpha changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Alpha: did plane alpha changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Alpha: did plane alpha changed ?"
+      input: "user_prompt"
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Alpha: did plane alpha changed ?"
+      input: "user_prompt"
+  Planecontrol_Position:
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Swapping: did plane position change ?"
+      input: "user_prompt"
+  Planecontrol_Size:
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Size: did plane Size change ?"
+      input: "user_prompt"
+  Planecontrol_Dynamicrange:
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Pixelformat: is plane displaying video properly ?"
+      input: "user_prompt"
+  Planecontrol_Pixelformat:
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Pixelformat: is plane displaying video properly ?"
+      input: "user_prompt"
+  Planecontrol_Graphicsplane:
+    - query_type: "Direct"
+      query: "Validate Planecontrol_Graphicsplane: is graphics rendered on the plane ?"
+      input: "user_prompt"

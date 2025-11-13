@@ -81,8 +81,10 @@ class  AVModule_Tests(utHelperClass):
 
         # Load test setup configuration
         testSetupPath = os.path.join(dir_path, "vts_avmodule_setup.yaml" )
+        testPromptPath = os.path.join(dir_path, "vts_avmodule_prompt.yaml" )
         self.testConfigFile = os.path.join(dir_path, "vts_avmodule_testConfig.yaml")
         self.testSetup = ConfigRead(testSetupPath, self.moduleName)
+        self.testPrompt = ConfigRead(testSetupPath, self.moduleName)
         self.restartRequired = self.testSetup.fields.get('restart_required')
         self.hal_session_0 = self.dut.getConsoleSession("ssh_hal_test_0")
         self.hal_session_1 = self.dut.getConsoleSession("ssh_hal_test_1")
@@ -157,7 +159,7 @@ class  AVModule_Tests(utHelperClass):
         """
         outputs = []
         results = []
-
+        prompt = self.testPrompt.fields.get("AVModules",{})
         # Step 1: Start all instances
         if self.restartRequired:
             for i, utMenu in enumerate(self.utMenu):
@@ -168,15 +170,7 @@ class  AVModule_Tests(utHelperClass):
         for i, utMenu in enumerate(self.utMenu):
             self.log.info(f"[Instance {i}] Selecting test case {test_case}...")
             prompt = None
-            if testSuite == "VTS_L3_PlaneControl":
-                prompt = [
-                    {
-                    "query_type": "direct",
-                    "query": f"Validate {test_case}:",
-                    "input": ""
-                }
-                ]
-            output = utMenu.select(testSuite, test_case, prompt, self.waitTime, False)
+            output = utMenu.select(testSuite, test_case, prompt.get(test_case), self.waitTime, False)
             outputs.append(output)
 
         # Step 3: Stop all instances

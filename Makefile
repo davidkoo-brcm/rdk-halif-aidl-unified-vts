@@ -143,6 +143,7 @@ XLDFLAGS += -laidl_client
 XLDFLAGS += -lavbufferhelper
 XLDFLAGS += -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lpcre
 XLDFLAGS += -lEGL -lGLESv2 -lpthread
+XLDFLAGS += -ldrm
 # required for EGL
 CXXFLAGS += -D_EGL_NO_X11
 CXXFLAGS += -DMESA_EGL_NO_X11_HEADERS
