@@ -91,7 +91,7 @@ class  AVModule_Tests(utHelperClass):
         self.hal_session_1.prompt = prompt
         self.hal_session_2.prompt = prompt
 
-        self.binPath = "bin/" #bin path which is coming from the build 
+        self.binPath = "bin/" #bin path which is coming from the build
         self.profilePath = "profiles/"
 
         # Forming the run.sh exe path and tar copy path /tmp/<modulename>/bin/run.sh and /tmp/<modulename>
@@ -167,7 +167,16 @@ class  AVModule_Tests(utHelperClass):
         # Step 2: Run select() for each instance
         for i, utMenu in enumerate(self.utMenu):
             self.log.info(f"[Instance {i}] Selecting test case {test_case}...")
-            output = utMenu.select(testSuite, test_case, None, self.waitTime, False)
+            prompt = None
+            if testSuite == "VTS_L3_PlaneControl":
+                prompt = [
+                    {
+                    "query_type": "direct",
+                    "query": f"Validate {test_case}:",
+                    "input": ""
+                }
+                ]
+            output = utMenu.select(testSuite, test_case, prompt, self.waitTime, False)
             outputs.append(output)
 
         # Step 3: Stop all instances

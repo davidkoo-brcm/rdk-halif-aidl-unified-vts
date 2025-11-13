@@ -146,6 +146,7 @@ XLDFLAGS += -lEGL -lGLESv2 -lpthread
 # required for EGL
 CXXFLAGS += -D_EGL_NO_X11
 CXXFLAGS += -DMESA_EGL_NO_X11_HEADERS
+
 # required for std::optional
 CXXFLAGS += -std=c++17
 CXXFLAGS += -Wall -Wformat -Werror=format

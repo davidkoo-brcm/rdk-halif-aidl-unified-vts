@@ -78,6 +78,10 @@ AIDL_BIN=${AIDL_BIN:-${DEF_LINUX_BINDER}/out/aidl}
 # contains bin/servicemanager, lib/libbinder etc
 LINUX_BINDER_OUT_DIR=${LINUX_BINDER_OUT_DIR:-${DEF_LINUX_BINDER}/local}
 
+#TODO: change to server path
+declare -r DEF_EGL_PATH="${TOP}/../egl_pkg"
+EGL_PATH=${EGL_PATH:-${DEF_EGL_PATH}}
+
 mkdir -p $TOP_BUILD_DIR
 
 if [ ! -x $AIDL_BIN ]; then
@@ -354,7 +358,6 @@ clean_test()
 
     find "$TOP_BUILD_DIR" -type f -name "*.o" -delete
 }
-
 ###############################################################################
 # Function to clean the test build directory
 ###############################################################################
@@ -391,7 +394,7 @@ echo -e "${BOLD}${GREEN}LINUX_BINDER_OUT_DIR   : ${RESET}${YELLOW}$LINUX_BINDER_
 echo -e "${BOLD}${GREEN}TARGET                 : ${RESET}${YELLOW}$TARGET${RESET}"
 
 ###############################################################################
-# Main script execution starts here
+# Main script execution starts h/ere
 ###############################################################################
 if [ "$1" == "clean" ]; then
     clean_test

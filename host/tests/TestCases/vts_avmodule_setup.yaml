@@ -613,3 +613,33 @@ AVModule:
         - TestGetSetProperty
         - TestGetSetPropertyMultiAtomic
         - TestGetSetVideoSourceDestinationPlaneMapping
+
+    - name: "VTS_L3_PlaneControl"
+      streams:
+        - VideoSink/H264_1920_1080_30.es
+        - VideoSink/H264_HD_30_YUV420.es
+        - VideoSink/H264_HD_30_YUV444.es
+        - VideoSink/H264_HD_60_YUV420.es
+        - VideoSink/H264_HD_60_YUV444.es
+        - VideoSink/H264_SD_30_YUV420.es
+        - VideoSink/H264_SD_30_YUV444.es
+        - VideoSink/H264_SD_60_YUV420.es
+        - VideoSink/H264_SD_60_YUV444.es
+        - VideoSink/H264_UHD_30_YUV420.es
+        - VideoSink/H264_UHD_30_YUV444.es
+        - VideoSink/H264_UHD_60_YUV420.es
+        - VideoSink/H264_UHD_60_YUV444.es
+      test_cases:
+        - Planecontrol_Mapping
+        - Planecontrol_Swapping
+        - Planecontrol_Aspectratio
+        - Planecontrol_Zorder
+        - Planecontrol_Visibility
+        - Planecontrol_Overscan
+        - Planecontrol_Alpha
+        - Planecontrol_Position
+        - Planecontrol_Size
+        - Planecontrol_Dynamicrange
+        - Planecontrol_Pixelformat
+        - Planecontrol_Graphicsplane
+        - Planecontrol_Vsync
