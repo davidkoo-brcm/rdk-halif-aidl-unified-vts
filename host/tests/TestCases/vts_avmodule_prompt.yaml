@@ -115,7 +115,7 @@ AVModule:
       input: "user_prompt"
   Planecontrol_Position:
     - query_type: "Direct"
-      query: "Validate Planecontrol_Swapping: did plane position change ?"
+      query: "Validate Planecontrol_Position: did plane position change ?"
       input: "user_prompt"
   Planecontrol_Size:
     - query_type: "Direct"
@@ -123,7 +123,7 @@ AVModule:
       input: "user_prompt"
   Planecontrol_Dynamicrange:
     - query_type: "Direct"
-      query: "Validate Planecontrol_Pixelformat: is plane displaying video properly ?"
+      query: "Validate Planecontrol_Dynamicrange: is plane displaying video properly ?"
       input: "user_prompt"
   Planecontrol_Pixelformat:
     - query_type: "Direct"

@@ -84,7 +84,7 @@ class  AVModule_Tests(utHelperClass):
         testPromptPath = os.path.join(dir_path, "vts_avmodule_prompt.yaml" )
         self.testConfigFile = os.path.join(dir_path, "vts_avmodule_testConfig.yaml")
         self.testSetup = ConfigRead(testSetupPath, self.moduleName)
-        self.testPrompt = ConfigRead(testSetupPath, self.moduleName)
+        self.testPrompt = ConfigRead(testPromptPath, self.moduleName)
         self.restartRequired = self.testSetup.fields.get('restart_required')
         self.hal_session_0 = self.dut.getConsoleSession("ssh_hal_test_0")
         self.hal_session_1 = self.dut.getConsoleSession("ssh_hal_test_1")
@@ -169,7 +169,6 @@ class  AVModule_Tests(utHelperClass):
         # Step 2: Run select() for each instance
         for i, utMenu in enumerate(self.utMenu):
             self.log.info(f"[Instance {i}] Selecting test case {test_case}...")
-            prompt = None
             output = utMenu.select(testSuite, test_case, prompt.get(test_case), self.waitTime, False)
             outputs.append(output)
 

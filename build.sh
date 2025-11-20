@@ -78,9 +78,6 @@ AIDL_BIN=${AIDL_BIN:-${DEF_LINUX_BINDER}/out/aidl}
 # contains bin/servicemanager, lib/libbinder etc
 LINUX_BINDER_OUT_DIR=${LINUX_BINDER_OUT_DIR:-${DEF_LINUX_BINDER}/local}
 
-#TODO: change to server path
-declare -r DEF_EGL_PATH="${TOP}/../egl_pkg"
-EGL_PATH=${EGL_PATH:-${DEF_EGL_PATH}}
 
 mkdir -p $TOP_BUILD_DIR
 
@@ -143,15 +140,15 @@ install_linux_binder()
 ###############################################################################
 # Function to install gstreamer headers, and libraries
 ###############################################################################
-install_gstreamer_pacakge()
+install_gstreamer_package()
 {
     cp -r ${GST_PATH}/usr/lib/* ${TOP_BUILD_DIR}/usr/lib/
     cp -r ${GST_PATH}/usr/include/* ${TOP_BUILD_DIR}/usr/include/
 }
 ###############################################################################
-# Function to install gstreamer headers, and libraries
+# Function to install egl headers, and libraries
 ###############################################################################
-install_egl_pacakge()
+install_egl_package()
 {
     cp -r ${EGL_PATH}/usr/lib/* ${TOP_BUILD_DIR}/usr/lib/
     cp -r ${EGL_PATH}/usr/include/* ${TOP_BUILD_DIR}/usr/include/
@@ -394,7 +391,7 @@ echo -e "${BOLD}${GREEN}LINUX_BINDER_OUT_DIR   : ${RESET}${YELLOW}$LINUX_BINDER_
 echo -e "${BOLD}${GREEN}TARGET                 : ${RESET}${YELLOW}$TARGET${RESET}"
 
 ###############################################################################
-# Main script execution starts h/ere
+# Main script execution starts here
 ###############################################################################
 if [ "$1" == "clean" ]; then
     clean_test
@@ -405,8 +402,8 @@ elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
 elif [[ "$1" == [Tt]arget=* ]]; then
     unified_manifest
     install_linux_binder
-    install_gstreamer_pacakge
-    install_egl_pacakge
+    install_gstreamer_package
+    install_egl_package
     generate_hal_interfaces
     build_aidl_libs
     build_ut_core
