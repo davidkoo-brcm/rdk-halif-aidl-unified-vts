@@ -74,12 +74,6 @@ class L4TestClass(AVModuleTestHelperClass):
 
         self.testSession =  utPlayer(self.player_session, socVendor)
 
-        # extra command required for av modules , todo remove once it fixed
-        cmd = """
-        systemctl restart hal-av_buffer.service
-        sleep 3
-        """
-        self.writeCommands(cmd, self.player_session)
 
         self.utilities = utBaseUtils()
         self.ut_menu = []

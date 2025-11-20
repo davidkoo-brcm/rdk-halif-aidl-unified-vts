@@ -21,7 +21,13 @@
 #** ******************************************************************************
 
 AVModule:
-  include_0: vts_test_config_H264_AAC.yaml
+  include_0: AAC_config.yaml
+  include_1: AC3_config.yaml
+  include_2: H265_config.yaml
+  include_3: H264_AAC_config.yaml
+  include_4: H264_config.yaml
+  include_5: H265_AC3_config.yaml
+  include_6: H264_AAC_600sec.yaml
   input_streams_path: "assets/streams/input" # Target path where input streams are stored
   player: "gstreamer"
 

@@ -24,10 +24,10 @@
 
 deviceConfig:
     cpe1:
-        platform:   "vDevice"
+        platform:   "Element"
         model:      "UK"
-        soc_vendor: "intel"
-        target_directory: "/tmp/"
+        soc_vendor: "amlogic_polaris"
+        target_directory: "/tmp/data/"
         #kept for the process restart between the test cases
         vsink_process_name: "RDKVideoSinkAndPCService"
         vdecoder_process_name: "RDKVideoDecoderService"
@@ -39,10 +39,10 @@ deviceConfig:
         AVBuffer_Restart: 1 # flag to restart avbuffer service
         prompt: "~#" # Prompt string on console
         download_path: "assets/streams/input/" #Download path where streams are saved inside the bin folder
-        playback_manual_verification: 1 # flag to enable manual playback verification
+        playback_manual_verification: 0 # flag to enable manual playback verification
         test_config_path: "bin/av_test_configurations"
         wait_time: 240 #Configurable timeout value to limit the total duration of individual tests
         all_wait_time: 2400 #Configurable timeout value to limit the total duration of individual suite
         test:
-            profile: "..\\..\\..\\profiles\\hfp-vdevice.yaml" #HFP profile used to meet platform requirements
-            streams_download_url: "<http stream path>" #URL path from which the streams are downloaded to the device
+            profile: "../../../profiles/hfp-vdevice.yaml" #HFP profile used to meet platform requirements
+            streams_download_url: "http://hydra.bskyb.com/shared/Projects/RDK-E/streams/PolarisStreams/AV" #URL path from which the streams are downloaded to the device

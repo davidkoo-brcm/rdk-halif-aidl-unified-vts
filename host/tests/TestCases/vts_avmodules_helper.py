@@ -327,7 +327,7 @@ class AVModuleTestHelperClass(utHelperClass):
             stream_url = os.path.join(self.stream_download_url, stream_name.lstrip("/"))
             target_stream_path = os.path.join(self.download_path, f"{self.tcid}.mp4")
             self.downloadToDevice([stream_url], self.download_path, self.rack_device, True)
-            str_name = stream_name.lstrip("/")
+            str_name = os.path.basename(stream_name)
             cmd = f"mv {self.download_path}{str_name} {target_stream_path}"
             self.writeCommands(cmd,self.hal_sessions[0])
             self.test_streams.append(target_stream_path)
