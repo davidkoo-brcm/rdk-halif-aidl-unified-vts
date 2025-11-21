@@ -73,6 +73,8 @@ Set below environment variable:
 
 - RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.7.1). Defaults to the latest HEAD.
 
+- EGL_PATH: Specific Path for EGL libraries.
+
 - Ensure that the pre-built GStreamer libraries are placed in the `build/usr/` directory before compiling the L4 test cases.
 
 Example:
@@ -82,6 +84,7 @@ export UT_CORE_VERSION=4.7.3
 export RDK_HALIF_AIDL_VERSION=0.7.1
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
+export EGL_PATH=/path/egl_libraries/
 ```
 
 By default, UT logs are disabled. To enable them, Set below environment variable

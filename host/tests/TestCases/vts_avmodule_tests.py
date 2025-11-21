@@ -159,7 +159,7 @@ class  AVModule_Tests(utHelperClass):
         """
         outputs = []
         results = []
-        prompt = self.testPrompt.fields.get("AVModules",{})
+        promptConfig = self.testPrompt.fields.get("AVModules",{})
         # Step 1: Start all instances
         if self.restartRequired:
             for i, utMenu in enumerate(self.utMenu):
@@ -169,7 +169,7 @@ class  AVModule_Tests(utHelperClass):
         # Step 2: Run select() for each instance
         for i, utMenu in enumerate(self.utMenu):
             self.log.info(f"[Instance {i}] Selecting test case {test_case}...")
-            output = utMenu.select(testSuite, test_case, prompt.get(test_case), self.waitTime, False)
+            output = utMenu.select(testSuite, test_case, promptConfig.get(test_case), self.waitTime, False)
             outputs.append(output)
 
         # Step 3: Stop all instances
