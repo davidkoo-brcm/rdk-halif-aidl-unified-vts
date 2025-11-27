@@ -155,11 +155,6 @@ class L4TestClass(AVModuleTestHelperClass):
             self.log.testStart(test_suite_name, tcid)
 
             if self.restart_required:
-                cmd = """
-                systemctl restart hal-av_buffer.service
-                sleep 3
-                """
-                self.writeCommands(cmd, self.player_session)
                 for i, ut_menu in enumerate(self.ut_menu):
                     self.log.info(f"[Instance {i}] Starting test case...")
                     ut_menu.start()
@@ -199,35 +194,19 @@ class L4TestClass(AVModuleTestHelperClass):
             output = ut_menu.select(test_suite_name, test_case_name, None, wait_time, False)
             outputs.append(output)
 
-            # Check if the playback verification prompt exists in the output
-            if "Is the stream playback good (Y/N)?" in output:
-                # Decide manual vs auto based on device config flag
-                playback_verification_flag = self.cpe.get("playback_manual_verification", 1)
-                if playback_verification_flag == 1:
-                    # Manual verification path (interactive)
-                    failed = not self.testVerifyAVPlayback(True)
-                    self.restart_required = False
-                else:
-                    # Auto mode: send 'Y' to proceed (simulate user confirming good playback)
-                    self.log.info("playback_manual_verification=0 -> auto-sending 'Y' to playback prompt")
-                    try:
-                        self.writeCommands("Y\n", self.player_session)
-                        self.restart_required = True
-                    except Exception as e:
-                        self.log.warn(f"Failed to send auto 'Y' response: {e}")
-                    failed = False
-                if failed:
-                    self.log.info("Playback verification failed.")
-                else:
-                    self.log.info("Playback verification passed.")
-            else:
-                # If expected prompt not found, request restart next iteration
-                self.restart_required = True
+            # Decide manual vs auto based on device config flag first
+            playback_verification_flag = self.cpe.get("playback_manual_verification", 1)
 
-            if not self.restart_required:
-                for i, ut_menu in enumerate(self.ut_menu):
-                    self.log.info(f"[Instance {i}] Stopping test case...")
-                    ut_menu.stop()
+            if playback_verification_flag == 1:
+                # Manual verification enabled: only proceed if the prompt appears
+                if "Is the stream playback good (Y/N)?" in output:
+                    failed = not self.testVerifyAVPlayback(True)
+                    if failed:
+                        self.writeCommands("N\n", self.player_session)
+                        self.log.info("Playback verification failed.")
+                    else:
+                        self.writeCommands("Y\n", self.player_session)
+                        self.log.info("Playback verification passed.")
 
             result = ut_menu.collect_results(output, True)
             if result is None:

@@ -162,7 +162,7 @@ clone_repo git@github.com:rdkcentral/python_raft.git "${RAFT_DIR}" "1.4.1" "in .
 install_pip_requirements "${RAFT_DIR}"/requirements.txt
 
 # Setup ut-raft
-clone_repo git@github.com:rdkcentral/ut-raft.git "${PLUGINS_FRAMEWORK_DIR}/ut_raft" feature/gh67_Add_amlogic_vdevice_player_configs "in ./raft/framework/plugins"
+clone_repo git@github.com:rdkcentral/ut-raft.git "${PLUGINS_FRAMEWORK_DIR}/ut_raft" develop "in ./raft/framework/plugins"
 install_pip_requirements "${PLUGINS_FRAMEWORK_DIR}"/ut_raft/requirements.txt
 
 ## Install your own sub git repo's in here as required
