@@ -211,6 +211,12 @@ class L4TestClass(AVModuleTestHelperClass):
             result = ut_menu.collect_results(output, True)
             if result is None:
                 final_result = False
+                run_summary_found = "Run Summary:" in output
+                if not run_summary_found:
+                    self.log.error("Run Summary not found.")
+                    #if the run summary is not found, we need to restart the ut_menu because hal test binary may crashed , we can add some options to check when to restart menu
+                    self.restart_required = True
+                self.log.error(f"Failed to collect results for TCID: {tcid}")
             results.append(result)
             self.log.stepResult(result, f"Test Suite: {test_suite_name} TCID: {tcid} Action: {test_case_name}")
 
