@@ -69,9 +69,9 @@ Set below environment variable:
 
 - LINUX_BINDER_OUT_DIR: Path to the Linux binder output directory (e.g., /path/to/linux_binder_idl/local).
 
-- UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 4.6.0). Defaults to the latest tagged version.
+- UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 4.7.3). Defaults to the latest tagged version.
 
-- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.7.1). Defaults to the latest HEAD.
+- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.12.0). Defaults to the latest HEAD.
 
 - Ensure that the pre-built GStreamer libraries are placed in the `build/usr/` directory before compiling the L4 test cases.
 
@@ -79,7 +79,7 @@ Example:
 
 ```bash
 export UT_CORE_VERSION=4.7.3
-export RDK_HALIF_AIDL_VERSION=0.7.1
+export RDK_HALIF_AIDL_VERSION=0.12.0
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
 ```
