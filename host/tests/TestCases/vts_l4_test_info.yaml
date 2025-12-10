@@ -51,4 +51,5 @@ AVModule:
   include_23: streams_config/VP9_config.yaml
   include_24: streams_config/VP9_Opus_config.yaml
   include_25: streams_config/VP9_Vorbis_config.yaml
+  include_26: streams_config/H264_Error_config.yaml
 
