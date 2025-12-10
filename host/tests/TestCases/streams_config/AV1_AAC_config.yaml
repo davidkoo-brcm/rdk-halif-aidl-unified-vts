@@ -1,0 +1,567 @@
+#** *****************************************************************************
+# *
+# * If not stated otherwise in this file or this component's LICENSE file the
+# * following copyright and licenses apply:
+# *
+# * Copyright 2025 RDK Management
+# *
+# * Licensed under the Apache License, Version 2.0 (the "License");
+# * you may not use this file except in compliance with the License.
+# * You may obtain a copy of the License at
+# *
+# *
+# * http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * Unless required by applicable law or agreed to in writing, software
+# * distributed under the License is distributed on an "AS IS" BASIS,
+# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# * See the License for the specific language governing permissions and
+# * limitations under the License.
+# *
+#** ******************************************************************************
+
+AVModule:
+  stream_download_path: http://<>/streams
+  input_streams_path: assets/streams/input
+  player: gstreamer
+  L4Test:
+  - tcid: VTS_L4_AV1_AAC_1001
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hdr10+_24.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1002
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hdr10+_30.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1003
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hdr10+_50.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1004
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hdr10+_60.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1005
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hdr10_24.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1006
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hdr10_30.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1007
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hdr10_50.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1008
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hdr10_60.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1009
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hlg_24.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1010
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hlg_30.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1011
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hlg_50.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1012
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_hlg_60.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1013
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_23.976f_BT709_yuv420p_10M_aac_48k_2ch_256k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1014
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_23.976f_BT709_yuv420p_10M_aac_48k_6ch_256k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1015
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_23.976f_BT709_yuv420p_10M_aac_48k_8ch_256k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1016
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_24.0f_BT709_yuv420p_10M_aac_48k_2ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1017
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_24.0f_BT709_yuv420p_10M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1018
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_24.0f_BT709_yuv420p_10M_aac_48k_8ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1019
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_25.0f_BT709_yuv420p_10M_aac_48k_2ch_256k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1020
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_25.0f_BT709_yuv420p_10M_aac_48k_6ch_256k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1021
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_25.0f_BT709_yuv420p_10M_aac_48k_8ch_256k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1022
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_29.97f_BT709_yuv420p_10M_aac_48k_2ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1023
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_29.97f_BT709_yuv420p_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1024
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_29.97f_BT709_yuv420p_10M_aac_48k_8ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1025
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_30.0f_BT709_yuv420p_10M_aac_48k_2ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1026
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_30.0f_BT709_yuv420p_10M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1027
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_30.0f_BT709_yuv420p_10M_aac_48k_8ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1028
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_50.0f_BT709_yuv444p_12M_aac_48k_2ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1029
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_50.0f_BT709_yuv444p_12M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1030
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_50.0f_BT709_yuv444p_12M_aac_48k_8ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1031
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_59.94f_BT709_yuv444p_12M_aac_48k_2ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1032
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_59.94f_BT709_yuv444p_12M_aac_48k_6ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1033
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_59.94f_BT709_yuv444p_12M_aac_48k_8ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1034
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_60.0f_BT709_yuv444p_12M_aac_48k_2ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1035
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_60.0f_BT709_yuv444p_12M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1036
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1080p_sdr_60.0f_BT709_yuv444p_12M_aac_48k_8ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1037
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hdr10+_24.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1038
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hdr10+_30.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1039
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hdr10+_50.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1040
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hdr10+_60.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1041
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hdr10_24.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1042
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hdr10_30.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1043
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hdr10_50.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1044
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hdr10_60.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1045
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hlg_24.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1046
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hlg_30.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1047
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hlg_50.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1048
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_hlg_60.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1049
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_23.976f_BT709_yuv420p_10M_aac_48k_2ch_256k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1050
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_23.976f_BT709_yuv420p_10M_aac_48k_6ch_256k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1051
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_23.976f_BT709_yuv420p_10M_aac_48k_8ch_256k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1052
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_24.0f_BT709_yuv420p_10M_aac_48k_2ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1053
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_24.0f_BT709_yuv420p_10M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1054
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_24.0f_BT709_yuv420p_10M_aac_48k_8ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1055
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_25.0f_BT709_yuv420p_10M_aac_48k_2ch_256k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1056
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_25.0f_BT709_yuv420p_10M_aac_48k_6ch_256k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1057
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_25.0f_BT709_yuv420p_10M_aac_48k_8ch_256k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1058
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_29.97f_BT709_yuv420p_10M_aac_48k_2ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1059
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_29.97f_BT709_yuv420p_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1060
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_29.97f_BT709_yuv420p_10M_aac_48k_8ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1061
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_30.0f_BT709_yuv420p_10M_aac_48k_2ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1062
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_30.0f_BT709_yuv420p_10M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1063
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_30.0f_BT709_yuv420p_10M_aac_48k_8ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1064
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_50.0f_BT709_yuv444p_12M_aac_48k_2ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1065
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_50.0f_BT709_yuv444p_12M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1066
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_50.0f_BT709_yuv444p_12M_aac_48k_8ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1067
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_59.94f_BT709_yuv444p_12M_aac_48k_2ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1068
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_59.94f_BT709_yuv444p_12M_aac_48k_6ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1069
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_59.94f_BT709_yuv444p_12M_aac_48k_8ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1070
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_60.0f_BT709_yuv444p_12M_aac_48k_2ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1071
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_60.0f_BT709_yuv444p_12M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1072
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_1440p_sdr_60.0f_BT709_yuv444p_12M_aac_48k_8ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1073
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hdr10+_24.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1074
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hdr10+_30.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1075
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hdr10+_50.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1076
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hdr10+_60.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1077
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hdr10_24.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1078
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hdr10_30.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1079
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hdr10_50.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1080
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hdr10_60.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1081
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hlg_24.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1082
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hlg_30.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1083
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hlg_50.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1084
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_hlg_60.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1085
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_23.976f_BT2020_yuv422p_15M_aac_48k_2ch_256k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1086
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_23.976f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1087
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_23.976f_BT2020_yuv422p_15M_aac_48k_8ch_256k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1088
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_24.0f_BT2020_yuv422p_15M_aac_48k_2ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1089
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_24.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1090
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_24.0f_BT2020_yuv422p_15M_aac_48k_8ch_256k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1091
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_25.0f_BT2020_yuv422p_15M_aac_48k_2ch_256k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1092
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_25.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1093
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_25.0f_BT2020_yuv422p_15M_aac_48k_8ch_256k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1094
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_29.97f_BT2020_yuv422p_15M_aac_48k_2ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1095
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_29.97f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1096
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_29.97f_BT2020_yuv422p_15M_aac_48k_8ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1097
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_30.0f_BT2020_yuv422p_15M_aac_48k_2ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1098
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_30.0f_BT2020_yuv422p_15M_aac_48k_6ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1099
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_30.0f_BT2020_yuv422p_15M_aac_48k_8ch_256k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1100
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_50.0f_BT2020_yuv422p_20M_aac_48k_2ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1101
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_50.0f_BT2020_yuv422p_20M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1102
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_50.0f_BT2020_yuv422p_20M_aac_48k_8ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1103
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_59.94f_BT2020_yuv422p_20M_aac_48k_2ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1104
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_59.94f_BT2020_yuv422p_20M_aac_48k_6ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1105
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_59.94f_BT2020_yuv422p_20M_aac_48k_8ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1106
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_60.0f_BT2020_yuv422p_20M_aac_48k_2ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1107
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_60.0f_BT2020_yuv422p_20M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1108
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_2160p_sdr_60.0f_BT2020_yuv422p_20M_aac_48k_8ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1109
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_23.976f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1110
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_23.976f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1111
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_23.976f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1112
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_24.0f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1113
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_24.0f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1114
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_24.0f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1115
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_25.0f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1116
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_25.0f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1117
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_25.0f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1118
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_29.97f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1119
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_29.97f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1120
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_29.97f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1121
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_30.0f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1122
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_30.0f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1123
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_30.0f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1124
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_50.0f_BT709_yuv444p_5M_aac_48k_2ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1125
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_50.0f_BT709_yuv444p_5M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1126
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_50.0f_BT709_yuv444p_5M_aac_48k_8ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1127
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_59.94f_BT709_yuv444p_5M_aac_48k_2ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1128
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_59.94f_BT709_yuv444p_5M_aac_48k_6ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1129
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_59.94f_BT709_yuv444p_5M_aac_48k_8ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1130
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_60.0f_BT709_yuv444p_5M_aac_48k_2ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1131
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_60.0f_BT709_yuv444p_5M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1132
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_480p_sdr_60.0f_BT709_yuv444p_5M_aac_48k_8ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1133
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_23.976f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1134
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_23.976f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1135
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_23.976f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1136
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_24.0f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1137
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_24.0f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1138
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_24.0f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1139
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_25.0f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1140
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_25.0f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1141
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_25.0f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1142
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_29.97f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1143
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_29.97f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1144
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_29.97f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1145
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_30.0f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1146
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_30.0f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1147
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_30.0f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1148
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_50.0f_BT709_yuv444p_5M_aac_48k_2ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1149
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_50.0f_BT709_yuv444p_5M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1150
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_50.0f_BT709_yuv444p_5M_aac_48k_8ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1151
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_59.94f_BT709_yuv444p_5M_aac_48k_2ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1152
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_59.94f_BT709_yuv444p_5M_aac_48k_6ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1153
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_59.94f_BT709_yuv444p_5M_aac_48k_8ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1154
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_60.0f_BT709_yuv444p_5M_aac_48k_2ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1155
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_60.0f_BT709_yuv444p_5M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1156
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_576p_sdr_60.0f_BT709_yuv444p_5M_aac_48k_8ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1157
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_23.976f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1158
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_23.976f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1159
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_23.976f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1439_61sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1160
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_24.0f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1161
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_24.0f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1162
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_24.0f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1440_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1163
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_25.0f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1164
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_25.0f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1165
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_25.0f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1500_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1166
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_29.97f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1167
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_29.97f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1168
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_29.97f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1169
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_30.0f_BT709_yuv420p_2.5M_aac_48k_2ch_128k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1170
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_30.0f_BT709_yuv420p_2.5M_aac_48k_6ch_128k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1171
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_30.0f_BT709_yuv420p_2.5M_aac_48k_8ch_128k_a2814_v1800_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1172
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_50.0f_BT709_yuv444p_5M_aac_48k_2ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1173
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_50.0f_BT709_yuv444p_5M_aac_48k_6ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1174
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_50.0f_BT709_yuv444p_5M_aac_48k_8ch_256k_a2814_v3000_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1175
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_59.94f_BT709_yuv444p_5M_aac_48k_2ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1176
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_59.94f_BT709_yuv444p_5M_aac_48k_6ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1177
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_59.94f_BT709_yuv444p_5M_aac_48k_8ch_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1178
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_60.0f_BT709_yuv444p_5M_aac_48k_2ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1179
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_60.0f_BT709_yuv444p_5M_aac_48k_6ch_256k_a2814_v3600_60sec.mp4
+  - tcid: VTS_L4_AV1_AAC_1180
+    action: normal_play
+    stream_name: AV1_AAC/vts_av1_720p_sdr_60.0f_BT709_yuv444p_5M_aac_48k_8ch_256k_a2814_v3600_60sec.mp4

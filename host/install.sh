@@ -166,6 +166,6 @@ clone_repo git@github.com:rdkcentral/ut-raft.git "${PLUGINS_FRAMEWORK_DIR}/ut_ra
 install_pip_requirements "${PLUGINS_FRAMEWORK_DIR}"/ut_raft/requirements.txt
 
 ## Install your own sub git repo's in here as required
-# 
+#
 INFO "Install Complete"
 

@@ -1,0 +1,147 @@
+#** *****************************************************************************
+# *
+# * If not stated otherwise in this file or this component's LICENSE file the
+# * following copyright and licenses apply:
+# *
+# * Copyright 2025 RDK Management
+# *
+# * Licensed under the Apache License, Version 2.0 (the "License");
+# * you may not use this file except in compliance with the License.
+# * You may obtain a copy of the License at
+# *
+# *
+# * http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * Unless required by applicable law or agreed to in writing, software
+# * distributed under the License is distributed on an "AS IS" BASIS,
+# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# * See the License for the specific language governing permissions and
+# * limitations under the License.
+# *
+#** ******************************************************************************
+
+AVModule:
+  stream_download_path: http://<>/streams
+  input_streams_path: assets/streams/input
+  player: gstreamer
+  L4Test:
+  - tcid: VTS_L4_Opus_1001
+    action: normal_play
+    stream_name: Opus/vts_opus_12k_1ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1002
+    action: normal_play
+    stream_name: Opus/vts_opus_12k_1ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1003
+    action: normal_play
+    stream_name: Opus/vts_opus_12k_2ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1004
+    action: normal_play
+    stream_name: Opus/vts_opus_12k_2ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1005
+    action: normal_play
+    stream_name: Opus/vts_opus_12k_6ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1006
+    action: normal_play
+    stream_name: Opus/vts_opus_12k_6ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1007
+    action: normal_play
+    stream_name: Opus/vts_opus_12k_8ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1008
+    action: normal_play
+    stream_name: Opus/vts_opus_12k_8ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1009
+    action: normal_play
+    stream_name: Opus/vts_opus_16k_1ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1010
+    action: normal_play
+    stream_name: Opus/vts_opus_16k_1ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1011
+    action: normal_play
+    stream_name: Opus/vts_opus_16k_2ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1012
+    action: normal_play
+    stream_name: Opus/vts_opus_16k_2ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1013
+    action: normal_play
+    stream_name: Opus/vts_opus_16k_6ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1014
+    action: normal_play
+    stream_name: Opus/vts_opus_16k_6ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1015
+    action: normal_play
+    stream_name: Opus/vts_opus_16k_8ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1016
+    action: normal_play
+    stream_name: Opus/vts_opus_16k_8ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1017
+    action: normal_play
+    stream_name: Opus/vts_opus_24k_1ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1018
+    action: normal_play
+    stream_name: Opus/vts_opus_24k_1ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1019
+    action: normal_play
+    stream_name: Opus/vts_opus_24k_2ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1020
+    action: normal_play
+    stream_name: Opus/vts_opus_24k_2ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1021
+    action: normal_play
+    stream_name: Opus/vts_opus_24k_6ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1022
+    action: normal_play
+    stream_name: Opus/vts_opus_24k_6ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1023
+    action: normal_play
+    stream_name: Opus/vts_opus_24k_8ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1024
+    action: normal_play
+    stream_name: Opus/vts_opus_24k_8ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1025
+    action: normal_play
+    stream_name: Opus/vts_opus_48k_1ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1026
+    action: normal_play
+    stream_name: Opus/vts_opus_48k_1ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1027
+    action: normal_play
+    stream_name: Opus/vts_opus_48k_2ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1028
+    action: normal_play
+    stream_name: Opus/vts_opus_48k_2ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1029
+    action: normal_play
+    stream_name: Opus/vts_opus_48k_6ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1030
+    action: normal_play
+    stream_name: Opus/vts_opus_48k_6ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1031
+    action: normal_play
+    stream_name: Opus/vts_opus_48k_8ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1032
+    action: normal_play
+    stream_name: Opus/vts_opus_48k_8ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1033
+    action: normal_play
+    stream_name: Opus/vts_opus_8k_1ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1034
+    action: normal_play
+    stream_name: Opus/vts_opus_8k_1ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1035
+    action: normal_play
+    stream_name: Opus/vts_opus_8k_2ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1036
+    action: normal_play
+    stream_name: Opus/vts_opus_8k_2ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1037
+    action: normal_play
+    stream_name: Opus/vts_opus_8k_6ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1038
+    action: normal_play
+    stream_name: Opus/vts_opus_8k_6ch_256k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1039
+    action: normal_play
+    stream_name: Opus/vts_opus_8k_8ch_128k_a3001_v0_61sec.webm
+  - tcid: VTS_L4_Opus_1040
+    action: normal_play
+    stream_name: Opus/vts_opus_8k_8ch_256k_a3001_v0_61sec.webm
