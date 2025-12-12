@@ -37,7 +37,11 @@
 
    <project name="rdk-halif-aidl-L4-Vendor"
            path="vts_hal_test_components/l4_tests"
-           revision="refs/tags/0.1.1" />
+	   revision="refs/tags/0.1.1" />
+
+   <project name="rdk-halif-aidl-test-device-info"
+           path="vts_hal_test_components/deviceinfo"
+	   revision="refs/heads/feature/gh5-add-python-tests" />
 
 </manifest>
 
