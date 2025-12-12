@@ -74,6 +74,7 @@
 #include "vts_avclock_init.h"
 #include "vts_planecontrol_init.h"
 #include "vts_av_l4_init.h"
+#include "vts_deepsleep_init.h"
 
 int main(int argc, char **argv)
 {
@@ -93,6 +94,7 @@ int main(int argc, char **argv)
     UT_LOG_INFO("\t VTS UNIFIED AV Clock HALIF Test Version: \033[0;32m%s\033[0m",AVCLOCK_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED Plane Control HALIF Test Version: \033[0;32m%s\033[0m",PLANECONTROL_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED HALIF L4 Test Version: \033[0;32m%s\033[0m",L4_TESTS_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED DeepSleep HALIF Test Version: \033[0;32m%s\033[0m",DEEPSLEEP_VERSION);
     UT_LOG_INFO("==========================================================================");
 
     result = VTS_AVBuffer_init();
@@ -151,6 +153,13 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
+    result = VTS_DEEPSLEEP_init();
+    if(result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize DeepSleep");
+        result = UT_STATUS_FAILURE;
+    }
+
     UT_status_t ut_result = UT_run_tests();
 
     if (result != UT_STATUS_OK || ut_result != UT_STATUS_OK)
@@ -166,6 +175,7 @@ int main(int argc, char **argv)
     VTS_VideoDecoder_destroy();
     VTS_AudioSink_destroy();
     VTS_VideoSink_destroy();
+    VTS_DEEPSLEEP_destroy();
 
     return result;
 }

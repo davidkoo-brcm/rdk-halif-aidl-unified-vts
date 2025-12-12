@@ -40,6 +40,7 @@ declare -A HALIF_COMPONENTS=(
   [videosink]="current"
   [avclock]="current"
   [planecontrol]="current"
+  [deepsleep]="current"
 )
 
 declare -A HALIF_TEST_COMPONENTS=(
@@ -50,6 +51,7 @@ declare -A HALIF_TEST_COMPONENTS=(
   [videosink]="RDK_HALIF_VIDEOSINK_TEST_VERSION"
   [avclock]="RDK_HALIF_AVCLOCK_TEST_VERSION"
   [planecontrol]="RDK_HALIF_PLANECONTROL_TEST_VERSION"
+  [deepsleep]="RDK_HALIF_DEEPSLEEP_TEST_VERSION"
 )
 
 # Define the directory where the repository will be cloned

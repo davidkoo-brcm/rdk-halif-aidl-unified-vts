@@ -32,6 +32,7 @@ AV_CLOCK_TEST_DIR := $(VTS_TEST_DIR)/avclock
 PLANE_CONTROL_TEST_DIR := $(VTS_TEST_DIR)/planecontrol
 L4_TEST_DIR := $(VTS_TEST_DIR)/l4_tests
 AV_L4_TESTS_DIR := $(L4_TEST_DIR)/src/av
+DEEPSLEEP_TEST_DIR := $(VTS_TEST_DIR)/deepsleep
 
 COMMON_DIR := $(ROOT_DIR)/common
 VTS_PLAYER := $(COMMON_DIR)/vts_player
@@ -63,6 +64,7 @@ AVBUFFER_VERSION := $(shell cd $(AV_BUFFER_TEST_DIR) && git describe --tags --al
 AVCLOCK_VERSION := $(shell cd $(AV_CLOCK_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 PLANECONTROL_VERSION := $(shell cd $(PLANE_CONTROL_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 L4_TESTS_VERSION := $(shell cd $(L4_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+DEEPSLEEP_VERSION := $(shell cd $(DEEPSLEEP_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 BUILD_TIMESTAMP := $(shell date +"%Y-%m-%d_%H:%M:%S")
 
 # Print module versions
@@ -74,6 +76,7 @@ $(info AVBUFFER_VERSION: $(AVBUFFER_VERSION))
 $(info AVCLOCK_VERSION: $(AVCLOCK_VERSION))
 $(info PLANECONTROL_VERSION: $(PLANECONTROL_VERSION))
 $(info L4_TESTS_VERSION: $(L4_TESTS_VERSION))
+$(info DEEPSLEEP_VERSION: $(DEEPSLEEP_VERSION))
 $(info BUILD_TIMESTAMP: $(BUILD_TIMESTAMP))
 $(info TARGET: $(TARGET))
 $(info VARIANT: $(VARIANT))
@@ -94,6 +97,7 @@ CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DAVCLOCK_VERSION=\"$(AVCLOCK_VERSION)\" \
             -DPLANECONTROL_VERSION=\"$(PLANECONTROL_VERSION)\" \
             -DL4_TESTS_VERSION=\"$(L4_TESTS_VERSION)\"
+            -DDEEPSLEEP_VERSION=\"$(DEEPSLEEP_VERSION)\" \
 
 $(info CXXFLAGS: $(CXXFLAGS))
 CXXFLAGS += -DBUILD_TIMESTAMP=\"$(BUILD_TIMESTAMP)\"
@@ -113,6 +117,7 @@ SRC_DIRS += $(VIDEO_SINK_TEST_DIR)/src
 SRC_DIRS += $(AV_CLOCK_TEST_DIR)/src
 SRC_DIRS += $(PLANE_CONTROL_TEST_DIR)/src
 SRC_DIRS += $(AV_L4_TESTS_DIR)
+SRC_DIRS += $(DEEPSLEEP_TEST_DIR)/src
 SRC_DIRS += $(HELPER_FUNCTIONS_DIR)
 SRC_DIRS += $(VTS_PLAYER)
 SRC_DIRS += $(ROOT_DIR)/test
