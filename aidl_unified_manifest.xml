@@ -38,6 +38,10 @@
    <project name="rdk-halif-aidl-L4-Vendor"
            path="vts_hal_test_components/l4_tests"
            revision="refs/tags/0.1.1" />
-
+           
+<!-- Karthi -->
+   <project name="rdk-halif-aidl-test-indicator"
+           path="vts_hal_test_components/indicator"
+	   revision="refs/tags/0.1.0" />  
 </manifest>
 
