@@ -74,6 +74,9 @@ class L4TestClass(AVModuleTestHelperClass):
 
         self.testSession =  utPlayer(self.player_session, socVendor)
 
+        self.player_session.prompt = self.prompt
+        self.testSession.prompt = self.prompt
+
 
         self.utilities = utBaseUtils()
         self.ut_menu = []
