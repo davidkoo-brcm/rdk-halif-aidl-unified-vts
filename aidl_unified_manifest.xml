@@ -43,5 +43,9 @@
            path="vts_hal_test_components/deviceinfo"
 	   revision="refs/heads/feature/gh5-add-python-tests" />
 
+   <project name="rdk-halif-aidl-test-cec"
+           path="vts_hal_test_components/cec"
+	   revision="refs/tags/0.1.0" />
+
 </manifest>
 
