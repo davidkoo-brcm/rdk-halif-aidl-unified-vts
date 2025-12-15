@@ -91,6 +91,9 @@ size_t vts_bytesPerSample(audiodecoder::PCMFormat format);
 void* vts_kvp_create_instance(char *fileName);
 void vts_kvp_destroy_instance(void *instance);
 videodecoder::Codec videoDecoderStringToCodec(const std::string& codecStr);
+std::vector<std::string> videoDecoderGetAllCodecNames();
+audiodecoder::Codec vts_audioDecoder_helper_StringToCodec(const std::string& format);
+audiodecoder::PCMFormat vts_audioDecoder_helper_StringToPCMFormat(const std::string& format);
 
 #endif //__VTS_HELPER_H__
 
