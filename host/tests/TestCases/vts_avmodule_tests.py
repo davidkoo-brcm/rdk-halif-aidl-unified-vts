@@ -91,7 +91,7 @@ class  AVModule_Tests(utHelperClass):
         self.hal_session_1.prompt = prompt
         self.hal_session_2.prompt = prompt
 
-        self.binPath = "bin/" #bin path which is coming from the build 
+        self.binPath = "bin/" #bin path which is coming from the build
         self.profilePath = "profiles/"
 
         # Forming the run.sh exe path and tar copy path /tmp/<modulename>/bin/run.sh and /tmp/<modulename>
@@ -144,7 +144,7 @@ class  AVModule_Tests(utHelperClass):
             self.utilities.sftpCopy(self.testSession, tarFilesPath, targetWorkspace)
 
             self.utilities.change_directory(self.testSession, targetWorkspace)
-            self.utilities.untar(self.testSession, self.testConfig.test.artifacts, targetWorkspace)
+            self.utilities.untar(self.testSession, os.path.basename(tarFilesPath), targetWorkspace)
             self.utilities.change_directory(self.testSession, runPath)
 
     def runTest(self, testSuite:str="L3 AVModule", test_case:str=None):
