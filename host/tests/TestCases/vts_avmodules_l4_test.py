@@ -72,11 +72,9 @@ class L4TestClass(AVModuleTestHelperClass):
 
         self.player_session = self.dut.getConsoleSession("ssh_player")
 
-        self.testSession =  utPlayer(self.player_session, socVendor)
+        self.vts_player =  utPlayer(self.player_session, socVendor)
 
         self.player_session.prompt = self.prompt
-        self.testSession.prompt = self.prompt
-
 
         self.utilities = utBaseUtils()
         self.ut_menu = []
@@ -228,16 +226,18 @@ class L4TestClass(AVModuleTestHelperClass):
 
             self.log.testResult(f'{test_suite_name} Finished')
 
-        if self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Stopping test case...")
-                ut_menu.stop()
+            if self.restart_required:
+                for i, ut_menu in enumerate(self.ut_menu):
+                    self.log.info(f"[Instance {i}] Stopping test case...")
+                    self.vts_player.stop()
+                    ut_menu.stop()
+
 
         self.test_cleanup()
         return final_result
 
 if __name__ == "__main__":
-    summerLogName = os.path.splitext(os.path.basename(__file__))[0] + "_summery"
-    summeryLog = logModule("L4Test", level=logModule.INFO)
-    test = L4TestClass(summeryLog)
+    summaryLogName = os.path.splitext(os.path.basename(__file__))[0] + "_summary"
+    summaryLog = logModule("L4Test", level=logModule.INFO)
+    test = L4TestClass(summaryLog)
     test.run(False)

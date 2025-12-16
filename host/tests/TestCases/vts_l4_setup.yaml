@@ -26,13 +26,16 @@ AVModule:
   description: "AVModule L4 setup"
   restart_required: False
   num_of_instances: 1
-  test_suites: # List of L4
-    #######################################
-    # Entries to run individual test cases
-    #######################################
-    - name: "VTS_L4_AVMODULE"
-      test_cases:
-        - NormalPlay
-        - playBackWithTrickModes
+  test:
+    artifacts:
+      - "../../../build/vts_unified_arm.tar.gz.bz"
+    execute: "./run.sh"
+    type: UT-C # C (UT-C Cunit) / C++ (UT-G (g++ ut-core gtest backend))
+    suites:
+      0:
+        name: "VTS_L4_AVMODULE"
+        tests:
+          - NormalPlay
+          - playBackWithTrickModes
 
 

@@ -45,7 +45,9 @@ class AVModuleTestHelperClass(utHelperClass):
     """
 
     def __init__(self, module_name: str, test_name: str, qc_id: str,
-                 test_suites: list = None, l4_yaml_path: str = None, log: logModule = None):
+                 test_suites: list = None, l4_yaml_path: str = None,
+                 setup_file_name: str = None, test_config_file_name: str = None,
+                 log: logModule = None):
         """
         Initializes the helper class.
 
@@ -66,15 +68,18 @@ class AVModuleTestHelperClass(utHelperClass):
         self.l4_yaml_path = l4_yaml_path or os.path.join(dir_path, "vts_l4_test_info.yaml")
         self.rack_device = "dut"
 
-        # Load configurations
-        self.test_setup_path = os.path.join(dir_path, "vts_l4_setup.yaml")
-        self.test_config_path = os.path.join(dir_path, "vts_l4_testConfig.yaml")
+        # Load configurations (allow override for L1/L2/L3 runners)
+        setup_file = setup_file_name or "vts_l4_setup.yaml"
+        test_cfg_file = test_config_file_name or "vts_l4_setup.yaml"
+        self.test_setup_path = os.path.join(dir_path, setup_file)
+        self.test_config_local_path = os.path.join(dir_path, test_cfg_file)
         self.test_setup = ConfigRead(self.test_setup_path, self.module_name)
-        self.test_config = ConfigRead(self.test_config_path, self.module_name)
+        self.test_config = ConfigRead(self.test_config_local_path, self.module_name)
 
         # Device settings
         device_test_setup = self.cpe.get("test")
         self.target_workspace = self.cpe.get("target_directory")
+        # Target-side relative path to copy test configs (used by L4)
         self.test_config_path = self.cpe.get("test_config_path")
         self.prompt = self.cpe.get("prompt")
         self.wait_time = self.cpe.get("wait_time")
@@ -121,7 +126,7 @@ class AVModuleTestHelperClass(utHelperClass):
             self.module_config_profile_files.append(final_profile)
 
             profile_file_path = os.path.join(self.profile_path, os.path.basename(final_profile)).replace("\\", "/")
-            #test_config = ConfigRead(self.test_config_path, self.module_name)
+            # Append profile path to execution command
             self.test_config.test.execute = self.test_config.test.execute + f" -p {profile_file_path}"
 
             hal_session = self.hal_sessions[i]
@@ -132,6 +137,82 @@ class AVModuleTestHelperClass(utHelperClass):
         # Create user response Class
         self.testUserResponse = utUserResponse()
         self.test_streams = []
+
+    def download_streams_for_suite(self, testsuite_name: str) -> bool:
+        """
+        Downloads all streams listed under the given test suite in the test setup YAML
+        to the DUT's download path, storing their target paths in self.test_streams.
+
+        Args:
+            testsuite_name (str): Name of the test suite in setup YAML.
+
+        Returns:
+            bool: True if successful or no streams listed; False on errors.
+        """
+        try:
+            suites = self.test_setup.fields.get('suites', [])
+            streams = []
+            for suite in suites:
+                if suite.get('name') == testsuite_name:
+                    streams = suite.get('streams', [])
+                    break
+
+            if not streams:
+                return True
+
+            if not self.stream_download_url:
+                self.log.error("streams_download_url not configured; cannot download streams")
+                return False
+
+            urls = []
+            self.test_streams = []
+            for spath in streams:
+                full_url = os.path.join(self.stream_download_url, spath.lstrip('/'))
+                urls.append(full_url)
+                self.test_streams.append(os.path.join(self.download_path, os.path.basename(spath)))
+
+            self.downloadToDevice(urls, self.download_path, self.rack_device, True)
+            return True
+        except Exception as e:
+            self.log.error(f"Failed downloading streams for suite {testsuite_name}: {e}")
+            return False
+
+    def restart_services(self, testsuite_name: str):
+        """
+        Restarts only the AV-related process based on module name in testsuite_name.
+        Module derived from the last underscore-separated token (e.g., 'VTS_L1_VideoDecoder' -> 'videodecoder').
+        """
+        try:
+            module = testsuite_name.strip().split("_")[-1].lower()
+        except Exception:
+            self.log.error("Invalid testsuite_name format: %s", testsuite_name)
+            return
+
+        for idx in range(self.instance_list):
+            hal_session = self.hal_sessions[idx] if idx < len(self.hal_sessions) else None
+            if not hal_session:
+                self.log.info(f"HAL session for instance {idx} not found — skipping.")
+                continue
+
+            services = {
+                "videosink": (self.vSink_process_name, self.process_path, "VideoSink"),
+                "videodecoder": (self.vDecoder_process_name, self.process_path, "VideoDecoder"),
+                "audiosink": (self.aSink_process_name, self.process_path, "AudioSink"),
+                "audiodecoder": (self.aDecoder_process_name, self.process_path, "AudioDecoder"),
+                "avclock": (self.avClock_process_name, self.process_path, "AVClock"),
+                "planecontrol": (self.planeCtrl_process_name, self.process_path, "PlaneControl"),
+                "avbuffer": ("RDKAVBufferService", "/usr/bin/", "AVBuffer"),
+            }
+
+            if module in services:
+                proc_name, proc_path, label = services[module]
+                if proc_name and proc_path:
+                    self.log.info(f"Restarting {label} process: {proc_name} for instance {idx}")
+                    self.utilities.restart_process_by_name(hal_session, proc_name, proc_path)
+                else:
+                    self.log.info(f"{label} process name or path is None — skipping restart.")
+            else:
+                self.log.info(f"Module '{module}' not recognized — no process restarted.")
 
     def parse_stream_name(self, stream_name: str, tcid: str) -> dict:
         """
@@ -513,7 +594,7 @@ class AVModuleTestHelperClass(utHelperClass):
         Returns:
             bool: True if all tests pass, False otherwise.
         """
-        return self.run_test(test_suite, None, use_all_wait_time)
+        return self.runTest(test_suite, None, use_all_wait_time)
 
     def test_cleanup(self):
         """
