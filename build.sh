@@ -31,6 +31,8 @@ declare -r TOP=`dirname $(realpath $0)`
 declare -r HALIF_VERSION=current
 RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION="main"}"
 RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-aidl-test-"
+VCOMPONENT_BASE_URL="ssh://git@github.code.rdkcentral.com/rdkcentral"
+VCOMPONENT_DIR="${TOP}/vcomponents"
 OUT_TAR_FILE=vts_unified.tar.gz.bz
 
 declare -A HALIF_COMPONENTS=(
@@ -41,6 +43,8 @@ declare -A HALIF_COMPONENTS=(
   [videosink]="current"
   [avclock]="current"
   [planecontrol]="current"
+  [deviceinfo]="current"
+  [cec]="current"
 )
 
 declare -A HALIF_TEST_COMPONENTS=(
@@ -51,6 +55,13 @@ declare -A HALIF_TEST_COMPONENTS=(
   [videosink]="RDK_HALIF_VIDEOSINK_TEST_VERSION"
   [avclock]="RDK_HALIF_AVCLOCK_TEST_VERSION"
   [planecontrol]="RDK_HALIF_PLANECONTROL_TEST_VERSION"
+  [deviceinfo]="RDK_HALIF_DEVICEINFO_TEST_VERSION"
+  [cec]="RDK_HALIF_CEC_TEST_VERSION"
+)
+
+declare -A VCOMPONENT_MODULES=(
+    [deviceinfo]="RDK_HALIF_DEVICEINFO_VCOMP_VERSION"
+    [cec]="RDK_HALIF_CEC_VCOMP_VERSION"
 )
 
 # Define the directory where the repository will be cloned
@@ -64,6 +75,7 @@ declare -r RDK_HAL_TEST_DIR=${TOP}/vts_hal_test_components
 declare -r PROFILES_DIR=${TOP}/profiles
 declare -r L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests
 declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests/src/av/
+declare -r VCOMPONENT_DIR=${TOP}/vcomponents
 
 
 DEF_LINUX_BINDER="`realpath ${TOP}/../`/linux_binder_idl"
@@ -323,13 +335,100 @@ install_test()
     done
     cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/
 
+    for component in "${!VCOMPONENT_MODULES[@]}"; do
+        if [ -d "${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}" ]; then
+            cp -rf ${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/vcomponent_configurations ${INSTALL_PATH}/
+        fi
+    done
+
     mkdir -p ${INSTALL_PATH}/assets/streams/input
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
     rm -rf ${INSTALL_PATH}/libavbufferhelper.so
-
     cd ${TOP_BUILD_DIR}
     tar -zcf ${OUT_TAR_FILE} bin
     cd -
+}
+
+###############################################################################
+# Function to install and build vcomponent services
+###############################################################################
+
+build_vcomponent_services()
+{
+    mkdir -p "${VCOMPONENT_DIR}" || return 1
+
+    for component in "${!VCOMPONENT_MODULES[@]}"; do
+        local repo="rdk-aidl-vcomponent-${component}"
+        local repo_dir="${VCOMPONENT_DIR}/${repo}"
+
+        echo -e "${BOLD}Building vcomponent: ${component}${RESET}"
+
+        # Clone if missing
+        if [[ ! -d "${repo_dir}/.git" ]]; then
+            git clone "${VCOMPONENT_BASE_URL}/${repo}.git" "${repo_dir}"
+            if [ $? -ne 0 ]; then
+                echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
+                echo -e "${BOLD}* ${RED}Failed to clone ${repo}. Exiting.${RESET}"
+                echo -e "${BOLD}╚══════════════════════════════════════════════════════╝${RESET}"
+                return 1
+            fi
+        fi
+
+        # Build the component
+        pushd ${repo_dir}
+
+        make -j"$(nproc)" -C . BUILD_DIR="${TOP_BUILD_DIR}" UT_CORE_DIR="${UT_CORE_DIR}"
+        if [ $? -ne 0 ]; then
+            echo -e "${BOLD}╔════════════════════════════════════════════════╗${RESET}"
+            echo -e "${BOLD}* ${RED}Failed to build the vcomponent Service. Exiting.${RESET}"
+            echo -e "${BOLD}╚════════════════════════════════════════════════╝${RESET}"
+            exit 1
+        fi
+
+        popd
+
+    done
+}
+
+###############################################################################
+# Function to install and build vcomponent services
+###############################################################################
+
+build_vcomponent_services()
+{
+    mkdir -p "${VCOMPONENT_DIR}" || return 1
+
+    for component in "${!VCOMPONENT_MODULES[@]}"; do
+        local repo="rdk-aidl-vcomponent-${component}"
+        local repo_dir="${VCOMPONENT_DIR}/${repo}"
+
+        echo -e "${BOLD}Building vcomponent: ${component}${RESET}"
+
+        # Clone if missing
+        if [[ ! -d "${repo_dir}/.git" ]]; then
+            git clone "${VCOMPONENT_BASE_URL}/${repo}.git" "${repo_dir}"
+            if [ $? -ne 0 ]; then
+                echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
+                echo -e "${BOLD}* ${RED}Failed to clone ${repo}. Exiting.${RESET}"
+                echo -e "${BOLD}╚══════════════════════════════════════════════════════╝${RESET}"
+                return 1
+            fi
+        fi
+
+        # Build the component
+        pushd ${repo_dir}
+
+        make -j"$(nproc)" -C . BUILD_DIR="${TOP_BUILD_DIR}" UT_CORE_DIR="${UT_CORE_DIR}"
+        if [ $? -ne 0 ]; then
+            echo -e "${BOLD}╔════════════════════════════════════════════════╗${RESET}"
+            echo -e "${BOLD}* ${RED}Failed to build the vcomponent Service. Exiting.${RESET}"
+            echo -e "${BOLD}╚════════════════════════════════════════════════╝${RESET}"
+            exit 1
+        fi
+
+        popd
+
+    done
 }
 
 ###############################################################################
@@ -347,6 +446,8 @@ clean_test()
     rm -rf ${COMMON_DIR}/helper_functions/*.o
     rm -rf ${COMMON_DIR}/vts_player/*.o
 
+    find "$VCOMPONENT_DIR" -type f -name "*.o" -delete
+    find "$RDK_HAL_TEST_DIR" -type f -name "*.o" -delete
     find "$TOP_BUILD_DIR" -type f -name "*.o" -delete
 }
 
@@ -405,6 +506,7 @@ elif [[ "$1" == [Tt]arget=* ]]; then
     build_ut_core
     generate_avbufferhelper_skeleton
     build_halif_test
+    build_vcomponent_services
     install_test
 else
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"

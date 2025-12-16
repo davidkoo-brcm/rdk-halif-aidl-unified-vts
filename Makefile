@@ -30,6 +30,8 @@ VIDEO_SINK_TEST_DIR := $(VTS_TEST_DIR)/videosink
 AV_BUFFER_TEST_DIR := $(VTS_TEST_DIR)/avbuffer
 AV_CLOCK_TEST_DIR := $(VTS_TEST_DIR)/avclock
 PLANE_CONTROL_TEST_DIR := $(VTS_TEST_DIR)/planecontrol
+DEVICEINFO_TEST_DIR := $(VTS_TEST_DIR)/deviceinfo
+HDMI_CEC_TEST_DIR := $(VTS_TEST_DIR)/cec
 L4_TEST_DIR := $(VTS_TEST_DIR)/l4_tests
 AV_L4_TESTS_DIR := $(L4_TEST_DIR)/src/av
 
@@ -63,6 +65,8 @@ AVBUFFER_VERSION := $(shell cd $(AV_BUFFER_TEST_DIR) && git describe --tags --al
 AVCLOCK_VERSION := $(shell cd $(AV_CLOCK_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 PLANECONTROL_VERSION := $(shell cd $(PLANE_CONTROL_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 L4_TESTS_VERSION := $(shell cd $(L4_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+DEVICEINFO_VERSION := $(shell cd $(DEVICEINFO_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+HDMI_CEC_VERSION := $(shell cd $(HDMI_CEC_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 BUILD_TIMESTAMP := $(shell date +"%Y-%m-%d_%H:%M:%S")
 
 # Print module versions
@@ -73,6 +77,8 @@ $(info VIDEOSINK_VERSION: $(VIDEOSINK_VERSION))
 $(info AVBUFFER_VERSION: $(AVBUFFER_VERSION))
 $(info AVCLOCK_VERSION: $(AVCLOCK_VERSION))
 $(info PLANECONTROL_VERSION: $(PLANECONTROL_VERSION))
+$(info DEVICEINFO_VERSION: $(DEVICEINFO_VERSION))
+$(info HDMI_CEC_VERSION: $(HDMI_CEC_VERSION))
 $(info L4_TESTS_VERSION: $(L4_TESTS_VERSION))
 $(info BUILD_TIMESTAMP: $(BUILD_TIMESTAMP))
 $(info TARGET: $(TARGET))
@@ -93,6 +99,8 @@ CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DAVBUFFER_VERSION=\"$(AVBUFFER_VERSION)\" \
             -DAVCLOCK_VERSION=\"$(AVCLOCK_VERSION)\" \
             -DPLANECONTROL_VERSION=\"$(PLANECONTROL_VERSION)\" \
+            -DDEVICEINFO_VERSION=\"$(DEVICEINFO_VERSION)\" \
+            -DHDMI_CEC_VERSION=\"$(HDMI_CEC_VERSION)\" \
             -DL4_TESTS_VERSION=\"$(L4_TESTS_VERSION)\"
 
 $(info CXXFLAGS: $(CXXFLAGS))
@@ -112,6 +120,8 @@ SRC_DIRS += $(VIDEO_DECODER_TEST_DIR)/src
 SRC_DIRS += $(VIDEO_SINK_TEST_DIR)/src
 SRC_DIRS += $(AV_CLOCK_TEST_DIR)/src
 SRC_DIRS += $(PLANE_CONTROL_TEST_DIR)/src
+SRC_DIRS += $(DEVICEINFO_TEST_DIR)/src
+SRC_DIRS += $(HDMI_CEC_TEST_DIR)/src
 SRC_DIRS += $(AV_L4_TESTS_DIR)
 SRC_DIRS += $(HELPER_FUNCTIONS_DIR)
 SRC_DIRS += $(VTS_PLAYER)
