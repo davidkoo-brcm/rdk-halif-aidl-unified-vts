@@ -138,25 +138,18 @@ class AVModuleTestHelperClass(utHelperClass):
         self.testUserResponse = utUserResponse()
         self.test_streams = []
 
-    def download_streams_for_suite(self, testsuite_name: str) -> bool:
+    def download_streams_from_list(self, streams: list) -> bool:
         """
-        Downloads all streams listed under the given test suite in the test setup YAML
-        to the DUT's download path, storing their target paths in self.test_streams.
+        Download the provided list of stream paths to the DUT and record their
+        target locations in self.test_streams.
 
         Args:
-            testsuite_name (str): Name of the test suite in setup YAML.
+            streams (list): List of relative stream paths from the server root.
 
         Returns:
-            bool: True if successful or no streams listed; False on errors.
+            bool: True if successful or list is empty, False otherwise.
         """
         try:
-            suites = self.test_setup.fields.get('suites', [])
-            streams = []
-            for suite in suites:
-                if suite.get('name') == testsuite_name:
-                    streams = suite.get('streams', [])
-                    break
-
             if not streams:
                 return True
 
@@ -167,14 +160,14 @@ class AVModuleTestHelperClass(utHelperClass):
             urls = []
             self.test_streams = []
             for spath in streams:
-                full_url = os.path.join(self.stream_download_url, spath.lstrip('/'))
+                full_url = os.path.join(self.stream_download_url, str(spath).lstrip('/'))
                 urls.append(full_url)
-                self.test_streams.append(os.path.join(self.download_path, os.path.basename(spath)))
+                self.test_streams.append(os.path.join(self.download_path, os.path.basename(str(spath))))
 
             self.downloadToDevice(urls, self.download_path, self.rack_device, True)
             return True
         except Exception as e:
-            self.log.error(f"Failed downloading streams for suite {testsuite_name}: {e}")
+            self.log.error(f"Failed downloading streams list: {e}")
             return False
 
     def restart_services(self, testsuite_name: str):

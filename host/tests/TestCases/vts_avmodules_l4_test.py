@@ -228,8 +228,9 @@ class L4TestClass(AVModuleTestHelperClass):
 
             if self.restart_required:
                 for i, ut_menu in enumerate(self.ut_menu):
-                    self.log.info(f"[Instance {i}] Stopping test case...")
+                    self.log.info("Stopping VTS player...")
                     self.vts_player.stop()
+                    self.log.info(f"[Instance {i}] Stopping test case...")
                     ut_menu.stop()
 
 

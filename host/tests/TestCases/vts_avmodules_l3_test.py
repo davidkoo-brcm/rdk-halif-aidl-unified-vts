@@ -71,11 +71,10 @@ class L3TestClass(AVModuleTestHelperClass):
                 self.log.info(f"No test_cases in setup for {suite_name}; defaulting to ALL from catalog")
                 test_cases = ["all"]
 
-            # Download streams for this suite, if any
-            if not self.download_streams_for_suite(suite_name):
-                self.log.error(f"Stream download failed for suite: {suite_name}")
+            # Download streams for this suite using helper (reads list directly)
+            streams = suite.get("streams", [])
+            if not self.download_streams_from_list(streams):
                 final_result = False
-                # Proceed to attempt tests anyway to surface failures consistently
 
             # Optional service restart handling
             if self.restart_required:
