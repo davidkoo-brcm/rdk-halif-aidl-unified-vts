@@ -31,6 +31,8 @@ declare -r TOP=`dirname $(realpath $0)`
 declare -r HALIF_VERSION=current
 RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION="main"}"
 RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-aidl-test-"
+VCOMPONENT_BASE_URL="ssh://git@github.code.rdkcentral.com/rdkcentral"
+VCOMPONENT_DIR="${TOP}/vcomponents"
 
 declare -A HALIF_COMPONENTS=(
   [avbuffer]="current"
@@ -54,6 +56,10 @@ declare -A HALIF_TEST_COMPONENTS=(
   [deepsleep]="RDK_HALIF_DEEPSLEEP_TEST_VERSION"
 )
 
+declare -A VCOMPONENT_MODULES=(
+    [deepsleep]="RDK_HALIF_DEEPSLEEP_VCOMP_VERSION"
+)
+
 # Define the directory where the repository will be cloned
 declare -r UT_CORE_DIR="${TOP}/ut-core"
 declare -r TOP_BUILD_DIR="${TOP}/build"
@@ -65,6 +71,7 @@ declare -r RDK_HAL_TEST_DIR=${TOP}/vts_hal_test_components
 declare -r PROFILES_DIR=${TOP}/profiles
 declare -r L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests
 declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests/src/av/
+declare -r VCOMPONENT_DIR=${TOP}/vcomponents
 
 #TODO: change to server path
 declare -r DEF_GST_PATH="${TOP}/../gstreamer_pkg"
@@ -280,6 +287,46 @@ build_mock_services()
 }
 
 ###############################################################################
+# Function to Build vcomponent services
+###############################################################################
+build_vcomponent_services()
+{
+    mkdir -p "${VCOMPONENT_DIR}" || return 1
+
+    for component in "${!VCOMPONENT_MODULES[@]}"; do
+        local repo="rdk-aidl-vcomponent-${component}"
+        local repo_dir="${VCOMPONENT_DIR}/${repo}"
+
+        echo -e "${BOLD}Building vcomponent: ${component}${RESET}"
+
+        # Clone if missing
+        if [[ ! -d "${repo_dir}/.git" ]]; then
+            git clone "${VCOMPONENT_BASE_URL}/${repo}.git" "${repo_dir}"
+            if [ $? -ne 0 ]; then
+                echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
+                echo -e "${BOLD}* ${RED}Failed to clone ${repo}. Exiting.${RESET}"
+                echo -e "${BOLD}╚══════════════════════════════════════════════════════╝${RESET}"
+                return 1
+            fi
+        fi
+
+        # Build the component
+        pushd ${repo_dir}
+
+        make -j"$(nproc)" -C . BUILD_DIR="${TOP_BUILD_DIR}" UT_CORE_DIR="${UT_CORE_DIR}"
+        if [ $? -ne 0 ]; then
+            echo -e "${BOLD}╔════════════════════════════════════════════════╗${RESET}"
+            echo -e "${BOLD}* ${RED}Failed to build the vcomponent Service. Exiting.${RESET}"
+            echo -e "${BOLD}╚════════════════════════════════════════════════╝${RESET}"
+            exit 1
+        fi
+
+        popd
+
+    done
+}
+
+###############################################################################
 # Function to Build HALIF test
 ###############################################################################
 build_halif_test()
@@ -323,6 +370,15 @@ install_test()
     done
     cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/
 
+    for component in "${!VCOMPONENT_MODULES[@]}"; do
+        if [ -d "${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}" ]; then
+            cp -rf ${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/vcomponent_configurations ${INSTALL_PATH}/
+        fi
+        if [ -f "${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/${component}_populate_controlPlane.sh" ]; then
+            cp -f ${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/${component}_populate_controlPlane.sh ${INSTALL_PATH}/
+        fi
+    done
+
     mkdir -p ${INSTALL_PATH}/assets/streams/input
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
     rm -rf ${INSTALL_PATH}/libavbufferhelper.so
@@ -337,6 +393,10 @@ clean_test()
     for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/mockservice/src/*.o
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/src/*.o
+    done
+
+    for component in "${!VCOMPONENT_MODULES[@]}"; do
+        rm -rf ${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/src/*.o
     done
 
     rm -rf ${AV_L4_TEST_DIR}/*.o
@@ -356,6 +416,7 @@ dist_clean_test()
     rm -rf $RDK_HAL_DIR
     rm -rf ${UT_CORE_DIR}
     rm -rf $RDK_HAL_TEST_DIR
+    rm -rf $VCOMPONENT_DIR
     rm -rf .repo
 }
 
@@ -399,6 +460,7 @@ elif [[ "$1" == [Tt]arget=* ]]; then
     build_ut_core
     generate_avbufferhelper_skeleton
     build_halif_test
+    build_vcomponent_services
     install_test
 else
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"
