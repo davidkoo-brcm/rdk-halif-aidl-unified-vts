@@ -292,6 +292,7 @@ build_mock_services()
 build_vcomponent_services()
 {
     mkdir -p "${VCOMPONENT_DIR}" || return 1
+    declare -r INSTALL_PATH=${TOP_BUILD_DIR}/bin
 
     for component in "${!VCOMPONENT_MODULES[@]}"; do
         local repo="rdk-aidl-vcomponent-${component}"
@@ -322,6 +323,14 @@ build_vcomponent_services()
         fi
 
         popd
+
+
+        if [ -d "${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}" ]; then
+            cp -rf ${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/vcomponent_configurations ${INSTALL_PATH}/
+        fi
+        if [ -f "${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/${component}_populate_controlPlane.sh" ]; then
+            cp -f ${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/${component}_populate_controlPlane.sh ${INSTALL_PATH}/
+        fi
 
     done
 }
@@ -369,15 +378,6 @@ install_test()
         fi
     done
     cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/
-
-    for component in "${!VCOMPONENT_MODULES[@]}"; do
-        if [ -d "${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}" ]; then
-            cp -rf ${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/vcomponent_configurations ${INSTALL_PATH}/
-        fi
-        if [ -f "${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/${component}_populate_controlPlane.sh" ]; then
-            cp -f ${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/${component}_populate_controlPlane.sh ${INSTALL_PATH}/
-        fi
-    done
 
     mkdir -p ${INSTALL_PATH}/assets/streams/input
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
@@ -460,9 +460,12 @@ elif [[ "$1" == [Tt]arget=* ]]; then
     build_ut_core
     generate_avbufferhelper_skeleton
     build_halif_test
-    build_vcomponent_services
     install_test
+    if [ "$2" == "-v" ]; then
+	    build_vcomponent_services
+    fi
 else
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"
     help
 fi
+
