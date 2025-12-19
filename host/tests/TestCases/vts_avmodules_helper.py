@@ -69,8 +69,8 @@ class AVModuleTestHelperClass(utHelperClass):
         self.rack_device = "dut"
 
         # Load configurations (allow override for L1/L2/L3 runners)
-        setup_file = setup_file_name or "vts_l4_setup.yaml"
-        test_cfg_file = test_config_file_name or "vts_l4_setup.yaml"
+        setup_file = setup_file_name or "vts_avmodule_setup.yaml"
+        test_cfg_file = test_config_file_name or "vts_avmodule_setup.yaml"
         self.test_setup_path = os.path.join(dir_path, setup_file)
         self.test_config_local_path = os.path.join(dir_path, test_cfg_file)
         self.test_setup = ConfigRead(self.test_setup_path, self.module_name)
@@ -86,16 +86,6 @@ class AVModuleTestHelperClass(utHelperClass):
         self.all_wait_time = self.cpe.get("all_wait_time")
         self.stream_download_url = device_test_setup.get("streams_download_url")
         self.download_path = self.cpe.get("download_path")
-
-        # Service restart settings
-        self.restart_required = self.test_setup.fields.get("restart_required", False)
-        self.vSink_process_name = self.cpe.get("vsink_process_name")
-        self.vDecoder_process_name = self.cpe.get("vdecoder_process_name")
-        self.aSink_process_name = self.cpe.get("asink_process_name")
-        self.aDecoder_process_name = self.cpe.get("adecoder_process_name")
-        self.process_path = self.cpe.get("process_path")
-        self.avClock_process_name = self.cpe.get("avClock_process_name")
-        self.planeCtrl_process_name = self.cpe.get("planeCtrl_process_name")
 
         # Initialize sessions
         self.instance_list = self.test_setup.fields.get("num_of_instances", 1)
@@ -172,40 +162,10 @@ class AVModuleTestHelperClass(utHelperClass):
 
     def restart_services(self, testsuite_name: str):
         """
-        Restarts only the AV-related process based on module name in testsuite_name.
-        Module derived from the last underscore-separated token (e.g., 'VTS_L1_VideoDecoder' -> 'videodecoder').
+        Legacy method - process restart between test cases has been disabled.
+        Kept for backward compatibility but does nothing.
         """
-        try:
-            module = testsuite_name.strip().split("_")[-1].lower()
-        except Exception:
-            self.log.error("Invalid testsuite_name format: %s", testsuite_name)
-            return
-
-        for idx in range(self.instance_list):
-            hal_session = self.hal_sessions[idx] if idx < len(self.hal_sessions) else None
-            if not hal_session:
-                self.log.info(f"HAL session for instance {idx} not found — skipping.")
-                continue
-
-            services = {
-                "videosink": (self.vSink_process_name, self.process_path, "VideoSink"),
-                "videodecoder": (self.vDecoder_process_name, self.process_path, "VideoDecoder"),
-                "audiosink": (self.aSink_process_name, self.process_path, "AudioSink"),
-                "audiodecoder": (self.aDecoder_process_name, self.process_path, "AudioDecoder"),
-                "avclock": (self.avClock_process_name, self.process_path, "AVClock"),
-                "planecontrol": (self.planeCtrl_process_name, self.process_path, "PlaneControl"),
-                "avbuffer": ("RDKAVBufferService", "/usr/bin/", "AVBuffer"),
-            }
-
-            if module in services:
-                proc_name, proc_path, label = services[module]
-                if proc_name and proc_path:
-                    self.log.info(f"Restarting {label} process: {proc_name} for instance {idx}")
-                    self.utilities.restart_process_by_name(hal_session, proc_name, proc_path)
-                else:
-                    self.log.info(f"{label} process name or path is None — skipping restart.")
-            else:
-                self.log.info(f"Module '{module}' not recognized — no process restarted.")
+        pass
 
     def parse_stream_name(self, stream_name: str, tcid: str) -> dict:
         """
@@ -553,21 +513,11 @@ class AVModuleTestHelperClass(utHelperClass):
         outputs = []
         results = []
 
-        if self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Starting test case...")
-                ut_menu.start()
-
         wait_time = self.all_wait_time if use_all_wait_time else self.wait_time
         for i, ut_menu in enumerate(self.ut_menu):
             self.log.info(f"[Instance {i}] Running test case: {test_case} in suite {test_suite}...")
             output = ut_menu.select(test_suite, test_case, None, wait_time, False)
             outputs.append(output)
-
-        if self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Stopping test case...")
-                ut_menu.stop()
 
         for i, (ut_menu, output) in enumerate(zip(self.ut_menu, outputs)):
             result = ut_menu.collect_results(output, True)

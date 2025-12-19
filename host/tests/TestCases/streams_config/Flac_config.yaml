@@ -27,37 +27,37 @@ AVModule:
   L4Test:
   - tcid: VTS_L4_Flac_1001
     action: normal_play
-    stream_name: Flac/vts_flac_44.1k_2ch_a575_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_44.1k_2ch_a575_v0_60sec.mp4
   - tcid: VTS_L4_Flac_1002
     action: normal_play
-    stream_name: Flac/vts_flac_44.1k_6ch_a575_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_44.1k_6ch_a575_v0_60sec.mp4
   - tcid: VTS_L4_Flac_1003
     action: normal_play
-    stream_name: Flac/vts_flac_44.1k_8ch_a575_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_44.1k_8ch_a575_v0_60sec.mp4
   - tcid: VTS_L4_Flac_1004
     action: normal_play
-    stream_name: Flac/vts_flac_48k_2ch_a625_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_48k_2ch_a625_v0_60sec.mp4
   - tcid: VTS_L4_Flac_1005
     action: normal_play
-    stream_name: Flac/vts_flac_48k_6ch_a625_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_48k_6ch_a625_v0_60sec.mp4
   - tcid: VTS_L4_Flac_1006
     action: normal_play
-    stream_name: Flac/vts_flac_48k_8ch_a625_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_48k_8ch_a625_v0_60sec.mp4
   - tcid: VTS_L4_Flac_1007
     action: normal_play
-    stream_name: Flac/vts_flac_88.2k_2ch_a646_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_88.2k_2ch_a646_v0_60sec.mp4
   - tcid: VTS_L4_Flac_1008
     action: normal_play
-    stream_name: Flac/vts_flac_88.2k_6ch_a646_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_88.2k_6ch_a646_v0_60sec.mp4
   - tcid: VTS_L4_Flac_1009
     action: normal_play
-    stream_name: Flac/vts_flac_88.2k_8ch_a646_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_88.2k_8ch_a646_v0_60sec.mp4
   - tcid: VTS_L4_Flac_1010
     action: normal_play
-    stream_name: Flac/vts_flac_96k_2ch_a704_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_96k_2ch_a704_v0_60sec.mp4
   - tcid: VTS_L4_Flac_1011
     action: normal_play
-    stream_name: Flac/vts_flac_96k_6ch_a704_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_96k_6ch_a704_v0_60sec.mp4
   - tcid: VTS_L4_Flac_1012
     action: normal_play
-    stream_name: Flac/vts_flac_96k_8ch_a704_v0_60sec.mp4
+    stream_name: AV/Flac/vts_flac_96k_8ch_a704_v0_60sec.mp4

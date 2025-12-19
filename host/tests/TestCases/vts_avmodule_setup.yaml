@@ -77,49 +77,49 @@ AVModule:
       2:
         name: "VTS_L3_AudioDecoder"
         streams:
-          - /Audio/AAC_LC/Valid/tones_8k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_11.025k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_11.025k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_12k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_16k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_16k_2_64.wav
-          - /Audio/AAC_LC/Valid/tones_22.05k_2_96.aac
-          - /Audio/AAC_LC/Valid/tones_24k_2_96.aac
-          - /Audio/AAC_LC/Valid/tones_32k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_44.1k_2_128.aac
-          - /Audio/AAC_LC/Valid/tones_48k_1_256.aac
-          - /Audio/AAC_LC/Valid/tones_48k_2_256.aac
-          - /Audio/AAC_LC/Valid/tones_48k_5.1_384.aac
-          - /Audio/AAC_LC/Valid/tones_48k_7.1_512.aac
-          - /Audio/AAC_LC/Valid/tones_64k_2_256.aac
-          - /Audio/AAC_LC/Valid/tones_88.2k_2_256.aac
-          - /Audio/AAC_LC/Valid/tones_8k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_96k_2_384.aac
-          - /Audio/AAC_LC/Valid/tones_96k_5.1_512.aac
-          - /Audio/AAC_LC/Valid/tones_96k_7.1_1024.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_header_fields.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_incomplete.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_random.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_random_bitflip.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_sync.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_zero.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_zero_1.aac
-          - /Audio/DOLBY_AC3/Valid/tones_32k_1_64.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_32k_2_64.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_44.1k_1_64.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_44.1k_2_96.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_1_128.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_2.1_256.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_2_192.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_3.0_256.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_4.0_256.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_5.0_384.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_5.1_640.ac3
-          - /Audio/DOLBY_AC3/Invalid/tones_48k_2_192_incomplete.ac3
-          - /Audio/DOLBY_AC3/Invalid/tones_48k_2_192_invalid.ac3
-          - /Audio/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
-          - /Audio/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
-          - /Audio/DOLBY_AC3/Invalid/tones_48k_2_192_zero.ac3
+          - /audio_decoder/AAC_LC/Valid/tones_8k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_11.025k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_11.025k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_12k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_16k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_16k_2_64.wav
+          - /audio_decoder/AAC_LC/Valid/tones_22.05k_2_96.aac
+          - /audio_decoder/AAC_LC/Valid/tones_24k_2_96.aac
+          - /audio_decoder/AAC_LC/Valid/tones_32k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_44.1k_2_128.aac
+          - /audio_decoder/AAC_LC/Valid/tones_48k_1_256.aac
+          - /audio_decoder/AAC_LC/Valid/tones_48k_2_256.aac
+          - /audio_decoder/AAC_LC/Valid/tones_48k_5.1_384.aac
+          - /audio_decoder/AAC_LC/Valid/tones_48k_7.1_512.aac
+          - /audio_decoder/AAC_LC/Valid/tones_64k_2_256.aac
+          - /audio_decoder/AAC_LC/Valid/tones_88.2k_2_256.aac
+          - /audio_decoder/AAC_LC/Valid/tones_8k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_96k_2_384.aac
+          - /audio_decoder/AAC_LC/Valid/tones_96k_5.1_512.aac
+          - /audio_decoder/AAC_LC/Valid/tones_96k_7.1_1024.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_header_fields.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_incomplete.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_random.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_random_bitflip.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_sync.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_zero.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_zero_1.aac
+          - /audio_decoder/DOLBY_AC3/Valid/tones_32k_1_64.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_32k_2_64.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_44.1k_1_64.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_44.1k_2_96.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_1_128.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_2.1_256.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_2_192.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_3.0_256.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_4.0_256.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_5.0_384.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_5.1_640.ac3
+          - /audio_decoder/DOLBY_AC3/Invalid/tones_48k_2_192_incomplete.ac3
+          - /audio_decoder/DOLBY_AC3/Invalid/tones_48k_2_192_invalid.ac3
+          - /audio_decoder/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
+          - /audio_decoder/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
+          - /audio_decoder/DOLBY_AC3/Invalid/tones_48k_2_192_zero.ac3
         tests:
           - Decode_Sequential_NonTunnel_NonSecure
           - Decode_Sequential_NonTunnel_NonSecure_Error
@@ -189,49 +189,49 @@ AVModule:
       5:
         name: "VTS_L3_AudioSink"
         streams:
-          - /Audio/AAC_LC/Valid/tones_8k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_11.025k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_11.025k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_12k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_16k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_16k_2_64.wav
-          - /Audio/AAC_LC/Valid/tones_22.05k_2_96.aac
-          - /Audio/AAC_LC/Valid/tones_24k_2_96.aac
-          - /Audio/AAC_LC/Valid/tones_32k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_44.1k_2_128.aac
-          - /Audio/AAC_LC/Valid/tones_48k_1_256.aac
-          - /Audio/AAC_LC/Valid/tones_48k_2_256.aac
-          - /Audio/AAC_LC/Valid/tones_48k_5.1_384.aac
-          - /Audio/AAC_LC/Valid/tones_48k_7.1_512.aac
-          - /Audio/AAC_LC/Valid/tones_64k_2_256.aac
-          - /Audio/AAC_LC/Valid/tones_88.2k_2_256.aac
-          - /Audio/AAC_LC/Valid/tones_8k_2_64.aac
-          - /Audio/AAC_LC/Valid/tones_96k_2_384.aac
-          - /Audio/AAC_LC/Valid/tones_96k_5.1_512.aac
-          - /Audio/AAC_LC/Valid/tones_96k_7.1_1024.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_header_fields.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_incomplete.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_random.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_random_bitflip.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_sync.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_zero.aac
-          - /Audio/AAC_LC/Invalid/tones_48k_2_256_zero_1.aac
-          - /Audio/DOLBY_AC3/Valid/tones_32k_1_64.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_32k_2_64.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_44.1k_1_64.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_44.1k_2_96.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_1_128.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_2.1_256.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_2_192.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_3.0_256.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_4.0_256.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_5.0_384.ac3
-          - /Audio/DOLBY_AC3/Valid/tones_48k_5.1_640.ac3
-          - /Audio/DOLBY_AC3/Invalid/tones_48k_2_192_incomplete.ac3
-          - /Audio/DOLBY_AC3/Invalid/tones_48k_2_192_invalid.ac3
-          - /Audio/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
-          - /Audio/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
-          - /Audio/DOLBY_AC3/Invalid/tones_48k_2_192_zero.ac3
+          - /audio_decoder/AAC_LC/Valid/tones_8k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_11.025k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_11.025k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_12k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_16k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_16k_2_64.wav
+          - /audio_decoder/AAC_LC/Valid/tones_22.05k_2_96.aac
+          - /audio_decoder/AAC_LC/Valid/tones_24k_2_96.aac
+          - /audio_decoder/AAC_LC/Valid/tones_32k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_44.1k_2_128.aac
+          - /audio_decoder/AAC_LC/Valid/tones_48k_1_256.aac
+          - /audio_decoder/AAC_LC/Valid/tones_48k_2_256.aac
+          - /audio_decoder/AAC_LC/Valid/tones_48k_5.1_384.aac
+          - /audio_decoder/AAC_LC/Valid/tones_48k_7.1_512.aac
+          - /audio_decoder/AAC_LC/Valid/tones_64k_2_256.aac
+          - /audio_decoder/AAC_LC/Valid/tones_88.2k_2_256.aac
+          - /audio_decoder/AAC_LC/Valid/tones_8k_2_64.aac
+          - /audio_decoder/AAC_LC/Valid/tones_96k_2_384.aac
+          - /audio_decoder/AAC_LC/Valid/tones_96k_5.1_512.aac
+          - /audio_decoder/AAC_LC/Valid/tones_96k_7.1_1024.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_header_fields.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_incomplete.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_random.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_random_bitflip.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_sync.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_zero.aac
+          - /audio_decoder/AAC_LC/Invalid/tones_48k_2_256_zero_1.aac
+          - /audio_decoder/DOLBY_AC3/Valid/tones_32k_1_64.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_32k_2_64.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_44.1k_1_64.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_44.1k_2_96.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_1_128.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_2.1_256.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_2_192.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_3.0_256.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_4.0_256.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_5.0_384.ac3
+          - /audio_decoder/DOLBY_AC3/Valid/tones_48k_5.1_640.ac3
+          - /audio_decoder/DOLBY_AC3/Invalid/tones_48k_2_192_incomplete.ac3
+          - /audio_decoder/DOLBY_AC3/Invalid/tones_48k_2_192_invalid.ac3
+          - /audio_decoder/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
+          - /audio_decoder/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
+          - /audio_decoder/DOLBY_AC3/Invalid/tones_48k_2_192_zero.ac3
         tests:
           - Sink_Sequential_NonTunnel_NonSecure
           - Sink_Sequential_NonTunnel_NonSecure_Flush
@@ -364,6 +364,7 @@ AVModule:
           - getProperty_pos
           - getProperty_neg
           - getPropertyMulti_pos
+          - getPropertyMulti_neg
           - getState_pos
           - open_pos
           - open_neg
@@ -602,3 +603,8 @@ AVModule:
           - TestGetSetProperty
           - TestGetSetPropertyMultiAtomic
           - TestGetSetVideoSourceDestinationPlaneMapping
+      18:
+        name: "VTS_L4_AVMODULE"
+        tests:
+          - NormalPlay
+          - playBackWithTrickModes

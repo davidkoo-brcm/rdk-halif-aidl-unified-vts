@@ -51,11 +51,10 @@ class L1L2TestClass(AVModuleTestHelperClass):
 
         final_result = True
 
-        # Start UT menu once when restart is not required
-        if not self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Starting test case...")
-                ut_menu.start()
+        # Start UT menu once
+        for i, ut_menu in enumerate(self.ut_menu):
+            self.log.info(f"[Instance {i}] Starting test case...")
+            ut_menu.start()
 
         test_suites = self.test_setup.fields.get("test", {}).get("suites", {})
 
@@ -71,10 +70,6 @@ class L1L2TestClass(AVModuleTestHelperClass):
                 self.log.info(f"No test_cases in setup for {suite_name}; defaulting to ALL from catalog")
                 test_cases = ["all"]
 
-            # Optional service restart handling
-            if self.restart_required:
-                self.restart_services(suite_name)
-
             if len(test_cases) == 1 and test_cases[0] == "all":
                 self.log.stepStart(f"Test Suite: {suite_name} Run all Test cases")
                 result = self.run_all(suite_name, use_all_wait_time=False)
@@ -89,18 +84,10 @@ class L1L2TestClass(AVModuleTestHelperClass):
                     self.log.stepResult(result, f"Test Suite: {suite_name} Test Case: {tc}")
                     self.log.testResult(f'{suite_name} Finished')
 
-            # Optional post-suite restart
-            if self.restart_required:
-                self.restart_services(suite_name)
-
-
-        # Stop UT menu if we started it once
-        if not self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Stopping test case...")
-                ut_menu.stop()
-
-        #self.log.testResult(f'{suite_name} Finished')
+        # Stop UT menu
+        for i, ut_menu in enumerate(self.ut_menu):
+            self.log.info(f"[Instance {i}] Stopping test case...")
+            ut_menu.stop()
 
         self.test_cleanup()
         return final_result

@@ -51,11 +51,10 @@ class L3TestClass(AVModuleTestHelperClass):
 
         final_result = True
 
-        # Start UT menu once when restart is not required
-        if not self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Starting test case...")
-                ut_menu.start()
+        # Start UT menu once
+        for i, ut_menu in enumerate(self.ut_menu):
+            self.log.info(f"[Instance {i}] Starting test case...")
+            ut_menu.start()
 
         test_suites = self.test_setup.fields.get("test", {}).get("suites", {})
 
@@ -76,10 +75,6 @@ class L3TestClass(AVModuleTestHelperClass):
             if not self.download_streams_from_list(streams):
                 final_result = False
 
-            # Optional service restart handling
-            if self.restart_required:
-                self.restart_services(suite_name)
-
             if len(test_cases) == 1 and test_cases[0] == "all":
                 self.log.stepStart(f"Test Suite: {suite_name} Run all Test cases")
                 result = self.run_all(suite_name, use_all_wait_time=True)
@@ -97,15 +92,10 @@ class L3TestClass(AVModuleTestHelperClass):
             # Clean downloaded assets for this suite
             self.test_clean_all_assets()
 
-            # Optional post-suite restart
-            if self.restart_required:
-                self.restart_services(suite_name)
-
-        # Stop UT menu if we started it once
-        if not self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Stopping test case...")
-                ut_menu.stop()
+        # Stop UT menu
+        for i, ut_menu in enumerate(self.ut_menu):
+            self.log.info(f"[Instance {i}] Stopping test case...")
+            ut_menu.stop()
 
         self.test_cleanup()
         return final_result

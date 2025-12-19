@@ -69,6 +69,7 @@ class L4TestClass(AVModuleTestHelperClass):
         self.waitTime = self.cpe.get("wait_time")
         self.module_name = "AVModule"
         socVendor = self.cpe.get("soc_vendor")
+        self.restart_required = False
 
         self.player_session = self.dut.getConsoleSession("ssh_player")
 
@@ -143,10 +144,10 @@ class L4TestClass(AVModuleTestHelperClass):
                 self.log.error(f"Failed processing include file {inc_file}: {e}")
         manual_verification = False
 
-        if not self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Starting test case...")
-                ut_menu.start()
+
+        for i, ut_menu in enumerate(self.ut_menu):
+            self.log.info(f"[Instance {i}] Starting test case...")
+            ut_menu.start()
 
         for test_case in l4_tests:
             tcid = test_case.get("tcid")
