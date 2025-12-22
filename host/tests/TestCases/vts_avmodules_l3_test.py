@@ -26,11 +26,11 @@ import sys
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dir_path, "../"))
 
-from vts_avmodules_helper import AVModuleTestHelperClass
+from vts_helper import VTSTestHelperClass
 from raft.framework.core.logModule import logModule
 
 
-class L3TestClass(AVModuleTestHelperClass):
+class L3TestClass(VTSTestHelperClass):
     """Runs all L3 AVModule test suites (with streams) in a single entrypoint."""
 
     def __init__(self, log: logModule = None):

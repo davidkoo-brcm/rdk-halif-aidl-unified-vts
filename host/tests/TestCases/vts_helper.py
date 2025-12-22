@@ -37,11 +37,11 @@ from raft.framework.plugins.ut_raft.utBaseUtils import utBaseUtils
 from raft.framework.plugins.ut_raft.utUserResponse import utUserResponse
 
 
-class AVModuleTestHelperClass(utHelperClass):
+class VTSTestHelperClass(utHelperClass):
     """
-    Helper class for AV module test classes (L1, L2, L3, L4).
+    Generic VTS helper class for test execution (L1, L2, L3, L4).
     Provides common functionality for environment setup, binary copying, test execution, cleanup,
-    and L4 YAML generation.
+    and L4 YAML generation. Can be used for any module (AVModule, DSModule, etc.).
     """
 
     def __init__(self, module_name: str, test_name: str, qc_id: str,
@@ -65,12 +65,15 @@ class AVModuleTestHelperClass(utHelperClass):
         self.test_name = test_name
         self.qc_id = qc_id
         self.test_suites = test_suites or []
-        self.l4_yaml_path = l4_yaml_path or os.path.join(dir_path, "vts_l4_test_info.yaml")
+        # Default L4 YAML path based on module name
+        default_l4_path = f"vts_l4_{module_name.lower()}_test_info.yaml" if module_name else "vts_l4_test_info.yaml"
+        self.l4_yaml_path = l4_yaml_path or os.path.join(dir_path, default_l4_path)
         self.rack_device = "dut"
 
         # Load configurations (allow override for L1/L2/L3 runners)
-        setup_file = setup_file_name or "vts_avmodule_setup.yaml"
-        test_cfg_file = test_config_file_name or "vts_avmodule_setup.yaml"
+        # Default to module-specific setup file if not provided
+        setup_file = setup_file_name or f"vts_{module_name.lower()}_setup.yaml"
+        test_cfg_file = test_config_file_name or f"vts_{module_name.lower()}_setup.yaml"
         self.test_setup_path = os.path.join(dir_path, setup_file)
         self.test_config_local_path = os.path.join(dir_path, test_cfg_file)
         self.test_setup = ConfigRead(self.test_setup_path, self.module_name)
@@ -441,7 +444,7 @@ class AVModuleTestHelperClass(utHelperClass):
                 return True
 
             self.log.info("Cleaning up binaries from DUT...")
-            self.deleteFromDevice(self.copied_binaries, self.rack_device)
+            self.deleteFromDevice(self.copied_binaries, self.rack_device, False)
             self.copied_binaries = []
             self.log.info("Binary cleanup completed.")
             return True
@@ -517,11 +520,32 @@ class AVModuleTestHelperClass(utHelperClass):
         for i, ut_menu in enumerate(self.ut_menu):
             self.log.info(f"[Instance {i}] Running test case: {test_case} in suite {test_suite}...")
             output = ut_menu.select(test_suite, test_case, None, wait_time, False)
+
+            run_summary_found = "Run Summary:" in output
+            if not run_summary_found:
+                self.log.error(f"[Instance {i}] Run Summary not found - test case likely crashed. Marking as FAILED.")
+                # Restart the menu to recover the session for next tests
+                self.log.info(f"[Instance {i}] Restarting ut_menu to prepare for next test cases...")
+                ut_menu.stop()
+                ut_menu.start()
+                # Mark this test as failed and skip retry (don't run the same crashed test again)
+                outputs.append("")  # Empty output for failed case
+                results.append(False)  # Explicitly mark as failed
+                continue
+
             outputs.append(output)
 
+        # Collect results only for tests that actually ran (not already marked as failed)
         for i, (ut_menu, output) in enumerate(zip(self.ut_menu, outputs)):
+            # Skip if we already marked this as failed (empty output from crash)
+            if not output:
+                continue
             result = ut_menu.collect_results(output, True)
-            results.append(result if result is not None else False)
+            # Replace the placeholder result if we're processing this output
+            if i < len(results):
+                results[i] = result if result is not None else False
+            else:
+                results.append(result if result is not None else False)
             self.log.info(f"[Instance {i}] Result: {result}")
 
         return all(results)

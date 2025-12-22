@@ -29,7 +29,7 @@ import re
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dir_path, "../"))
 
-from vts_avmodules_helper import AVModuleTestHelperClass
+from vts_helper import VTSTestHelperClass
 from raft.framework.core.logModule import logModule
 from raft.framework.plugins.ut_raft import utHelperClass
 from raft.framework.plugins.ut_raft.utPlayer import utPlayer
@@ -38,7 +38,7 @@ from raft.framework.plugins.ut_raft.utSuiteNavigator import UTSuiteNavigatorClas
 from raft.framework.plugins.ut_raft.configRead import ConfigRead
 
 
-class L4TestClass(AVModuleTestHelperClass):
+class L4TestClass(VTSTestHelperClass):
     """Test class for running L4 AV module tests (playback + trick modes)."""
 
     def __init__(self, log: logModule = None):
