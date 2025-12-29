@@ -316,6 +316,7 @@ install_test()
     install -t ${INSTALL_PATH} ${TOP_BUILD_DIR}/usr/bin/*
     install -t ${INSTALL_PATH} ${TOP_BUILD_DIR}/usr/lib/*
     install -t ${INSTALL_PATH} run.sh
+    install -t ${INSTALL_PATH} start_services.sh
 
     cp -r ${PROFILES_DIR} ${INSTALL_PATH}
 
