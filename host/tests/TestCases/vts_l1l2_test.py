@@ -31,15 +31,15 @@ from raft.framework.core.logModule import logModule
 
 
 class L1L2TestClass(VTSTestHelperClass):
-    """Runs all L1 and L2 AVModule test suites in a single entrypoint."""
+    """Runs all L1 and L2 VTS test suites in a single entrypoint."""
 
     def __init__(self, log: logModule = None):
         super().__init__(
-            module_name="AVModule",
-            test_name="L1L2_AVModule",
+            module_name="VTS",
+            test_name="L1L2Test",
             qc_id="L1L2_001",
-            setup_file_name="vts_avmodule_setup.yaml",
-            test_config_file_name="vts_avmodule_setup.yaml",
+            setup_file_name="vts_test_setup.yaml",
+            test_config_file_name="vts_test_setup.yaml",
             log=log,
         )
 

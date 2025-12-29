@@ -22,13 +22,13 @@
 
 # This is a sample test configuration file. Users can customize the YAML entries as needed
 # This test configuration file includes sample YAML entries for executing various combinations
-AVModule:
-  description: "AVModule L1 and L2 test setup"
+VTS:
+  description: "VTS L1 and L2 test setup"
   restart_required: False
   num_of_instances: 1
   test:
     artifacts:
-      - "../../../build/vts_unified_arm.tar.gz.bz"
+      - "../../../build/vts_unified.tar.gz.bz"
     execute: "./run.sh"
     type: UT-C # C (UT-C Cunit) / C++ (UT-G (g++ ut-core gtest backend))
     suites:
@@ -265,6 +265,9 @@ AVModule:
           - free_neg
           - isValid_pos
           - getAllocList_pos
+          - getAllocList_neg
+          - calculateSHA1_pos
+          - calculateSHA1_neg
       7:
         name: "VTS_L3_AVBuffer"
         tests:
@@ -342,17 +345,6 @@ AVModule:
           - con_sec_audio_videopool_notify
           - con_sec_audio_videopool_readwrite
           - con_sec_audio_videopool_sha1
-
-      ######################################
-      # Entry to run all test case
-      ######################################
-      #- name: "VTS_L1_VideoDecoder"
-      #  tests:
-      #    - all
-
-      #######################################
-      # Entries to run individual test cases
-      #######################################
       8:
         name: "VTS_L1_VideoDecoder"
         tests:
@@ -425,17 +417,6 @@ AVModule:
           - Decode_Concurrent_NonTunnel_NonSecure_Flush
           - Decode_Concurrent_NonTunnel_NonSecure_FlushReset
           - Decode_Concurrent_NonTunnel_NonSecure_GOPStructure
-
-      ######################################
-      # Entry to run all test case
-      ######################################
-      #- name: "VTS_L1_VideoSink"
-      #  tests:
-      #    - all
-
-      #######################################
-      # Entries to run individual test cases
-      #######################################
       11:
         name: "VTS_L1_VideoSink"
         tests:

@@ -27,7 +27,7 @@ import argparse
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dir_path, "../"))
 
-from vts_avmodules_l1l2_test import L1L2TestClass
+from vts_l1l2_test import L1L2TestClass
 from vts_avmodules_l3_test import L3TestClass
 from vts_avmodules_l4_test import L4TestClass
 from raft.framework.core.logModule import logModule
@@ -49,7 +49,7 @@ def run_l4(logger: logModule) -> bool:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run AVModule L1/L2/L3/L4 test suites", add_help=True)
+    parser = argparse.ArgumentParser(description="Run VTS L1/L2/L3/L4 test suites", add_help=True)
     parser.add_argument(
         "--levels",
         nargs="+",
@@ -88,7 +88,7 @@ def main():
 
     # L1/L2 are combined in one runner
     if "L1" in levels or "L2" in levels:
-        logger.testStart("AVModule", "L1L2")
+        logger.testStart("VTS", "L1L2")
         result = run_l1l2(logger)
         overall = overall and result
         # testResult in logModule accepts a single argument; record summary label only

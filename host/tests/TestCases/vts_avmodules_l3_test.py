@@ -35,11 +35,11 @@ class L3TestClass(VTSTestHelperClass):
 
     def __init__(self, log: logModule = None):
         super().__init__(
-            module_name="AVModule",
+            module_name="VTS",
             test_name="L3_AVModule",
             qc_id="L3_001",
-            setup_file_name="vts_avmodule_setup.yaml",
-            test_config_file_name="vts_avmodule_setup.yaml",
+            setup_file_name="vts_test_setup.yaml",
+            test_config_file_name="vts_test_setup.yaml",
             log=log,
         )
 

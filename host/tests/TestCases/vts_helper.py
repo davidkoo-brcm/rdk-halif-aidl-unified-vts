@@ -41,7 +41,7 @@ class VTSTestHelperClass(utHelperClass):
     """
     Generic VTS helper class for test execution (L1, L2, L3, L4).
     Provides common functionality for environment setup, binary copying, test execution, cleanup,
-    and L4 YAML generation. Can be used for any module (AVModule, DSModule, etc.).
+    and L4 YAML generation. Can be used for any module (VTS,AVModule, DSModule, etc.).
     """
 
     def __init__(self, module_name: str, test_name: str, qc_id: str,
@@ -72,8 +72,8 @@ class VTSTestHelperClass(utHelperClass):
 
         # Load configurations (allow override for L1/L2/L3 runners)
         # Default to module-specific setup file if not provided
-        setup_file = setup_file_name or f"vts_{module_name.lower()}_setup.yaml"
-        test_cfg_file = test_config_file_name or f"vts_{module_name.lower()}_setup.yaml"
+        setup_file = setup_file_name
+        test_cfg_file = test_config_file_name
         self.test_setup_path = os.path.join(dir_path, setup_file)
         self.test_config_local_path = os.path.join(dir_path, test_cfg_file)
         self.test_setup = ConfigRead(self.test_setup_path, self.module_name)
