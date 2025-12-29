@@ -41,7 +41,7 @@
 
    <project name="rdk-halif-aidl-test-deepsleep"
            path="vts_hal_test_components/deepsleep"
-	   revision="refs/tags/0.1.0" />
+           revision="refs/tags/0.1.0" />
 
 </manifest>
 

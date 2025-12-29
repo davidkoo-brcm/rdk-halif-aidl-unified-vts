@@ -32,7 +32,6 @@ declare -r HALIF_VERSION=current
 RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION="main"}"
 RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-aidl-test-"
 VCOMPONENT_BASE_URL="ssh://git@github.code.rdkcentral.com/rdkcentral"
-VCOMPONENT_DIR="${TOP}/vcomponents"
 
 declare -A HALIF_COMPONENTS=(
   [avbuffer]="current"
@@ -324,7 +323,6 @@ build_vcomponent_services()
 
         popd
 
-
         if [ -d "${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}" ]; then
             cp -rf ${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/vcomponent_configurations ${INSTALL_PATH}/
         fi
@@ -462,10 +460,9 @@ elif [[ "$1" == [Tt]arget=* ]]; then
     build_halif_test
     install_test
     if [ "$2" == "-v" ]; then
-	    build_vcomponent_services
+        build_vcomponent_services
     fi
 else
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"
     help
 fi
-
