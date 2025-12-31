@@ -59,10 +59,18 @@ declare -A HALIF_TEST_COMPONENTS=(
   [cec]="RDK_HALIF_CEC_TEST_VERSION"
 )
 
+: "${RDK_VCOMPONENT_DEFAULT_BRANCH:=main}"
+
 declare -A VCOMPONENT_MODULES=(
     [deviceinfo]="RDK_HALIF_DEVICEINFO_VCOMP_VERSION"
     [cec]="RDK_HALIF_CEC_VCOMP_VERSION"
 )
+
+resolve_branch() {
+    local component="$1"
+    local var="RDK_VCOMPONENT_${component^^}"
+    echo "${!var:-$RDK_VCOMPONENT_DEFAULT_BRANCH}"
+}
 
 # Define the directory where the repository will be cloned
 declare -r UT_CORE_DIR="${TOP}/ut-core"
@@ -345,11 +353,13 @@ install_test()
     mkdir -p ${INSTALL_PATH}/assets/streams/input
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
     rm -rf ${INSTALL_PATH}/libavbufferhelper.so
+
     cd ${TOP_BUILD_DIR}
     tar -zcf ${OUT_TAR_FILE} bin
     cd -
 }
 
+#TODO: This function needs to be removed, once the vcomponent is available in vDevice
 ###############################################################################
 # Function to install and build vcomponent services
 ###############################################################################
@@ -361,8 +371,10 @@ build_vcomponent_services()
     for component in "${!VCOMPONENT_MODULES[@]}"; do
         local repo="rdk-aidl-vcomponent-${component}"
         local repo_dir="${VCOMPONENT_DIR}/${repo}"
+        local branch
+        branch="$(resolve_branch "$component")"
 
-        echo -e "${BOLD}Building vcomponent: ${component}${RESET}"
+        echo -e "${BOLD}Building ${repo} [branch: ${branch}]${RESET}"
 
         # Clone if missing
         if [[ ! -d "${repo_dir}/.git" ]]; then
@@ -375,22 +387,30 @@ build_vcomponent_services()
             fi
         fi
 
-        # Build the component
-        pushd ${repo_dir}
+        pushd "${repo_dir}" >/dev/null
 
-        make -j"$(nproc)" -C . BUILD_DIR="${TOP_BUILD_DIR}" UT_CORE_DIR="${UT_CORE_DIR}"
-        if [ $? -ne 0 ]; then
-            echo -e "${BOLD}╔════════════════════════════════════════════════╗${RESET}"
-            echo -e "${BOLD}* ${RED}Failed to build the vcomponent Service. Exiting.${RESET}"
-            echo -e "${BOLD}╚════════════════════════════════════════════════╝${RESET}"
-            exit 1
-        fi
+        git fetch origin || exit 1
 
-        popd
+        git checkout "${branch}" 2>/dev/null \
+            || git checkout -b "${branch}" "origin/${branch}" || {
+                echo -e "${BOLD}${RED}Branch '${branch}' not found in ${repo}${RESET}"
+                exit 1
+            }
 
+        git pull origin "${branch}" || exit 1
+
+        make -j"$(nproc)" \
+            BUILD_DIR="${TOP_BUILD_DIR}" \
+            UT_CORE_DIR="${UT_CORE_DIR}" || {
+                echo -e "${BOLD}╔════════════════════════════════════════════════╗${RESET}"
+                echo -e "${BOLD}* ${RED}Failed to build the vcomponent Service. Exiting.${RESET}"
+                echo -e "${BOLD}╚════════════════════════════════════════════════╝${RESET}"
+                exit 1
+            }
+
+        popd >/dev/null
     done
 }
-
 ###############################################################################
 # Function to install and build vcomponent services
 ###############################################################################
