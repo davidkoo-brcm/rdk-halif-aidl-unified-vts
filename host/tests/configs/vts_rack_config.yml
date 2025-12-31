@@ -71,38 +71,59 @@ rackConfig:
                     consoles:
                         - default:
                             type: "ssh"
-                            port:
-                            username: "root"
+                            port: 5522
+                            username: ""
                             ip: "" #IP address
-                            password:
+                            password: ""
+                            prompt: "~#" # Prompt string on console
                         #For multiple instance tests, all SSH configs are used, single test uses 0th instance.
                         - ssh_hal_test_0:
                             type: "ssh"
-                            port:
-                            username: "root"
+                            port: 5522
+                            username: ""
                             ip: "" #IP address
-                            password:
+                            password: ""
+                            prompt: "~#" # Prompt string on console
                         - ssh_hal_test_1:
                             type: "ssh"
-                            port:
-                            username: "root"
+                            port: 5522
+                            username: ""
                             ip: "" #IP address
-                            password:
+                            password: ""
+                            prompt: "~#" # Prompt string on console
                         - ssh_hal_test_2:
                             type: "ssh"
-                            port:
-                            username: "root"
+                            port: 5522
+                            username: ""
                             ip: "" #IP address
-                            password:
+                            password: ""
+                            prompt: "~#" # Prompt string on console
                         - ssh_player:
                             type: "ssh"
-                            port:
-                            username: "root"
+                            port: 5522
+                            username: ""
                             ip: "" #IP address
-                            password:
+                            password: ""
+                            prompt: "~#" # Prompt string on console
+                        - ssh_hal_test:
+                            type: "ssh"
+                            port: 5522
+                            username: ""
+                            ip: "" #IP address
+                            password: ""
+                            prompt: "~#" # Prompt string on console
                     outbound:
                         download_url: "tftp://tftp-server.com/rack1/slot1/"    # download location for the CPE device
                         upload_url: "sftp://server-address/home/workspace/tftp/rack1/slot1/" # upload location
                         upload_url_base_dir: "sftp://server-address/home/workspace/tftp/rack1/slot1" # alternative upload location
                         httpProxy:    # Local Proxy if required
                         workspaceDirectory: './logs/workspace'   # Local working directory
+                    # hdmiCECController:
+                    #     type: virtual-cec-client
+                    #     vendor: "vComponent"
+                    #     address: "" # Needs to be be filled out with IP address
+                    #     username: "" # Needs to be filled out with login username
+                    #     password: '' # Needs to be filled out with login password
+                    #     port: 5522
+                    #     control_port: 8080
+                    #     device_network_configuration: "path of hdmicec_device_config_add_network.yaml"
