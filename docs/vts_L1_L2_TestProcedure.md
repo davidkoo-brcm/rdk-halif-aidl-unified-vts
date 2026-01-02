@@ -1,9 +1,9 @@
-# AVModule L1, L2 and L3 Test Procedure
+# VTS L1 and L2 Test Procedure
 
 ## Table of Contents
 - [Acronyms, Terms and Abbreviations](#acronyms-terms-and-abbreviations)
 - [Run L1 L2 and L3 Test directly without python](#run-l1-l2-and-l3-test-directly-without-python)
-- [Run L1 L2 and L3 using python](#run-l1-l2-and-l3-using-python)
+- [Run L1 and L2 using python](#run-l1-l2-and-l3-using-python)
   - [Setting Up Test Environment](#setting-up-test-environment)
   - [Test setup on VDevice](#test-setup-on-vdevice)
   - [Update Configuration Files](#update-configuration-files)
@@ -29,7 +29,7 @@ Refer [Running L1 L2 and L3 Test suites](https://github.com/rdkcentral/rdk-halif
 
 ### Setting Up Test Environment
 
-To execute `HAL` `L1` `L2` and `L3` Python test case, need a Python environment. Follow these steps mentioned in [Python Set up](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite) and [Raft Setup](https://github.com/rdkcentral/python_raft/?tab=readme-ov-file#installation)
+To execute `HAL` `L1` and `L2` Python test case, need a Python environment. Follow these steps mentioned in [Python Set up](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite) and [Raft Setup](https://github.com/rdkcentral/python_raft/?tab=readme-ov-file#installation)
 
 ### Test setup on vDevice
 
@@ -112,37 +112,69 @@ deviceConfig:
 
 #### Test Setup Configuration File
 
-Example Test Setup configuration File: [vts_avmodule_setup.yaml](../host/tests/TestCases/vts_avmodule_setup.yaml)
+Example Test Setup configuration File: [vts_test_setup.yaml](../host/tests/TestCases/vts_test_setup.yaml)
 
 This `yaml` contains the list of test_suites and test_cases to run
+
+Execute command to run the HAL binary was provided in this file. The created binary tar file should be placed in the artifacts section so that it can be fetched by the RAFT automation.
 
 To execute multiple test_suites, update the YAML file as shown in the example below:
 
 ```yaml
-AVModule:
-  description: "AVModule L1 and L2 test setup"
+VTS:
+  description: "VTS L1 and L2 test setup"
+  restart_required: False
   num_of_instances: 1
-  test_suites: # List of L1 and L2 test suites
-    ######################################
-    # Entry to run all test case
-    ######################################
-    #  - name: "VTS_L1_AudioDecoder"
-    #    test_cases:
-    #      - all
-    #######################################
-    # Entries to run individual test cases
-    #######################################
-    - name: "VTS_L1_AudioDecoder"
-      test_cases:
-        - getAudioDecoderIds_pos
-        - getAudioDecoder_pos
+  test:
+    artifacts:
+      - "../../../build/vts_unified.tar.gz.bz"
+    execute: "./run.sh"
+    type: UT-C # C (UT-C Cunit) / C++ (UT-G (g++ ut-core gtest backend))
+    suites:
+      0:
+        name: "VTS_L1_AudioDecoder"
+        tests:
+          - getAudioDecoderIds_pos
+          - getAudioDecoder_pos
+          - getAudioDecoder_neg
+          - getCapabilities_pos
+          - getProperty_pos
+          - getProperty_neg
+          - getState_pos
+          - open_pos
+          - open_neg
+          - close_pos
+          - close_neg
+          - registerEventListener_pos
+          - registerEventListener_neg
+          - unregisterEventListener_pos
+          - unregisterEventListener_neg
+          - start_pos
+          - start_neg
+          - stop_pos
+          - stop_neg
+          - decodeBuffer_neg
+          - flush_pos
+          - flush_neg
+          - signalDiscontinuity_pos
+          - signalDiscontinuity_neg
+          - signalEOS_pos
+          - signalEOS_neg
+          - parseCodecSpecificData_pos
+          - parseCodecSpecificData_neg
+          - setProperty_pos
+          - setProperty_neg
 
-    - name: "VTS_L2_AudioDecoder"
-      test_cases:
-        - SetandGetProperties
+      1:
+        name: "VTS_L2_AudioDecoder"
+        tests:
+          - SetandGetProperties
+          - SetandGetProperties_multipleInstance
+          - StateTransitions
+          - StateTransitions_mutipleInstance
 ```
 
-Note : by default, all AV module test cases are added in the setup file
+Note : by default, all test cases are added in the setup file
 
 #### Number of Instances
 
@@ -152,27 +184,9 @@ The `number_of_instances` field in the test setup configuration specifies how ma
 - If set to `2`, the framework will open two SSH connections to the DUT, run the HAL test binary in both instances, and execute the test cases in parallel.
 - Increasing the number of instances can speed up overall execution time by leveraging parallel testing, provided the DUT and test environment support concurrent runs.
 
-#### Test Configuration
-
-Example Test Setup configuration File: [vts_avmodule_testConfig.yaml](../host/tests/TestCases/vts_avmodule_testConfig.yaml)
-
-Execute command to run the HAL binary was provided in this file. The created binary tar file should be placed in the artifacts section so that it can be fetched by the RAFT automation.
-
-```yaml
-AVModule:
-    description: "AVModule testing profile / menu system for UT"
-    test:
-        artifacts:
-        #List of artifacts folders, test class copies the content of folder to the target device workspace
-          - "..\\..\\..\\build\\<tar name>.tar.gz"
-        # exectute command, this will appended with the target device workspace path
-        execute: "./run.sh"
-        type: UT-C # C (UT-C Cunit) / C++ (UT-G (g++ ut-core gtest backend))
-```
-
 ### Run on Windows Environment
 
-To run the AVModule L1, L2, and L3 tests in a Windows environment, follow these additional steps after checking out the repository and compiling the code:
+To run the AVModule L1, and L2 tests in a Windows environment, follow these additional steps after checking out the repository and compiling the code:
 
 1. Install the `host` folder and update the rack configuration files as usual in your Linux environment.
 
@@ -194,4 +208,4 @@ To run the AVModule L1, L2, and L3 tests in a Windows environment, follow these 
 Once the environment is set up, you can execute the test cases with the following command
 
 ```bash
-python vts_avmodule_tests.py --config </PATH>/host/tests/configs/vts_rack_config.yml --deviceConfig </PATH>/host/tests/configs/vts_deviceConfig.yml
+python vts_l1l2_test.py --config </PATH>/host/tests/configs/vts_rack_config.yml --deviceConfig </PATH>/host/tests/configs/vts_deviceConfig.yml
