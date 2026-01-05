@@ -35,6 +35,7 @@ deviceConfig:
         adecoder_process_name: "AudioDecoderService"
         avClock_process_name:  "RDKAVClockService"
         planeCtrl_process_name: "RDKVideoSinkAndPCService"
+        deepsleep_process_name: "Vendor-DeepSleep"
         process_path: "/usr/bin/" # path where the service files present
         AVBuffer_Restart: 0 # flag to restart avbuffer service
         prompt: "~#" # Prompt string on console
