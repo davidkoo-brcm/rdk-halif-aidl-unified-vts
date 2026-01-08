@@ -74,7 +74,7 @@
 #include "vts_avclock_init.h"
 #include "vts_planecontrol_init.h"
 #include "vts_av_l4_init.h"
-#include "vts_indicator_init.h" //Karthi
+#include "vts_indicator_init.h"
 
 int main(int argc, char **argv)
 {
@@ -153,7 +153,6 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
-    //Karthi
     result = VTS_INDICATOR_init();
     if(result != UT_STATUS_OK)
     {

@@ -46,4 +46,5 @@ deviceConfig:
         all_wait_time: 2400 #Configurable timeout value to limit the total duration of individual suite
         test:
             profile: "..\\..\\..\\profiles\\hfp-vdevice.yaml" #HFP profile used to meet platform requirements
+            platform_led_config: "..\\..\\..\\vts_hal_test_components\\indicator\\test_configuration\\vts_indicator_LED_config_vdevice.yaml"
             streams_download_url: "<http stream path>" #URL path from which the streams are downloaded to the device

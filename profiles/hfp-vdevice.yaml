@@ -30,4 +30,4 @@ include_3: profiles/hfp-videosink_vdevice.yaml
 include_4: profiles/hfp-videodecoder_vdevice.yaml
 include_5: profiles/hfp-avclock.yaml
 include_6: profiles/hfp-planecontrol.yaml
-include_7: profiles/hfp-indicator_vcomponent.yaml
+include_8: profiles/hfp-indicator_vcomponent.yaml
