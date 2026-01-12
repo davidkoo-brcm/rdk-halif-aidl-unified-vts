@@ -32,7 +32,6 @@ declare -r HALIF_VERSION=current
 RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION="main"}"
 RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-aidl-test-"
 VCOMPONENT_BASE_URL="ssh://git@github.code.rdkcentral.com/rdkcentral"
-VCOMPONENT_DIR="${TOP}/vcomponents"
 OUT_TAR_FILE=vts_unified.tar.gz.bz
 
 declare -A HALIF_COMPONENTS=(

@@ -156,7 +156,7 @@ int main(int argc, char **argv)
     result = VTS_DEVICEINFO_init();
     if (result != UT_STATUS_OK)
     {
-        UT_LOG_ERROR("Failed ti initialize deviceinfo");
+        UT_LOG_ERROR("Failed to initialize deviceinfo");
         result = UT_STATUS_FAILURE;
     }
 
