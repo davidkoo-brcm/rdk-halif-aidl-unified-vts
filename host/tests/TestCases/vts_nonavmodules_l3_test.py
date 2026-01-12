@@ -24,6 +24,7 @@
 
 import os
 import sys
+import time
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dir_path, "../"))
@@ -39,11 +40,12 @@ if __name__ == '__main__':
 
     # Create test instances
     tests = [
-        vts_hdmicec_L3_receive_message(summaryLog),
-        vts_hdmicec_L3_send_message(summaryLog)
+        vts_hdmicec_L3_receive_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        vts_hdmicec_L3_send_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
         # Add more test instances here
     ]
 
     # Run each test
     for test in tests:
         test.run(False)
+        time.sleep(2)  # Short delay between tests
