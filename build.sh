@@ -451,6 +451,7 @@ help()
     echo -e "${BOLD}* ${GREEN}$0 clean${RESET}           ${YELLOW}- Cleans the build folder${RESET}                           ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 dist_clean${RESET}      ${YELLOW}- Deletes all build and checkout folders${RESET}            ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 help/-h/--help${RESET}  ${YELLOW}- Prints this message${RESET}                               ${BOLD}*${RESET}"
+    echo -e "${BOLD}* ${GREEN}$0 -v${RESET}              ${YELLOW}- Builds the vcomponent repo${RESET}                        ${BOLD}*${RESET}"
     echo -e "${BOLD}╚════════════════════════════════════════════════════════════════════════════════╝${RESET}"
 }
 
