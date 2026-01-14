@@ -48,8 +48,8 @@ class L4TestClass(VTSTestHelperClass):
             qc_id="L4_001",
             test_suites=["VTS_L4_AVMODULE"],
             l4_yaml_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), "vts_l4_test_info.yaml"),
-            setup_file_name="vts_test_setup.yaml",
-            test_config_file_name="vts_test_setup.yaml",
+            setup_file_name="vts_l4_test_setup.yaml",
+            test_config_file_name="vts_l4_test_setup.yaml",
             log=log
         )
 

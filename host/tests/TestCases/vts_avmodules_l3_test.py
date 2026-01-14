@@ -38,8 +38,8 @@ class L3TestClass(VTSTestHelperClass):
             module_name="VTS",
             test_name="L3_AVModule",
             qc_id="L3_001",
-            setup_file_name="vts_test_setup.yaml",
-            test_config_file_name="vts_test_setup.yaml",
+            setup_file_name="vts_l3_test_setup.yaml",
+            test_config_file_name="vts_l3_test_setup.yaml",
             log=log,
         )
 
