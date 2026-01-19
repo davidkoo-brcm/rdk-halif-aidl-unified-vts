@@ -346,8 +346,8 @@ install_test()
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
     rm -rf ${INSTALL_PATH}/libavbufferhelper.so
 
-    cd ${INSTALL_PATH}
-    tar cfz ${OUT_TAR_FILE} *
+    cd ${TOP_BUILD_DIR}
+    tar cfz ${OUT_TAR_FILE} bin/
     cd -
 }
 
