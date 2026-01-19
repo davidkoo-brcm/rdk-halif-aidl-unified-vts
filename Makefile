@@ -64,7 +64,7 @@ AVBUFFER_VERSION := $(shell cd $(AV_BUFFER_TEST_DIR) && git describe --tags --al
 AVCLOCK_VERSION := $(shell cd $(AV_CLOCK_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 PLANECONTROL_VERSION := $(shell cd $(PLANE_CONTROL_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 L4_TESTS_VERSION := $(shell cd $(L4_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
-INDICATOR_VERSION := $(shell cd $(INDICATOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)") #Karthi
+INDICATOR_VERSION := $(shell cd $(INDICATOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 BUILD_TIMESTAMP := $(shell date +"%Y-%m-%d_%H:%M:%S")
 
 # Print module versions
@@ -97,7 +97,7 @@ CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DAVCLOCK_VERSION=\"$(AVCLOCK_VERSION)\" \
             -DPLANECONTROL_VERSION=\"$(PLANECONTROL_VERSION)\" \
             -DL4_TESTS_VERSION=\"$(L4_TESTS_VERSION)\" \
-            -DINDICATOR_VERSION=\"$(INDICATOR_VERSION)\" #Karthi
+            -DINDICATOR_VERSION=\"$(INDICATOR_VERSION)\"
 
 $(info CXXFLAGS: $(CXXFLAGS))
 CXXFLAGS += -DBUILD_TIMESTAMP=\"$(BUILD_TIMESTAMP)\"

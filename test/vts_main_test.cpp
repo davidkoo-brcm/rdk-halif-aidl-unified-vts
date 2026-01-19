@@ -176,7 +176,7 @@ int main(int argc, char **argv)
     VTS_VideoDecoder_destroy();
     VTS_AudioSink_destroy();
     VTS_VideoSink_destroy();
-    VTS_INDICATOR_destroy(); //Karthi
+    VTS_INDICATOR_destroy();
 
     return result;
 }
