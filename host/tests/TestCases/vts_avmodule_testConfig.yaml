@@ -26,7 +26,7 @@ AVModule:
     test:
         artifacts:
         #List of artifacts folders, test class copies the content of folder to the target device workspace
-          - "..\\..\\..\\build\\<tar_name>.tar.gz"
+          - "../../../build/<tar_name>.tar.gz.bz"
         # exectute command, this will appended with the target device workspace path
         execute: "./run.sh"
         type: UT-C # C (UT-C Cunit) / C++ (UT-G (g++ ut-core gtest backend))
