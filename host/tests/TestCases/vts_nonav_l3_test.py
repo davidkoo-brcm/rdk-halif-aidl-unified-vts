@@ -33,7 +33,6 @@ sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/indicat
 
 from vts_hdmicec_L3_ReceiveMessage import VTS_HDMICEC_L3_ReceiveMessage as vts_hdmicec_L3_receive_message
 from vts_hdmicec_L3_SendMessage import VTS_HDMICEC_L3_SendMessage as vts_hdmicec_L3_send_message
-from vts_hdmicec_L3_SendMessage import VTS_HDMICEC_L3_SendMessage as vts_hdmicec_L3_send_message
 from vts_indicator_L3_SetStates import VTS_INDICATOR_L3_SetStates as vts_indicator_L3_SetStates
 from vts_indicator_L3_StressTest import VTS_INDICATOR_L3_StressTest as vts_indicator_L3_StressTest
 

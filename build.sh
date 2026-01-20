@@ -32,7 +32,6 @@ declare -r HALIF_VERSION=current
 RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION="main"}"
 RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-aidl-test-"
 VCOMPONENT_BASE_URL="ssh://git@github.code.rdkcentral.com/rdkcentral"
-VCOMPONENT_DIR="${TOP}/vcomponents"
 OUT_TAR_FILE=vts_unified.tar.gz.bz
 
 declare -A HALIF_COMPONENTS=(
@@ -83,7 +82,7 @@ declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests/src/av/
 declare -r VCOMPONENT_DIR=${TOP}/vcomponents
 
 #TODO: change to server path
-declare -r DEF_GST_PATH="${TOP}/../../gstreamer_pkg"
+declare -r DEF_GST_PATH="${TOP}/../gstreamer_pkg"
 GST_PATH=${GST_PATH:-${DEF_GST_PATH}}
 
 DEF_LINUX_BINDER="`realpath ${TOP}/../`/linux_binder_idl"

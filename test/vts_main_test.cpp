@@ -160,7 +160,6 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
-
     UT_status_t ut_result = UT_run_tests();
 
     if (result != UT_STATUS_OK || ut_result != UT_STATUS_OK)
