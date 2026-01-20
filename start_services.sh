@@ -36,7 +36,7 @@ SERVICE_CONFIGS=(
 )
 
 SERVICE_PORTS=(
-  "8080"
+  "8090"
 )
 
 LOG_DIR="/tmp/vendor_services_logs"
