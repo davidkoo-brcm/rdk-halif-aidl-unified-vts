@@ -34,7 +34,7 @@ from vts_hdmicec_L3_ReceiveMessage import VTS_HDMICEC_L3_ReceiveMessage as vts_h
 from vts_hdmicec_L3_SendMessage import VTS_HDMICEC_L3_SendMessage as vts_hdmicec_L3_send_message
 from vts_deepsleep_L3_WakeFromSupportedTrigger import VTS_DEEPSLEEP_L3_WakeFromSupportedTrigger as vts_deepsleep_L3_wakefromsupportedtrigger
 from vts_deepsleep_L3_WakeFromPreconfiguredTrigger import VTS_DEEPSLEEP_L3_WakeFromPreconfiguredTrigger as vts_deepsleep_L3_wakefrompreconfiguredtrigger
-from vts_deepsleep_L3_VerifyWakeWithMixedInputTriggerList import VTS_DEEPSLEEP_L3_VerifyWakeWithMixedInputTriggerList as vts_deepsleep_L3_verifywakewithmixedinputtriggerList
+from vts_deepsleep_L3_VerifyWakeWithMixedInputTriggerList import VTS_DEEPSLEEP_L3_VerifyWakeWithMixedInputTriggerList as vts_deepsleep_L3_verifywakewithmixedinputtriggerlist
 from vts_deepsleep_L3_NoWakeFromUnspecifiedOrUnsupportedTrigger import VTS_DEEPSLEEP_L3_NoWakeFromUnspecifiedOrUnsupportedTrigger as vts_deepsleep_L3_nowakefromunspecifiedorunsupportedtrigger
 from raft.framework.core.logModule import logModule
 
@@ -45,10 +45,10 @@ if __name__ == '__main__':
     # Create test instances
     tests = [
         vts_hdmicec_L3_receive_message(summaryLog),
-        vts_hdmicec_L3_send_message(summaryLog)
+        vts_hdmicec_L3_send_message(summaryLog),
         vts_deepsleep_L3_wakefromsupportedtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         vts_deepsleep_L3_wakefrompreconfiguredtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        vts_deepsleep_L3_verifywakewithmixedinputtriggerList(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        vts_deepsleep_L3_verifywakewithmixedinputtriggerlist(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         vts_deepsleep_L3_nowakefromunspecifiedorunsupportedtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
         # Add more test instances here
     ]
