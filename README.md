@@ -84,6 +84,7 @@ export UT_CORE_VERSION=4.7.3
 export RDK_HALIF_AIDL_VERSION=0.12.0
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
+export GST_LIB_PATH=/path/gstreamer_lib/
 ```
 
 By default, UT logs are disabled. To enable them, Set below environment variable
@@ -112,23 +113,16 @@ The build.sh script:
 
 - Compiles the test suite.
 
-- Generates binaries in the `build/bin` directory.
+- Generates binaries and packages the binaries in the `build/vts_unified.tar.gz.bz` directory.
 
 ## Run test
-
-- Package the Binaries:
-
-```bash
-cd build
-tar -zcf unified_vts.tar.gz bin
-```
 
 - Transfer to Target Device:
 
 Copy the tarball to the target device (e.g., using scp):
 
 ```bash
-scp unified_vts.tar.gz root@target-device:/home/root/
+scp vts_unified.tar.gz root@target-device:/home/root/
 
 ```
 
@@ -139,7 +133,7 @@ Log into the target device and extract the tarball:
 ```bash
 ssh root@target-device
 cd /home/root
-tar -zxf unified_vts.tar.gz
+tar -zxf vts_unified.tar.gz
 cd bin
 ```
 
