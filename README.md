@@ -75,7 +75,7 @@ Set below environment variable:
 
 - RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.12.0). Defaults to the latest HEAD.
 
-- Ensure that the pre-built GStreamer libraries are placed in the `build/usr/` directory before compiling the L4 test cases.
+- GST_LIB_PATH: Path to the pre-built GStreamer libraries used for compiling the L4 test cases.
 
 Example:
 

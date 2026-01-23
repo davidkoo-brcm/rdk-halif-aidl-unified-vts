@@ -280,23 +280,6 @@ generate_avbufferhelper_skeleton()
 }
 
 ###############################################################################
-# Function to Build mock services
-###############################################################################
-build_mock_services()
-{
-    for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
-        # Build the mock component
-        make -j"$(nproc)" -C "${RDK_HAL_TEST_DIR}/${component}/mockservice" BUILD_DIR="${TOP_BUILD_DIR}"
-        if [ $? -ne 0 ]; then
-            echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
-            echo -e "${BOLD}* ${RED}Failed to build the mock ${component}. Exiting.${RESET}"
-            echo -e "${BOLD}╚══════════════════════════════════════════════════════╝${RESET}"
-            exit 1
-        fi
-    done
-}
-
-###############################################################################
 # Function to Build HALIF test
 ###############################################################################
 build_halif_test()
