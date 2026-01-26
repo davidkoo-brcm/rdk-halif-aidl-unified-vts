@@ -112,7 +112,7 @@ deviceConfig:
 
 #### Test Setup Configuration File
 
-Example Test Setup configuration File: [vts_test_setup.yaml](../host/tests/TestCases/vts_test_setup.yaml)
+Example Test Setup configuration File: [vts_l1l2_test_setup.yaml](../host/tests/TestCases/vts_l1l2_test_setup.yaml)
 
 This `yaml` contains the list of test_suites and test_cases to run
 
@@ -123,7 +123,6 @@ To execute multiple test_suites, update the YAML file as shown in the example be
 ```yaml
 VTS:
   description: "VTS L1 and L2 test setup"
-  restart_required: False
   num_of_instances: 1
   test:
     artifacts:
@@ -164,14 +163,6 @@ VTS:
           - parseCodecSpecificData_neg
           - setProperty_pos
           - setProperty_neg
-
-      1:
-        name: "VTS_L2_AudioDecoder"
-        tests:
-          - SetandGetProperties
-          - SetandGetProperties_multipleInstance
-          - StateTransitions
-          - StateTransitions_mutipleInstance
 ```
 
 Note : by default, all test cases are added in the setup file
@@ -186,7 +177,7 @@ The `number_of_instances` field in the test setup configuration specifies how ma
 
 ### Run on Windows Environment
 
-To run the AVModule L1, and L2 tests in a Windows environment, follow these additional steps after checking out the repository and compiling the code:
+To run the VTS L1, and L2 tests in a Windows environment, follow these additional steps after checking out the repository and compiling the code:
 
 1. Install the `host` folder and update the rack configuration files as usual in your Linux environment.
 

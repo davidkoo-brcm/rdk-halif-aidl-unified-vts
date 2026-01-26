@@ -122,68 +122,28 @@ deviceConfig:
 
 #### Test Setup Configuration File
 
-Update the testMenu Configuration file with correct artifacts for each module in path `../vts_hal_test_components/<module>/host/tests/vts_<module>_testMenuConfiguration.yaml`
+Example Test Setup configuration File: [vts_l3_test_setup.yaml](../host/tests/TestCases/vts_l3_test_setup.yaml)
 
-Example:
-- Test Menu configuration File for HDMI CEC: [vts_hdmicec_testMenuConfiguration.yaml](../vts_hal_test_components/cec/host/tests/vts_hdmicec_testMenuConfiguration.yaml)
-
-This `yaml` contains the list of test_suites and test_cases to run
+This `yaml` contains the tar ball information needed for the tests to run.
 
 Execute command to run the HAL binary was provided in this file. The created binary tar file should be placed in the artifacts section so that it can be fetched by the RAFT automation.
 
-To execute multiple test_suites, update the YAML file in respective path as shown in the example below for HDMICec:
-
 ```yaml
-HdmiCec:
-    description: "hdmi CEC testing profile / menu system for UT"
-    test:
-        artifacts:
-        #List of artifacts folders, test class copies the content of folder to the target device workspace
-          - "../../../../build/bin/vts_unified.tar.gz.bz"
-        # exectute command, this will appended with the target device workspace path
-        execute: "./run.sh"
-        type: UT-C # C (UT-C Cunit) / C++ (UT-G (g++ ut-core gtest backend))
-        suites:
-            0:
-                name: "VTS_L1_HDMICEC"
-                tests:
-                    - "getState_pos"
-                    - "getProperty_pos"
-                    - "getProperty_neg"
-                    - "getLogicalAddresses_pos"
-                    - "open_pos"
-                    - "open_neg"
-                    - "close_pos"
-                    - "close_neg"
-                    - "registerEventListener_pos"
-                    - "registerEventListener_neg"
-                    - "unregisterEventListener_pos"
-                    - "unregisterEventListener_neg"
-                    - "addLogicalAddresses_pos"
-                    - "addLogicalAddresses_neg"
-                    - "removeLogicalAddresses_pos"
-                    - "removeLogicalAddresses_neg"
-                    - "sendMessage_pos"
-                    - "sendMessage_neg"
-            1:
-                name: "VTS_L2_HDMICEC"
-                tests:
-                    - "StateTransitions"
-                    - "metricValidation"
-                    - "logicalAddressesValidation"
-                    - "sendMessageValidation"
-            2:
-                name: "VTS_L3_HDMICEC"
-                tests:
-                    - "SendMessage"
-                    - "ReceiveMessage"
+VTS:
+  description: "VTS L3 test setup"
+  num_of_instances: 1
+  test:
+    artifacts:
+      - "../../../build/vts_unified.tar.gz.bz"
+    execute: "./run.sh"
+    type: UT-C # C (UT-C Cunit) / C++ (UT-G (g++ ut-core gtest backend))
 ```
 
-Note : by default, all test cases are added in the setup file
+Note : The yaml doesn't need test sequence here as individual test class is imported from repsective NON AV module and run.
 
 ### Run on Windows Environment
 
-To run the AVModule L1, and L2 tests in a Windows environment, follow these additional steps after checking out the repository and compiling the code:
+To run the NON AVModule L3 tests in a Windows environment, follow these additional steps after checking out the repository and compiling the code:
 
 1. Install the `host` folder and update the rack configuration files as usual in your Linux environment.
 
@@ -205,4 +165,4 @@ To run the AVModule L1, and L2 tests in a Windows environment, follow these addi
 Once the environment is set up, you can execute the test cases with the following command
 
 ```bash
-python vts_nonav_l3_test.py --config </PATH>/host/tests/configs/vts_rack_config.yml --deviceConfig </PATH>/host/tests/configs/vts_deviceConfig.yml
+python vts_nonavmodules_l3_test.py --config </PATH>/host/tests/configs/vts_rack_config.yml --deviceConfig </PATH>/host/tests/configs/vts_deviceConfig.yml

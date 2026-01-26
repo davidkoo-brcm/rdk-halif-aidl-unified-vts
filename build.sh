@@ -410,46 +410,6 @@ build_vcomponent_services()
         popd >/dev/null
     done
 }
-###############################################################################
-# Function to install and build vcomponent services
-###############################################################################
-
-build_vcomponent_services()
-{
-    mkdir -p "${VCOMPONENT_DIR}" || return 1
-
-    for component in "${!VCOMPONENT_MODULES[@]}"; do
-        local repo="rdk-aidl-vcomponent-${component}"
-        local repo_dir="${VCOMPONENT_DIR}/${repo}"
-
-        echo -e "${BOLD}Building vcomponent: ${component}${RESET}"
-
-        # Clone if missing
-        if [[ ! -d "${repo_dir}/.git" ]]; then
-            git clone "${VCOMPONENT_BASE_URL}/${repo}.git" "${repo_dir}"
-            if [ $? -ne 0 ]; then
-                echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
-                echo -e "${BOLD}* ${RED}Failed to clone ${repo}. Exiting.${RESET}"
-                echo -e "${BOLD}╚══════════════════════════════════════════════════════╝${RESET}"
-                return 1
-            fi
-        fi
-
-        # Build the component
-        pushd ${repo_dir}
-
-        make -j"$(nproc)" -C . BUILD_DIR="${TOP_BUILD_DIR}" UT_CORE_DIR="${UT_CORE_DIR}"
-        if [ $? -ne 0 ]; then
-            echo -e "${BOLD}╔════════════════════════════════════════════════╗${RESET}"
-            echo -e "${BOLD}* ${RED}Failed to build the vcomponent Service. Exiting.${RESET}"
-            echo -e "${BOLD}╚════════════════════════════════════════════════╝${RESET}"
-            exit 1
-        fi
-
-        popd
-
-    done
-}
 
 ###############################################################################
 # Function to clean the test build directory
