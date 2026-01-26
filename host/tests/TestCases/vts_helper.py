@@ -37,15 +37,17 @@ from raft.framework.plugins.ut_raft.utBaseUtils import utBaseUtils
 from raft.framework.plugins.ut_raft.utUserResponse import utUserResponse
 
 
-class AVModuleTestHelperClass(utHelperClass):
+class VTSTestHelperClass(utHelperClass):
     """
-    Helper class for AV module test classes (L1, L2, L3, L4).
+    Generic VTS helper class for test execution (L1, L2, L3, L4).
     Provides common functionality for environment setup, binary copying, test execution, cleanup,
-    and L4 YAML generation.
+    and L4 YAML generation. Can be used for any module (VTS,AVModule, DSModule, etc.).
     """
 
     def __init__(self, module_name: str, test_name: str, qc_id: str,
-                 test_suites: list = None, l4_yaml_path: str = None, log: logModule = None):
+                 test_suites: list = None, l4_yaml_path: str = None,
+                 setup_file_name: str = None, test_config_file_name: str = None,
+                 log: logModule = None):
         """
         Initializes the helper class.
 
@@ -63,34 +65,30 @@ class AVModuleTestHelperClass(utHelperClass):
         self.test_name = test_name
         self.qc_id = qc_id
         self.test_suites = test_suites or []
-        self.l4_yaml_path = l4_yaml_path or os.path.join(dir_path, "vts_l4_test_info.yaml")
+        # Default L4 YAML path based on module name
+        default_l4_path = f"vts_l4_{module_name.lower()}_test_info.yaml" if module_name else "vts_l4_test_info.yaml"
+        self.l4_yaml_path = l4_yaml_path or os.path.join(dir_path, default_l4_path)
         self.rack_device = "dut"
 
-        # Load configurations
-        self.test_setup_path = os.path.join(dir_path, "vts_l4_setup.yaml")
-        self.test_config_path = os.path.join(dir_path, "vts_l4_testConfig.yaml")
+        # Load configurations (allow override for L1/L2/L3 runners)
+        # Default to module-specific setup file if not provided
+        setup_file = setup_file_name
+        test_cfg_file = test_config_file_name
+        self.test_setup_path = os.path.join(dir_path, setup_file)
+        self.test_config_local_path = os.path.join(dir_path, test_cfg_file)
         self.test_setup = ConfigRead(self.test_setup_path, self.module_name)
-        self.test_config = ConfigRead(self.test_config_path, self.module_name)
+        self.test_config = ConfigRead(self.test_config_local_path, self.module_name)
 
         # Device settings
         device_test_setup = self.cpe.get("test")
         self.target_workspace = self.cpe.get("target_directory")
+        # Target-side relative path to copy test configs (used by L4)
         self.test_config_path = self.cpe.get("test_config_path")
         self.prompt = self.cpe.get("prompt")
         self.wait_time = self.cpe.get("wait_time")
         self.all_wait_time = self.cpe.get("all_wait_time")
         self.stream_download_url = device_test_setup.get("streams_download_url")
         self.download_path = self.cpe.get("download_path")
-
-        # Service restart settings
-        self.restart_required = self.test_setup.fields.get("restart_required", False)
-        self.vSink_process_name = self.cpe.get("vsink_process_name")
-        self.vDecoder_process_name = self.cpe.get("vdecoder_process_name")
-        self.aSink_process_name = self.cpe.get("asink_process_name")
-        self.aDecoder_process_name = self.cpe.get("adecoder_process_name")
-        self.process_path = self.cpe.get("process_path")
-        self.avClock_process_name = self.cpe.get("avClock_process_name")
-        self.planeCtrl_process_name = self.cpe.get("planeCtrl_process_name")
 
         # Initialize sessions
         self.instance_list = self.test_setup.fields.get("num_of_instances", 1)
@@ -121,7 +119,7 @@ class AVModuleTestHelperClass(utHelperClass):
             self.module_config_profile_files.append(final_profile)
 
             profile_file_path = os.path.join(self.profile_path, os.path.basename(final_profile)).replace("\\", "/")
-            #test_config = ConfigRead(self.test_config_path, self.module_name)
+            # Append profile path to execution command
             self.test_config.test.execute = self.test_config.test.execute + f" -p {profile_file_path}"
 
             hal_session = self.hal_sessions[i]
@@ -132,6 +130,45 @@ class AVModuleTestHelperClass(utHelperClass):
         # Create user response Class
         self.testUserResponse = utUserResponse()
         self.test_streams = []
+
+    def download_streams_from_list(self, streams: list) -> bool:
+        """
+        Download the provided list of stream paths to the DUT and record their
+        target locations in self.test_streams.
+
+        Args:
+            streams (list): List of relative stream paths from the server root.
+
+        Returns:
+            bool: True if successful or list is empty, False otherwise.
+        """
+        try:
+            if not streams:
+                return True
+
+            if not self.stream_download_url:
+                self.log.error("streams_download_url not configured; cannot download streams")
+                return False
+
+            urls = []
+            self.test_streams = []
+            for spath in streams:
+                full_url = os.path.join(self.stream_download_url, str(spath).lstrip('/'))
+                urls.append(full_url)
+                self.test_streams.append(os.path.join(self.download_path, os.path.basename(str(spath))))
+
+            self.downloadToDevice(urls, self.download_path, self.rack_device, True)
+            return True
+        except Exception as e:
+            self.log.error(f"Failed downloading streams list: {e}")
+            return False
+
+    def restart_services(self, testsuite_name: str):
+        """
+        Legacy method - process restart between test cases has been disabled.
+        Kept for backward compatibility but does nothing.
+        """
+        pass
 
     def parse_stream_name(self, stream_name: str, tcid: str) -> dict:
         """
@@ -407,7 +444,7 @@ class AVModuleTestHelperClass(utHelperClass):
                 return True
 
             self.log.info("Cleaning up binaries from DUT...")
-            self.deleteFromDevice(self.copied_binaries, self.rack_device)
+            self.deleteFromDevice(self.copied_binaries, self.rack_device, False)
             self.copied_binaries = []
             self.log.info("Binary cleanup completed.")
             return True
@@ -479,25 +516,36 @@ class AVModuleTestHelperClass(utHelperClass):
         outputs = []
         results = []
 
-        if self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Starting test case...")
-                ut_menu.start()
-
         wait_time = self.all_wait_time if use_all_wait_time else self.wait_time
         for i, ut_menu in enumerate(self.ut_menu):
             self.log.info(f"[Instance {i}] Running test case: {test_case} in suite {test_suite}...")
             output = ut_menu.select(test_suite, test_case, None, wait_time, False)
+
+            run_summary_found = "Run Summary:" in output
+            if not run_summary_found:
+                self.log.error(f"[Instance {i}] Run Summary not found - test case likely crashed. Marking as FAILED.")
+                # Restart the menu to recover the session for next tests
+                self.log.info(f"[Instance {i}] Restarting ut_menu to prepare for next test cases...")
+                ut_menu.stop()
+                ut_menu.start()
+                # Mark this test as failed and skip retry (don't run the same crashed test again)
+                outputs.append("")  # Empty output for failed case
+                results.append(False)  # Explicitly mark as failed
+                continue
+
             outputs.append(output)
 
-        if self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Stopping test case...")
-                ut_menu.stop()
-
+        # Collect results only for tests that actually ran (not already marked as failed)
         for i, (ut_menu, output) in enumerate(zip(self.ut_menu, outputs)):
+            # Skip if we already marked this as failed (empty output from crash)
+            if not output:
+                continue
             result = ut_menu.collect_results(output, True)
-            results.append(result if result is not None else False)
+            # Replace the placeholder result if we're processing this output
+            if i < len(results):
+                results[i] = result if result is not None else False
+            else:
+                results.append(result if result is not None else False)
             self.log.info(f"[Instance {i}] Result: {result}")
 
         return all(results)
@@ -513,7 +561,7 @@ class AVModuleTestHelperClass(utHelperClass):
         Returns:
             bool: True if all tests pass, False otherwise.
         """
-        return self.run_test(test_suite, None, use_all_wait_time)
+        return self.runTest(test_suite, None, use_all_wait_time)
 
     def test_cleanup(self):
         """

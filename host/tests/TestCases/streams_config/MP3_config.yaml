@@ -27,109 +27,109 @@ AVModule:
   L4Test:
   - tcid: VTS_L4_MP3_1001
     action: normal_play
-    stream_name: MP3/vts_mp3_16k_1ch_128k_a1669_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_16k_1ch_128k_a1669_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1002
     action: normal_play
-    stream_name: MP3/vts_mp3_16k_1ch_256k_a1669_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_16k_1ch_256k_a1669_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1003
     action: normal_play
-    stream_name: MP3/vts_mp3_16k_1ch_64k_a1669_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_16k_1ch_64k_a1669_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1004
     action: normal_play
-    stream_name: MP3/vts_mp3_16k_2ch_128k_a1669_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_16k_2ch_128k_a1669_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1005
     action: normal_play
-    stream_name: MP3/vts_mp3_16k_2ch_256k_a1669_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_16k_2ch_256k_a1669_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1006
     action: normal_play
-    stream_name: MP3/vts_mp3_16k_2ch_64k_a1669_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_16k_2ch_64k_a1669_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1007
     action: normal_play
-    stream_name: MP3/vts_mp3_22.05k_1ch_128k_a2299_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_22.05k_1ch_128k_a2299_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1008
     action: normal_play
-    stream_name: MP3/vts_mp3_22.05k_1ch_256k_a2299_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_22.05k_1ch_256k_a2299_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1009
     action: normal_play
-    stream_name: MP3/vts_mp3_22.05k_1ch_64k_a2299_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_22.05k_1ch_64k_a2299_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1010
     action: normal_play
-    stream_name: MP3/vts_mp3_22.05k_2ch_128k_a2299_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_22.05k_2ch_128k_a2299_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1011
     action: normal_play
-    stream_name: MP3/vts_mp3_22.05k_2ch_256k_a2299_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_22.05k_2ch_256k_a2299_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1012
     action: normal_play
-    stream_name: MP3/vts_mp3_22.05k_2ch_64k_a2299_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_22.05k_2ch_64k_a2299_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1013
     action: normal_play
-    stream_name: MP3/vts_mp3_24k_1ch_128k_a2502_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_24k_1ch_128k_a2502_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1014
     action: normal_play
-    stream_name: MP3/vts_mp3_24k_1ch_256k_a2502_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_24k_1ch_256k_a2502_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1015
     action: normal_play
-    stream_name: MP3/vts_mp3_24k_1ch_64k_a2502_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_24k_1ch_64k_a2502_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1016
     action: normal_play
-    stream_name: MP3/vts_mp3_24k_2ch_128k_a2502_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_24k_2ch_128k_a2502_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1017
     action: normal_play
-    stream_name: MP3/vts_mp3_24k_2ch_256k_a2502_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_24k_2ch_256k_a2502_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1018
     action: normal_play
-    stream_name: MP3/vts_mp3_24k_2ch_64k_a2502_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_24k_2ch_64k_a2502_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1019
     action: normal_play
-    stream_name: MP3/vts_mp3_32k_1ch_128k_a1668_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_32k_1ch_128k_a1668_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1020
     action: normal_play
-    stream_name: MP3/vts_mp3_32k_1ch_256k_a1668_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_32k_1ch_256k_a1668_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1021
     action: normal_play
-    stream_name: MP3/vts_mp3_32k_1ch_64k_a1668_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_32k_1ch_64k_a1668_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1022
     action: normal_play
-    stream_name: MP3/vts_mp3_32k_2ch_128k_a1668_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_32k_2ch_128k_a1668_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1023
     action: normal_play
-    stream_name: MP3/vts_mp3_32k_2ch_256k_a1668_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_32k_2ch_256k_a1668_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1024
     action: normal_play
-    stream_name: MP3/vts_mp3_32k_2ch_64k_a1668_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_32k_2ch_64k_a1668_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1025
     action: normal_play
-    stream_name: MP3/vts_mp3_44.1k_1ch_128k_a2298_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_44.1k_1ch_128k_a2298_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1026
     action: normal_play
-    stream_name: MP3/vts_mp3_44.1k_1ch_256k_a2298_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_44.1k_1ch_256k_a2298_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1027
     action: normal_play
-    stream_name: MP3/vts_mp3_44.1k_1ch_64k_a2298_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_44.1k_1ch_64k_a2298_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1028
     action: normal_play
-    stream_name: MP3/vts_mp3_44.1k_2ch_128k_a2298_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_44.1k_2ch_128k_a2298_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1029
     action: normal_play
-    stream_name: MP3/vts_mp3_44.1k_2ch_256k_a2298_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_44.1k_2ch_256k_a2298_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1030
     action: normal_play
-    stream_name: MP3/vts_mp3_44.1k_2ch_64k_a2298_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_44.1k_2ch_64k_a2298_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1031
     action: normal_play
-    stream_name: MP3/vts_mp3_48k_1ch_128k_a2501_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_48k_1ch_128k_a2501_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1032
     action: normal_play
-    stream_name: MP3/vts_mp3_48k_1ch_256k_a2501_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_48k_1ch_256k_a2501_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1033
     action: normal_play
-    stream_name: MP3/vts_mp3_48k_1ch_64k_a2501_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_48k_1ch_64k_a2501_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1034
     action: normal_play
-    stream_name: MP3/vts_mp3_48k_2ch_128k_a2501_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_48k_2ch_128k_a2501_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1035
     action: normal_play
-    stream_name: MP3/vts_mp3_48k_2ch_256k_a2501_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_48k_2ch_256k_a2501_v0_60sec.mp4
   - tcid: VTS_L4_MP3_1036
     action: normal_play
-    stream_name: MP3/vts_mp3_48k_2ch_64k_a2501_v0_60sec.mp4
+    stream_name: AV/MP3/vts_mp3_48k_2ch_64k_a2501_v0_60sec.mp4

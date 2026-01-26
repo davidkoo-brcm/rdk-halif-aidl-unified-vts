@@ -26,175 +26,175 @@ AVModule:
   L4Test:
   - tcid: VTS_L4_AC3_1001
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_1ch_128k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_1ch_128k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1002
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_1ch_256k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_1ch_256k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1003
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_1ch_32k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_1ch_32k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1004
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_1ch_512k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_1ch_512k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1005
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_1ch_64k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_1ch_64k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1006
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_2ch_128k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_2ch_128k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1007
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_2ch_256k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_2ch_256k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1008
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_2ch_32k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_2ch_32k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1009
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_2ch_512k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_2ch_512k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1010
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_2ch_64k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_2ch_64k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1011
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_3ch_128k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_3ch_128k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1012
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_3ch_256k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_3ch_256k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1013
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_3ch_32k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_3ch_32k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1014
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_3ch_512k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_3ch_512k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1015
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_3ch_64k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_3ch_64k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1016
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_6ch_128k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_6ch_128k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1017
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_6ch_256k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_6ch_256k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1018
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_6ch_32k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_6ch_32k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1019
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_6ch_512k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_6ch_512k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1020
     action: normal_play
-    stream_name: AC3/vts_ac3_32k_6ch_64k_a1250_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_32k_6ch_64k_a1250_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1021
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_1ch_128k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_1ch_128k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1022
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_1ch_256k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_1ch_256k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1023
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_1ch_32k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_1ch_32k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1024
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_1ch_512k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_1ch_512k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1025
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_1ch_64k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_1ch_64k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1026
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_2ch_128k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_2ch_128k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1027
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_2ch_256k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_2ch_256k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1028
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_2ch_32k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_2ch_32k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1029
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_2ch_512k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_2ch_512k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1030
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_2ch_64k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_2ch_64k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1031
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_3ch_128k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_3ch_128k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1032
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_3ch_256k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_3ch_256k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1033
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_3ch_32k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_3ch_32k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1034
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_3ch_512k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_3ch_512k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1035
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_3ch_64k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_3ch_64k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1036
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_6ch_128k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_6ch_128k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1037
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_6ch_256k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_6ch_256k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1038
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_6ch_512k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_6ch_512k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1039
     action: normal_play
-    stream_name: AC3/vts_ac3_44.1k_6ch_64k_a1723_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_44.1k_6ch_64k_a1723_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1040
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_1ch_128k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_1ch_128k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1041
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_1ch_256k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_1ch_256k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1042
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_1ch_32k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_1ch_32k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1043
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_1ch_512k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_1ch_512k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1044
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_1ch_64k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_1ch_64k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1045
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_2ch_128k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_2ch_128k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1046
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_2ch_256k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_2ch_256k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1047
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_2ch_32k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_2ch_32k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1048
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_2ch_512k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_2ch_512k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1049
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_2ch_64k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_2ch_64k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1050
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_3ch_128k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_3ch_128k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1051
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_3ch_256k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_3ch_256k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1052
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_3ch_32k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_3ch_32k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1053
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_3ch_512k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_3ch_512k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1054
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_3ch_64k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_3ch_64k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1055
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_6ch_128k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_6ch_128k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1056
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_6ch_256k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_6ch_256k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1057
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_6ch_512k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_6ch_512k_a1875_v0_60sec.mp4
   - tcid: VTS_L4_AC3_1058
     action: normal_play
-    stream_name: AC3/vts_ac3_48k_6ch_64k_a1875_v0_60sec.mp4
+    stream_name: AV/AC3/vts_ac3_48k_6ch_64k_a1875_v0_60sec.mp4

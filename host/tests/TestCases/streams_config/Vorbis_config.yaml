@@ -27,37 +27,37 @@ AVModule:
   L4Test:
   - tcid: VTS_L4_Vorbis_1001
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_44.1k_1ch_128k_a2586_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_44.1k_1ch_128k_a2586_v0_61sec.webm
   - tcid: VTS_L4_Vorbis_1002
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_44.1k_2ch_128k_a2586_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_44.1k_2ch_128k_a2586_v0_61sec.webm
   - tcid: VTS_L4_Vorbis_1003
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_44.1k_2ch_256k_a2586_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_44.1k_2ch_256k_a2586_v0_61sec.webm
   - tcid: VTS_L4_Vorbis_1004
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_44.1k_6ch_128k_a2586_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_44.1k_6ch_128k_a2586_v0_61sec.webm
   - tcid: VTS_L4_Vorbis_1005
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_44.1k_6ch_256k_a2586_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_44.1k_6ch_256k_a2586_v0_61sec.webm
   - tcid: VTS_L4_Vorbis_1006
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_44.1k_6ch_512k_a2586_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_44.1k_6ch_512k_a2586_v0_61sec.webm
   - tcid: VTS_L4_Vorbis_1007
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_48k_1ch_128k_a2814_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_48k_1ch_128k_a2814_v0_61sec.webm
   - tcid: VTS_L4_Vorbis_1008
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_48k_2ch_128k_a2814_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_48k_2ch_128k_a2814_v0_61sec.webm
   - tcid: VTS_L4_Vorbis_1009
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_48k_2ch_256k_a2814_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_48k_2ch_256k_a2814_v0_61sec.webm
   - tcid: VTS_L4_Vorbis_1010
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_48k_6ch_128k_a2814_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_48k_6ch_128k_a2814_v0_61sec.webm
   - tcid: VTS_L4_Vorbis_1011
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_48k_6ch_256k_a2814_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_48k_6ch_256k_a2814_v0_61sec.webm
   - tcid: VTS_L4_Vorbis_1012
     action: normal_play
-    stream_name: Vorbis/vts_vorbis_48k_6ch_512k_a2814_v0_61sec.webm
+    stream_name: AV/Vorbis/vts_vorbis_48k_6ch_512k_a2814_v0_61sec.webm

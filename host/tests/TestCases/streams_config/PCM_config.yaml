@@ -27,28 +27,28 @@ AVModule:
   L4Test:
   - tcid: VTS_L4_PCM_1001
     action: normal_play
-    stream_name: PCM/vts_pcm_44.1k_2ch_a2584_v0_60sec.mp4
+    stream_name: AV/PCM/vts_pcm_44.1k_2ch_a2584_v0_60sec.mp4
   - tcid: VTS_L4_PCM_1002
     action: normal_play
-    stream_name: PCM/vts_pcm_44.1k_6ch_a2584_v0_60sec.mp4
+    stream_name: AV/PCM/vts_pcm_44.1k_6ch_a2584_v0_60sec.mp4
   - tcid: VTS_L4_PCM_1003
     action: normal_play
-    stream_name: PCM/vts_pcm_44.1k_8ch_a2584_v0_60sec.mp4
+    stream_name: AV/PCM/vts_pcm_44.1k_8ch_a2584_v0_60sec.mp4
   - tcid: VTS_L4_PCM_1004
     action: normal_play
-    stream_name: PCM/vts_pcm_48k_2ch_a2813_v0_60sec.mp4
+    stream_name: AV/PCM/vts_pcm_48k_2ch_a2813_v0_60sec.mp4
   - tcid: VTS_L4_PCM_1005
     action: normal_play
-    stream_name: PCM/vts_pcm_48k_6ch_a2813_v0_60sec.mp4
+    stream_name: AV/PCM/vts_pcm_48k_6ch_a2813_v0_60sec.mp4
   - tcid: VTS_L4_PCM_1006
     action: normal_play
-    stream_name: PCM/vts_pcm_48k_8ch_a2813_v0_60sec.mp4
+    stream_name: AV/PCM/vts_pcm_48k_8ch_a2813_v0_60sec.mp4
   - tcid: VTS_L4_PCM_1007
     action: normal_play
-    stream_name: PCM/vts_pcm_96k_2ch_a5625_v0_60sec.mp4
+    stream_name: AV/PCM/vts_pcm_96k_2ch_a5625_v0_60sec.mp4
   - tcid: VTS_L4_PCM_1008
     action: normal_play
-    stream_name: PCM/vts_pcm_96k_6ch_a5625_v0_60sec.mp4
+    stream_name: AV/PCM/vts_pcm_96k_6ch_a5625_v0_60sec.mp4
   - tcid: VTS_L4_PCM_1009
     action: normal_play
-    stream_name: PCM/vts_pcm_96k_8ch_a5625_v0_60sec.mp4
+    stream_name: AV/PCM/vts_pcm_96k_8ch_a5625_v0_60sec.mp4

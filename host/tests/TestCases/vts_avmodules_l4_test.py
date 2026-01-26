@@ -29,7 +29,7 @@ import re
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dir_path, "../"))
 
-from vts_avmodules_helper import AVModuleTestHelperClass
+from vts_helper import VTSTestHelperClass
 from raft.framework.core.logModule import logModule
 from raft.framework.plugins.ut_raft import utHelperClass
 from raft.framework.plugins.ut_raft.utPlayer import utPlayer
@@ -38,16 +38,18 @@ from raft.framework.plugins.ut_raft.utSuiteNavigator import UTSuiteNavigatorClas
 from raft.framework.plugins.ut_raft.configRead import ConfigRead
 
 
-class L4TestClass(AVModuleTestHelperClass):
+class L4TestClass(VTSTestHelperClass):
     """Test class for running L4 AV module tests (playback + trick modes)."""
 
     def __init__(self, log: logModule = None):
         super().__init__(
-            module_name="AVModule",
+            module_name="VTS",
             test_name="L4_AVModule",
             qc_id="L4_001",
             test_suites=["VTS_L4_AVMODULE"],
             l4_yaml_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), "vts_l4_test_info.yaml"),
+            setup_file_name="vts_l4_test_setup.yaml",
+            test_config_file_name="vts_l4_test_setup.yaml",
             log=log
         )
 
@@ -69,14 +71,13 @@ class L4TestClass(AVModuleTestHelperClass):
         self.waitTime = self.cpe.get("wait_time")
         self.module_name = "AVModule"
         socVendor = self.cpe.get("soc_vendor")
+        self.restart_required = False
 
         self.player_session = self.dut.getConsoleSession("ssh_player")
 
-        self.testSession =  utPlayer(self.player_session, socVendor)
+        self.vts_player =  utPlayer(self.player_session, socVendor)
 
         self.player_session.prompt = self.prompt
-        self.testSession.prompt = self.prompt
-
 
         self.utilities = utBaseUtils()
         self.ut_menu = []
@@ -145,10 +146,10 @@ class L4TestClass(AVModuleTestHelperClass):
                 self.log.error(f"Failed processing include file {inc_file}: {e}")
         manual_verification = False
 
-        if not self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Starting test case...")
-                ut_menu.start()
+
+        for i, ut_menu in enumerate(self.ut_menu):
+            self.log.info(f"[Instance {i}] Starting test case...")
+            ut_menu.start()
 
         for test_case in l4_tests:
             tcid = test_case.get("tcid")
@@ -228,16 +229,19 @@ class L4TestClass(AVModuleTestHelperClass):
 
             self.log.testResult(f'{test_suite_name} Finished')
 
-        if self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Stopping test case...")
-                ut_menu.stop()
+            if self.restart_required:
+                for i, ut_menu in enumerate(self.ut_menu):
+                    self.log.info("Stopping VTS player...")
+                    self.vts_player.stop()
+                    self.log.info(f"[Instance {i}] Stopping test case...")
+                    ut_menu.stop()
+
 
         self.test_cleanup()
         return final_result
 
 if __name__ == "__main__":
-    summerLogName = os.path.splitext(os.path.basename(__file__))[0] + "_summery"
-    summeryLog = logModule("L4Test", level=logModule.INFO)
-    test = L4TestClass(summeryLog)
+    summaryLogName = os.path.splitext(os.path.basename(__file__))[0] + "_summary"
+    summaryLog = logModule("L4Test", level=logModule.INFO)
+    test = L4TestClass(summaryLog)
     test.run(False)
