@@ -40,8 +40,8 @@ if __name__ == '__main__':
 
     # Create test instances
     tests = [
-        vts_hdmicec_L3_receive_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        vts_hdmicec_L3_send_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
+        vts_hdmicec_L3_receive_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        vts_hdmicec_L3_send_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
         # Add more test instances here
     ]
 
