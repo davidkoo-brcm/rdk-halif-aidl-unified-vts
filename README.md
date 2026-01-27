@@ -118,14 +118,14 @@ The build.sh script:
 
 - Generates binaries and packages the binaries in the `build/vts_unified.tar.gz.bz` directory.
 
-## Run test
+## Run L1 L2 L3 tests Manually
 
-- Transfer to Target Device:
+- Inorder to run the L1 L2 and L3 tests manually on target device:
 
-Copy the tarball to the target device (e.g., using scp):
+Copy the tarball `build/vts_unified.tar.gz.bz` to the target device (e.g., using scp):
 
 ```bash
-scp vts_unified.tar.gz root@target-device:/home/root/
+scp vts_unified.tar.gz.bz root@target-device:/home/root/
 
 ```
 
@@ -136,7 +136,7 @@ Log into the target device and extract the tarball:
 ```bash
 ssh root@target-device
 cd /home/root
-tar -zxf vts_unified.tar.gz
+tar -zxf vts_unified.tar.gz.bz
 cd bin
 ```
 
@@ -148,15 +148,13 @@ Please use platform specific profile
 sudo ./run.sh -p profiles/hfp-vdevice.yaml
 ```
 
+For running the L3 test cases manually make sure the L3 test streams are copied into `bin/assets/streams/input` folder in target device.
+
 ## Setting Python environment for L1, L2, L3 and L4 automation test cases
 
 - For running the L1, L2, L3 and L4 test suite, a host PC with a Python environment is required.
 - Install Python Environment and Activation Scripts as detailed in [Python Installation](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite)
 
-## Running L1, L2 and L3 automation test cases
+## Running L1, L2, L3 and L4 Automation test cases
 
-- To run the `L1`, `L2` and `L3` test cases of AV Modules follow the `L1` `L2` and `L3` Test Procedure document - [vts_avmodule_L1_L2_L3_TestProcedure.md](docs/vts_avmodule_L1_L2_L3_TestProcedure.md)
-
-## Running L4 automation test cases
-
-- To run the `L4` test cases of AV Modules follow the `L4` Test Procedure document - [vts_avmodule_L4_TestProcedure.md](docs/vts_avmodule_L4_TestProcedure.md)
+- To run the `L1`, `L2` and `L3` test cases of AV Modules follow the `L1` `L2` `L3` and `L4` Test Procedure document - [vts_avmodule_L1_L2_L3_L4_TestProcedure.md](docs/vts_avmodule_L1_L2_L3_L4_TestProcedure.md)
