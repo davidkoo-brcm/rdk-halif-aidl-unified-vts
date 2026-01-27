@@ -484,10 +484,10 @@ elif [[ "$1" == [Tt]arget=* ]]; then
     build_ut_core
     generate_avbufferhelper_skeleton
     build_halif_test
-    install_test
     if [ "$2" == "-v" ]; then
         build_vcomponent_services
     fi
+    install_test
 else
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"
     help
