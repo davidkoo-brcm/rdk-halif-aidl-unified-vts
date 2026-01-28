@@ -130,13 +130,13 @@ INC_DIRS += $(ROOT_DIR)/build/usr/include/EGL/
 INC_DIRS += $(ROOT_DIR)/build/usr/include/GLES2/
 INC_DIRS += $(ROOT_DIR)/build/usr/include/KHR/
 
+
 INC_DIRS += $(ROOT_DIR)/build/usr/include/gstreamer-1.0/
 INC_DIRS += $(ROOT_DIR)/build/usr/include/glib-2.0/
 INC_DIRS += $(ROOT_DIR)/build/usr/lib/glib-2.0/include/
 
 XLDFLAGS := -L$(ROOT_DIR)/build/usr/lib
 XLDFLAGS += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib
-
 XLDFLAGS += -lbinder -lutils
 XLDFLAGS += -laidl_client
 XLDFLAGS += -lavbufferhelper
@@ -148,6 +148,7 @@ CXXFLAGS += -D_EGL_NO_X11
 CXXFLAGS += -DMESA_EGL_NO_X11_HEADERS
 
 # required for std::optional
+CXXFLAGS += -std=c++17
 CXXFLAGS += -Wall -Wformat -Werror=format
 
 UT_CORE_DIR := $(CURDIR)/ut-core

@@ -22,7 +22,7 @@
 
 # This is a sample test configuration file. Users can customize the YAML entries as needed
 # This test configuration file includes sample YAML entries for executing various combinations
-AVModule:
+VTS:
   Planecontrol_Swapping:
     - query_type: "Direct"
       query: "Validate Planecontrol_Swapping: Did the planes get swapped ?"

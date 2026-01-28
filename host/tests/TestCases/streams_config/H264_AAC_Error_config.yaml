@@ -1,0 +1,1031 @@
+AVModule:
+  stream_download_path: http://<>/streams
+  input_streams_path: assets/streams/input
+  player: gstreamer
+  L4Test:
+  - tcid: VTS_L4_H264_AAC_Error_1001
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_2ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1002
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_6ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1003
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_2ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1004
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_6ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1005
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_2ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1006
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_6ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1007
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_2ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1008
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_6ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1009
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_2ch_256k_a2814_v1437_63sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1010
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_6ch_256k_a2814_v1432_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1011
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_2ch_256k_a2814_v1251_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1012
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_6ch_256k_a2814_v1285_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1013
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_2ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1014
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_6ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1015
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_2ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1016
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_6ch_256k_a2814_v1417_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1017
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_2ch_256k_a2814_v1436_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1018
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_6ch_256k_a2814_v1436_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1019
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_2ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1020
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_6ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1021
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_2ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1022
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_6ch_256k_a2814_v1435_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1023
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_2ch_256k_a2814_v1262_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1024
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_6ch_256k_a2814_v1270_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1025
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_nal_injection_10M_aac_48k_2ch_256k_a2814_v1437_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1026
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_nal_injection_10M_aac_48k_6ch_256k_a2814_v1436_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1027
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_2ch_256k_a2814_v1436_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1028
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_6ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1029
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_2ch_256k_a2814_v1372_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1030
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_6ch_256k_a2814_v1382_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1031
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_2ch_256k_a2814_v1436_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1032
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_6ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1033
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_2ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1034
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_6ch_256k_a2814_v1437_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1035
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_2ch_256k_a2814_v1418_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1036
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_6ch_256k_a2814_v1423_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1037
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_2ch_256k_a2814_v1094_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1038
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_6ch_256k_a2814_v1059_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1039
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_2ch_256k_a2814_v788_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1040
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_6ch_256k_a2814_v788_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1041
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_2ch_256k_a2814_v1494_65sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1042
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_24.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_6ch_256k_a2814_v1498_65sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1043
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_2ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1044
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1045
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_2ch_256k_a2814_v1797_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1046
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1047
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_2ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1048
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1049
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_2ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1050
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1051
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_2ch_256k_a2814_v1789_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1052
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_6ch_256k_a2814_v1798_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1053
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_2ch_256k_a2814_v1449_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1054
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_6ch_256k_a2814_v1479_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1055
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_2ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1056
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1057
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_2ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1058
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1059
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_2ch_256k_a2814_v1797_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1060
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1061
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_2ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1062
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1063
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_2ch_256k_a2814_v1797_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1064
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_6ch_256k_a2814_v1796_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1065
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_2ch_256k_a2814_v1594_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1066
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_6ch_256k_a2814_v1585_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1067
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_nal_injection_10M_aac_48k_2ch_256k_a2814_v1792_63sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1068
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_nal_injection_10M_aac_48k_6ch_256k_a2814_v1795_63sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1069
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_2ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1070
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1071
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_2ch_256k_a2814_v1693_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1072
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_6ch_256k_a2814_v1705_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1073
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_2ch_256k_a2814_v1797_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1074
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_6ch_256k_a2814_v1797_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1075
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_2ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1076
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_6ch_256k_a2814_v1798_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1077
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_2ch_256k_a2814_v1767_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1078
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_6ch_256k_a2814_v1770_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1079
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_2ch_256k_a2814_v1341_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1080
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_6ch_256k_a2814_v1319_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1081
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_2ch_256k_a2814_v983_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1082
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_6ch_256k_a2814_v983_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1083
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_2ch_256k_a2814_v1870_66sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1084
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_30.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_6ch_256k_a2814_v1859_65sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1085
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_adts-header-corruption_128k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1086
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_adts-header-corruption_256k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1087
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_adts-header-corruption_512k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1088
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_bitrate-field-corruption_128k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1089
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_bitrate-field-corruption_256k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1090
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_bitrate-field-corruption_512k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1091
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_channel-mode-corruption_128k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1092
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_channel-mode-corruption_256k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1093
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_channel-mode-corruption_512k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1094
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_dynamic-range-corruption_128k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1095
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_dynamic-range-corruption_256k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1096
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_dynamic-range-corruption_512k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1097
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_entropy-bit-flip_128k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1098
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_entropy-bit-flip_256k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1099
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_entropy-bit-flip_512k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1100
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_frame-skip-duplication_128k_a2820_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1101
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_frame-skip-duplication_256k_a2806_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1102
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_frame-skip-duplication_512k_a2800_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1103
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_frame-truncation_128k_a2766_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1104
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_frame-truncation_256k_a2776_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1105
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_frame-truncation_512k_a2770_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1106
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_quantization-noise-injection_128k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1107
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_quantization-noise-injection_256k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1108
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_2ch_quantization-noise-injection_512k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1109
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_adts-header-corruption_128k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1110
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1111
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_adts-header-corruption_512k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1112
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_bitrate-field-corruption_128k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1113
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1114
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_bitrate-field-corruption_512k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1115
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_channel-mode-corruption_128k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1116
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1117
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_channel-mode-corruption_512k_a2814_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1118
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_dynamic-range-corruption_128k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1119
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1120
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_dynamic-range-corruption_512k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1121
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_entropy-bit-flip_128k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1122
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1123
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_entropy-bit-flip_512k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1124
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_frame-skip-duplication_128k_a2803_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1125
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_frame-skip-duplication_256k_a2818_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1126
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_frame-skip-duplication_512k_a2823_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1127
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_frame-truncation_128k_a2775_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1128
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_frame-truncation_256k_a2779_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1129
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_frame-truncation_512k_a2777_v3595_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1130
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_quantization-noise-injection_128k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1131
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1132
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_10M_aac_48k_6ch_quantization-noise-injection_512k_a2814_v3595_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1133
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_2ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1134
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_6ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1135
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1136
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1137
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1138
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1139
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1140
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1141
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1142
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_bitflip_slice_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1143
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_2ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1144
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_6ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1145
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1146
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1147
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1148
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1149
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1150
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1151
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1152
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_cross_slice_corruption_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1153
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_2ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1154
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_6ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1155
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1156
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1157
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1158
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1159
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1160
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1161
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1162
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_drop_partial_slices_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1163
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_2ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1164
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_6ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1165
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1166
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1167
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1168
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1169
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1170
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1171
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1172
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_entropy_bit_flip_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1173
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_2ch_256k_a2814_v3594_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1174
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_6ch_256k_a2814_v3591_63sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1175
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3599_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1176
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3599_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1177
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3599_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1178
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3599_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1179
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3599_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1180
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3599_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1181
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3599_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1182
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_fake_reference_frame_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3599_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1183
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_2ch_256k_a2814_v2687_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1184
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_6ch_256k_a2814_v2675_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1185
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v2625_51sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1186
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v2625_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1187
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v2625_51sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1188
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v2625_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1189
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v2625_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1190
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v2625_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1191
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_6ch_frame-truncation_256k_a2777_v2625_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1192
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_gop_truncation_duplication_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v2625_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1193
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_2ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1194
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_6ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1195
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1196
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1197
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1198
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1199
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1200
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1201
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1202
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_insert_noise_pframe_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1203
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_2ch_256k_a2814_v3597_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1204
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_6ch_256k_a2814_v3598_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1205
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1206
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1207
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1208
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1209
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1210
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1211
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1212
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_light_fuzz_all_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1213
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_2ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1214
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_6ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1215
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1216
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1217
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1218
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1219
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1220
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1221
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1222
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_macroblock_skipping_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1223
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_2ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1224
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_6ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1225
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1226
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1227
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1228
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1229
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1230
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1231
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1232
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_mixed_soft_corruption_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1233
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_2ch_256k_a2814_v3597_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1234
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_6ch_256k_a2814_v3597_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1235
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1236
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3596_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1237
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1238
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3596_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1239
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3596_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1240
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3596_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1241
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3596_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1242
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_motion_vector_corruption_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3596_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1243
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_2ch_256k_a2814_v3177_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1244
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_6ch_256k_a2814_v3140_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1245
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3167_54sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1246
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3167_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1247
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3167_54sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1248
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3167_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1249
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3167_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1250
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3167_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1251
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3167_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1252
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_header_corruption_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3167_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1253
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_injection_10M_aac_48k_2ch_256k_a2814_v3596_63sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1254
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_injection_10M_aac_48k_6ch_256k_a2814_v3586_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1255
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_injection_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3597_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1256
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_injection_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3597_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1257
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_injection_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3597_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1258
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_injection_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3597_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1259
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_injection_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3597_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1260
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_injection_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3597_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1261
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_injection_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3597_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1262
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_nal_injection_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3597_62sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1263
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_2ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1264
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_6ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1265
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1266
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1267
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1268
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1269
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1270
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1271
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1272
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_overwrite_macroblock_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1273
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_2ch_256k_a2814_v3447_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1274
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_6ch_256k_a2814_v3451_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1275
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3447_58sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1276
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3447_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1277
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3447_58sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1278
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3447_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1279
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3447_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1280
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3447_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1281
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3447_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1282
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_partial_frame_truncation_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3447_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1283
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_2ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1284
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_6ch_256k_a2814_v3598_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1285
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1286
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3596_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1287
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3596_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1288
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3596_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1289
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3596_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1290
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3596_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1291
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3596_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1292
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_pts_dts_corruption_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3596_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1293
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_2ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1294
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_6ch_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1295
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1296
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1297
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1298
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1299
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1300
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1301
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3599_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1302
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sei_corruption_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3599_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1303
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_2ch_256k_a2814_v3542_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1304
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_6ch_256k_a2814_v3553_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1305
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3550_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1306
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3550_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1307
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3550_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1308
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3550_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1309
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3550_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1310
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3550_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1311
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3550_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1312
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_boundary_offset_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3550_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1313
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_2ch_256k_a2814_v2865_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1314
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_6ch_256k_a2814_v2902_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1315
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v2808_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1316
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v2808_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1317
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v2808_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1318
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v2808_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1319
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v2808_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1320
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v2808_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1321
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_6ch_frame-truncation_256k_a2777_v2808_60sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1322
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_slice_reordering_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v2808_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1323
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_2ch_256k_a2814_v1940_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1324
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_6ch_256k_a2814_v1940_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1325
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v1940_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1326
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v1940_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1327
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v1940_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1328
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v1940_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1329
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v1940_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1330
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v1940_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1331
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_6ch_frame-truncation_256k_a2777_v1940_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1332
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_sps_pps_corruption_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v1940_61sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1333
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_2ch_256k_a2814_v3752_66sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1334
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_6ch_256k_a2814_v3748_66sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1335
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_6ch_adts-header-corruption_256k_a2814_v3739_66sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1336
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v3739_66sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1337
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_6ch_channel-mode-corruption_256k_a2814_v3739_66sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1338
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v3739_66sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1339
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_6ch_entropy-bit-flip_256k_a2814_v3739_66sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1340
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_6ch_frame-skip-duplication_256k_a2810_v3739_66sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1341
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_6ch_frame-truncation_256k_a2777_v3739_66sec.mp4
+  - tcid: VTS_L4_H264_AAC_Error_1342
+    action: normal_play
+    stream_name: AV/Error_Streams/H264_AAC_Error/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_temporal_duplication_10M_aac_48k_6ch_quantization-noise-injection_256k_a2814_v3739_66sec.mp4

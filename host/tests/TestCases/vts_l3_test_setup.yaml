@@ -1,0 +1,323 @@
+#** *****************************************************************************
+# *
+# * If not stated otherwise in this file or this component's LICENSE file the
+# * following copyright and licenses apply:
+# *
+# * Copyright 2025 RDK Management
+# *
+# * Licensed under the Apache License, Version 2.0 (the "License");
+# * you may not use this file except in compliance with the License.
+# * You may obtain a copy of the License at
+# *
+# *
+# * http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * Unless required by applicable law or agreed to in writing, software
+# * distributed under the License is distributed on an "AS IS" BASIS,
+# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# * See the License for the specific language governing permissions and
+# * limitations under the License.
+# *
+#** ******************************************************************************
+
+# This is a sample test configuration file. Users can customize the YAML entries as needed
+# This test configuration file includes sample YAML entries for executing various combinations
+VTS:
+  description: "VTS L3 test setup"
+  num_of_instances: 1
+  test:
+    artifacts:
+      - "../../../build/vts_unified.tar.gz.bz"
+    execute: "./run.sh"
+    type: UT-C # C (UT-C Cunit) / C++ (UT-G (g++ ut-core gtest backend))
+    suites:
+      0:
+        name: "VTS_L3_AudioDecoder"
+        streams:
+          - /Audio_Decoder/AAC_LC/Valid/tones_8k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_11.025k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_11.025k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_12k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_16k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_16k_2_64.wav
+          - /Audio_Decoder/AAC_LC/Valid/tones_22.05k_2_96.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_24k_2_96.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_32k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_44.1k_2_128.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_48k_1_256.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_48k_2_256.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_48k_5.1_384.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_48k_7.1_512.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_64k_2_256.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_88.2k_2_256.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_8k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_96k_2_384.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_96k_5.1_512.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_96k_7.1_1024.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_header_fields.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_incomplete.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_random.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_random_bitflip.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_sync.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_zero.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_zero_1.aac
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_32k_1_64.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_32k_2_64.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_44.1k_1_64.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_44.1k_2_96.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_1_128.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_2.1_256.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_2_192.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_3.0_256.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_4.0_256.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_5.0_384.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_5.1_640.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_incomplete.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_invalid.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_zero.ac3
+        tests:
+          - Decode_Sequential_NonTunnel_NonSecure
+          - Decode_Sequential_NonTunnel_NonSecure_Error
+          - Decode_Sequential_NonTunnel_NonSecure_Trim
+          - Decode_Sequential_NonTunnel_NonSecure_Discontinuity
+          - Decode_Sequential_NonTunnel_NonSecure_EOS
+          - Decode_Sequential_NonTunnel_NonSecure_Flush
+          - Decode_Sequential_NonTunnel_NonSecure_FlushReset
+          - Decode_Sequential_NonTunnel_NonSecure_StopStart
+          - Decode_Concurrent_NonTunnel_NonSecure
+          - Decode_Concurrent_NonTunnel_NonSecure_Error
+          - Decode_Concurrent_NonTunnel_NonSecure_Trim
+          - Decode_Concurrent_NonTunnel_NonSecure_Discontinuity
+          - Decode_Concurrent_NonTunnel_NonSecure_EOS
+          - Decode_Concurrent_NonTunnel_NonSecure_Flush
+          - Decode_Concurrent_NonTunnel_NonSecure_FlushReset
+          - Decode_Concurrent_NonTunnel_NonSecure_StopStart
+      1:
+        name: "VTS_L3_AudioSink"
+        streams:
+          - /Audio_Decoder/AAC_LC/Valid/tones_8k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_11.025k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_11.025k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_12k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_16k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_16k_2_64.wav
+          - /Audio_Decoder/AAC_LC/Valid/tones_22.05k_2_96.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_24k_2_96.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_32k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_44.1k_2_128.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_48k_1_256.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_48k_2_256.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_48k_5.1_384.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_48k_7.1_512.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_64k_2_256.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_88.2k_2_256.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_8k_2_64.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_96k_2_384.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_96k_5.1_512.aac
+          - /Audio_Decoder/AAC_LC/Valid/tones_96k_7.1_1024.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_header_fields.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_incomplete.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_random.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_random_bitflip.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_sync.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_zero.aac
+          - /Audio_Decoder/AAC_LC/Invalid/tones_48k_2_256_zero_1.aac
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_32k_1_64.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_32k_2_64.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_44.1k_1_64.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_44.1k_2_96.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_1_128.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_2.1_256.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_2_192.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_3.0_256.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_4.0_256.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_5.0_384.ac3
+          - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_5.1_640.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_incomplete.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_invalid.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_zero.ac3
+        tests:
+          - Sink_Sequential_NonTunnel_NonSecure
+          - Sink_Sequential_NonTunnel_NonSecure_Flush
+          - Sink_Sequential_NonTunnel_NonSecure_EOS
+          - Sink_Sequential_NonTunnel_NonSecure_Underflow
+          - Sink_Concurrent_NonTunnel_NonSecure
+          - Sink_Concurrent_NonTunnel_NonSecure_Flush
+          - Sink_Concurrent_NonTunnel_NonSecure_EOS
+          - Sink_Concurrent_NonTunnel_NonSecure_Underflow
+
+      2:
+        name: "VTS_L3_AVBuffer"
+        tests:
+          - seq_nonsec_audiopool
+          - seq_nonsec_audiopoolpcm
+          - seq_nonsec_audiopool_alloc
+          - seq_nonsec_audiopool_trim
+          - seq_nonsec_audiopool_notify
+          - seq_nonsec_audiopool_readwrite
+          - seq_nonsec_audiopool_sha1
+          - seq_sec_audiopool
+          - seq_sec_audiopoolpcm
+          - seq_sec_audiopool_alloc
+          - seq_sec_audiopool_trim
+          - seq_sec_audiopool_notify
+          - seq_sec_audiopool_readwrite
+          - seq_sec_audiopool_sha1
+          - con_nonsec_audiopool
+          - con_nonsec_audiopool_alloc
+          - con_nonsec_audiopool_trim
+          - con_nonsec_audiopool_notify
+          - con_nonsec_audiopool_readwrite
+          - con_nonsec_audiopool_sha1
+          - con_sec_audiopool
+          - con_sec_audiopool_alloc
+          - con_sec_audiopool_trim
+          - con_sec_audiopool_notify
+          - con_sec_audiopool_readwrite
+          - con_sec_audiopool_sha1
+          - seq_nonsec_videopool
+          - seq_nonsec_videopool_alloc
+          - seq_nonsec_videopool_trim
+          - seq_nonsec_videopool_notify
+          - seq_nonsec_videopool_readwrite
+          - seq_nonsec_videopool_sha1
+          - seq_sec_videopool
+          - seq_sec_videopool_alloc
+          - seq_sec_videopool_trim
+          - seq_sec_videopool_notify
+          - seq_sec_videopool_readwrite
+          - seq_sec_videopool_sha1
+          - con_nonsec_videopool
+          - con_nonsec_videopool_alloc
+          - con_nonsec_videopool_trim
+          - con_nonsec_videopool_notify
+          - con_nonsec_videopool_readwrite
+          - con_nonsec_videopool_sha1
+          - con_sec_videopool
+          - con_sec_videopool_alloc
+          - con_sec_videopool_trim
+          - con_sec_videopool_notify
+          - con_sec_videopool_readwrite
+          - con_sec_videopool_sha1
+          - seq_nonsec_audio_videopool
+          - seq_nonsec_audio_videopool_alloc
+          - seq_nonsec_audio_videopool_trim
+          - seq_nonsec_audio_videopool_notify
+          - seq_nonsec_audio_videopool_readwrite
+          - seq_nonsec_audio_videopool_sha1
+          - seq_sec_audio_videopool
+          - seq_sec_audio_videopool_alloc
+          - seq_sec_audio_videopool_trim
+          - seq_sec_audio_videopool_notify
+          - seq_sec_audio_videopool_readwrite
+          - seq_sec_audio_videopool_sha1
+          - con_nonsec_audio_videopool
+          - con_nonsec_audio_videopool_alloc
+          - con_nonsec_audio_videopool_trim
+          - con_nonsec_audio_videopool_notify
+          - con_nonsec_audio_videopool_readwrite
+          - con_nonsec_audio_videopool_sha1
+          - con_sec_audio_videopool
+          - con_sec_audio_videopool_alloc
+          - con_sec_audio_videopool_trim
+          - con_sec_audio_videopool_notify
+          - con_sec_audio_videopool_readwrite
+          - con_sec_audio_videopool_sha1
+      3:
+        name: "VTS_L3_VideoDecoder"
+        streams:
+          - Video_Decoder/H264_HIGH_1920x1080_DR_SDR_DR_BT709_60p_PIXEL_FORMAT_YCBCR420_734.es
+          - Video_Decoder/H264_HIGH_1920x1080_DR_SDR_DR_BT709_60p_PIXEL_FORMAT_YCBCR420_734_GOP.es
+          - Video_Decoder/H265_HIGH_1920x1080_DR_SDR_DR_BT709_30p_PIXEL_FORMAT_YCBCR420_734.es
+          - Video_Decoder/VP9_HIGH_1920x1080_DR_SDR_DR_BT709_30p_PIXEL_FORMAT_YCBCR420_734.es
+        tests:
+          - Decode_Sequential_NonTunnel_NonSecure
+          - Decode_Sequential_NonTunnel_NonSecure_Error
+          - Decode_Sequential_NonTunnel_NonSecure_GOP
+          - Decode_Sequential_NonTunnel_NonSecure_Discontinuity
+          - Decode_Sequential_NonTunnel_NonSecure_EOS
+          - Decode_Sequential_NonTunnel_NonSecure_Flush
+          - Decode_Sequential_NonTunnel_NonSecure_FlushReset
+          - Decode_Concurrent_NonTunnel_NonSecure
+          - Decode_NonTunnel_NonSecure_Error_Discontinuity
+          - Decode_NonTunnel_NonSecure_Error_EOS
+          - Decode_NonTunnel_NonSecure_Discontinuity_EOS
+          - Decode_NonTunnel_NonSecure_Flush_Error
+          - Decode_NonTunnel_NonSecure_FlushReset_Error
+          - Decode_Concurrent_NonTunnel_NonSecure_Error
+          - Decode_Concurrent_NonTunnel_NonSecure_Discontinuity
+          - Decode_Concurrent_NonTunnel_NonSecure_EOS
+          - Decode_Concurrent_NonTunnel_NonSecure_Flush
+          - Decode_Concurrent_NonTunnel_NonSecure_FlushReset
+          - Decode_Concurrent_NonTunnel_NonSecure_GOPStructure
+      4:
+        name: "VTS_L3_VideoSink"
+        streams:
+          - Video_Sink/H264_1920_1080_30.es
+          - Video_Sink/H264_HD_30_YUV420.es
+          - Video_Sink/H264_HD_30_YUV444.es
+          - Video_Sink/H264_HD_60_YUV420.es
+          - Video_Sink/H264_HD_60_YUV444.es
+          - Video_Sink/H264_SD_30_YUV420.es
+          - Video_Sink/H264_SD_30_YUV444.es
+          - Video_Sink/H264_SD_60_YUV420.es
+          - Video_Sink/H264_SD_60_YUV444.es
+          - Video_Sink/H264_UHD_30_YUV420.es
+          - Video_Sink/H264_UHD_30_YUV444.es
+          - Video_Sink/H264_UHD_60_YUV420.es
+          - Video_Sink/H264_UHD_60_YUV444.es
+        tests:
+          - Sink_Sequential_NonTunnel_NonSecure_QueueDepth
+          - Sink_Sequential_NonTunnel_NonSecure_FramesReceived
+          - Sink_Sequential_NonTunnel_NonSecure_FramesDroppedLate
+          - Sink_Sequential_NonTunnel_NonSecure_FramesRepeatedFRC
+          - Sink_Sequential_NonTunnel_NonSecure_FramesMiss
+          - Sink_Sequential_NonTunnel_NonSecure_FramesDroppedFRC
+          - Sink_Sequential_NonTunnel_NonSecure_VideoFlush
+          - Sink_Sequential_NonTunnel_NonSecure_EOS
+          - Sink_Sequential_NonTunnel_NonSecure_UnderflowResumed
+          - Sink_Sequential_NonTunnel_NonSecure_DiscardFramesUntil
+          - Sink_Concurrent_NonTunnel_NonSecure_QueueDepth
+          - Sink_Concurrent_NonTunnel_NonSecure_FramesReceived
+          - Sink_Concurrent_NonTunnel_NonSecure_FramesDroppedLate
+          - Sink_Concurrent_NonTunnel_NonSecure_FramesDroppedFRC
+          - Sink_Concurrent_NonTunnel_NonSecure_FramesRepeatedFRC
+          - Sink_Concurrent_NonTunnel_NonSecure_FramesMiss
+          - Sink_Concurrent_NonTunnel_NonSecure_VideoFlush
+          - Sink_Concurrent_NonTunnel_NonSecure_EOS
+          - Sink_Concurrent_NonTunnel_NonSecure_UnderflowResumed
+          - Sink_Concurrent_NonTunnel_NonSecure_DiscardFramesUntil
+      6:
+        name: "VTS_L3_PlaneControl"
+        streams:
+          - Video_Sink/H264_1920_1080_30.es
+          - Video_Sink/H264_HD_30_YUV420.es
+          - Video_Sink/H264_HD_30_YUV444.es
+          - Video_Sink/H264_HD_60_YUV420.es
+          - Video_Sink/H264_HD_60_YUV444.es
+          - Video_Sink/H264_SD_30_YUV420.es
+          - Video_Sink/H264_SD_30_YUV444.es
+          - Video_Sink/H264_SD_60_YUV420.es
+          - Video_Sink/H264_SD_60_YUV444.es
+          - Video_Sink/H264_UHD_30_YUV420.es
+          - Video_Sink/H264_UHD_30_YUV444.es
+          - Video_Sink/H264_UHD_60_YUV420.es
+          - Video_Sink/H264_UHD_60_YUV444.es
+        tests:
+          - Planecontrol_Mapping
+          - Planecontrol_Swapping
+          - Planecontrol_Aspectratio
+          - Planecontrol_Zorder
+          - Planecontrol_Visibility
+          - Planecontrol_Overscan
+          - Planecontrol_Alpha
+          - Planecontrol_Position
+          - Planecontrol_Size
+          - Planecontrol_Dynamicrange
+          - Planecontrol_Pixelformat
+          - Planecontrol_Graphicsplane
+          - Planecontrol_Vsync

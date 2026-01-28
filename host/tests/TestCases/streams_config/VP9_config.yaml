@@ -1,0 +1,363 @@
+#** *****************************************************************************
+# *
+# * If not stated otherwise in this file or this component's LICENSE file the
+# * following copyright and licenses apply:
+# *
+# * Copyright 2025 RDK Management
+# *
+# * Licensed under the Apache License, Version 2.0 (the "License");
+# * you may not use this file except in compliance with the License.
+# * You may obtain a copy of the License at
+# *
+# *
+# * http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * Unless required by applicable law or agreed to in writing, software
+# * distributed under the License is distributed on an "AS IS" BASIS,
+# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# * See the License for the specific language governing permissions and
+# * limitations under the License.
+# *
+#** ******************************************************************************
+
+AVModule:
+  stream_download_path: http://<>/streams
+  input_streams_path: assets/streams/input
+  player: gstreamer
+  L4Test:
+  - tcid: VTS_L4_VP9_1001
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_23.976f_BT709_yuv420p_8M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1002
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_23.976f_BT709_yuv422p_8M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1003
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_24.0f_BT709_yuv420p_8M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1004
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_24.0f_BT709_yuv422p_8M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1005
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_25.0f_BT709_yuv420p_8M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1006
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_25.0f_BT709_yuv422p_8M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1007
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_29.97f_BT709_yuv420p_8M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1008
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_29.97f_BT709_yuv422p_8M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1009
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_30.0f_BT709_yuv420p_8M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1010
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_30.0f_BT709_yuv422p_8M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1011
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_50.0f_BT709_yuv420p_10M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1012
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_50.0f_BT709_yuv422p_10M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1013
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_59.94f_BT709_yuv420p_10M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1014
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_59.94f_BT709_yuv422p_10M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1015
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_60.0f_BT709_yuv420p_10M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1016
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1080p_sdr_60.0f_BT709_yuv422p_10M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1017
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_23.976f_BT709_yuv420p_8M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1018
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_23.976f_BT709_yuv422p_8M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1019
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_24.0f_BT709_yuv420p_8M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1020
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_24.0f_BT709_yuv422p_8M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1021
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_25.0f_BT709_yuv420p_8M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1022
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_25.0f_BT709_yuv422p_8M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1023
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_29.97f_BT709_yuv420p_8M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1024
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_29.97f_BT709_yuv422p_8M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1025
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_30.0f_BT709_yuv420p_8M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1026
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_30.0f_BT709_yuv422p_8M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1027
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_50.0f_BT709_yuv420p_10M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1028
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_50.0f_BT709_yuv422p_10M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1029
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_59.94f_BT709_yuv420p_10M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1030
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_59.94f_BT709_yuv422p_10M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1031
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_60.0f_BT709_yuv420p_10M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1032
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_1440p_sdr_60.0f_BT709_yuv422p_10M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1033
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_23.976f_BT2020_yuv420p_12M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1034
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_23.976f_BT2020_yuv422p_12M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1035
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_23.976f_BT709_yuv420p_12M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1036
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_23.976f_BT709_yuv422p_12M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1037
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_24.0f_BT2020_yuv420p_12M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1038
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_24.0f_BT2020_yuv422p_12M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1039
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_24.0f_BT709_yuv420p_12M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1040
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_24.0f_BT709_yuv422p_12M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1041
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_25.0f_BT2020_yuv420p_12M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1042
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_25.0f_BT2020_yuv422p_12M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1043
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_25.0f_BT709_yuv420p_12M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1044
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_25.0f_BT709_yuv422p_12M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1045
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_29.97f_BT2020_yuv420p_12M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1046
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_29.97f_BT2020_yuv422p_12M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1047
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_29.97f_BT709_yuv420p_12M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1048
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_29.97f_BT709_yuv422p_12M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1049
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_30.0f_BT2020_yuv420p_12M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1050
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_30.0f_BT2020_yuv422p_12M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1051
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_30.0f_BT709_yuv420p_12M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1052
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_30.0f_BT709_yuv422p_12M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1053
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_50.0f_BT2020_yuv420p_15M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1054
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_50.0f_BT2020_yuv422p_15M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1055
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_50.0f_BT709_yuv420p_15M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1056
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_50.0f_BT709_yuv422p_15M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1057
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_59.94f_BT2020_yuv420p_15M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1058
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_59.94f_BT2020_yuv422p_15M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1059
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_59.94f_BT709_yuv420p_15M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1060
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_59.94f_BT709_yuv422p_15M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1061
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_60.0f_BT2020_yuv420p_15M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1062
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_60.0f_BT2020_yuv422p_15M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1063
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_60.0f_BT709_yuv420p_15M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1064
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_2160p_sdr_60.0f_BT709_yuv422p_15M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1065
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_23.976f_BT709_yuv420p_2.5M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1066
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_23.976f_BT709_yuv422p_2.5M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1067
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_24.0f_BT709_yuv420p_2.5M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1068
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_24.0f_BT709_yuv422p_2.5M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1069
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_25.0f_BT709_yuv420p_2.5M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1070
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_25.0f_BT709_yuv422p_2.5M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1071
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_29.97f_BT709_yuv420p_2.5M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1072
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_29.97f_BT709_yuv422p_2.5M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1073
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_30.0f_BT709_yuv420p_2.5M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1074
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_30.0f_BT709_yuv422p_2.5M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1075
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_50.0f_BT709_yuv420p_5M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1076
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_50.0f_BT709_yuv422p_5M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1077
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_59.94f_BT709_yuv420p_5M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1078
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_59.94f_BT709_yuv422p_5M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1079
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_60.0f_BT709_yuv420p_5M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1080
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_480p_sdr_60.0f_BT709_yuv422p_5M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1081
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_23.976f_BT709_yuv420p_2.5M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1082
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_23.976f_BT709_yuv422p_2.5M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1083
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_24.0f_BT709_yuv420p_2.5M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1084
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_24.0f_BT709_yuv422p_2.5M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1085
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_25.0f_BT709_yuv420p_2.5M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1086
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_25.0f_BT709_yuv422p_2.5M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1087
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_29.97f_BT709_yuv420p_2.5M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1088
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_29.97f_BT709_yuv422p_2.5M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1089
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_30.0f_BT709_yuv420p_2.5M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1090
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_30.0f_BT709_yuv422p_2.5M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1091
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_50.0f_BT709_yuv420p_5M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1092
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_50.0f_BT709_yuv422p_5M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1093
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_59.94f_BT709_yuv420p_5M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1094
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_59.94f_BT709_yuv422p_5M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1095
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_60.0f_BT709_yuv420p_5M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1096
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_576p_sdr_60.0f_BT709_yuv422p_5M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1097
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_23.976f_BT709_yuv420p_2.5M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1098
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_23.976f_BT709_yuv422p_2.5M_a0_v1439_61sec.webm
+  - tcid: VTS_L4_VP9_1099
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_24.0f_BT709_yuv420p_2.5M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1100
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_24.0f_BT709_yuv422p_2.5M_a0_v1440_60sec.webm
+  - tcid: VTS_L4_VP9_1101
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_25.0f_BT709_yuv420p_2.5M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1102
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_25.0f_BT709_yuv422p_2.5M_a0_v1500_60sec.webm
+  - tcid: VTS_L4_VP9_1103
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_29.97f_BT709_yuv420p_2.5M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1104
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_29.97f_BT709_yuv422p_2.5M_a0_v1798_60sec.webm
+  - tcid: VTS_L4_VP9_1105
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_30.0f_BT709_yuv420p_2.5M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1106
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_30.0f_BT709_yuv422p_2.5M_a0_v1800_60sec.webm
+  - tcid: VTS_L4_VP9_1107
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_50.0f_BT709_yuv420p_5M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1108
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_50.0f_BT709_yuv422p_5M_a0_v3000_60sec.webm
+  - tcid: VTS_L4_VP9_1109
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_59.94f_BT709_yuv420p_5M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1110
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_59.94f_BT709_yuv422p_5M_a0_v3596_60sec.webm
+  - tcid: VTS_L4_VP9_1111
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_60.0f_BT709_yuv420p_5M_a0_v3600_60sec.webm
+  - tcid: VTS_L4_VP9_1112
+    action: normal_play
+    stream_name: AV/VP9/vts_vp9_720p_sdr_60.0f_BT709_yuv422p_5M_a0_v3600_60sec.webm

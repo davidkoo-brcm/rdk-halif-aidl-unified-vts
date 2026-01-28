@@ -1,0 +1,197 @@
+AVModule:
+  stream_download_path: http://<>/streams
+  input_streams_path: assets/streams/input
+  player: gstreamer
+  L4Test:
+  - tcid: VTS_L4_AAC_Error_1001
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_2ch_adts-header-corruption_128k_a1876_v0_50sec.mp4
+  - tcid: VTS_L4_AAC_Error_1002
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_2ch_bitrate-field-corruption_128k_a1876_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1003
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_2ch_channel-mode-corruption_128k_a1876_v0_50sec.mp4
+  - tcid: VTS_L4_AAC_Error_1004
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_2ch_dynamic-range-corruption_128k_a1876_v0_50sec.mp4
+  - tcid: VTS_L4_AAC_Error_1005
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_2ch_entropy-bit-flip_128k_a1876_v0_50sec.mp4
+  - tcid: VTS_L4_AAC_Error_1006
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_2ch_frame-skip-duplication_128k_a1679_v0_54sec.mp4
+  - tcid: VTS_L4_AAC_Error_1007
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_2ch_frame-truncation_128k_a1876_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1008
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_2ch_quantization-noise-injection_128k_a1876_v0_50sec.mp4
+  - tcid: VTS_L4_AAC_Error_1009
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_6ch_adts-header-corruption_128k_a1876_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1010
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_6ch_bitrate-field-corruption_128k_a1876_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1011
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_6ch_channel-mode-corruption_128k_a1876_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1012
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_6ch_dynamic-range-corruption_128k_a1876_v0_50sec.mp4
+  - tcid: VTS_L4_AAC_Error_1013
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_6ch_entropy-bit-flip_128k_a1876_v0_58sec.mp4
+  - tcid: VTS_L4_AAC_Error_1014
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_6ch_frame-skip-duplication_128k_a1770_v0_57sec.mp4
+  - tcid: VTS_L4_AAC_Error_1015
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_6ch_frame-truncation_128k_a1876_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1016
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_32k_6ch_quantization-noise-injection_128k_a1876_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1017
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_2ch_adts-header-corruption_256k_a2585_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1018
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_2ch_bitrate-field-corruption_256k_a2585_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1019
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_2ch_channel-mode-corruption_256k_a2585_v0_57sec.mp4
+  - tcid: VTS_L4_AAC_Error_1020
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_2ch_dynamic-range-corruption_256k_a2585_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1021
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_2ch_entropy-bit-flip_256k_a2585_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1022
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_2ch_frame-skip-duplication_256k_a2586_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1023
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_2ch_frame-truncation_256k_a2585_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1024
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_2ch_quantization-noise-injection_256k_a2585_v0_50sec.mp4
+  - tcid: VTS_L4_AAC_Error_1025
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_6ch_adts-header-corruption_256k_a2585_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1026
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_6ch_bitrate-field-corruption_256k_a2585_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1027
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_6ch_channel-mode-corruption_256k_a2585_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1028
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_6ch_dynamic-range-corruption_256k_a2585_v0_58sec.mp4
+  - tcid: VTS_L4_AAC_Error_1029
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_6ch_entropy-bit-flip_256k_a2585_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1030
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_6ch_frame-skip-duplication_256k_a2689_v0_63sec.mp4
+  - tcid: VTS_L4_AAC_Error_1031
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_6ch_frame-truncation_256k_a2585_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1032
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_44.1k_6ch_quantization-noise-injection_256k_a2585_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1033
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_adts-header-corruption_256k_a2814_v0_51sec.mp4
+  - tcid: VTS_L4_AAC_Error_1034
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_adts-header-corruption_512k_a2814_v0_57sec.mp4
+  - tcid: VTS_L4_AAC_Error_1035
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_bitrate-field-corruption_256k_a2814_v0_58sec.mp4
+  - tcid: VTS_L4_AAC_Error_1036
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_bitrate-field-corruption_512k_a2814_v0_57sec.mp4
+  - tcid: VTS_L4_AAC_Error_1037
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_channel-mode-corruption_256k_a2814_v0_51sec.mp4
+  - tcid: VTS_L4_AAC_Error_1038
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_channel-mode-corruption_512k_a2814_v0_51sec.mp4
+  - tcid: VTS_L4_AAC_Error_1039
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_dynamic-range-corruption_256k_a2814_v0_51sec.mp4
+  - tcid: VTS_L4_AAC_Error_1040
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_dynamic-range-corruption_512k_a2814_v0_51sec.mp4
+  - tcid: VTS_L4_AAC_Error_1041
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_entropy-bit-flip_256k_a2814_v0_51sec.mp4
+  - tcid: VTS_L4_AAC_Error_1042
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_entropy-bit-flip_512k_a2814_v0_51sec.mp4
+  - tcid: VTS_L4_AAC_Error_1043
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_frame-skip-duplication_256k_a2682_v0_58sec.mp4
+  - tcid: VTS_L4_AAC_Error_1044
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_frame-skip-duplication_512k_a2613_v0_56sec.mp4
+  - tcid: VTS_L4_AAC_Error_1045
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_frame-truncation_256k_a2814_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1046
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_frame-truncation_512k_a2814_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1047
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_quantization-noise-injection_256k_a2814_v0_51sec.mp4
+  - tcid: VTS_L4_AAC_Error_1048
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_2ch_quantization-noise-injection_512k_a2814_v0_51sec.mp4
+  - tcid: VTS_L4_AAC_Error_1049
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_adts-header-corruption_256k_a2814_v0_56sec.mp4
+  - tcid: VTS_L4_AAC_Error_1050
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_adts-header-corruption_512k_a2814_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1051
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_bitrate-field-corruption_256k_a2814_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1052
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_bitrate-field-corruption_512k_a2814_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1053
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_channel-mode-corruption_256k_a2814_v0_59sec.mp4
+  - tcid: VTS_L4_AAC_Error_1054
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_channel-mode-corruption_512k_a2814_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1055
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_dynamic-range-corruption_256k_a2814_v0_51sec.mp4
+  - tcid: VTS_L4_AAC_Error_1056
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_dynamic-range-corruption_512k_a2814_v0_51sec.mp4
+  - tcid: VTS_L4_AAC_Error_1057
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_entropy-bit-flip_256k_a2814_v0_59sec.mp4
+  - tcid: VTS_L4_AAC_Error_1058
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_entropy-bit-flip_512k_a2814_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1059
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_frame-skip-duplication_256k_a2727_v0_59sec.mp4
+  - tcid: VTS_L4_AAC_Error_1060
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_frame-skip-duplication_512k_a2687_v0_58sec.mp4
+  - tcid: VTS_L4_AAC_Error_1061
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_frame-truncation_256k_a2814_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1062
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_frame-truncation_512k_a2814_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1063
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_quantization-noise-injection_256k_a2814_v0_61sec.mp4
+  - tcid: VTS_L4_AAC_Error_1064
+    action: normal_play
+    stream_name: AV/Error_Streams/AAC_Error/vts_aac_48k_6ch_quantization-noise-injection_512k_a2814_v0_61sec.mp4

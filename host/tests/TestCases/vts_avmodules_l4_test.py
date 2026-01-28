@@ -29,7 +29,7 @@ import re
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dir_path, "../"))
 
-from vts_avmodules_helper import AVModuleTestHelperClass
+from vts_helper import VTSTestHelperClass
 from raft.framework.core.logModule import logModule
 from raft.framework.plugins.ut_raft import utHelperClass
 from raft.framework.plugins.ut_raft.utPlayer import utPlayer
@@ -38,16 +38,18 @@ from raft.framework.plugins.ut_raft.utSuiteNavigator import UTSuiteNavigatorClas
 from raft.framework.plugins.ut_raft.configRead import ConfigRead
 
 
-class L4TestClass(AVModuleTestHelperClass):
+class L4TestClass(VTSTestHelperClass):
     """Test class for running L4 AV module tests (playback + trick modes)."""
 
     def __init__(self, log: logModule = None):
         super().__init__(
-            module_name="AVModule",
+            module_name="VTS",
             test_name="L4_AVModule",
             qc_id="L4_001",
             test_suites=["VTS_L4_AVMODULE"],
             l4_yaml_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), "vts_l4_test_info.yaml"),
+            setup_file_name="vts_l4_test_setup.yaml",
+            test_config_file_name="vts_l4_test_setup.yaml",
             log=log
         )
 
@@ -69,17 +71,13 @@ class L4TestClass(AVModuleTestHelperClass):
         self.waitTime = self.cpe.get("wait_time")
         self.module_name = "AVModule"
         socVendor = self.cpe.get("soc_vendor")
+        self.restart_required = False
 
         self.player_session = self.dut.getConsoleSession("ssh_player")
 
-        self.testSession =  utPlayer(self.player_session, socVendor)
+        self.vts_player =  utPlayer(self.player_session, socVendor)
 
-        # extra command required for av modules , todo remove once it fixed
-        cmd = """
-        systemctl restart hal-av_buffer.service
-        sleep 3
-        """
-        self.writeCommands(cmd, self.player_session)
+        self.player_session.prompt = self.prompt
 
         self.utilities = utBaseUtils()
         self.ut_menu = []
@@ -148,10 +146,10 @@ class L4TestClass(AVModuleTestHelperClass):
                 self.log.error(f"Failed processing include file {inc_file}: {e}")
         manual_verification = False
 
-        if not self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Starting test case...")
-                ut_menu.start()
+
+        for i, ut_menu in enumerate(self.ut_menu):
+            self.log.info(f"[Instance {i}] Starting test case...")
+            ut_menu.start()
 
         for test_case in l4_tests:
             tcid = test_case.get("tcid")
@@ -161,11 +159,6 @@ class L4TestClass(AVModuleTestHelperClass):
             self.log.testStart(test_suite_name, tcid)
 
             if self.restart_required:
-                cmd = """
-                systemctl restart hal-av_buffer.service
-                sleep 3
-                """
-                self.writeCommands(cmd, self.player_session)
                 for i, ut_menu in enumerate(self.ut_menu):
                     self.log.info(f"[Instance {i}] Starting test case...")
                     ut_menu.start()
@@ -205,39 +198,29 @@ class L4TestClass(AVModuleTestHelperClass):
             output = ut_menu.select(test_suite_name, test_case_name, None, wait_time, False)
             outputs.append(output)
 
-            # Check if the playback verification prompt exists in the output
-            if "Is the stream playback good (Y/N)?" in output:
-                # Decide manual vs auto based on device config flag
-                playback_verification_flag = self.cpe.get("playback_manual_verification", 1)
-                if playback_verification_flag == 1:
-                    # Manual verification path (interactive)
-                    failed = not self.testVerifyAVPlayback(True)
-                    self.restart_required = False
-                else:
-                    # Auto mode: send 'Y' to proceed (simulate user confirming good playback)
-                    self.log.info("playback_manual_verification=0 -> auto-sending 'Y' to playback prompt")
-                    try:
-                        self.writeCommands("Y\n", self.player_session)
-                        self.restart_required = True
-                    except Exception as e:
-                        self.log.warn(f"Failed to send auto 'Y' response: {e}")
-                    failed = False
-                if failed:
-                    self.log.info("Playback verification failed.")
-                else:
-                    self.log.info("Playback verification passed.")
-            else:
-                # If expected prompt not found, request restart next iteration
-                self.restart_required = True
+            # Decide manual vs auto based on device config flag first
+            playback_verification_flag = self.cpe.get("playback_manual_verification", 1)
 
-            if not self.restart_required:
-                for i, ut_menu in enumerate(self.ut_menu):
-                    self.log.info(f"[Instance {i}] Stopping test case...")
-                    ut_menu.stop()
+            if playback_verification_flag == 1:
+                # Manual verification enabled: only proceed if the prompt appears
+                if "Is the stream playback good (Y/N)?" in output:
+                    failed = not self.testVerifyAVPlayback(True)
+                    if failed:
+                        self.writeCommands("N\n", self.player_session)
+                        self.log.info("Playback verification failed.")
+                    else:
+                        self.writeCommands("Y\n", self.player_session)
+                        self.log.info("Playback verification passed.")
 
             result = ut_menu.collect_results(output, True)
             if result is None:
                 final_result = False
+                run_summary_found = "Run Summary:" in output
+                if not run_summary_found:
+                    self.log.error("Run Summary not found.")
+                    #if the run summary is not found, we need to restart the ut_menu because hal test binary may crashed , we can add some options to check when to restart menu
+                    self.restart_required = True
+                self.log.error(f"Failed to collect results for TCID: {tcid}")
             results.append(result)
             self.log.stepResult(result, f"Test Suite: {test_suite_name} TCID: {tcid} Action: {test_case_name}")
 
@@ -246,16 +229,19 @@ class L4TestClass(AVModuleTestHelperClass):
 
             self.log.testResult(f'{test_suite_name} Finished')
 
-        if self.restart_required:
-            for i, ut_menu in enumerate(self.ut_menu):
-                self.log.info(f"[Instance {i}] Stopping test case...")
-                ut_menu.stop()
+            if self.restart_required:
+                for i, ut_menu in enumerate(self.ut_menu):
+                    self.log.info("Stopping VTS player...")
+                    self.vts_player.stop()
+                    self.log.info(f"[Instance {i}] Stopping test case...")
+                    ut_menu.stop()
+
 
         self.test_cleanup()
         return final_result
 
 if __name__ == "__main__":
-    summerLogName = os.path.splitext(os.path.basename(__file__))[0] + "_summery"
-    summeryLog = logModule("L4Test", level=logModule.INFO)
-    test = L4TestClass(summeryLog)
+    summaryLogName = os.path.splitext(os.path.basename(__file__))[0] + "_summary"
+    summaryLog = logModule("L4Test", level=logModule.INFO)
+    test = L4TestClass(summaryLog)
     test.run(False)
