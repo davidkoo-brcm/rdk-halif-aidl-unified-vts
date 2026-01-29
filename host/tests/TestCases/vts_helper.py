@@ -517,15 +517,19 @@ class VTSTestHelperClass(utHelperClass):
         results = []
 
         wait_time = self.all_wait_time if use_all_wait_time else self.wait_time
+
+        # Load prompt config only for VTS_L3_PlaneControl test case (once, outside loop)
+        prompt = None
+        if test_suite == "VTS_L3_PlaneControl":
+            self.test_promptPath = os.path.join(dir_path, "vts_avmodule_prompt.yaml")
+            self.testPrompt = ConfigRead(self.test_promptPath, self.module_name)
+            fields = getattr(self.testPrompt, "fields", {})
+            if test_case is not None:
+                prompt = fields.get(test_case)
+
         for i, ut_menu in enumerate(self.ut_menu):
             self.log.info(f"[Instance {i}] Running test case: {test_case} in suite {test_suite}...")
-            # Load prompt config only for VTS_L3_PlaneControl test case
-            if test_suite == "VTS_L3_PlaneControl":
-                self.test_promptPath = os.path.join(dir_path, "vts_avmodule_prompt.yaml")
-                self.testPrompt = ConfigRead(self.test_promptPath, self.module_name)
-            else:
-                self.testPrompt = {}
-            output = ut_menu.select(test_suite, test_case, self.testPrompt.fields.get(test_case), wait_time, False)
+            output = ut_menu.select(test_suite, test_case, prompt, wait_time, False)
 
             run_summary_found = "Run Summary:" in output and "Segmentation fault" not in output
             if not run_summary_found:
