@@ -31,16 +31,15 @@ To execute `HAL` `L3` Python test case, need a Python environment. Follow these 
 
 ### Test setup to run on vDevice
 
-To validate Test cases on vDevice, create a password for the root user using the following command:
+To validate test cases on a vDevice, first create a password for the `root` user by running the following command:
 
 ```bash
 passwd root
-
 ```
 
-Then, update the same password in the vts_rack_config.yml file.
+After setting the password, update the same in the `vts_rack_config.yml` file.
 
-Note: Currently, the Python paramiko library does not support empty passwords on vDevice, so setting a password is necessary.
+**Note:** The Python paramiko library currently does not support empty passwords on a vDevice. Therefore, configuring a root password is required for test execution.
 
 ### Update Configuration Files
 
