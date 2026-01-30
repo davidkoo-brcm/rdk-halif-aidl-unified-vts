@@ -123,6 +123,13 @@ INC_DIRS += $(ROOT_DIR)/rdk-halif-aidl/avbuffer/current
 INC_DIRS += $(ROOT_DIR)/build/usr/include
 INC_DIRS += $(ROOT_DIR)/common/avbufferhelper_skeleton/
 INC_DIRS += $(SRC_DIRS)
+INC_DIRS += $(ROOT_DIR)/common/graphics_libraries/include
+
+# Graphics libraries
+INC_DIRS += $(ROOT_DIR)/build/usr/include/EGL/
+INC_DIRS += $(ROOT_DIR)/build/usr/include/GLES2/
+INC_DIRS += $(ROOT_DIR)/build/usr/include/KHR/
+
 
 INC_DIRS += $(ROOT_DIR)/build/usr/include/gstreamer-1.0/
 INC_DIRS += $(ROOT_DIR)/build/usr/include/glib-2.0/
@@ -134,6 +141,11 @@ XLDFLAGS += -lbinder -lutils
 XLDFLAGS += -laidl_client
 XLDFLAGS += -lavbufferhelper
 XLDFLAGS += -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lpcre
+XLDFLAGS += -lEGL -lGLESv2 -lpthread
+XLDFLAGS += -ldrm
+# required for EGL
+CXXFLAGS += -D_EGL_NO_X11
+CXXFLAGS += -DMESA_EGL_NO_X11_HEADERS
 
 # required for std::optional
 CXXFLAGS += -std=c++17
