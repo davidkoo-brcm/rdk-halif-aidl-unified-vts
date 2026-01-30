@@ -75,6 +75,8 @@ Set below environment variable:
 
 - RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.12.0). Defaults to the latest HEAD.
 
+- EGL_LIB_PATH: Specific Path for EGL libraries.
+
 - GST_LIB_PATH: Path to the pre-built GStreamer libraries used for compiling the L4 test cases.
 
 Example:
@@ -84,6 +86,7 @@ export UT_CORE_VERSION=4.7.3
 export RDK_HALIF_AIDL_VERSION=0.12.0
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
+export EGL_LIB_PATH=/path/egl_libraries/
 export GST_LIB_PATH=/path/gstreamer_lib/
 ```
 
