@@ -46,10 +46,10 @@ if __name__ == '__main__':
     tests = [
         vts_hdmicec_L3_receive_message(summaryLog),
         vts_hdmicec_L3_send_message(summaryLog),
-        vts_deepsleep_L3_wakefromsupportedtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        vts_deepsleep_L3_wakefrompreconfiguredtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        vts_deepsleep_L3_verifywakewithmixedinputtriggerlist(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        vts_deepsleep_L3_nowakefromunspecifiedorunsupportedtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
+        vts_deepsleep_L3_wakefromsupportedtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        vts_deepsleep_L3_wakefrompreconfiguredtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        vts_deepsleep_L3_verifywakewithmixedinputtriggerlist(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        vts_deepsleep_L3_nowakefromunspecifiedorunsupportedtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
         # Add more test instances here
     ]
 
