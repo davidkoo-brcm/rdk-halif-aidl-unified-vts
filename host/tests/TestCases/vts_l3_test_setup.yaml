@@ -433,3 +433,33 @@ VTS:
           - Concurrent_Tunnel_Secure_AutoSetVideoPlayRateNormalSpeed
           - Concurrent_Tunnel_Secure_AutoSetVideoPlayRatePause
           - Concurrent_Tunnel_Secure_AutoSetVideoPlayRateFastForward
+      6:
+        name: "VTS_L3_PlaneControl"
+        streams:
+          - Video_Sink/H264_1920_1080_30.es
+          - Video_Sink/H264_HD_30_YUV420.es
+          - Video_Sink/H264_HD_30_YUV444.es
+          - Video_Sink/H264_HD_60_YUV420.es
+          - Video_Sink/H264_HD_60_YUV444.es
+          - Video_Sink/H264_SD_30_YUV420.es
+          - Video_Sink/H264_SD_30_YUV444.es
+          - Video_Sink/H264_SD_60_YUV420.es
+          - Video_Sink/H264_SD_60_YUV444.es
+          - Video_Sink/H264_UHD_30_YUV420.es
+          - Video_Sink/H264_UHD_30_YUV444.es
+          - Video_Sink/H264_UHD_60_YUV420.es
+          - Video_Sink/H264_UHD_60_YUV444.es
+        tests:
+          - Planecontrol_Mapping
+          - Planecontrol_Swapping
+          - Planecontrol_Aspectratio
+          - Planecontrol_Zorder
+          - Planecontrol_Visibility
+          - Planecontrol_Overscan
+          - Planecontrol_Alpha
+          - Planecontrol_Position
+          - Planecontrol_Size
+          - Planecontrol_Dynamicrange
+          - Planecontrol_Pixelformat
+          - Planecontrol_Graphicsplane
+          - Planecontrol_Vsync
