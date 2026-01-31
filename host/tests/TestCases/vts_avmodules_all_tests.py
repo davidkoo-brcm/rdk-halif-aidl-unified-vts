@@ -29,7 +29,6 @@ sys.path.append(os.path.join(dir_path, "../"))
 
 from vts_l1l2_test import L1L2TestClass
 from vts_avmodules_l3_test import L3TestClass
-from vts_avmodules_l4_test import L4TestClass
 from raft.framework.core.logModule import logModule
 
 
@@ -43,17 +42,12 @@ def run_l3(logger: logModule) -> bool:
     return bool(test.run(False))
 
 
-def run_l4(logger: logModule) -> bool:
-    test = L4TestClass(logger)
-    return bool(test.run(False))
-
-
 def main():
-    parser = argparse.ArgumentParser(description="Run VTS L1/L2/L3/L4 test suites", add_help=True)
+    parser = argparse.ArgumentParser(description="Run VTS L1/L2/L3 test suites", add_help=True)
     parser.add_argument(
         "--levels",
         nargs="+",
-        choices=["L1", "L2", "L3", "L4", "ALL"],
+        choices=["L1", "L2", "L3", "ALL"],
         default=["ALL"],
         help="Which levels to run (default: ALL)"
     )
@@ -82,7 +76,7 @@ def main():
 
     levels = args.levels
     if "ALL" in levels:
-        levels = ["L1", "L2", "L3", "L4"]
+        levels = ["L1", "L2", "L3"]
 
     overall = True
 
@@ -99,12 +93,6 @@ def main():
         result = run_l3(logger)
         overall = overall and result
         logger.testResult("L3 Finished")
-
-    if "L4" in levels:
-        logger.testStart("AVModule", "L4")
-        result = run_l4(logger)
-        overall = overall and result
-        logger.testResult("L4 Finished")
 
     # Exit status based on overall result
     sys.exit(0 if overall else 1)

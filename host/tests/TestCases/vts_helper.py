@@ -39,9 +39,9 @@ from raft.framework.plugins.ut_raft.utUserResponse import utUserResponse
 
 class VTSTestHelperClass(utHelperClass):
     """
-    Generic VTS helper class for test execution (L1, L2, L3, L4).
-    Provides common functionality for environment setup, binary copying, test execution, cleanup,
-    and L4 YAML generation. Can be used for any module (VTS,AVModule, DSModule, etc.).
+    Generic VTS helper class for test execution (L1, L2, L3).
+    Provides common functionality for environment setup, binary copying, test execution, and cleanup.
+    Can be used for any module (VTS,AVModule, DSModule, etc.).
     """
 
     def __init__(self, module_name: str, test_name: str, qc_id: str,

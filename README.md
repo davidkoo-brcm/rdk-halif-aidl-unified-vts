@@ -10,8 +10,8 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
   - [Build linux binder for Target Linux](#build-linux-binder-for-target-linux)
   - [Build Unified VTS](#build-unified-vts)
   - [Run Tests Manually](#run-tests-manually)
-  - [Setting Python environment for L1, L2, L3 and L4 automation test cases](#setting-python-environment-for-l1-l2-l3-and-l4-automation-test-cases)
-  - [Running L1, L2, L3 and L4 Automation test cases](#running-l1-l2-l3-and-l4-automation-test-cases)
+  - [Setting Python environment for L1, L2, and L3 automation test cases](#setting-python-environment-for-l1-l2-and-l3-automation-test-cases)
+  - [Running L1, L2, and L3 Automation test cases](#running-l1-l2-and-l3-automation-test-cases)
   - [AV Module Components](#av-module-components)
 
 ## Acronyms, Terms and Abbreviations
@@ -23,7 +23,6 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 | **L1** | Level 1 Test Cases (Interface / basic validation tests) |
 | **L2** | Level 2 Test Cases (Functional tests) |
 | **L3** | Level 3 Test Cases (Integration tests) |
-| **L4** | Level 4 Test Cases (End-to-End / System tests) |
 | **RDK** | Reference Design Kit |
 | **UT-Core** | RDK Unified Test Core Framework |
 | **VTS** | Vendor Test Suite |
@@ -50,17 +49,17 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 
 The test suite depends on the Linux binder with `AIDL` support. Follow these steps to build it:
 
-For detail build instruction, please refer to [Linux Binder](https://github.com/rdkcentral/linux_binder_idl)
+For detail build instruction, please refer to [Linux Binder](https://github.com/rdkcentral/linux_binder_idl/tree/1.0.0)
 
 Here outline the simplest steps are
 
 ```bash
-git clone -b develop 'git@github.com:rdkcentral/linux_binder_idl.git'
+git clone -b 1.0.0 'git@github.com:rdkcentral/linux_binder_idl.git'
 
 cd linux_binder_idl
 
-# for Linux: 
-sc docker run vdevice-docker /bin/bash
+# for Linux:
+sc docker run rdk-kirkstone /bin/bash
 
 # for ARM:
 sc docker run rdk-kirkstone /bin/bash
@@ -87,7 +86,7 @@ cd rdk-halif-aidl-unified-vts
 **for Linux:**
 
 ```bash
-sc docker run vdevice-docker /bin/bash
+sc docker run rdk-kirkstone /bin/bash
 ```
 
 **for ARM:**
@@ -110,10 +109,6 @@ Set below environment variable:
 
 - RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.12.0). Defaults to the latest HEAD.
 
-- EGL_LIB_PATH: Specific Path for EGL libraries.
-
-- GST_LIB_PATH: Path to the pre-built GStreamer libraries used for compiling the L4 test cases.
-
 Example:
 
 ```bash
@@ -121,8 +116,6 @@ export UT_CORE_VERSION=4.7.3
 export RDK_HALIF_AIDL_VERSION=0.12.0
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
-export EGL_LIB_PATH=/path/egl_libraries/
-export GST_LIB_PATH=/path/gstreamer_lib/
 ```
 
 By default, UT logs are disabled. To enable them, Set below environment variable
@@ -181,20 +174,18 @@ Execute the run.sh script as root by using the platform specific profile.
 sudo ./run.sh -p profiles/hfp-vdevice.yaml
 ```
 
-**Note:** For running the AV Module L3, L4 test cases manually make sure the test streams are copied into `bin/assets/streams/input` folder on target device.
+**Note:** For running the AV Module L3 test cases manually make sure the test streams are copied into `bin/assets/streams/input` folder on target device.
 
-## Setting Python environment for L1, L2, L3 and L4 automation test cases
+## Setting Python environment for L1, L2, and L3 automation test cases
 
-- For running the L1, L2, L3 and L4 test suite, a host PC with a Python environment is required.
+- For running the L1, L2, and L3 test suite, a host PC with a Python environment is required.
 - Install Python Environment and Activation Scripts as detailed in [Python Installation](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite)
 
-## Running L1, L2, L3 and L4 Automation test cases
+## Running L1, L2, and L3 Automation test cases
 
 - To run the VTS `L1`, `L2` test cases follow the `L1` `L2` Test Procedure document - [vts_L1_L2_TestProcedure.md](docs/vts_L1_L2_TestProcedure.md)
 
 - To run the AV Module `L3` test cases follow the `L3` Test Procedure document - [vts_avmodule_L3_TestProcedure.md](docs/vts_avmodule_L3_TestProcedure.md)
-
-- To run the AV  Module `L4` test cases follow the `L4` Test Procedure document - [vts_avmodule_L4_TestProcedure.md](docs/vts_avmodule_L4_TestProcedure.md)
 
 ## AV Module Components
 

@@ -73,7 +73,6 @@
 #include "vts_videodecoder_init.h"
 #include "vts_avclock_init.h"
 #include "vts_planecontrol_init.h"
-#include "vts_av_l4_init.h"
 
 int main(int argc, char **argv)
 {
@@ -92,7 +91,6 @@ int main(int argc, char **argv)
     UT_LOG_INFO("\t VTS UNIFIED AVBuffer HALIF Test Version: \033[0;32m%s\033[0m",AVBUFFER_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED AV Clock HALIF Test Version: \033[0;32m%s\033[0m",AVCLOCK_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED Plane Control HALIF Test Version: \033[0;32m%s\033[0m",PLANECONTROL_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED HALIF L4 Test Version: \033[0;32m%s\033[0m",L4_TESTS_VERSION);
     UT_LOG_INFO("==========================================================================");
 
     result = VTS_AVBuffer_init();
@@ -141,13 +139,6 @@ int main(int argc, char **argv)
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AV Clock");
-        result = UT_STATUS_FAILURE;
-    }
-
-    result = VTS_AV_init();
-    if(result != UT_STATUS_OK)
-    {
-        UT_LOG_ERROR("Failed to initialize AV L4 Tests");
         result = UT_STATUS_FAILURE;
     }
 

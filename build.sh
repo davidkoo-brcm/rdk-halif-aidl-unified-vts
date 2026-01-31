@@ -62,8 +62,6 @@ declare -r AIDL_LIB_DIR=${TOP}/aidl_lib
 declare -r RDK_HAL_DIR=${TOP}/rdk-halif-aidl
 declare -r RDK_HAL_TEST_DIR=${TOP}/vts_hal_test_components
 declare -r PROFILES_DIR=${TOP}/profiles
-declare -r L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests
-declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests/src/av/
 
 DEF_LINUX_BINDER="`realpath ${TOP}/../`/linux_binder_idl"
 # AIDL_BIN: path of aidl compiler
@@ -351,7 +349,6 @@ install_test()
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/profiles ${INSTALL_PATH}/
         fi
     done
-    cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/
 
     mkdir -p ${INSTALL_PATH}/assets/streams/input
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
@@ -412,8 +409,8 @@ echo -e "${BOLD}${GREEN}UT_CORE_VERSION        : ${RESET}${YELLOW}$UT_CORE_VERSI
 echo -e "${BOLD}${GREEN}RDK_HALIF_AIDL_VERSION : ${RESET}${YELLOW}$RDK_HALIF_AIDL_VERSION${RESET}"
 echo -e "${BOLD}${GREEN}AIDL_BIN               : ${RESET}${YELLOW}$AIDL_BIN${RESET}"
 echo -e "${BOLD}${GREEN}LINUX_BINDER_OUT_DIR   : ${RESET}${YELLOW}$LINUX_BINDER_OUT_DIR${RESET}"
-echo -e "${BOLD}${GREEN}GST_LIB_PATH           : ${RESET}${YELLOW}$GST_LIB_PATH${RESET}"
-echo -e "${BOLD}${GREEN}EGL_LIB_PATH           : ${RESET}${YELLOW}$EGL_LIB_PATH${RESET}"
+#echo -e "${BOLD}${GREEN}GST_LIB_PATH           : ${RESET}${YELLOW}$GST_LIB_PATH${RESET}"
+#echo -e "${BOLD}${GREEN}EGL_LIB_PATH           : ${RESET}${YELLOW}$EGL_LIB_PATH${RESET}"
 echo -e "${BOLD}${GREEN}TARGET                 : ${RESET}${YELLOW}$TARGET${RESET}"
 
 ###############################################################################
@@ -426,12 +423,12 @@ elif [ "$1" == "dist_clean" ]; then
 elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     help
 elif [[ "$1" == [Tt]arget=* ]]; then
-    validate_gst_lib_path
-    validate_egl_lib_path
+    #validate_gst_lib_path
+    #validate_egl_lib_path
     unified_manifest
     install_linux_binder
-    install_gstreamer_package
-    install_egl_package
+    #install_gstreamer_package
+    #install_egl_package
     generate_hal_interfaces
     build_aidl_libs
     build_ut_core

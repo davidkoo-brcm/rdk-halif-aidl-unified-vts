@@ -218,7 +218,7 @@ python3 host/tests/TestCases/vts_avmodules_l3_test.py --config </PATH>/host/test
 
 #### To execute All Tests
 
-The `vts_avmodules_all_tests.py` script executes all activated L1, L2, L3, and L4 tests.
+The `vts_avmodules_all_tests.py` script executes all activated L1, L2, and L3 tests.
 
 **Run Command:**
 
