@@ -26,52 +26,52 @@ AVModule:
   L4Test:
   - tcid: VTS_L4_AAC_1001
     action: normal_play
-    stream_name: AAC/vts_aac_11.025k_2ch_64k_a647_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_11.025k_2ch_64k_a647_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1002
     action: normal_play
-    stream_name: AAC/vts_aac_12k_2ch_64k_a705_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_12k_2ch_64k_a705_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1003
     action: normal_play
-    stream_name: AAC/vts_aac_16k_2ch_64k_a939_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_16k_2ch_64k_a939_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1004
     action: normal_play
-    stream_name: AAC/vts_aac_22.05k_2ch_64k_a1293_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_22.05k_2ch_64k_a1293_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1005
     action: normal_play
-    stream_name: AAC/vts_aac_24k_2ch_64k_a1408_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_24k_2ch_64k_a1408_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1006
     action: normal_play
-    stream_name: AAC/vts_aac_32k_2ch_64k_a1876_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_32k_2ch_64k_a1876_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1007
     action: normal_play
-    stream_name: AAC/vts_aac_44.1k_2ch_256k_a2585_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_44.1k_2ch_256k_a2585_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1008
     action: normal_play
-    stream_name: AAC/vts_aac_48k_2ch_256k_a2814_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_48k_2ch_256k_a2814_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1009
     action: normal_play
-    stream_name: AAC/vts_aac_64k_2ch_256k_a3751_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_64k_2ch_256k_a3751_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1010
     action: normal_play
-    stream_name: AAC/vts_aac_88.2k_2ch_512k_a5169_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_88.2k_2ch_512k_a5169_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1011
     action: normal_play
-    stream_name: AAC/vts_aac_8k_2ch_64k_a470_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_8k_2ch_64k_a470_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1012
     action: normal_play
-    stream_name: AAC/vts_aac_96k_1ch_1024k_a5626_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_96k_1ch_1024k_a5626_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1013
     action: normal_play
-    stream_name: AAC/vts_aac_96k_2ch_1024k_a5626_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_96k_2ch_1024k_a5626_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1014
     action: normal_play
-    stream_name: AAC/vts_aac_96k_2ch_512k_a5626_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_96k_2ch_512k_a5626_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1015
     action: normal_play
-    stream_name: AAC/vts_aac_96k_3ch_1024k_a5626_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_96k_3ch_1024k_a5626_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1016
     action: normal_play
-    stream_name: AAC/vts_aac_96k_6ch_1024k_a5626_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_96k_6ch_1024k_a5626_v0_60sec.mp4
   - tcid: VTS_L4_AAC_1017
     action: normal_play
-    stream_name: AAC/vts_aac_96k_8ch_1024k_a5626_v0_60sec.mp4
+    stream_name: AV/AAC/vts_aac_96k_8ch_1024k_a5626_v0_60sec.mp4

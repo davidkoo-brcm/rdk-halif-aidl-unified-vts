@@ -1,0 +1,317 @@
+#** *****************************************************************************
+# *
+# * If not stated otherwise in this file or this component's LICENSE file the
+# * following copyright and licenses apply:
+# *
+# * Copyright 2025 RDK Management
+# *
+# * Licensed under the Apache License, Version 2.0 (the "License");
+# * you may not use this file except in compliance with the License.
+# * You may obtain a copy of the License at
+# *
+# *
+# * http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * Unless required by applicable law or agreed to in writing, software
+# * distributed under the License is distributed on an "AS IS" BASIS,
+# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# * See the License for the specific language governing permissions and
+# * limitations under the License.
+# *
+#** ******************************************************************************
+
+# This is a sample test configuration file. Users can customize the YAML entries as needed
+# This test configuration file includes sample YAML entries for executing various combinations
+VTS:
+  description: "VTS L1 and L2 test setup"
+  num_of_instances: 1
+  test:
+    artifacts:
+      - "../../../build/vts_unified.tar.gz.bz"
+    execute: "./run.sh"
+    type: UT-C # C (UT-C Cunit) / C++ (UT-G (g++ ut-core gtest backend))
+    suites:
+      0:
+        name: "VTS_L1_AudioDecoder"
+        tests:
+          - getAudioDecoderIds_pos
+          - getAudioDecoder_pos
+          - getAudioDecoder_neg
+          - getCapabilities_pos
+          - getProperty_pos
+          - getProperty_neg
+          - getState_pos
+          - open_pos
+          - open_neg
+          - close_pos
+          - close_neg
+          - registerEventListener_pos
+          - registerEventListener_neg
+          - unregisterEventListener_pos
+          - unregisterEventListener_neg
+          - start_pos
+          - start_neg
+          - stop_pos
+          - stop_neg
+          - decodeBuffer_neg
+          - flush_pos
+          - flush_neg
+          - signalDiscontinuity_pos
+          - signalDiscontinuity_neg
+          - signalEOS_pos
+          - signalEOS_neg
+          - parseCodecSpecificData_pos
+          - parseCodecSpecificData_neg
+          - setProperty_pos
+          - setProperty_neg
+
+      1:
+        name: "VTS_L2_AudioDecoder"
+        tests:
+          - SetandGetProperties
+          - SetandGetProperties_multipleInstance
+          - StateTransitions
+          - StateTransitions_mutipleInstance
+      2:
+        name: "VTS_L1_AudioSink"
+        tests:
+          - getAudioSinkIds_pos
+          - getPlatformCapabilities_pos
+          - getAudioSink_pos
+          - getAudioSink_neg
+          - getCapabilities_pos
+          - getProperty_pos
+          - getProperty_neg
+          - setProperty_pos
+          - setProperty_neg
+          - getState_pos
+          - open_pos
+          - open_neg
+          - close_pos
+          - close_neg
+          - registerEventListener_pos
+          - registerEventListener_neg
+          - unregisterEventListener_pos
+          - unregisterEventListener_neg
+          - setAudioDecoder_pos
+          - setAudioDecoder_neg
+          - getAudioDecoder_pos
+          - start_pos
+          - start_neg
+          - stop_pos
+          - stop_neg
+          - queueAudioFrame_neg
+          - flush_pos
+          - flush_neg
+          - getVolume_pos
+          - setVolume_pos
+          - setVolume_neg
+          - setVolumeRamp_pos
+          - setVolumeRamp_neg
+      3:
+        name: "VTS_L2_AudioSink"
+        tests:
+          - TestReadWriteProperties
+          - TestStateTransition
+          - TestAudioSinkVolumeControl
+          - TestAudioSinkMuteUnmute
+          - TestAudioSinkVolumeRamp
+          - TestAudioSinkVolumeRampMute
+          - TestAudioSinkVolumeRampTwice
+          - TestStopAudioSinkVolRampProgress
+      4:
+        name: "VTS_L1_AVBuffer"
+        tests:
+          - getHeapMetrics_pos
+          - createVideoPool_pos
+          - createVideoPool_neg
+          - createAudioPool_pos
+          - createAudioPool_neg
+          - destroyPool_pos
+          - destroyPool_neg
+          - getPoolMetrics_pos
+          - getPoolMetrics_neg
+          - getAllPoolMetrics_pos
+          - alloc_pos
+          - alloc_neg
+          - notifyWhenSpaceAvailable_pos
+          - notifyWhenSpaceAvailable_neg
+          - trimSize_pos
+          - trimSize_neg
+          - free_pos
+          - free_neg
+          - isValid_pos
+          - getAllocList_pos
+          - getAllocList_neg
+          - calculateSHA1_pos
+          - calculateSHA1_neg
+      5:
+        name: "VTS_L1_VideoDecoder"
+        tests:
+          - getVideoDecoderIds_pos
+          - getSupportedOperationalModes_pos
+          - getVideoDecoder_pos
+          - getVideoDecoder_neg
+          - getCapabilities_pos
+          - getProperty_pos
+          - getProperty_neg
+          - getPropertyMulti_pos
+          - getPropertyMulti_neg
+          - getState_pos
+          - open_pos
+          - open_neg
+          - close_pos
+          - close_neg
+          - registerEventListener_pos
+          - registerEventListener_neg
+          - unregisterEventListener_pos
+          - unregisterEventListener_neg
+          - start_pos
+          - start_neg
+          - stop_pos
+          - stop_neg
+          - setProperty_pos
+          - setProperty_neg
+          - decodeBuffer_neg
+          - flush_pos
+          - flush_neg
+          - signalDiscontinuity_pos
+          - signalDiscontinuity_neg
+          - signalEOS_pos
+          - signalEOS_neg
+          - parseCodecSpecificData_pos
+          - parseCodecSpecificData_neg
+      6:
+        name: "VTS_L2_VideoDecoder"
+        tests:
+          - TestGetAndSetProperties
+          - TestGetAndSetProperties_multipleInstance
+          - TestDecoderStateTransitions
+          - TestDecoderStateTransitions_multipleInstance
+      7:
+        name: "VTS_L1_VideoSink"
+        tests:
+          - getVideoSinkIds_pos
+          - getVideoSink_pos
+          - getVideoSink_neg
+          - getCapabilities_pos
+          - getProperty_pos
+          - getProperty_neg
+          - getState_pos
+          - open_pos
+          - open_neg
+          - close_pos
+          - close_neg
+          - registerEventListener_pos
+          - registerEventListener_neg
+          - unregisterEventListener_pos
+          - unregisterEventListener_neg
+          - setProperty_pos
+          - setProperty_neg
+          - setVideodecoder_pos
+          - setVideodecoder_neg
+          - getVideodecoder_pos
+          - start_pos
+          - start_neg
+          - stop_pos
+          - stop_neg
+          - queueVideoFrame_neg
+          - flush_pos
+          - flush_neg
+          - discardFramesUntil_pos
+          - discardFramesUntil_neg
+
+      8:
+        name: "VTS_L2_VideoSink"
+        tests:
+          - TestSetAndGetProperty
+          - TestSetAndGetProperty_multipleInstance
+          - TestStateTransitions
+          - TestStateTransitions_multipleInstance
+      9:
+        name: "VTS_L1_AVClock"
+        tests:
+          - getAVClockIds_pos
+          - getAVClock_neg
+          - getCapabilities_pos
+          - getState_pos
+          - getProperty_pos
+          - getProperty_neg
+          - setProperty_neg
+          - open_pos
+          - open_neg
+          - close_pos
+          - close_neg
+          - registerEventListener_pos
+          - registerEventListener_neg
+          - unregisterEventListener_pos
+          - unregisterEventListener_neg
+          - start_pos
+          - start_neg
+          - stop_pos
+          - stop_neg
+          - setAudioSink_pos
+          - setAudioSink_neg
+          - getAudioSink_pos
+          - getAudioSink_neg
+          - setSupplementaryAudioSink_pos
+          - setSupplementaryAudioSink_neg
+          - getSupplementaryAudioSink_pos
+          - getSupplementaryAudioSink_neg
+          - setVideoSink_pos
+          - setVideoSink_neg
+          - getVideoSink_pos
+          - getVideoSink_neg
+          - setClockMode_pos
+          - setClockMode_neg
+          - getClockMode_pos
+          - getClockMode_neg
+          - notifyPCRSample_pos
+          - notifyPCRSample_neg
+          - getCurrentClockTime_pos
+          - getCurrentClockTime_neg
+          - setPlaybackRate_pos
+          - setPlaybackRate_neg
+          - getPlaybackRate_pos
+          - getPlaybackRate_neg
+      10:
+        name: "VTS_L2_AVCLOCK"
+        tests:
+          - GetReadOnlyProperties
+          - SetReadOnlyPropertyTest
+          - TestStateTransitions
+          - VerifyClockModeSetToAutoOnOpenAndSetGetClockMode
+          - VerifyPlaybackRateAndStateTransitions
+
+      11:
+        name: "VTS_L1_PlaneControl"
+        tests:
+          - getCapabilities_pos
+          - getNativeGraphicsWindowHandle_pos
+          - getNativeGraphicsWindowHandle_neg
+          - flipGraphicsBuffer_pos
+          - flipGraphicsBuffer_neg
+          - setVideoSourceDestinationPlaneMapping_pos
+          - setVideoSourceDestinationPlaneMapping_neg
+          - getVideoSourceDestinationPlaneMapping_pos
+          - getProperty_pos
+          - getProperty_neg
+          - setProperty_pos
+          - setProperty_neg
+          - getPropertyMulti_pos
+          - getPropertyMulti_neg
+          - setPropertyMultiAtomic_pos
+          - setPropertyMultiAtomic_neg
+          - registerListener_pos
+          - registerListener_neg
+          - unregisterListener_pos
+          - unregisterListener_neg
+          - releaseNativeGraphicsWindowHandle_pos
+          - releaseNativeGraphicsWindowHandle_neg
+
+      12:
+        name: "VTS_L2_PlaneControl"
+        tests:
+          - TestGetSetProperty
+          - TestGetSetPropertyMultiAtomic
+          - TestGetSetVideoSourceDestinationPlaneMapping
