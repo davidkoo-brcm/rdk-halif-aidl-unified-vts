@@ -29,7 +29,7 @@
 
    <project name="rdk-halif-aidl-test-avclock"
            path="vts_hal_test_components/avclock"
-	   revision="feature/gh66_Compilation_x86" />
+	   revision="refs/tags/0.3.0" />
 
    <project name="rdk-halif-aidl-test-planecontrol"
            path="vts_hal_test_components/planecontrol"
