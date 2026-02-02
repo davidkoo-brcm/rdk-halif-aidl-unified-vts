@@ -140,7 +140,7 @@ int main(int argc, char **argv)
     result = VTS_PlaneControl_init();
     if(result != UT_STATUS_OK)
     {
-        UT_LOG_ERROR("Failed to initialize AV Clock");
+        UT_LOG_ERROR("Failed to initialize Plane Control");
         result = UT_STATUS_FAILURE;
     }
 
