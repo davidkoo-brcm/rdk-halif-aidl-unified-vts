@@ -1,11 +1,12 @@
-# VTS L1 and L2 Test Procedure
+# VTS L1 L2 Test Procedure
 
 ## Table of Contents
+
 - [Acronyms, Terms and Abbreviations](#acronyms-terms-and-abbreviations)
-- [Run L1 L2 and L3 Test directly without python](#run-l1-l2-and-l3-test-directly-without-python)
-- [Run L1 and L2 using python](#run-l1-l2-and-l3-using-python)
+- [Run L1 L2 Tests Manually without Python](#run-l1-l2-tests-manually-without-python)
+- [Run L1 L2 Tests using Python Automation](#run-l1-l2-tests-using-python-automation)
   - [Setting Up Test Environment](#setting-up-test-environment)
-  - [Test setup on VDevice](#test-setup-on-vdevice)
+  - [Test setup to run on VDevice](#test-setup-to-run-on-vdevice)
   - [Update Configuration Files](#update-configuration-files)
   - [Run on Windows Environment](#run-on-windows-environment)
   - [Run Test Cases](#run-test-cases)
@@ -15,36 +16,35 @@
 - `HAL`    - Hardware Abstraction Layer
 - `L1`     - Level 1 Testing
 - `L2`     - Level 2 Testing
-- `L3`     - Level 3 Testing
 - `DUT`    - Device Under Test
 - `RAFT`   - Rapid Automation Framework for Testing
 - `YAML`   - YAML Ain't Markup Language
 
+## Run L1 L2 Tests Manually without Python
 
-## Run L1 L2 and L3 Test directly (without python)
+Refer [Running L1 L2 Test suites Manually](https://github.com/rdkcentral/rdk-halif-aidl-unified-vts/blob/develop/README.md#run-tests-manually)
 
-Refer [Running L1 L2 and L3 Test suites](https://github.com/rdkcentral/rdk-halif-aidl-unified-vts/blob/develop/README.md#run-test)
-
-## Run L1 L2 and L3 using python
+## Run L1 L2 Tests using Python Automation
 
 ### Setting Up Test Environment
 
-To execute `HAL` `L1` and `L2` Python test case, need a Python environment. Follow these steps mentioned in [Python Set up](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite) and [Raft Setup](https://github.com/rdkcentral/python_raft/?tab=readme-ov-file#installation)
+To execute `HAL` `L1` `L2` Python test case, need a Python environment. Follow these steps mentioned in [Python Set up](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite) and [Raft Setup](https://github.com/rdkcentral/python_raft/?tab=readme-ov-file#installation)
 
-### Test setup on vDevice
+### Test setup to run on vDevice
 
-To validate automation on vDevice, create a password for the root user using the following command:
+To validate test cases on a vDevice, first create a password for the `root` user by running the following command:
 
 ```bash
 passwd root
-
 ```
 
-Then, update the same password in the vts_rack_config.yml file.
+After setting the password, update the same in the `vts_rack_config.yml` file.
 
-Note: Currently, the Python paramiko library does not support empty passwords on vDevice, so setting a password is necessary
+**Note:** The Python paramiko library currently does not support empty passwords on a vDevice. Therefore, configuring a root password is required for test execution.
 
 ### Update Configuration Files
+
+#### Rack Configuration File
 
 Example Rack Configuration File: [vts_rack_config.yml](../host/tests/configs/vts_rack_config.yml)
 
@@ -54,32 +54,50 @@ In this file, update the configuration to define the console sessions for the `D
 
 |Console Session|Description|
 |---------------|-----------|
-|default|Used by raft|
-|ssh_hal_test|To run the `HAL` binary|
+|default|Used by raft to download artifacts|
+|ssh_hal_test_0|To run the first instance `HAL` binary|
+|ssh_hal_test_N|To run the (N-1) instance `HAL` binary|
+|ssh_player|Plays the stream required for test case|
 
 ```yaml
 rackConfig:
-  - dut:
-      ip: "XXX.XXX.XXX.XXX"  # IP Address of the device
-      description: "vDevice device under test"
-      platform: "vDevice"
-      consoles:
-        - default:
-            type: "ssh"
-            port:
-            username: "root"
-            ip: "XXX.XXX.XXX" # IP address of the device
-            password:
-        - ssh_hal_test:
-            type: "ssh"
-            port:
-            username: "root"
-            ip: "XXX.XXX.XXX" # IP address of the device
-            password:
-      outbound:
-        download_url: "http://localhost:8000/"    # download location for the CPE device
-        httpProxy:   # Local Proxy if required
-        workspaceDirectory: './logs/workspace'   # Local working directory
+  rack1:
+    slot1:
+      devices:
+        - dut:
+            ip: "XXX.XXX.XXX.XXX"  # IP Address of the device
+            description: "Device under test"
+            platform: "vDevice"
+            consoles:
+              - default:
+                  type: "ssh"
+                  port: "30033"
+                  username: "root"
+                  ip: "XXX.XXX.XXX" # IP address of the device
+                  password: ""
+              #For multiple instance tests, corresponding SSH configs are used, single instance uses 0th ssh config.
+              - ssh_hal_test_0:
+                  type: "ssh"
+                  port: "30033"
+                  username: "root"
+                  ip: "XXX.XXX.XXX" # IP address of the device
+                  password: ""
+              - ssh_hal_test_1:
+                  type: "ssh"
+                  port: "30033"
+                  username: "root"
+                  ip: "XXX.XXX.XXX" # IP address of the device
+                  password: ""
+              - ssh_player:
+                  type: "ssh"
+                  port: "30033"
+                  username: "root"
+                  ip: "XXX.XXX.XXX" # IP address of the device
+                  password: ""
+            outbound:
+              download_url: "http://localhost:8000/"    # download location for the CPE device
+              httpProxy:   # Local Proxy if required
+              workspaceDirectory: './logs/workspace'   # Local working directory
 ```
 
 #### Device Configuration File
@@ -91,9 +109,9 @@ For more details refer [RAFT](https://github.com/rdkcentral/python_raft/blob/1.0
 Update below fields in the device configuration file:
 
 - Set the path for `target_directory` where `HAL` binaries will be copied onto the device.
-- Specify the device profile path in `profiles/<device profile>.yaml`
-- Ensure the `platform` should match with the `DUT` `platform` in vts_rack_config.yml
-- Make sure to specify the correct stream download URL to enable downloading streams for L3 test cases.
+- Ensure the `platform` name should match with the `DUT` `platform` in vts_rack_config.yml
+- Choose the appropriate `soc_vendor` for the `DUT` listed in `host/tests/raft/framework/plugins/ut_raft/configs/utPlayerConfig.yml` to ensure feasible GStreamer playback.
+- Make sure the device profile exists in `profiles/<device profile>.yaml` and provide the `profile` path for it.
 
 ```yaml
 deviceConfig:
@@ -105,20 +123,18 @@ deviceConfig:
         prompt: "~#" # Prompt string on console
         test:
             #TODO: Use the single profile file which contains all details (ds, hdmi, etc)
-            profile: "..\\..\\..\\profiles\\hfp-vdevice.yaml"
-            streams_download_url: "<http stream path>" #URL path from which the streams are downloaded to the device
-
+            profile: "../../../profiles/hfp-vdevice.yaml"
 ```
 
-#### Test Setup Configuration File
+#### L1 L2 Test Setup Configuration File
 
-Example Test Setup configuration File: [vts_l1l2_test_setup.yaml](../host/tests/TestCases/vts_l1l2_test_setup.yaml)
+Example Test Setup configuration File: [vts_L1_L2_test_setup.yaml](../host/tests/TestCases/vts_l1l2_test_setup.yaml)
 
-This `yaml` contains the list of test_suites and test_cases to run
+The `yaml` file contain the list of L1 L2 test_suites and test_cases to execute.
 
-Execute command to run the HAL binary was provided in this file. The created binary tar file should be placed in the artifacts section so that it can be fetched by the RAFT automation.
+Note : By default, all L1 L2 test cases are added in the setup file.
 
-To execute multiple test_suites, update the YAML file as shown in the example below:
+To execute specific test cases, update the corresponding YAML file accordingly.
 
 ```yaml
 VTS:
@@ -137,39 +153,17 @@ VTS:
           - getAudioDecoder_pos
           - getAudioDecoder_neg
           - getCapabilities_pos
-          - getProperty_pos
-          - getProperty_neg
-          - getState_pos
-          - open_pos
-          - open_neg
-          - close_pos
-          - close_neg
-          - registerEventListener_pos
-          - registerEventListener_neg
-          - unregisterEventListener_pos
-          - unregisterEventListener_neg
-          - start_pos
-          - start_neg
-          - stop_pos
-          - stop_neg
-          - decodeBuffer_neg
-          - flush_pos
-          - flush_neg
-          - signalDiscontinuity_pos
-          - signalDiscontinuity_neg
-          - signalEOS_pos
-          - signalEOS_neg
-          - parseCodecSpecificData_pos
-          - parseCodecSpecificData_neg
-          - setProperty_pos
-          - setProperty_neg
-```
 
-Note : by default, all test cases are added in the setup file
+      1:
+        name: "VTS_L2_AudioDecoder"
+        tests:
+          - SetandGetProperties
+          - SetandGetProperties_multipleInstance
+```
 
 #### Number of Instances
 
-The `number_of_instances` field in the test setup configuration specifies how many parallel instances of the test should run at the same time.
+The `num_of_instances` field in the test setup configuration specifies how many parallel instances of the test should run at the same time.
 
 - If set to `1`, the test runs in a single instance.
 - If set to `2`, the framework will open two SSH connections to the DUT, run the HAL test binary in both instances, and execute the test cases in parallel.
@@ -177,26 +171,37 @@ The `number_of_instances` field in the test setup configuration specifies how ma
 
 ### Run on Windows Environment
 
-To run the VTS L1, and L2 tests in a Windows environment, follow these additional steps after checking out the repository and compiling the code:
+To run the L1, L2 tests in a Windows environment, follow these additional steps after checking out the repository and compiling the binaries:
 
-1. Install the `host` folder and update the rack configuration files as usual in your Linux environment.
+1. Install the python env as usual in your Linux environment using the script (host/install.sh).
 
-2. Move the entire project folder (including `host`) to your Windows machine.
+2. Move the entire project folder (including `host`) to your Windows machine where python is installed.
 
-3. Open the file located at `framework/plugins/ut_raft/interactive_shell.py`.
+3. If running through VS code then ensure Git Bash is installed on your system (Required to run shell scripts) and choose Git Bash as the terminal type.
+
+4. Open the file located at `host/tests/raft/framework/plugins/ut_raft/interactive_shell.py`.
 
    - Comment out or remove the following import lines to avoid errors on Windows:
+
      ```python
      import pty
      import fcntl
      ```
 
-4. After these changes, you can run the test cases using Python on your Windows system as usual.
+5. Make sure the config files (rack and device configs) are updated.
 
+6. After making the changes, Activate the virtual environment (source host/activate_venv.sh) and run the test cases using Python on your Windows system as usual.
 
 ### Run Test Cases
 
-Once the environment is set up, you can execute the test cases with the following command
+Once the environment is set up, can able to execute the test cases with the following command:
+
+#### To execute L1 L2 Tests
+
+The `vts_l1l2_test.py` script executes the activated L1 and L2 tests as specified in the test_setup YAML file.
+
+**Run Command:**
 
 ```bash
-python vts_l1l2_test.py --config </PATH>/host/tests/configs/vts_rack_config.yml --deviceConfig </PATH>/host/tests/configs/vts_deviceConfig.yml
+python3 host/tests/TestCases/vts_l1l2_test.py --config </PATH>/host/tests/configs/vts_rack_config.yml --deviceConfig </PATH>/host/tests/configs/vts_deviceConfig.yml
+```
