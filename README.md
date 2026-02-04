@@ -50,16 +50,16 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 
 The test suite depends on the Linux binder with `AIDL` support. Follow these steps to build it:
 
-For detail build instruction, please refer to [Linux Binder](https://github.com/rdkcentral/linux_binder_idl)
+For detail build instruction, please refer to [Linux Binder](https://github.com/rdkcentral/linux_binder_idl/tree/1.0.0)
 
 Here outline the simplest steps are
 
 ```bash
-git clone -b develop 'git@github.com:rdkcentral/linux_binder_idl.git'
+git clone -b 1.0.0 'git@github.com:rdkcentral/linux_binder_idl.git'
 
 cd linux_binder_idl
 
-# for Linux: 
+# for Linux:
 sc docker run vdevice-docker /bin/bash
 
 # for ARM:
@@ -196,16 +196,16 @@ sudo ./run.sh -p profiles/hfp-vdevice.yaml
 
 - To run the AV  Module `L4` test cases follow the `L4` Test Procedure document - [vts_avmodule_L4_TestProcedure.md](docs/vts_avmodule_L4_TestProcedure.md)
 
-## AV Module Components
+## Components list
 
-Each individual AV component and their respective test repositories are listed below:
+Each individual component and their respective test repositories are listed below:
 
-| #  | Component Name | Repositories |
-| ---| ---------------| -------------|
-| 1|Audio Decoder|[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-audiodecoder)|
-| 2|Audio Sink|[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-audiosink)|
-| 3|AV Buffer|[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-avbuffer)|
-| 4|Video Decoder|[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-videodecoder)|
-| 5|Video Sink|[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-videosink)|
-| 6|AV Clock|[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-avclock)|
-| 7|Plane Control|[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-planecontrol)|
+| #| Component Name | Repositories |
+| -| ---------------| -------------|
+| 1|AV Buffer       |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-avbuffer)|
+| 2|Audio Decoder   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-audiodecoder)|
+| 3|Audio Sink      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-audiosink)|
+| 4|Video Decoder   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-videodecoder)|
+| 5|Video Sink      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-videosink)|
+| 6|AV Clock        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-avclock)|
+| 7|Plane Control   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-planecontrol)|
