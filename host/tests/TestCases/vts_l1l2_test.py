@@ -38,8 +38,8 @@ class L1L2TestClass(VTSTestHelperClass):
             module_name="VTS",
             test_name="L1L2Test",
             qc_id="L1L2_001",
-            setup_file_name="vts_test_setup.yaml",
-            test_config_file_name="vts_test_setup.yaml",
+            setup_file_name="vts_l1l2_test_setup.yaml",
+            test_config_file_name="vts_l1l2_test_setup.yaml",
             log=log,
         )
 

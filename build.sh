@@ -81,16 +81,21 @@ declare -r L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests
 declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests/src/av/
 declare -r VCOMPONENT_DIR=${TOP}/vcomponents
 
-#TODO: change to server path
-declare -r DEF_GST_PATH="${TOP}/../gstreamer_pkg"
-GST_PATH=${GST_PATH:-${DEF_GST_PATH}}
-
 DEF_LINUX_BINDER="`realpath ${TOP}/../`/linux_binder_idl"
 # AIDL_BIN: path of aidl compiler
 AIDL_BIN=${AIDL_BIN:-${DEF_LINUX_BINDER}/out/aidl}
 # LINUX_BINDER_OUT_DIR: output installed after building linux_binder_idl
 # contains bin/servicemanager, lib/libbinder etc
 LINUX_BINDER_OUT_DIR=${LINUX_BINDER_OUT_DIR:-${DEF_LINUX_BINDER}/local}
+
+#TODO: change to server path
+DEF_GST_LIB_PATH="`realpath ${TOP}/../`/gstreamer_aidl_package/build/install"
+GST_LIB_PATH=${GST_LIB_PATH:-${DEF_GST_LIB_PATH}}
+
+
+#TODO: change to server path
+declare -r DEF_EGL_LIB_PATH="${TOP}/../egl_pkg"
+EGL_LIB_PATH=${EGL_LIB_PATH:-${DEF_EGL_LIB_PATH}}
 
 mkdir -p $TOP_BUILD_DIR
 
@@ -128,6 +133,38 @@ if [[ ! " ${valid_targets[@]} " =~ " ${TARGET} " ]]; then
 fi
 
 ###############################################################################
+# Function to validate and set GST_LIB_PATH
+###############################################################################
+validate_gst_lib_path()
+{
+    # Resolve GST_LIB_PATH to absolute path before validation
+    if [ -n "$GST_LIB_PATH" ]; then
+        GST_LIB_PATH=`realpath ${GST_LIB_PATH}` 2>/dev/null || GST_LIB_PATH=""
+    fi
+
+    if [ ! -d "$GST_LIB_PATH" ]; then
+        echo "GST_LIB_PATH: path does not exists, consider building the GST_LIB_PATH in $DEF_GST_LIB_PATH"
+        exit 1
+    fi
+}
+
+###############################################################################
+# Function to validate and set EGL_LIB_PATH
+###############################################################################
+validate_egl_lib_path()
+{
+    # Resolve EGL_LIB_PATH to absolute path before validation
+    if [ -n "$EGL_LIB_PATH" ]; then
+        EGL_LIB_PATH=`realpath ${EGL_LIB_PATH}` 2>/dev/null || EGL_LIB_PATH=""
+    fi
+
+    if [ ! -d "$EGL_LIB_PATH" ]; then
+        echo "EGL_LIB_PATH: path does not exists, consider building the EGL_LIB_PATH in $DEF_EGL_LIB_PATH"
+        exit 1
+    fi
+}
+
+###############################################################################
 # Function to clone  unified VTS repo's
 ###############################################################################
 unified_manifest()
@@ -153,10 +190,18 @@ install_linux_binder()
 ###############################################################################
 # Function to install gstreamer headers, and libraries
 ###############################################################################
-install_gstreamer_pacakge()
+install_gstreamer_package()
 {
-    cp -r ${GST_PATH}/usr/lib/* ${TOP_BUILD_DIR}/usr/lib/
-    cp -r ${GST_PATH}/usr/include/* ${TOP_BUILD_DIR}/usr/include/
+    cp -r ${GST_LIB_PATH}/usr/lib/* ${TOP_BUILD_DIR}/usr/lib/
+    cp -r ${GST_LIB_PATH}/usr/include/* ${TOP_BUILD_DIR}/usr/include/
+}
+###############################################################################
+# Function to install egl headers, and libraries
+###############################################################################
+install_egl_package()
+{
+    cp -r ${EGL_LIB_PATH}/usr/lib/* ${TOP_BUILD_DIR}/usr/lib/
+    cp -r ${EGL_LIB_PATH}/usr/include/* ${TOP_BUILD_DIR}/usr/include/
 }
 
 ###############################################################################
@@ -278,23 +323,6 @@ generate_avbufferhelper_skeleton()
 }
 
 ###############################################################################
-# Function to Build mock services
-###############################################################################
-build_mock_services()
-{
-    for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
-        # Build the mock component
-        make -j"$(nproc)" -C "${RDK_HAL_TEST_DIR}/${component}/mockservice" BUILD_DIR="${TOP_BUILD_DIR}"
-        if [ $? -ne 0 ]; then
-            echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
-            echo -e "${BOLD}* ${RED}Failed to build the mock ${component}. Exiting.${RESET}"
-            echo -e "${BOLD}╚══════════════════════════════════════════════════════╝${RESET}"
-            exit 1
-        fi
-    done
-}
-
-###############################################################################
 # Function to Build HALIF test
 ###############################################################################
 build_halif_test()
@@ -320,6 +348,9 @@ install_test()
     install -t ${INSTALL_PATH} ${TOP_BUILD_DIR}/usr/lib/*
     install -t ${INSTALL_PATH} run.sh
     install -t ${INSTALL_PATH} start_services.sh
+
+    # Remove gstreamer and egl libraries from the install path (not needed in final tar)
+    rm -rf ${INSTALL_PATH}/libgst*  ${INSTALL_PATH}/libEGL* ${INSTALL_PATH}/libGL* ${INSTALL_PATH}/libMali* ${INSTALL_PATH}/libwayland* ${INSTALL_PATH}/libgbm* ${INSTALL_PATH}/libgio*
 
     cp -r ${PROFILES_DIR} ${INSTALL_PATH}
 
@@ -350,7 +381,7 @@ install_test()
     rm -rf ${INSTALL_PATH}/libavbufferhelper.so
 
     cd ${TOP_BUILD_DIR}
-    tar cfz ${OUT_TAR_FILE} bin/
+    tar -zcf ${OUT_TAR_FILE} bin
     cd -
 }
 
@@ -425,7 +456,6 @@ clean_test()
     find "$RDK_HAL_TEST_DIR" -type f -name "*.o" -delete
     find "$TOP_BUILD_DIR" -type f -name "*.o" -delete
 }
-
 ###############################################################################
 # Function to clean the test build directory
 ###############################################################################
@@ -460,6 +490,8 @@ echo -e "${BOLD}${GREEN}UT_CORE_VERSION        : ${RESET}${YELLOW}$UT_CORE_VERSI
 echo -e "${BOLD}${GREEN}RDK_HALIF_AIDL_VERSION : ${RESET}${YELLOW}$RDK_HALIF_AIDL_VERSION${RESET}"
 echo -e "${BOLD}${GREEN}AIDL_BIN               : ${RESET}${YELLOW}$AIDL_BIN${RESET}"
 echo -e "${BOLD}${GREEN}LINUX_BINDER_OUT_DIR   : ${RESET}${YELLOW}$LINUX_BINDER_OUT_DIR${RESET}"
+echo -e "${BOLD}${GREEN}GST_LIB_PATH           : ${RESET}${YELLOW}$GST_LIB_PATH${RESET}"
+echo -e "${BOLD}${GREEN}EGL_LIB_PATH           : ${RESET}${YELLOW}$EGL_LIB_PATH${RESET}"
 echo -e "${BOLD}${GREEN}TARGET                 : ${RESET}${YELLOW}$TARGET${RESET}"
 
 ###############################################################################
@@ -472,9 +504,12 @@ elif [ "$1" == "dist_clean" ]; then
 elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     help
 elif [[ "$1" == [Tt]arget=* ]]; then
+    validate_gst_lib_path
+    validate_egl_lib_path
     unified_manifest
     install_linux_binder
-    install_gstreamer_pacakge
+    install_gstreamer_package
+    install_egl_package
     generate_hal_interfaces
     build_aidl_libs
     build_ut_core

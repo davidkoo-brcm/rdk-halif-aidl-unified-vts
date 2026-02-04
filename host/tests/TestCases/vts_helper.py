@@ -412,19 +412,17 @@ class VTSTestHelperClass(utHelperClass):
                 if not os.path.exists(artifact_path):
                     self.log.error(f"Artifact file {artifact_path} does not exist")
                     return False
-                
                 # Copy the artifact to the DUT
                 self.utilities.sftpCopy(self.hal_sessions[0], artifact_path, self.target_workspace)
                 self.copied_binaries.append(os.path.join(self.target_workspace, os.path.basename(artifact_path)))
                 self.log.info(f"Copied {artifact_path} to {self.target_workspace}")
                 self.utilities.change_directory(self.hal_sessions[0], self.target_workspace)
 
-
                 # Extract if the artifact is a tar.gz file
                 self.utilities.untar(self.hal_sessions[0], os.path.basename(artifact_path), self.target_workspace)
                 self.log.info(f"Extracted {artifact_path} in {self.target_workspace}")
                 
-            # Ensure run.sh is executable
+                # Ensure run.sh is executable
                 self.utilities.change_directory(self.hal_sessions[0], self.run_path)
             return True
         except Exception as e:
@@ -517,11 +515,21 @@ class VTSTestHelperClass(utHelperClass):
         results = []
 
         wait_time = self.all_wait_time if use_all_wait_time else self.wait_time
+
+        # Load prompt config only for VTS_L3_PlaneControl test case (once, outside loop)
+        prompt = None
+        if test_suite == "VTS_L3_PlaneControl":
+            self.test_promptPath = os.path.join(dir_path, "vts_avmodule_prompt.yaml")
+            self.testPrompt = ConfigRead(self.test_promptPath, self.module_name)
+            fields = getattr(self.testPrompt, "fields", {})
+            if test_case is not None:
+                prompt = fields.get(test_case)
+
         for i, ut_menu in enumerate(self.ut_menu):
             self.log.info(f"[Instance {i}] Running test case: {test_case} in suite {test_suite}...")
-            output = ut_menu.select(test_suite, test_case, None, wait_time, False)
+            output = ut_menu.select(test_suite, test_case, prompt, wait_time, False)
 
-            run_summary_found = "Run Summary:" in output
+            run_summary_found = "Run Summary:" in output and "Segmentation fault" not in output
             if not run_summary_found:
                 self.log.error(f"[Instance {i}] Run Summary not found - test case likely crashed. Marking as FAILED.")
                 # Restart the menu to recover the session for next tests
