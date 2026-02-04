@@ -482,7 +482,6 @@ help()
     echo -e "${BOLD}* ${GREEN}$0 clean${RESET}           ${YELLOW}- Cleans the build folder${RESET}                           ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 dist_clean${RESET}      ${YELLOW}- Deletes all build and checkout folders${RESET}            ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 help/-h/--help${RESET}  ${YELLOW}- Prints this message${RESET}                               ${BOLD}*${RESET}"
-    echo -e "${BOLD}* ${GREEN}$0 Target=<target> -v${RESET} ${YELLOW}- Builds the test with vcomponent repo${RESET}           ${BOLD}*${RESET}"
     echo -e "${BOLD}╚════════════════════════════════════════════════════════════════════════════════╝${RESET}"
 }
 
@@ -516,9 +515,7 @@ elif [[ "$1" == [Tt]arget=* ]]; then
     build_ut_core
     generate_avbufferhelper_skeleton
     build_halif_test
-    if [ "$2" == "-v" ]; then
-        build_vcomponent_services
-    fi
+    build_vcomponent_services
     install_test
 else
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"
