@@ -43,8 +43,4 @@
            path="vts_hal_test_components/deviceinfo"
            revision="refs/tags/0.1.0" />
 
-   <project name="rdk-halif-aidl-test-cec"
-           path="vts_hal_test_components/cec"
-           revision="refs/tags/0.1.0" />
-
 </manifest>

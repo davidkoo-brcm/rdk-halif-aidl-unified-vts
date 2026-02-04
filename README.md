@@ -223,4 +223,3 @@ Each individual component and their respective test repositories are listed belo
 | 6|AV Clock        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-avclock)|
 | 7|Plane Control   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-planecontrol)|
 | 8|Device Info     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-device-info)|
-| 9|Hdmi Cec        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-cec)|

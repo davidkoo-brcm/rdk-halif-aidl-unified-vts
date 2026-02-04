@@ -118,12 +118,3 @@ rackConfig:
                         upload_url_base_dir: "sftp://server-address/home/workspace/tftp/rack1/slot1" # alternative upload location
                         httpProxy:    # Local Proxy if required
                         workspaceDirectory: './logs/workspace'   # Local working directory
-                    # hdmiCECController:
-                    #     type: virtual-cec-client
-                    #     vendor: "vComponent"
-                    #     address: "" # Needs to be be filled out with IP address
-                    #     username: "" # Needs to be filled out with login username
-                    #     password: '' # Needs to be filled out with login password
-                    #     port: 5522
-                    #     control_port: 8080
-                    #     device_network_configuration: "path of hdmicec_device_config_add_network.yaml"

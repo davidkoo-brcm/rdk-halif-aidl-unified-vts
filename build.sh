@@ -43,7 +43,6 @@ declare -A HALIF_COMPONENTS=(
   [avclock]="current"
   [planecontrol]="current"
   [deviceinfo]="current"
-  [cec]="current"
 )
 
 declare -A HALIF_TEST_COMPONENTS=(
@@ -55,14 +54,12 @@ declare -A HALIF_TEST_COMPONENTS=(
   [avclock]="RDK_HALIF_AVCLOCK_TEST_VERSION"
   [planecontrol]="RDK_HALIF_PLANECONTROL_TEST_VERSION"
   [deviceinfo]="RDK_HALIF_DEVICEINFO_TEST_VERSION"
-  [cec]="RDK_HALIF_CEC_TEST_VERSION"
 )
 
 : "${RDK_VCOMPONENT_DEFAULT_BRANCH:=main}"
 
 declare -A VCOMPONENT_MODULES=(
     [deviceinfo]="RDK_HALIF_DEVICEINFO_VCOMP_VERSION"
-    [cec]="RDK_HALIF_CEC_VCOMP_VERSION"
 )
 
 resolve_branch() {

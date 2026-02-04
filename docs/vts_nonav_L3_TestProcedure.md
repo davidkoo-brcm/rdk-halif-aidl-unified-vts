@@ -80,15 +80,6 @@ rackConfig:
         download_url: "http://localhost:8000/"    # download location for the CPE device
         httpProxy:   # Local Proxy if required
         workspaceDirectory: './logs/workspace'   # Local working directory
-      hdmiCECController:
-                        type: virtual-cec-client
-                        vendor: "vComponent"
-                        address: "" # Needs to be be filled out with IP address
-                        username: "" # Needs to be filled out with login username
-                        password: '' # Needs to be filled out with login password
-                        port: 5522
-                        control_port: 8080
-                        device_network_configuration: "path of hdmicec_device_config_add_network.yaml"
 ```
 
 #### Device Configuration File
@@ -102,8 +93,7 @@ Update below fields in the device configuration file:
 - Set the path for `target_directory` where `HAL` binaries will be copied onto the device.
 - Specify the device profile path in `profiles/<device profile>.yaml`
 - Ensure the `platform` should match with the `DUT` `platform` in vts_rack_config.yml
-- Make sure to specify the correct stream download URL to enable downloading streams for L3 test cases.
-- For testing HDMI-CEC L3, make sure `hdmiCECController` fields are currectly updated. 
+- Make sure to specify the correct stream download URL to enable downloading streams for L3 test cases
 
 ```yaml
 deviceConfig:
