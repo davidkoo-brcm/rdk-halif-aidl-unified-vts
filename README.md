@@ -129,7 +129,6 @@ export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
 export EGL_LIB_PATH=/path/egl_libraries/
 export GST_LIB_PATH=/path/gstreamer_lib/
 export RDK_VCOMPONENT_CEC=0.1.0
-export RDK_VCOMPONENT_DEVICEINFO=0.1.0
 ```
 
 By default, UT logs are disabled. To enable them, Set below environment variable
@@ -222,5 +221,4 @@ Each individual component and their respective test repositories are listed belo
 | 5|Video Sink      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-videosink)|
 | 6|AV Clock        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-avclock)|
 | 7|Plane Control   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-planecontrol)|
-| 8|Device Info     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-device-info)|
-| 9|Hdmi Cec        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-cec)|
+| 8|Hdmi Cec        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-cec)|

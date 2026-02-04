@@ -74,7 +74,6 @@
 #include "vts_avclock_init.h"
 #include "vts_planecontrol_init.h"
 #include "vts_av_l4_init.h"
-#include "vts_deviceinfo_init.h"
 #include "vts_hdmicec_init.h"
 
 int main(int argc, char **argv)
@@ -95,6 +94,7 @@ int main(int argc, char **argv)
     UT_LOG_INFO("\t VTS UNIFIED AV Clock HALIF Test Version: \033[0;32m%s\033[0m",AVCLOCK_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED Plane Control HALIF Test Version: \033[0;32m%s\033[0m",PLANECONTROL_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED HALIF L4 Test Version: \033[0;32m%s\033[0m",L4_TESTS_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED HDMI CEC HALIF Test Version: \033[0;32m%s\033[0m",HDMI_CEC_VERSION);
     UT_LOG_INFO("==========================================================================");
 
     result = VTS_AVBuffer_init();
@@ -153,13 +153,6 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
-    result = VTS_DEVICEINFO_init();
-    if (result != UT_STATUS_OK)
-    {
-        UT_LOG_ERROR("Failed to initialize deviceinfo");
-        result = UT_STATUS_FAILURE;
-    }
-
     result = VTS_HDMICEC_init();
     if (result != UT_STATUS_OK)
     {
@@ -182,7 +175,6 @@ int main(int argc, char **argv)
     VTS_VideoDecoder_destroy();
     VTS_AudioSink_destroy();
     VTS_VideoSink_destroy();
-    VTS_DEVICEINFO_destroy();
     VTS_HDMICEC_destroy();
     return result;
 }

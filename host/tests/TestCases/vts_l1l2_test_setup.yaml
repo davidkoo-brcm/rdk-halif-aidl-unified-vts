@@ -317,14 +317,6 @@ VTS:
           - TestGetSetVideoSourceDestinationPlaneMapping
 
       13:
-        name: "VTS_L1_DEVICEINFO"
-        tests:
-          - getCapabilities_pos
-          - getHALVersion_pos
-          - getProperty_pos
-          - getProperty_neg
-
-      14:
         name: "VTS_L1_HDMICEC"
         tests:
           - getState_pos

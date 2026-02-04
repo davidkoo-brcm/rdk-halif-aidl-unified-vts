@@ -25,22 +25,18 @@
 
 SERVICE_NAMES=(
   "Vendor-HdmiCec"
-  "Vendor-DeviceInfo"
 )
 
 SERVICE_BINARIES=(
   "./Vendor-HdmiCec"
-  "./Vendor-DeviceInfo"
 )
 
 SERVICE_CONFIGS=(
   "./vcomponent_configurations/hdmicec_vcomponent_configuration.yaml"
-  "./vcomponent_configurations/deviceinfo_vcomponent_configuration.yaml"
 )
 
 SERVICE_PORTS=(
   "8080"
-  "8075"
 )
 
 LOG_DIR="/tmp/vendor_services_logs"
