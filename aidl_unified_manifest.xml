@@ -9,7 +9,7 @@
 
   <project name="rdk-halif-aidl-test-avbuffer"
            path="vts_hal_test_components/avbuffer"
-	   revision="refs/tags/0.3.2" />
+	   revision="feature/gh76_Update_exception_for_Negitivetest" />
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
