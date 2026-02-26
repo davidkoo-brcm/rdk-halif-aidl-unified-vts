@@ -9,30 +9,27 @@
 
   <project name="rdk-halif-aidl-test-avbuffer"
            path="vts_hal_test_components/avbuffer"
-	   revision="feature/gh76_Update_exception_for_Negitivetest" />
+	   revision="feature/gh71_hfp_update" />
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
-	   revision="refs/tags/0.4.1" />
+	   revision="feature/gh84_audiodecoder_1301" />
 
   <project name="rdk-halif-aidl-test-videodecoder"
            path="vts_hal_test_components/videodecoder"
-	   revision="refs/tags/0.4.1" />
+	   revision="feature/gh78_hfp_update" />
 
   <project name="rdk-halif-aidl-test-audiosink"
            path="vts_hal_test_components/audiosink"
-	   revision="refs/tags/0.4.1" />
+	   revision="feature/gh69_audiosink_update" />
 
   <project name="rdk-halif-aidl-test-videosink"
            path="vts_hal_test_components/videosink"
-	   revision="refs/tags/0.4.1" />
+	   revision="feature/gh71_update_hfp_0_13_1_aidl_interface" />
 
    <project name="rdk-halif-aidl-test-avclock"
            path="vts_hal_test_components/avclock"
-	   revision="refs/tags/0.3.0" />
+	   revision="feature/gh74_Update_VTS_0_13_interface" />
 
-   <project name="rdk-halif-aidl-test-planecontrol"
-           path="vts_hal_test_components/planecontrol"
-	   revision="refs/tags/0.2.3" />
 
 </manifest>

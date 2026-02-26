@@ -107,13 +107,13 @@ Set below environment variable:
 
 - UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 4.7.3). Defaults to the latest tagged version.
 
-- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.12.0). Defaults to the latest HEAD.
+- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.13.1). Defaults to the latest HEAD.
 
 Example:
 
 ```bash
 export UT_CORE_VERSION=4.7.3
-export RDK_HALIF_AIDL_VERSION=0.12.0
+export RDK_HALIF_AIDL_VERSION=0.13.1
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
 ```
@@ -199,4 +199,4 @@ Each individual AV component and their respective test repositories are listed b
 | 4|Video Decoder|[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-videodecoder)|
 | 5|Video Sink|[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-videosink)|
 | 6|AV Clock|[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-avclock)|
-| 7|Plane Control|[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-planecontrol)|
+
