@@ -1,6 +1,30 @@
+#!/usr/bin/env python3
+#** *****************************************************************************
+# *
+# * If not stated otherwise in this file or this component's LICENSE file the
+# * following copyright and licenses apply:
+# *
+# * Copyright 2026 RDK Management
+# *
+# * Licensed under the Apache License, Version 2.0 (the "License");
+# * you may not use this file except in compliance with the License.
+# * You may obtain a copy of the License at
+# *
+# * http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * Unless required by applicable law or agreed to in writing, software
+# * distributed under the License is distributed on an "AS IS" BASIS,
+# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# * See the License for the specific language governing permissions and
+# * limitations under the License.
+# *
+#* ******************************************************************************
+
+
 # VTS_Main_and_Error_Stream_Generator_Tool
 # -------------------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------
+
 import os, sys, re, json, math, random, subprocess
 from pathlib import Path
 from typing import Optional
@@ -65,14 +89,14 @@ def _ensure_listbox_export_off(widget):
     except Exception:
         pass
 
-# ---- UI Paramaeters Selection ----
+# ---- UI Parameters Selection ----
 video_params = {
     "Resolution": ["3840x2160", "2560x1440", "1920x1080", "1280x720", "960x540", "720x576", "720x480", "640x360", "320x240"],
     "Codec": ["libx264", "libx265", "mpeg1video", "mpeg2video", "vp9", "wmv2", "libaom-av1"],
     "Profile": ["main", "main10", "None"],
     "Framerate": [23.976, 24, 25, 29.97, 30, 50, 59.94, 60],
     "Dynamic Range": ["SDR", "HDR10", "HDR10+", "HLG"],
-    "Color Space": ["BT.709", "BT.2020"],
+    "Color Space": ["BT.601","BT.709", "BT.2020"],
     "pixel Format": ["yuv444p", "yuv422p", "yuv420p"],
     "Frame Type": ["Progressive", "Interlaced"],
     "Bitrate": ["300k", "700k", "1M", "1.5M", "2.5M", "5M", "8M", "10M", "12M", "15M", "18M", "20M", "25M", "35M", "60M"],
@@ -140,7 +164,7 @@ def get_color_params(video_selection):
     profile = video_selection.get("Profile", "main")
     dynamic_range = video_selection.get("Dynamic Range", "SDR")
     colorspace = video_selection.get("Color Space", "BT.709")
-	# === Allow HDR for libx265, libaom-av1, and VP9 ===
+   # === Allow HDR for libx265, libaom-av1, and VP9 ===
     if dynamic_range in ["HDR10", "HDR10+", "HLG"] and codec not in ["libx265", "libaom-av1", "vp9"]:
         return None, f"Invalid combination: HDR requires libx265, libaom-av1, or vp9"
     if codec in ["libx264", "libx265"]:
@@ -155,8 +179,8 @@ def get_color_params(video_selection):
             if colorspace == "BT.709":
                 color_param.update({"color_primaries": "bt709", "colorspace": "bt709"})
             elif colorspace == "BT.2020":
-                color_param.update({"color_primaries": "bt2020", "colorspace": "bt2020_ncl"})
-            else:
+                color_param.update({"color_primaries": "bt2020", "color_trc": "bt709", "colorspace": "bt2020nc"})
+            elif colorspace == "BT.601":
                 color_param.update({"color_primaries": "smpte170m", "colorspace": "smpte170m"})
         elif dynamic_range in ("HDR10", "HDR10+"):
             color_param.update({"color_primaries": "bt2020", "color_trc": "smpte2084", "colorspace": "bt2020nc"})
@@ -275,18 +299,26 @@ def generate_ffmpeg_command(
             if ui_cs == "BT.709":
                 applied_colorspace = "bt709"
             elif ui_cs == "BT.2020":
-                applied_colorspace = "bt2020_ncl"
+                applied_colorspace = "bt2020nc"
+            elif ui_cs == "BT.601":
+                applied_colorspace = "smpte170m"
         # Applied colorspace/pixel format tokens (applied values only)
+        # NOTE: For HDR modes we always encode as yuv420p10le, but the output filename should use simplified pixel format token 'yuv420p' regardless of UI selection (yuv420p/yuv422p/yuv444p).
+        dr_norm = (vid_dict.get('Dynamic Range','') or '').strip().lower()
+        hdr_modes = {'hdr10','hdr10+','hlg'}
+        filename_pix_fmt = 'yuv420p' if dr_norm in hdr_modes else (applied_pix_fmt or '')
         cs_norm = (applied_colorspace or '').lower()
-        if cs_norm == 'bt2020':
+        if cs_norm == 'bt709':
+            cs_token = 'BT709'
+        elif cs_norm == 'bt2020':
             cs_token = 'BT2020'
-        elif cs_norm in ('bt2020_ncl', 'bt2020ncl'): 
-            cs_token = 'bt2020ncl'
         elif cs_norm in ('bt2020_nc', 'bt2020nc'): 
-            cs_token = 'bt2020nc'
+            cs_token = 'BT2020'
+        elif cs_norm == 'smpte170m': 
+            cs_token = 'BT601'
         else:
             cs_token = (applied_colorspace or '').replace('.', '').replace('_','')
-        pf_token = (applied_pix_fmt or '').replace(':', '')
+        pf_token = (filename_pix_fmt or '').replace(':', '')
 
         output_file_parts += [
             vid_dict['Codec'].replace("libx", "h").replace("mpeg1video", "mpeg1").replace("mpeg2video", "mpeg2").replace("libaom-av1", "av1").replace("wmv2", "wmv"),
@@ -835,6 +867,9 @@ def build_ui():
     # Variables
     video_input_var = tk.StringVar(value="")
     audio_input_var = tk.StringVar(value="")
+    # Display selected filenames (UI confirmation)
+    video_input_name_var = tk.StringVar(value="No video file selected")
+    audio_input_name_var = tk.StringVar(value="No audio file selected")
     video_source_var = tk.StringVar(value=video_test_sources[0])
     audio_source_var = tk.StringVar(value=audio_test_sources[0])
 
@@ -851,13 +886,25 @@ def build_ui():
     # File selectors
     def _select_video_file():
         p = filedialog.askopenfilename(title="Select Video File")
-        if p: video_input_var.set(str(Path(p).resolve().as_posix()))
+        if p:
+            video_input_var.set(str(Path(p).resolve().as_posix()))
+            try:
+                video_input_name_var.set(Path(p).name)
+            except Exception:
+                video_input_name_var.set(str(p))
     def _select_audio_file():
         p = filedialog.askopenfilename(title="Select Audio File")
-        if p: audio_input_var.set(str(Path(p).resolve().as_posix()))
+        if p:
+            audio_input_var.set(str(Path(p).resolve().as_posix()))
+            try:
+                audio_input_name_var.set(Path(p).name)
+            except Exception:
+                audio_input_name_var.set(str(p))
 
     ttk.Button(sources_frame, text="Select Video File", command=_select_video_file, style="Custom.TButton").grid(row=2, column=0, sticky='w', padx=10, pady=8)
+    ttk.Label(sources_frame, textvariable=video_input_name_var, font=("Segoe UI", 10)).grid(row=2, column=1, sticky='w', padx=10, pady=8)
     ttk.Button(sources_frame, text="Select Audio File", command=_select_audio_file, style="Custom.TButton").grid(row=3, column=0, sticky='w', padx=10, pady=8)
+    ttk.Label(sources_frame, textvariable=audio_input_name_var, font=("Segoe UI", 10)).grid(row=3, column=1, sticky='w', padx=10, pady=8)
 
     # Hidden Entry widgets (to preserve variable bindings without cluttering UI)
     _vi_entry = ttk.Entry(sources_frame, textvariable=video_input_var, width=40); _vi_entry.grid(row=2, column=1, sticky='w', padx=10, pady=8); _vi_entry.grid_remove()
