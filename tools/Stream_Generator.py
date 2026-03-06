@@ -24,7 +24,6 @@
 # VTS_Main_and_Error_Stream_Generator_Tool
 # -------------------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------
-
 import os, sys, re, json, math, random, subprocess
 from pathlib import Path
 from typing import Optional
@@ -118,6 +117,71 @@ fileformat_mapping = {
     "flac": "flac", "libvorbis": "ogg", "wma": "wma", "libopus" : "opus"
 }
 
+
+# ---- Elementary (raw) stream mapping ----
+# Raw file format in UI produces elementary streams (one track only).
+# If both video and audio are enabled, raw output is not supported.
+RAW_VIDEO_ES_MAP = {
+    'libx264': ('h264', '.h264'),
+    'libx265': ('hevc', '.h265'),
+    'mpeg1video': ('mpeg', '.mpg'),
+    'mpeg2video': ('mpeg', '.mpg'),
+    'vp9': ('ivf', '.ivf'),
+    'libaom-av1': ('ivf', '.ivf'),
+    # WMV is typically stored in ASF; keep extension as .wmv for user expectation.
+    'wmv2': ('asf', '.wmv'),
+}
+
+RAW_AUDIO_ES_MAP = {
+    'aac': ('adts', '.aac'),
+    'mp3': ('mp3', '.mp3'),
+    'ac3': ('ac3', '.ac3'),
+    'eac3': ('eac3', '.eac3'),
+    'flac': ('flac', '.flac'),
+    # PCM elementary (no WAV container)
+    'pcm_s16le': ('wav', '.wav'),
+    # WMA is commonly in ASF container
+    'wma': ('asf', '.wma'),
+    'libvorbis': ('ogg', '.ogg'),
+    # ffmpeg has an 'opus' muxer on most builds; fall back to ogg if unavailable
+    'libopus': ('opus', '.opus'),
+}
+
+# ---- Codec aliases (UI -> FFmpeg encoder names) ----
+AUDIO_CODEC_ALIAS = {
+    'wma': 'wmav2',
+}
+
+# ---- PCM bitrate helper (for naming) ----
+
+def _pcm_bitrate_token(sample_rate: int, channels: int, bits_per_sample: int = 16) -> str:
+    """Return PCM bitrate token like '768k'."""
+    try:
+        bps = int(sample_rate) * int(channels) * int(bits_per_sample)
+        kbps = int(round(bps / 1000.0))
+        return f"{kbps}k"
+    except Exception:
+        return ''
+
+def _get_raw_es_format_and_ext(vid_dict=None, aud_dict=None):
+    """Return (mux_format, extension) for elementary stream output."""
+    if vid_dict and aud_dict:
+        raise ValueError('Raw format supports only Video OR Audio (not both).')
+    if vid_dict:
+        codec = vid_dict.get('Codec')
+        if codec not in RAW_VIDEO_ES_MAP:
+            raise ValueError(f"Raw elementary output not supported for video codec: {codec}")
+        return RAW_VIDEO_ES_MAP[codec]
+    if aud_dict:
+        codec = aud_dict.get('Codec')
+        if codec not in RAW_AUDIO_ES_MAP:
+            raise ValueError(f"Raw elementary output not supported for audio codec: {codec}")
+        mux, ext = RAW_AUDIO_ES_MAP[codec]
+        if codec == 'libopus' and mux == 'opus' and not _ffmpeg_has_muxer('opus'):
+            mux = 'ogg'
+        return mux, ext
+    raise ValueError('Either vid_dict or aud_dict must be provided for raw output.')
+
 video_test_sources = ["testsrc","testsrc2","smptebars","rgbtestsrc","pal100bars","color_red","color_blue","color_green","color_yellow","color_white","color_black"]
 
 audio_test_sources = ["sine","anoisesrc","sweep"]
@@ -160,68 +224,62 @@ def _ffmpeg_has_muxer(fmt: str) -> bool:
 
 # ---- Color params ----
 def get_color_params(video_selection):
+    """Return color encoding params.
+
+    Always returns: pix_fmt, color_primaries, color_trc, colorspace.
+    This avoids KeyError for codecs like mpeg1/mpeg2/wmv2/av1.
+    """
     codec = video_selection.get("Codec", "libx264")
     profile = video_selection.get("Profile", "main")
     dynamic_range = video_selection.get("Dynamic Range", "SDR")
-    colorspace = video_selection.get("Color Space", "BT.709")
-   # === Allow HDR for libx265, libaom-av1, and VP9 ===
+    colorspace_ui = video_selection.get("Color Space", "BT.709")
+
+    # Allow HDR only for these codecs libx265, libaom-av1, and VP9
     if dynamic_range in ["HDR10", "HDR10+", "HLG"] and codec not in ["libx265", "libaom-av1", "vp9"]:
         return None, f"Invalid combination: HDR requires libx265, libaom-av1, or vp9"
+
+    # Profile validation only for x264/x265
     if codec in ["libx264", "libx265"]:
         if profile == "None":
             return None, f"Invalid combination: Profile cannot be None for {codec}"
         if dynamic_range in ["HDR10", "HDR10+", "HLG"] and profile != "main10":
             return None, f"Invalid combination: HDR requires main10 profile"
-        pix_fmt = "yuv420p10le" if dynamic_range in ["HDR10", "HDR10+", "HLG"] else video_selection.get("pixel Format", "yuv420p")
-        color_param = {"pix_fmt": pix_fmt}
-        if dynamic_range == "SDR":
-            color_param.update({"color_trc": "bt709"})
-            if colorspace == "BT.709":
-                color_param.update({"color_primaries": "bt709", "colorspace": "bt709"})
-            elif colorspace == "BT.2020":
-                color_param.update({"color_primaries": "bt2020", "color_trc": "bt709", "colorspace": "bt2020nc"})
-            elif colorspace == "BT.601":
-                color_param.update({"color_primaries": "smpte170m", "colorspace": "smpte170m"})
-        elif dynamic_range in ("HDR10", "HDR10+"):
-            color_param.update({"color_primaries": "bt2020", "color_trc": "smpte2084", "colorspace": "bt2020nc"})
-            if codec == "libx265":
-                color_param.update({
-                    "x265_params": "hdr10=1:hdr10_opt=1:repeat-headers=1:colormatrix=bt2020nc",
-                    "master_display": "G(13250,34500)B(7500,3000)R(34000,16000)WP(15635,16450)L(10000000,50)",
-                    "max_cll": "1000,400",
-                })
-        elif dynamic_range == "HLG":
-            color_param.update({"color_primaries": "bt2020", "color_trc": "arib-std-b67", "colorspace": "bt2020nc"})
-        return color_param, None
 
-    # === VP9 color params (adds HDR mapping + strict pix_fmt) ===
-    if codec == 'vp9':
-        color_param = {}
-        if dynamic_range == 'SDR':
-            color_param['pix_fmt'] = 'yuv420p'  # force SDR to 8-bit 4:2:0
-            color_param.update({
-                'color_primaries': 'bt709',
-                'color_trc': 'bt709',
-                'colorspace': 'bt709',
-            })
-        elif dynamic_range in ('HDR10', 'HDR10+'):
-            color_param['pix_fmt'] = 'yuv420p10le'  # force 10-bit
-            color_param.update({
-                'color_primaries': 'bt2020',
-                'color_trc': 'smpte2084',
-                'colorspace': 'bt2020nc',
-            })
-        elif dynamic_range == 'HLG':
-            color_param['pix_fmt'] = 'yuv420p10le'  # force 10-bit
-            color_param.update({
-                'color_primaries': 'bt2020',
-                'color_trc': 'arib-std-b67',
-                'colorspace': 'bt2020nc',
-            })
-        else:
-            color_param['pix_fmt'] = video_selection.get('pixel Format', 'yuv420p')
-        return color_param, None
-    color_param = {"pix_fmt": video_selection.get("pixel Format", "yuv420p")}
+    hdr_modes = {"HDR10", "HDR10+", "HLG"}
+    pix_fmt = "yuv420p10le" if dynamic_range in hdr_modes else video_selection.get("pixel Format", "yuv420p")
+
+    def _cs_tokens(cs_ui: str):
+        cs_ui = (cs_ui or '').strip()
+        if cs_ui == "BT.709":
+            return "bt709", "bt709", "bt709"
+        if cs_ui == "BT.2020":
+            return "bt2020", "bt709", "bt2020nc"
+        if cs_ui == "BT.601":
+            return "smpte170m", "bt709", "smpte170m"
+        return "bt709", "bt709", "bt709"
+
+    cp, trc, csp = _cs_tokens(colorspace_ui)
+
+    if dynamic_range in ("HDR10", "HDR10+"):
+        cp, trc, csp = "bt2020", "smpte2084", "bt2020nc"
+    elif dynamic_range == "HLG":
+        cp, trc, csp = "bt2020", "arib-std-b67", "bt2020nc"
+
+    color_param = {
+        "pix_fmt": pix_fmt,
+        "color_primaries": cp,
+        "color_trc": trc,
+        "colorspace": csp,
+    }
+
+    # x265 HDR extras
+    if codec == "libx265" and dynamic_range in hdr_modes:
+        color_param.update({
+            "x265_params": "hdr10=1:hdr10_opt=1:repeat-headers=1:colormatrix=bt2020nc",
+            "master_display": "G(13250,34500)B(7500,3000)R(34000,16000)WP(15635,16450)L(10000000,50)",
+            "max_cll": "1000,400",
+        })
+
     return color_param, None
 
 # ---- Command builder ----
@@ -235,14 +293,28 @@ def generate_ffmpeg_command(
         output_dir = os.path.dirname(os.path.realpath(__file__))
     if not vid_dict and not aud_dict:
         raise ValueError("Both vid_dict and aud_dict cannot be empty")
-    if file_format == "webm":
+
+    file_format_norm = (file_format or '').strip().lower()
+
+    # WMA cannot be muxed into MP4/TS/WEBM reliably. If user forced those, fall back to ASF (.wma).
+
+    if aud_dict and aud_dict.get('Codec') == 'wma' and file_format_norm in ('mp4','ts','webm'):
+
+        file_format = ''
+
+        file_format_norm = ''
+    if file_format_norm == 'raw':
+        file_format = 'raw'
+        if vid_dict and aud_dict:
+            raise ValueError('Raw File Format supports only Video OR Audio. Disable one of them.')
+    if (file_format or "").strip().lower() == "webm":
         # Ensure video codec is VP9 or AV1
         if vid_dict and vid_dict.get("Codec") not in ["vp9", "libaom-av1"]:
             raise ValueError(f"Invalid video codec '{vid_dict.get('Codec')}' for WebM. Use VP9 or AV1.")
         # Ensure audio codec is Vorbis or Opus (if audio is enabled)
         if aud_dict and aud_dict.get("Codec") not in ["libvorbis", "libopus"]:
             raise ValueError(f"Invalid audio codec '{aud_dict.get('Codec')}' for WebM. Use Vorbis or Opus.")
-    if file_format == "ts":
+    if (file_format or "").strip().lower() == "ts":
         # Ensure video codec is H264, H265 or MPEG
         if vid_dict and vid_dict.get("Codec") not in ["libx264", "libx265", "mpeg1video", "mpeg2video"]:
             raise ValueError(f"Invalid video codec '{vid_dict.get('Codec')}' for Ts Format. Use H264, H265 or MPEG.")
@@ -340,7 +412,8 @@ def generate_ffmpeg_command(
                 audio_src_cmd = ["-f", "lavfi", "-i", f"{audio_source}=sample_rate={aud_dict['Sample Rate']}:duration={duration_sec}:c=pink"]
             elif audio_source == "sweep":
                 audio_src_cmd = ["-f", "lavfi", "-i", f"aevalsrc=sin(2*PI*(20+(20000-20)*t/{duration_sec})*t):s={aud_dict['Sample Rate']}"]
-        audio_opt_cmd = ["-c:a", aud_dict["Codec"], "-ar", str(aud_dict["Sample Rate"]), "-ac", str(aud_dict["Channels"])]
+        enc_a = AUDIO_CODEC_ALIAS.get(aud_dict['Codec'], aud_dict['Codec'])
+        audio_opt_cmd = ["-c:a", enc_a, "-ar", str(aud_dict["Sample Rate"]), "-ac", str(aud_dict["Channels"]) ]
         if aud_dict["Codec"] not in ("flac", "pcm_s16le") and aud_dict.get("Bitrate"):
             audio_opt_cmd += ["-b:a", aud_dict["Bitrate"]]
         audio_opt_cmd += ["-filter:a", f"volume={volume}"]
@@ -348,9 +421,14 @@ def generate_ffmpeg_command(
             aud_dict['Codec'].replace("pcm_s16le", "pcm").replace("libvorbis", "vorbis").replace("libopus", "opus"),
             samplerate_mapping[int(aud_dict['Sample Rate'])], f"{aud_dict['Channels']}ch",
         ]
-        if aud_dict["Codec"] not in ("flac", "pcm_s16le") and aud_dict.get("Bitrate"):
-            output_file_parts.append(aud_dict["Bitrate"])
-    if not file_format:
+        # Always reflect bitrate token in filename when selected.
+        if aud_dict.get("Bitrate"):
+            if aud_dict.get("Codec") == 'pcm_s16le':
+                br_tok = _pcm_bitrate_token(int(aud_dict.get('Sample Rate', 48000)), int(aud_dict.get('Channels', 2)), 16)
+                if br_tok: output_file_parts.append(br_tok)
+            else:
+                output_file_parts.append(aud_dict["Bitrate"])
+    if file_format_norm != 'raw' and not file_format:
             if vid_dict and aud_dict:
                 if vid_dict["Codec"] in ["vp9", "libaom-av1"] and aud_dict["Codec"] in ["libvorbis", "libopus"]:
                     file_format = "webm"
@@ -367,56 +445,126 @@ def generate_ffmpeg_command(
                     file_format = "mp4"
             elif aud_dict:
                 file_format = "webm" if aud_dict["Codec"] in ["libvorbis", "libopus"] else fileformat_mapping[aud_dict["Codec"]]
+    # ---- Output path / container or elementary stream tail ----
+    if file_format_norm == 'raw':
+        raw_mux, raw_ext = _get_raw_es_format_and_ext(vid_dict, aud_dict)
+        output_file = "_".join(output_file_parts) + raw_ext
+        output_path = os.path.join(output_dir, output_file)
+        tail = ["-t", str(duration_sec)]
+        if vid_dict:
+            tail += ["-an", "-f", raw_mux]
+        else:
+            tail += ["-vn", "-f", raw_mux]
+        tail += [output_path]
+        cmd += video_src_cmd + audio_src_cmd + video_opt_cmd + audio_opt_cmd + tail
+        return cmd, output_path
+
     output_file = "_".join(output_file_parts) + "." + file_format
     output_path = os.path.join(output_dir, output_file)
     cmd += video_src_cmd + audio_src_cmd + video_opt_cmd + audio_opt_cmd + ["-t", str(duration_sec), output_path]
     return cmd, output_path
+# ---- Fallback stats helper (for cases where ffprobe cannot count packets) ----
+def _fallback_stats_from_params(duration_sec: int, vid_dict=None, aud_dict=None):
+    try:
+        v_frames = 0
+        a_frames = 0
+        if vid_dict and vid_dict.get('Framerate'):
+            fps = float(vid_dict.get('Framerate'))
+            v_frames = int(round(fps * float(duration_sec)))
+        if aud_dict and aud_dict.get('Sample Rate'):
+            sr = int(aud_dict.get('Sample Rate'))
+            a_frames = int(round((sr * float(duration_sec)) / 1024.0))
+        return {'duration_sec': int(duration_sec), 'audio_frames': a_frames, 'video_frames': v_frames}
+    except Exception:
+        return {'duration_sec': int(duration_sec), 'audio_frames': 0, 'video_frames': 0}
 
 # ---- Probe & rename helpers ----
 def get_stream_info(file_path):
-    try:
-        # Duration via format
-        result_d = subprocess.run([
-            "ffprobe", "-v", "quiet",
-            "-print_format", "json",
-            "-show_entries", "format=duration",
-            file_path
-        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, text=True)
-        data_d = json.loads(result_d.stdout)
-        duration = float(data_d['format']['duration'])
-        duration_sec = math.ceil(duration)
+    """Return {'duration_sec', 'audio_frames', 'video_frames'}.
 
-        # Video packets (TS-friendly)
-        result_v = subprocess.run([
-            "ffprobe", "-v", "quiet", "-count_packets",
-            "-select_streams", "v:0",
-            "-print_format", "json",
-            "-show_entries", "stream=codec_type,nb_read_packets",
-            file_path
-        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, text=True)
-        data_v = json.loads(result_v.stdout)
+    For elementary/raw bitstreams (e.g. .h264/.h265/.aac) ffprobe may require an explicit demuxer.
+    This function retries with demuxer hints based on file extension.
+    """
+    p = Path(file_path)
+    ext = p.suffix.lower()
+
+    demux_hint = {
+        '.h264': 'h264',
+        '.264': 'h264',
+        '.h265': 'hevc',
+        '.hevc': 'hevc',
+        '.ivf': 'ivf',
+        '.aac': 'adts',
+        '.ac3': 'ac3',
+        '.eac3': 'eac3',
+        '.mp3': 'mp3',
+        '.ogg': 'ogg',
+        '.opus': 'opus',
+        '.mpg': 'mpeg',
+        '.mpeg': 'mpeg',
+        '.wmv': 'asf',
+        '.wma': 'asf',
+    }.get(ext)
+
+    base_in = []
+    if demux_hint:
+        base_in = ['-f', demux_hint]
+
+    try:
+        # Duration
+        duration_sec = 0
+        try:
+            result_d = subprocess.run([
+                'ffprobe', '-v', 'quiet',
+                '-print_format', 'json',
+                '-show_entries', 'format=duration',
+                *base_in,
+                str(p)
+            ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, text=True)
+            data_d = json.loads(result_d.stdout or '{}')
+            duration = float(data_d.get('format', {}).get('duration', 0.0) or 0.0)
+            duration_sec = math.ceil(duration) if duration > 0 else 0
+        except Exception:
+            duration_sec = 0
+
+        # Video packets
         video_packets = 0
-        for s in data_v.get('streams', []):
-            if s.get('codec_type') == 'video':
-                video_packets = int(s.get('nb_read_packets', 0))
+        try:
+            result_v = subprocess.run([
+                'ffprobe', '-v', 'quiet', '-count_packets',
+                '-select_streams', 'v:0',
+                '-print_format', 'json',
+                '-show_entries', 'stream=codec_type,nb_read_packets',
+                *base_in,
+                str(p)
+            ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, text=True)
+            data_v = json.loads(result_v.stdout or '{}')
+            for s in data_v.get('streams', []):
+                if s.get('codec_type') == 'video':
+                    video_packets = int(s.get('nb_read_packets', 0) or 0)
+        except Exception:
+            video_packets = 0
 
         # Audio packets
-        result_a = subprocess.run([
-            "ffprobe", "-v", "quiet", "-count_packets",
-            "-select_streams", "a:0",
-            "-print_format", "json",
-            "-show_entries", "stream=codec_type,nb_read_packets",
-            file_path
-        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, text=True)
-        data_a = json.loads(result_a.stdout)
         audio_packets = 0
-        for s in data_a.get('streams', []):
-            if s.get('codec_type') == 'audio':
-                audio_packets = int(s.get('nb_read_packets', 0))
+        try:
+            result_a = subprocess.run([
+                'ffprobe', '-v', 'quiet', '-count_packets',
+                '-select_streams', 'a:0',
+                '-print_format', 'json',
+                '-show_entries', 'stream=codec_type,nb_read_packets',
+                *base_in,
+                str(p)
+            ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, text=True)
+            data_a = json.loads(result_a.stdout or '{}')
+            for s in data_a.get('streams', []):
+                if s.get('codec_type') == 'audio':
+                    audio_packets = int(s.get('nb_read_packets', 0) or 0)
+        except Exception:
+            audio_packets = 0
 
-        return {'duration_sec': duration_sec,
-                'audio_frames': audio_packets,
-                'video_frames': video_packets}
+        return {'duration_sec': duration_sec, 'audio_frames': audio_packets, 'video_frames': video_packets}
+
     except Exception:
         return None
 
@@ -740,7 +888,7 @@ def build_ui():
     ttk.Label(io_frame, text="Duration (sec):").grid(row=0, column=0, sticky='w', padx=5, pady=5)
     entry_duration = ttk.Entry(io_frame, textvariable=duration_var, width=10); entry_duration.grid(row=0, column=1, sticky='w', padx=5, pady=5)
     ttk.Label(io_frame, text="File Format").grid(row=1, column=0, sticky='w', padx=5, pady=5)
-    file_format_combo = ttk.Combobox(io_frame, textvariable=fileformat_var, values=["mp4","ts", "webm"], state="readonly", width=10); file_format_combo.grid(row=1, column=1, sticky='w', padx=5, pady=5)
+    file_format_combo = ttk.Combobox(io_frame, textvariable=fileformat_var, values=["mp4","ts","webm","raw"], state="readonly", width=10); file_format_combo.grid(row=1, column=1, sticky='w', padx=5, pady=5)
 
     def select_output_directory():
         p = filedialog.askdirectory(title="Select output directory")
@@ -1235,6 +1383,9 @@ def build_ui():
             if audio_enabled.get():
                 sel_a = _get_selected_lists(audio_options); aud_combos = _expand_audio_combos(sel_a)
             file_fmt = fileformat_var.get().strip()
+            if (file_fmt or '').strip().lower() == 'raw' and video_enabled.get() and audio_enabled.get():
+                messagebox.showwarning('Raw File Format', 'Raw (elementary) output is supported only for Video-only OR Audio-only. Please disable one.');
+                return
             success_main = 0
             v_input = video_input_var.get().strip()
             a_input = audio_input_var.get().strip()
@@ -1250,7 +1401,12 @@ def build_ui():
                         file_format=file_fmt, output_dir=output_dir,
                     )
                     print("Running:", " ".join(cmd)); subprocess.run(cmd, check=True)
-                    stats = get_stream_info(outfile); new_name = rename_file_with_stats(outfile, stats)
+                    stats = get_stream_info(outfile)
+                    if stats and int(stats.get('duration_sec',0) or 0) == 0:
+                        stats['duration_sec'] = int(duration_sec)
+                    if (not stats) or (int(stats.get('audio_frames',0))==0 and int(stats.get('video_frames',0))==0):
+                        stats = _fallback_stats_from_params(duration_sec, v, a)
+                    new_name = rename_file_with_stats(outfile, stats)
                     print(f'[Main] Generated: {new_name}'); success_main += 1
             elif vid_combos:
                 for v in vid_combos:
@@ -1262,7 +1418,12 @@ def build_ui():
                         file_format=file_fmt, output_dir=output_dir,
                     )
                     print("Running:", " ".join(cmd)); subprocess.run(cmd, check=True)
-                    stats = get_stream_info(outfile); new_name = rename_file_with_stats(outfile, stats)
+                    stats = get_stream_info(outfile)
+                    if stats and int(stats.get('duration_sec',0) or 0) == 0:
+                        stats['duration_sec'] = int(duration_sec)
+                    if (not stats) or (int(stats.get('audio_frames',0))==0 and int(stats.get('video_frames',0))==0):
+                        stats = _fallback_stats_from_params(duration_sec, v, None)
+                    new_name = rename_file_with_stats(outfile, stats)
                     print(f'[Main] Generated: {new_name}'); success_main += 1
             elif aud_combos:
                 for a in aud_combos:
@@ -1274,7 +1435,12 @@ def build_ui():
                         file_format=file_fmt, output_dir=output_dir,
                     )
                     print("Running:", " ".join(cmd)); subprocess.run(cmd, check=True)
-                    stats = get_stream_info(outfile); new_name = rename_file_with_stats(outfile, stats)
+                    stats = get_stream_info(outfile)
+                    if stats and int(stats.get('duration_sec',0) or 0) == 0:
+                        stats['duration_sec'] = int(duration_sec)
+                    if (not stats) or (int(stats.get('audio_frames',0))==0 and int(stats.get('video_frames',0))==0):
+                        stats = _fallback_stats_from_params(duration_sec, None, a)
+                    new_name = rename_file_with_stats(outfile, stats)
                     print(f'[Main] Generated: {new_name}'); success_main += 1
             if success_main == 0:
                 messagebox.showwarning("Generation", "No streams generated."); return
@@ -1328,6 +1494,9 @@ def build_ui():
             a_source = audio_source_var.get().strip() or audio_test_sources[0]
             for (vid_dict, aud_dict) in base_param_sets:
                 selected_fmt = fileformat_var.get().strip() or ""
+                if (selected_fmt or '').strip().lower() == 'raw':
+                    messagebox.showwarning('Raw File Format', 'Raw (elementary) output is not supported in Error Stream Generator mode. Please choose mp4/ts/webm.');
+                    continue
                 base_cmd, base_path = generate_ffmpeg_command(
                     vid_dict, aud_dict,
                     video_input=v_input, audio_input=a_input,
@@ -1538,4 +1707,3 @@ if __name__ == "__main__":
         ui = build_ui(); ui['on_mode_change'](); ui['root'].mainloop()
     except tk.TclError:
         print("Tkinter failed to open a window (likely no DISPLAY). Run this script on a system with a GUI."); sys.exit(1)
-
