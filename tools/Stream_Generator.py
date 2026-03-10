@@ -222,6 +222,42 @@ def _ffmpeg_has_muxer(fmt: str) -> bool:
     except Exception:
         return False
 
+# ---- Stream probe helpers (detect if a file contains audio/video streams) ----
+_STREAM_PROBE_CACHE = {}  # (path, mtime, size) -> {'has_video':bool,'has_audio':bool}
+
+def _probe_stream_types(file_path: str):
+    """Return {'has_video': bool, 'has_audio': bool} for the given media file.
+
+    Uses ffprobe. Results are cached based on file mtime/size.
+    """
+    try:
+        p = Path(file_path)
+        if (not file_path) or (not p.exists()):
+            return {'has_video': False, 'has_audio': False}
+        key = (str(p), p.stat().st_mtime, p.stat().st_size)
+        if key in _STREAM_PROBE_CACHE:
+            return _STREAM_PROBE_CACHE[key]
+        res = subprocess.run([
+            'ffprobe', '-v', 'quiet',
+            '-print_format', 'json',
+            '-show_streams',
+            str(p)
+        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False)
+        data = json.loads(res.stdout or '{}')
+        has_v = False
+        has_a = False
+        for s in (data.get('streams') or []):
+            ct = (s.get('codec_type') or '').lower()
+            if ct == 'video':
+                has_v = True
+            elif ct == 'audio':
+                has_a = True
+        info = {'has_video': has_v, 'has_audio': has_a}
+        _STREAM_PROBE_CACHE[key] = info
+        return info
+    except Exception:
+        return {'has_video': False, 'has_audio': False}
+
 # ---- Color params ----
 def get_color_params(video_selection):
     """Return color encoding params.
@@ -323,6 +359,19 @@ def generate_ffmpeg_command(
             raise ValueError(f"Invalid audio codec '{aud_dict.get('Codec')}' for Ts format. Use AAC, MP3, AC3, EAC3.")
 
     cmd = ["ffmpeg", "-y"]
+
+    # Respect Enable Video/Audio when input file contains multiple streams
+
+    stream_disable_cmd = []
+
+    if vid_dict and not aud_dict:
+
+        stream_disable_cmd = ['-an','-sn','-dn']
+
+    elif aud_dict and not vid_dict:
+
+        stream_disable_cmd = ['-vn','-sn','-dn']
+
     output_file_parts = ["vts"]
     video_src_cmd, video_opt_cmd = [], []
     audio_src_cmd, audio_opt_cmd = [], []
@@ -444,24 +493,24 @@ def generate_ffmpeg_command(
                 else:
                     file_format = "mp4"
             elif aud_dict:
-                file_format = "webm" if aud_dict["Codec"] in ["libvorbis", "libopus"] else fileformat_mapping[aud_dict["Codec"]]
+                if aud_dict["Codec"] in ["libvorbis", "libopus"]:
+                    file_format = "webm"
+                elif aud_dict["Codec"] in ["wma"]:
+                    file_format = "wma"
+                else:
+                    file_format = "mp4"
     # ---- Output path / container or elementary stream tail ----
     if file_format_norm == 'raw':
         raw_mux, raw_ext = _get_raw_es_format_and_ext(vid_dict, aud_dict)
         output_file = "_".join(output_file_parts) + raw_ext
         output_path = os.path.join(output_dir, output_file)
-        tail = ["-t", str(duration_sec)]
-        if vid_dict:
-            tail += ["-an", "-f", raw_mux]
-        else:
-            tail += ["-vn", "-f", raw_mux]
-        tail += [output_path]
+        tail = stream_disable_cmd + ["-t", str(duration_sec), "-f", raw_mux, output_path]
         cmd += video_src_cmd + audio_src_cmd + video_opt_cmd + audio_opt_cmd + tail
         return cmd, output_path
 
     output_file = "_".join(output_file_parts) + "." + file_format
     output_path = os.path.join(output_dir, output_file)
-    cmd += video_src_cmd + audio_src_cmd + video_opt_cmd + audio_opt_cmd + ["-t", str(duration_sec), output_path]
+    cmd += video_src_cmd + audio_src_cmd + video_opt_cmd + audio_opt_cmd + stream_disable_cmd + ["-t", str(duration_sec), output_path]
     return cmd, output_path
 # ---- Fallback stats helper (for cases where ffprobe cannot count packets) ----
 def _fallback_stats_from_params(duration_sec: int, vid_dict=None, aud_dict=None):
@@ -1018,6 +1067,96 @@ def build_ui():
     # Display selected filenames (UI confirmation)
     video_input_name_var = tk.StringVar(value="No video file selected")
     audio_input_name_var = tk.StringVar(value="No audio file selected")
+
+    # ---- Auto-refresh selected file labels (Video/Audio) ----
+    def _refresh_audio_input_label(*_):
+        """Keep Audio selected label in sync.
+        Priority:
+          1) If explicit Audio file selected -> show its filename
+          2) Else if (Audio-only OR Both-enabled) and Video file selected AND it has audio -> show audio source from that video file
+          3) Else -> default
+        """
+        try:
+            vpath = (video_input_var.get() or '').strip()
+            apath = (audio_input_var.get() or '').strip()
+
+            # Explicit audio file selected
+            if apath:
+                info = _probe_stream_types(apath)
+                if info.get('has_video') and (not info.get('has_audio')):
+                    audio_input_name_var.set('Selected file has only video. Choose appropriate file')
+                    return
+                try:
+                    audio_input_name_var.set(Path(apath).name)
+                except Exception:
+                    audio_input_name_var.set(apath)
+                return
+
+            a_only = bool(audio_enabled.get()) and (not bool(video_enabled.get()))
+            both_on = bool(audio_enabled.get()) and bool(video_enabled.get())
+
+            # No explicit audio file: show selected audio source from video when applicable
+            if (a_only or both_on) and vpath:
+                info = _probe_stream_types(vpath)
+                if info.get('has_audio'):
+                    audio_input_name_var.set(f"Selected audio source: {Path(vpath).name}")
+                else:
+                    audio_input_name_var.set("Selected video file has no audio")
+            else:
+                audio_input_name_var.set("No audio file selected")
+        except Exception:
+            pass
+
+    def _refresh_video_input_label(*_):
+        """Keep Video selected label in sync.
+        Priority:
+          1) If explicit Video file selected -> show its filename
+          2) Else if (Video-only OR Both-enabled) and Audio file selected AND it has video -> show video source from that audio file
+          3) Else -> default
+        """
+        try:
+            vpath = (video_input_var.get() or '').strip()
+            apath = (audio_input_var.get() or '').strip()
+
+            # Explicit video file selected
+            if vpath:
+                info = _probe_stream_types(vpath)
+                if info.get('has_audio') and (not info.get('has_video')):
+                    video_input_name_var.set('Selected file has only audio. Choose appropriate file')
+                    return
+                try:
+                    video_input_name_var.set(Path(vpath).name)
+                except Exception:
+                    video_input_name_var.set(vpath)
+                return
+
+            v_only = bool(video_enabled.get()) and (not bool(audio_enabled.get()))
+            both_on = bool(audio_enabled.get()) and bool(video_enabled.get())
+
+            # No explicit video file: show selected video source from audio when applicable
+            if (v_only or both_on) and apath:
+                info = _probe_stream_types(apath)
+                if info.get('has_video'):
+                    video_input_name_var.set(f"Selected video source: {Path(apath).name}")
+                else:
+                    video_input_name_var.set("Selected audio file has no video")
+            else:
+                video_input_name_var.set("No video file selected")
+        except Exception:
+            pass
+
+    # Trace changes to keep labels updated
+    try:
+        audio_input_var.trace_add('write', _refresh_audio_input_label)
+        video_input_var.trace_add('write', _refresh_audio_input_label)
+        audio_enabled.trace_add('write', _refresh_audio_input_label)
+        video_enabled.trace_add('write', _refresh_audio_input_label)
+        audio_input_var.trace_add('write', _refresh_video_input_label)
+        video_input_var.trace_add('write', _refresh_video_input_label)
+        audio_enabled.trace_add('write', _refresh_video_input_label)
+        video_enabled.trace_add('write', _refresh_video_input_label)
+    except Exception:
+        pass
     video_source_var = tk.StringVar(value=video_test_sources[0])
     audio_source_var = tk.StringVar(value=audio_test_sources[0])
 
@@ -1040,6 +1179,8 @@ def build_ui():
                 video_input_name_var.set(Path(p).name)
             except Exception:
                 video_input_name_var.set(str(p))
+        _refresh_video_input_label(); _refresh_audio_input_label()
+
     def _select_audio_file():
         p = filedialog.askopenfilename(title="Select Audio File")
         if p:
@@ -1048,10 +1189,22 @@ def build_ui():
                 audio_input_name_var.set(Path(p).name)
             except Exception:
                 audio_input_name_var.set(str(p))
+        _refresh_audio_input_label(); _refresh_video_input_label()
+
+    def _clear_video_file():
+        video_input_var.set('')
+        _refresh_video_input_label()
+        _refresh_audio_input_label()
+    def _clear_audio_file():
+        audio_input_var.set('')
+        _refresh_audio_input_label()
+        _refresh_video_input_label()
 
     ttk.Button(sources_frame, text="Select Video File", command=_select_video_file, style="Custom.TButton").grid(row=2, column=0, sticky='w', padx=10, pady=8)
+    ttk.Button(sources_frame, text="Clear Video File", command=_clear_video_file, style="Custom.TButton").grid(row=2, column=2, sticky='w', padx=10, pady=8)
     ttk.Label(sources_frame, textvariable=video_input_name_var, font=("Segoe UI", 10)).grid(row=2, column=1, sticky='w', padx=10, pady=8)
     ttk.Button(sources_frame, text="Select Audio File", command=_select_audio_file, style="Custom.TButton").grid(row=3, column=0, sticky='w', padx=10, pady=8)
+    ttk.Button(sources_frame, text="Clear Audio File", command=_clear_audio_file, style="Custom.TButton").grid(row=3, column=2, sticky='w', padx=10, pady=8)
     ttk.Label(sources_frame, textvariable=audio_input_name_var, font=("Segoe UI", 10)).grid(row=3, column=1, sticky='w', padx=10, pady=8)
 
     # Hidden Entry widgets (to preserve variable bindings without cluttering UI)
@@ -1389,6 +1542,41 @@ def build_ui():
             success_main = 0
             v_input = video_input_var.get().strip()
             a_input = audio_input_var.get().strip()
+            # Cross-use embedded tracks when in Video-only or Audio-only mode
+            # Apply ONLY if the selected file contains BOTH audio and video. Otherwise show an error.
+            if video_enabled.get() and (not audio_enabled.get()) and (not v_input) and a_input:
+                info = _probe_stream_types(a_input)
+                if info.get('has_video') and info.get('has_audio'):
+                    v_input = a_input
+                elif info.get('has_audio') and (not info.get('has_video')):
+                    messagebox.showerror('Input Error', 'Selected only audio file but no video track present. Please select a video file with video.'); return
+            if audio_enabled.get() and (not video_enabled.get()) and (not a_input) and v_input:
+                info = _probe_stream_types(v_input)
+                if info.get('has_audio') and info.get('has_video'):
+                    a_input = v_input
+                elif info.get('has_video') and (not info.get('has_audio')):
+                    messagebox.showerror('Input Error', 'Selected only video file but no audio track present. Please select an audio file with audio.'); return
+
+            # Auto-fill missing input when both Audio and Video are enabled
+            # If only one of the files is selected and it contains BOTH audio and video,
+            # reuse it for the unselected side instead of using synthetic sources.
+
+            if video_enabled.get() and audio_enabled.get():
+                if v_input and (not a_input):
+                    info = _probe_stream_types(v_input)
+                    if info.get('has_audio') and info.get('has_video'):
+                        a_input = v_input
+                elif a_input and (not v_input):
+                    info = _probe_stream_types(a_input)
+                    if info.get('has_audio') and info.get('has_video'):
+                        v_input = a_input
+                # Refresh labels if helpers exist
+                try:
+                    _refresh_video_input_label()
+                    _refresh_audio_input_label()
+                except Exception:
+                    pass
+
             v_source = video_source_var.get().strip() or video_test_sources[0]
             a_source = audio_source_var.get().strip() or audio_test_sources[0]
             if vid_combos and aud_combos:
@@ -1490,6 +1678,39 @@ def build_ui():
             v_outfile = None
             v_input = video_input_var.get().strip()
             a_input = audio_input_var.get().strip()
+            # Cross-use embedded tracks when in Video-only or Audio-only mode
+            # Apply ONLY if the selected file contains BOTH audio and video. Otherwise show an error.
+            if video_enabled.get() and (not audio_enabled.get()) and (not v_input) and a_input:
+                info = _probe_stream_types(a_input)
+                if info.get('has_video') and info.get('has_audio'):
+                    v_input = a_input
+                elif info.get('has_audio') and (not info.get('has_video')):
+                    messagebox.showerror('Input Error', 'Selected only audio file but no video track present. Please select a video file with video.'); return
+            if audio_enabled.get() and (not video_enabled.get()) and (not a_input) and v_input:
+                info = _probe_stream_types(v_input)
+                if info.get('has_audio') and info.get('has_video'):
+                    a_input = v_input
+                elif info.get('has_video') and (not info.get('has_audio')):
+                    messagebox.showerror('Input Error', 'Selected only video file but no audio track present. Please select an audio file with audio.'); return
+            # Auto-fill missing input when both Audio and Video are enabled
+            # If only one of the files is selected and it contains BOTH audio and video,
+            # reuse it for the unselected side instead of using synthetic sources.
+            if video_enabled.get() and audio_enabled.get():
+                if v_input and (not a_input):
+                    info = _probe_stream_types(v_input)
+                    if info.get('has_audio') and info.get('has_video'):
+                        a_input = v_input
+                elif a_input and (not v_input):
+                    info = _probe_stream_types(a_input)
+                    if info.get('has_audio') and info.get('has_video'):
+                        v_input = a_input
+                # Refresh labels if helpers exist
+                try:
+                    _refresh_video_input_label()
+                    _refresh_audio_input_label()
+                except Exception:
+                    pass
+
             v_source = video_source_var.get().strip() or video_test_sources[0]
             a_source = audio_source_var.get().strip() or audio_test_sources[0]
             for (vid_dict, aud_dict) in base_param_sets:
