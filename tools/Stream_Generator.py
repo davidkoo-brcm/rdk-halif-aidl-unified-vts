@@ -258,6 +258,24 @@ def _probe_stream_types(file_path: str):
     except Exception:
         return {'has_video': False, 'has_audio': False}
 
+# ---- Duration probe helper ----
+def _probe_duration_sec(file_path: str) -> int:
+    """Return rounded-up duration in seconds for a given media file using ffprobe. 0 if unknown."""
+    try:
+        from pathlib import Path as _P
+        import subprocess, json, math
+        p = _P(file_path)
+        if not p.exists():
+            return 0
+        res = subprocess.run([
+            'ffprobe','-v','quiet','-print_format','json','-show_entries','format=duration', str(p)
+        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False)
+        data = json.loads(res.stdout or '{}')
+        dur = float(data.get('format',{}).get('duration', 0) or 0)
+        return int(math.ceil(dur)) if dur > 0 else 0
+    except Exception:
+        return 0
+
 # ---- Color params ----
 def get_color_params(video_selection):
     """Return color encoding params.
@@ -317,6 +335,22 @@ def get_color_params(video_selection):
         })
 
     return color_param, None
+
+# ---- Scale helper (ensure requested output resolution and even dimensions) ----
+def _build_scale_filter(target_res: str) -> str:
+    """Return scale filter for target resolution and make sure width/height are even.
+    This fixes inputs like 853x480 or 640x359 that would otherwise fail with yuv420p encoders.
+    """
+    try:
+        w,h = (target_res or '').lower().split('x')
+        w=int(w); h=int(h)
+        # enforce even dims for encoders requiring mod2 (common for 4:2:0)
+        if w % 2: w -= 1
+        if h % 2: h -= 1
+        return f"scale={w}:{h}"
+    except Exception:
+        # fallback: make input dims even without changing size
+        return 'scale=trunc(iw/2)*2:trunc(ih/2)*2'
 
 # ---- Command builder ----
 def generate_ffmpeg_command(
@@ -395,13 +429,21 @@ def generate_ffmpeg_command(
             "-color_trc", color_param["color_trc"],
             "-colorspace", color_param["colorspace"]
         ]
+         # Always scale to the requested output resolution (and make it encoder-safe)
+        vf_chain = [_build_scale_filter(vid_dict.get('Resolution',''))]
+
         if vid_dict["Frame Type"] == "Interlaced":
             if vid_dict["Codec"] in ("libx264", "libx265"):
-                video_opt_cmd += ["-vf", "tinterlace=interleave_top", "-flags", "+ildct+ilme"]
+                vf_chain.append("tinterlace=interleave_top")
+                video_opt_cmd += ["-flags", "+ildct+ilme"]
             if vid_dict["Codec"] == "libx264":
                 video_opt_cmd += ["-x264-params", "tff=1"]
             elif vid_dict["Codec"] == "mpeg2video":
-                video_opt_cmd += ["-vf", "tinterlace=interleave_top", "-flags", "+ildct+ilme", "-top", "1"]
+                vf_chain.append("tinterlace=interleave_top")
+                video_opt_cmd += ["-flags", "+ildct+ilme", "-top", "1"]
+        if vf_chain:
+                    video_opt_cmd += ["-vf", ",".join(vf_chain)]
+
         if color_param.get("x265_params"):
             video_opt_cmd += ["-x265-params", color_param["x265_params"]]
             use_separate_hdr_flags = _ffmpeg_encoder_has_option("libx265", "master-display") and _ffmpeg_encoder_has_option("libx265", "max-cll")
