@@ -414,7 +414,13 @@ def generate_ffmpeg_command(
         if err: raise ValueError(err)
         framerate = float(vid_dict["Framerate"])
         if video_input:
-            video_src_cmd = ["-i", video_input]
+            # Loop the input to reach requested duration if needed
+            try:
+                _v_dur = _probe_duration_sec(video_input)
+            except Exception:
+                _v_dur = 0
+            # Use infinite stream_loop; -t at output will trim to requested duration
+            video_src_cmd = ["-stream_loop","-1","-i", video_input] if duration_sec and (duration_sec > (_v_dur or 0)) else ["-i", video_input]
         else:
             coloropt = ""; vsrc = video_source
             if ("color" in video_source):
@@ -495,7 +501,12 @@ def generate_ffmpeg_command(
 
     if aud_dict:
         if audio_input:
-            audio_src_cmd = ["-i", audio_input]
+            # Loop the input to reach requested duration if needed
+            try:
+                _a_dur = _probe_duration_sec(audio_input)
+            except Exception:
+                _a_dur = 0
+            audio_src_cmd = ["-stream_loop","-1","-i", audio_input] if duration_sec and (duration_sec > (_a_dur or 0)) else ["-i", audio_input]
         else:
             if audio_source == "sine":
                 audio_src_cmd = ["-f", "lavfi", "-i", f"{audio_source}=frequency=1000:sample_rate={aud_dict['Sample Rate']}:duration={duration_sec}"]
