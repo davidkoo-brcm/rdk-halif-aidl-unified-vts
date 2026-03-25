@@ -64,6 +64,8 @@ VTS:
           - parseCodecSpecificData_neg
           - setProperty_pos
           - setProperty_neg
+          - setAudioFormat_pos
+          - setAudioFormat_neg
 
       1:
         name: "VTS_L2_AudioDecoder"
@@ -181,6 +183,18 @@ VTS:
           - signalEOS_neg
           - parseCodecSpecificData_pos
           - parseCodecSpecificData_neg
+          - setStreamResolution_pos
+          - setStreamResolution_neg
+          - setFrameRate_pos
+          - setFrameRate_neg
+          - setColorimetry_pos
+          - setColorimetry_neg
+          - setMasteringDisplayInfo_pos
+          - setMasteringDisplayInfo_neg
+          - setContentLightLevel_pos
+          - setContentLightLevel_neg
+          - setDolbyVisionLayerFlags_pos
+          - setDolbyVisionLayerFlags_neg
       6:
         name: "VTS_L2_VideoDecoder"
         tests:
