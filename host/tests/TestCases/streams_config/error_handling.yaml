@@ -183,7 +183,7 @@ AVModule:
   - tcid: VTS_L4_H265_ERR_1704
     use_case: "Video Only Error Handling"
     action: normal_play
-    error_condition: "Entroy bit flip"
+    error_condition: "Entropy bit flip"
     stream_name: "Video/Error_Streams/vts_h265_1080p_hdr10_30.0f_BT2020_yuv420p_entropy-bit-flip_25M_a0_v1800_60sec.mp4"
 
   - tcid: VTS_L4_H265_ERR_1705

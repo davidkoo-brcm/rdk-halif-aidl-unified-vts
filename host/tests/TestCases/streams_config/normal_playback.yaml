@@ -76,7 +76,7 @@ AVModule:
     use_case: "HDR Metadata Propagation"
     action: normal_play
     hdr_mode: "HDR10"
-    stream_name: Audio_Video/HDR/vts_h265_2160p_hdr10_60.0f_BT2020_yuv420p_60M_eac3_48k_6ch_512k_a1875_v3600_60sec.mp4"
+    stream_name: "Audio_Video/HDR/vts_h265_2160p_hdr10_60.0f_BT2020_yuv420p_60M_eac3_48k_6ch_512k_a1875_v3600_60sec.mp4"
 
   - tcid: VTS_L4_HDR10P_2001
     use_case: "HDR Metadata Propagation"
@@ -99,7 +99,7 @@ AVModule:
   - tcid: VTS_L4_DVISION_2001
     use_case: "HDR Metadata Propagation"
     action: normal_play
-    hdr_mode: "Dolby Vision"                                      # Dolby Licenced Stream
+    hdr_mode: "Dolby Vision"                                      # Dolby Licensed Stream
     stream_name: "Audio_Video/HDR/H265_DolbyVision.mp4"
 
   # ---------------------------------------------------------------------------
@@ -239,7 +239,7 @@ AVModule:
   - tcid: VTS_L4_EAC3_ATMOS_1201
     use_case: "Audio Only"
     action: normal_play
-    codec: "EAC3 with Atmos"                         # Dolby Licenced Stream
+    codec: "EAC3 with Atmos"                         # Dolby Licensed Stream
     stream_name: "Audio/EAC3_Atmos.mp4"
 
   - tcid: VTS_L4_PCM_1201
