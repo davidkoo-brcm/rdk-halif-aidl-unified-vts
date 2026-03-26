@@ -23,7 +23,7 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 | **L1** | Level 1 Test Cases (Interface / basic validation tests) |
 | **L2** | Level 2 Test Cases (Functional tests) |
 | **L3** | Level 3 Test Cases (Integration tests) |
-| **L4** | Level 4 Test Cases (End-to-End / System tests) |
+| **L4** | Level 4 Test Cases (Layer & System Testing) |
 | **RDK** | Reference Design Kit |
 | **UT-Core** | RDK Unified Test Core Framework |
 | **VTS** | Vendor Test Suite |
@@ -108,7 +108,7 @@ Set below environment variable:
 
 - UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 4.7.3). Defaults to the latest tagged version.
 
-- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.12.0). Defaults to the latest HEAD.
+- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.13.2). Defaults to the latest HEAD.
 
 - EGL_LIB_PATH: Specific Path for EGL libraries.
 
@@ -118,7 +118,7 @@ Example:
 
 ```bash
 export UT_CORE_VERSION=4.7.3
-export RDK_HALIF_AIDL_VERSION=0.12.0
+export RDK_HALIF_AIDL_VERSION=0.13.2
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
 export EGL_LIB_PATH=/path/egl_libraries/
@@ -209,3 +209,5 @@ Each individual component and their respective test repositories are listed belo
 | 5|Video Sink      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-videosink)|
 | 6|AV Clock        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-avclock)|
 | 7|Plane Control   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-planecontrol)|
+| 8|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
+
