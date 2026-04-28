@@ -39,4 +39,8 @@
            path="vts_hal_test_components/l4_tests"
            revision="refs/tags/0.2.0" />
 
+   <project name="rdk-halif-aidl-test-cec"
+           path="vts_hal_test_components/hdmicec"
+           revision="refs/tags/0.2.0" />
+
 </manifest>

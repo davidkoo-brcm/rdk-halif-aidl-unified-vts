@@ -74,6 +74,7 @@
 #include "vts_avclock_init.h"
 #include "vts_planecontrol_init.h"
 #include "vts_av_l4_init.h"
+#include "vts_hdmicec_init.h"
 
 int main(int argc, char **argv)
 {
@@ -148,6 +149,13 @@ int main(int argc, char **argv)
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AV L4 Tests");
+        result = UT_STATUS_FAILURE;
+    }
+
+    result = VTS_HDMICEC_init();
+    if(result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize HDMI CEC Tests");
         result = UT_STATUS_FAILURE;
     }
 
