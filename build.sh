@@ -42,6 +42,13 @@ declare -A HALIF_COMPONENTS=(
   [avclock]="current"
   [planecontrol]="current"
   [hdmicec]="current"
+  [hdmiinput]="current"
+  [hdmioutput]="current"
+  [deepsleep]="current"
+  [deviceinfo]="current"
+  [boot]="current"
+  [flash]="current"
+  [indicator]="current"
 )
 
 declare -A HALIF_TEST_COMPONENTS=(
@@ -52,7 +59,14 @@ declare -A HALIF_TEST_COMPONENTS=(
   [videosink]="RDK_HALIF_VIDEOSINK_TEST_VERSION"
   [avclock]="RDK_HALIF_AVCLOCK_TEST_VERSION"
   [planecontrol]="RDK_HALIF_PLANECONTROL_TEST_VERSION"
-  [cec]="RDK_HALIF_CEC_TEST_VERSION"
+  [hdmicec]="RDK_HALIF_CEC_TEST_VERSION"
+  [hdmiinput]="RDK_HALIF_HDMIINPUT_TEST_VERSION"
+  [hdmioutput]="RDK_HALIF_HDMIOUTPUT_TEST_VERSION"
+  [deepsleep]="RDK_HALIF_DEEPSLEEP_TEST_VERSION"
+  [deviceinfo]="RDK_HALIF_DEVICEINFO_TEST_VERSION"
+  [boot]="RDK_HALIF_BOOT_TEST_VERSION"
+  [flash]="RDK_HALIF_FLASH_TEST_VERSION"
+  [indicator]="RDK_HALIF_INDICATOR_TEST_VERSION"
 )
 
 # Define the directory where the repository will be cloned

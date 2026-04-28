@@ -32,6 +32,14 @@ AV_CLOCK_TEST_DIR := $(VTS_TEST_DIR)/avclock
 PLANE_CONTROL_TEST_DIR := $(VTS_TEST_DIR)/planecontrol
 L4_TEST_DIR := $(VTS_TEST_DIR)/l4_tests
 AV_L4_TESTS_DIR := $(L4_TEST_DIR)/src/av
+HDMICEC_TEST_DIR := $(VTS_TEST_DIR)/hdmicec
+HDNPUT_TEST_DIR := $(VTS_TEST_DIR)/hdmiinput
+HDMIOUTPUT_TEST_DIR := $(VTS_TEST_DIR)/hdmioutput
+DEEPSLEEP_TEST_DIR := $(VTS_TEST_DIR)/deepsleep
+DEVICEINFO_TEST_DIR := $(VTS_TEST_DIR)/deviceinfo
+BOOT_TEST_DIR := $(VTS_TEST_DIR)/boot
+FLASH_TEST_DIR := $(VTS_TEST_DIR)/flash
+INDICATOR_TEST_DIR := $(VTS_TEST_DIR)/indicator
 
 COMMON_DIR := $(ROOT_DIR)/common
 VTS_PLAYER := $(COMMON_DIR)/vts_player
@@ -62,6 +70,14 @@ VIDEOSINK_VERSION := $(shell cd $(VIDEO_SINK_TEST_DIR) && git describe --tags --
 AVBUFFER_VERSION := $(shell cd $(AV_BUFFER_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 AVCLOCK_VERSION := $(shell cd $(AV_CLOCK_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 PLANECONTROL_VERSION := $(shell cd $(PLANE_CONTROL_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+HDMICEC_VERSION := $(shell cd $(HDMICEC_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+HDMIINPUT_VERSION := $(shell cd $(HDNPUT_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+HDMIOUTPUT_VERSION := $(shell cd $(HDMIOUTPUT_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+DEEPSLEEP_VERSION := $(shell cd $(DEEPSLEEP_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+DEVICEINFO_VERSION := $(shell cd $(DEVICEINFO_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+BOOT_VERSION := $(shell cd $(BOOT_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+FLASH_VERSION := $(shell cd $(FLASH_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+INDICATOR_VERSION := $(shell cd $(INDICATOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 L4_TESTS_VERSION := $(shell cd $(L4_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 BUILD_TIMESTAMP := $(shell date +"%Y-%m-%d_%H:%M:%S")
 
@@ -73,6 +89,14 @@ $(info VIDEOSINK_VERSION: $(VIDEOSINK_VERSION))
 $(info AVBUFFER_VERSION: $(AVBUFFER_VERSION))
 $(info AVCLOCK_VERSION: $(AVCLOCK_VERSION))
 $(info PLANECONTROL_VERSION: $(PLANECONTROL_VERSION))
+$(info HDMICEC_VERSION: $(HDMICEC_VERSION))
+$(info HDMIINPUT_VERSION: $(HDMIINPUT_VERSION))
+$(info HDMIOUTPUT_VERSION: $(HDMIOUTPUT_VERSION))
+$(info DEEPSLEEP_VERSION: $(DEEPSLEEP_VERSION))
+$(info DEVICEINFO_VERSION: $(DEVICEINFO_VERSION))
+$(info BOOT_VERSION: $(BOOT_VERSION))
+$(info FLASH_VERSION: $(FLASH_VERSION))
+$(info INDICATOR_VERSION: $(INDICATOR_VERSION))
 $(info L4_TESTS_VERSION: $(L4_TESTS_VERSION))
 $(info BUILD_TIMESTAMP: $(BUILD_TIMESTAMP))
 $(info TARGET: $(TARGET))
@@ -93,6 +117,14 @@ CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DAVBUFFER_VERSION=\"$(AVBUFFER_VERSION)\" \
             -DAVCLOCK_VERSION=\"$(AVCLOCK_VERSION)\" \
             -DPLANECONTROL_VERSION=\"$(PLANECONTROL_VERSION)\" \
+            -DHDMICEC_VERSION=\"$(HDMICEC_VERSION)\" \
+            -DHDMIINPUT_VERSION=\"$(HDMIINPUT_VERSION)\" \
+            -DHDMIOUTPUT_VERSION=\"$(HDMIOUTPUT_VERSION)\" \
+            -DDEEPSLEEP_VERSION=\"$(DEEPSLEEP_VERSION)\" \
+            -DDEVICEINFO_VERSION=\"$(DEVICEINFO_VERSION)\" \
+            -DBOOT_VERSION=\"$(BOOT_VERSION)\" \
+            -DFLASH_VERSION=\"$(FLASH_VERSION)\" \
+            -DINDICATOR_VERSION=\"$(INDICATOR_VERSION)\" \
             -DL4_TESTS_VERSION=\"$(L4_TESTS_VERSION)\"
 
 $(info CXXFLAGS: $(CXXFLAGS))
@@ -112,6 +144,14 @@ SRC_DIRS += $(VIDEO_DECODER_TEST_DIR)/src
 SRC_DIRS += $(VIDEO_SINK_TEST_DIR)/src
 SRC_DIRS += $(AV_CLOCK_TEST_DIR)/src
 SRC_DIRS += $(PLANE_CONTROL_TEST_DIR)/src
+SRC_DIRS += $(HDMICEC_TEST_DIR)/src
+SRC_DIRS += $(HDMIINPUT_TEST_DIR)/src
+SRC_DIRS += $(HDMIOUTPUT_TEST_DIR)/src
+SRC_DIRS += $(DEEPSLEEP_TEST_DIR)/src
+SRC_DIRS += $(DEVICEINFO_TEST_DIR)/src
+SRC_DIRS += $(BOOT_TEST_DIR)/src
+SRC_DIRS += $(FLASH_TEST_DIR)/src
+SRC_DIRS += $(INDICATOR_TEST_DIR)/src
 SRC_DIRS += $(AV_L4_TESTS_DIR)
 SRC_DIRS += $(HELPER_FUNCTIONS_DIR)
 SRC_DIRS += $(VTS_PLAYER)

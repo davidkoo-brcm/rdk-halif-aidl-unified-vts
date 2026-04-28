@@ -74,7 +74,15 @@
 #include "vts_avclock_init.h"
 #include "vts_planecontrol_init.h"
 #include "vts_av_l4_init.h"
+
 #include "vts_hdmicec_init.h"
+#include "vts_hdmiinput_init.h"
+#include "vts_hdmioutput_init.h"
+#include "vts_deepsleep_init.h"
+#include "vts_deviceinfo_init.h"
+#include "vts_boot_init.h"
+#include "vts_flash_init.h"
+#include "vts_indicator_init.h"
 
 int main(int argc, char **argv)
 {
@@ -159,6 +167,55 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
+    result = VTS_HDMIINPUT_init();
+    if(result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize HDMI Input Tests");
+        result = UT_STATUS_FAILURE;
+    }
+
+    result = VTS_HDMIOUTPUT_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize HDMI output service\n");
+        result = UT_STATUS_FAILURE;
+    }
+
+    result = VTS_DEEPSLEEP_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize Deep Sleep service\n");
+        result = UT_STATUS_FAILURE;
+    }
+
+    result = VTS_DEVICEINFO_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("VTS_DEVICEINFO_init() failed!");
+        return result;
+    }
+
+    result = VTS_BOOT_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("VTS_BOOT_init() failed!");
+        return result;
+    }
+
+    result = VTS_FLASH_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("VTS_FLASH_init() failed!");
+        return result;
+    }
+
+    result = VTS_INDICATOR_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("VTS_INDICATOR_init() failed!");
+        return result;
+    }
+
     UT_status_t ut_result = UT_run_tests();
 
     if (result != UT_STATUS_OK || ut_result != UT_STATUS_OK)
@@ -174,6 +231,15 @@ int main(int argc, char **argv)
     VTS_VideoDecoder_destroy();
     VTS_AudioSink_destroy();
     VTS_VideoSink_destroy();
+
+    VTS_HDMICEC_destroy();
+    VTS_HDMIINPUT_destroy();
+    VTS_HDMIOUTPUT_destroy();
+    VTS_DEEPSLEEP_destroy();
+    VTS_DEVICEINFO_destroy();
+    VTS_BOOT_destroy();
+    VTS_FLASH_destroy();
+    VTS_INDICATOR_destroy();
 
     return result;
 }
