@@ -200,28 +200,28 @@ int main(int argc, char **argv)
     if (result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("VTS_DEVICEINFO_init() failed!");
-        return result;
+        result = UT_STATUS_FAILURE;
     }
 
     result = VTS_BOOT_init();
     if (result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("VTS_BOOT_init() failed!");
-        return result;
+        result = UT_STATUS_FAILURE;
     }
 
     // result = VTS_FLASH_init();
     // if (result != UT_STATUS_OK)
     // {
     //     UT_LOG_ERROR("VTS_FLASH_init() failed!");
-    //     return result;
+    //     result = UT_STATUS_FAILURE;
     // }
 
     result = VTS_INDICATOR_init();
     if (result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("VTS_INDICATOR_init() failed!");
-        return result;
+        result = UT_STATUS_FAILURE;
     }
 
     UT_status_t ut_result = UT_run_tests();
