@@ -72,8 +72,12 @@
 #include "vts_videosink_init.h"
 #include "vts_videodecoder_init.h"
 #include "vts_avclock_init.h"
+#ifdef ENABLE_PLANE_CONTROL_TEST
 #include "vts_planecontrol_init.h"
+#endif
+#ifdef ENABLE_AV_L4_TEST
 #include "vts_av_l4_init.h"
+#endif
 
 #include "vts_hdmicec_init.h"
 #include "vts_hdmiinput_init.h"
@@ -154,19 +158,23 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
+#ifdef ENABLE_PLANE_CONTROL_TEST
     result = VTS_PlaneControl_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize Plane Control");
         result = UT_STATUS_FAILURE;
     }
+#endif
 
+#ifdef ENABLE_AV_L4_TEST
     result = VTS_AV_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AV L4 Tests");
         result = UT_STATUS_FAILURE;
     }
+#endif
 
     result = VTS_HDMICEC_init();
     if(result != UT_STATUS_OK)

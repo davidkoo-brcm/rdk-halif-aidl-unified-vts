@@ -132,6 +132,15 @@ CXXFLAGS += -DBUILD_TIMESTAMP=\"$(BUILD_TIMESTAMP)\"
 
 ENABLE_UT_INFO_LOGGING ?= 0
 
+# Add CXXFLAGS if ENABLE_PLANE_CONTROL_TEST is set
+ifeq ($(ENABLE_PLANE_CONTROL_TEST),1)
+CXXFLAGS += -DENABLE_PLANE_CONTROL_TEST
+endif
+
+ifeq ($(ENABLE_AV_L4_TEST),1)
+CXXFLAGS += -DENABLE_AV_L4_TEST
+endif
+
 # TODO: remove this once the ut-core implements runtime logging configuration
 ifeq ($(ENABLE_UT_INFO_LOGGING),1)
 CXXFLAGS += -DENABLE_UT_INFO_LOGGING
@@ -143,7 +152,9 @@ SRC_DIRS += $(AV_BUFFER_TEST_DIR)/src
 SRC_DIRS += $(VIDEO_DECODER_TEST_DIR)/src
 SRC_DIRS += $(VIDEO_SINK_TEST_DIR)/src
 SRC_DIRS += $(AV_CLOCK_TEST_DIR)/src
+ifeq ($(ENABLE_PLANE_CONTROL_TEST),1)
 SRC_DIRS += $(PLANE_CONTROL_TEST_DIR)/src
+endif
 SRC_DIRS += $(HDMICEC_TEST_DIR)/src
 SRC_DIRS += $(HDMIINPUT_TEST_DIR)/src
 SRC_DIRS += $(HDMIOUTPUT_TEST_DIR)/src
@@ -152,9 +163,11 @@ SRC_DIRS += $(DEVICEINFO_TEST_DIR)/src
 SRC_DIRS += $(BOOT_TEST_DIR)/src
 #SRC_DIRS += $(FLASH_TEST_DIR)/src
 SRC_DIRS += $(INDICATOR_TEST_DIR)/src
+ifeq ($(ENABLE_AV_L4_TEST),1)
 SRC_DIRS += $(AV_L4_TESTS_DIR)
-SRC_DIRS += $(HELPER_FUNCTIONS_DIR)
 SRC_DIRS += $(VTS_PLAYER)
+endif
+SRC_DIRS += $(HELPER_FUNCTIONS_DIR)
 SRC_DIRS += $(ROOT_DIR)/test
 
 INC_DIRS := $(ROOT_DIR)/build/current/h/
@@ -180,9 +193,13 @@ XLDFLAGS += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib
 XLDFLAGS += -lbinder -lutils
 XLDFLAGS += -laidl_client
 XLDFLAGS += -lavbufferhelper
+ifeq ($(ENABLE_AV_L4_TEST),1)
 XLDFLAGS += -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lpcre
+endif
+ifeq ($(ENABLE_PLANE_CONTROL_TEST),1)
 XLDFLAGS += -lEGL -lGLESv2 -lpthread
 XLDFLAGS += -ldrm
+endif
 # required for EGL
 CXXFLAGS += -D_EGL_NO_X11
 CXXFLAGS += -DMESA_EGL_NO_X11_HEADERS
