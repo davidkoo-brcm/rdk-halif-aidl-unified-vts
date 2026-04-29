@@ -41,15 +41,15 @@
 
    <project name="rdk-halif-aidl-test-cec"
            path="vts_hal_test_components/hdmicec"
-           revision="feature/gh25_fix_linkingissues" />
+           revision="refs/tags/0.2.1" />
 
    <project name="rdk-halif-aidl-test-hdmiinput"
            path="vts_hal_test_components/hdmiinput"
-           revision="featuregh9_fix_linking_issues" />
+           revision="refs/tags/0.1.1" />
 
    <project name="rdk-halif-aidl-test-hdmioutput"
            path="vts_hal_test_components/hdmioutput"
-           revision="feature/gh14_fix_linking_issues" />
+           revision="refs/tags/0.1.2" />
 
    <project name="rdk-halif-aidl-test-deepsleep"
            path="vts_hal_test_components/deepsleep"
