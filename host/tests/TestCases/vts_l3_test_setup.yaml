@@ -77,6 +77,15 @@ VTS:
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_zero.ac3
+          - /Audio_Decoder/EAC3/vts_eac3_48k_1ch_64k.eac3
+          - /Audio_Decoder/EAC3/vts_eac3_48k_2ch_128k.eac3
+          - /Audio_Decoder/EAC3/vts_eac3_48k_6ch_256k.eac3
+          - /Audio_Decoder/EAC3/vts_eac3_48k_6ch_512k.eac3
+          - /Audio_Decoder/OPUS/vts_opus_48k_1ch_64k.opus
+          - /Audio_Decoder/OPUS/vts_opus_48k_2ch_32k.opus
+          - /Audio_Decoder/OPUS/vts_opus_48k_2ch_64k.opus
+          - /Audio_Decoder/OPUS/vts_opus_48k_2ch_128k.opus
+          - /Audio_Decoder/OPUS/vts_opus_48k_6ch_256k.opus
         tests:
           - Decode_Sequential_NonTunnel_NonSecure
           - Decode_Sequential_NonTunnel_NonSecure_Error
