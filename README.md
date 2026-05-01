@@ -59,20 +59,14 @@ git clone -b 1.0.0 'git@github.com:rdkcentral/linux_binder_idl.git'
 
 cd linux_binder_idl
 
-# for Linux:
-sc docker run vdevice-docker /bin/bash
-
-# for ARM:
-sc docker run rdk-kirkstone /bin/bash
-
 ./build-linux-binder-aidl.sh 64
 ```
 
-**Note:** **Use Prebuilt Linux Binder for ARM**
-
-For more information about RDK Docker Toolchain, please check [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain)
-
 ## Build Unified VTS
+
+### Prerequisites for ut-core
+
+VTS relies on the ut-core framework. Please ensure all required packages for ut-core are installed. See the instructions here: [Packages for ut-core](https://github.com/rdkcentral/ut-core/wiki/UT-Core-Building-using-Docker-or-Vagrant#script-for-installing-basic-packages-for-ut-core)
 
 ### Clone the Repository
 
@@ -82,23 +76,7 @@ git clone git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.g
 cd rdk-halif-aidl-unified-vts
 ```
 
-### Set Up Docker Environment
-
-**for Linux:**
-
-```bash
-sc docker run vdevice-docker /bin/bash
-```
-
-**for ARM:**
-
-```bash
-sc docker run rdk-kirkstone /bin/bash
-
-source /opt/toolchains/rdk-glibc-x86_64-arm-toolchain/environment-setup-armv7vet2hf-neon-oe-linux-gnueabi
-```
-
-For more information about RDK Docker Toolchain, please check [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain)
+Source the appropriate tool chains for the cross compilation
 
 Set below environment variable:
 
@@ -110,10 +88,6 @@ Set below environment variable:
 
 - RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.13.2). Defaults to the latest HEAD.
 
-- EGL_LIB_PATH: Specific Path for EGL libraries.
-
-- GST_LIB_PATH: Path to the pre-built GStreamer libraries used for compiling the L4 test cases.
-
 Example:
 
 ```bash
@@ -121,8 +95,6 @@ export UT_CORE_VERSION=4.7.3
 export RDK_HALIF_AIDL_VERSION=0.13.2
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
-export EGL_LIB_PATH=/path/egl_libraries/
-export GST_LIB_PATH=/path/gstreamer_lib/
 ```
 
 By default, UT logs are disabled. To enable them, Set below environment variable
@@ -209,5 +181,14 @@ Each individual component and their respective test repositories are listed belo
 | 5|Video Sink      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-videosink)|
 | 6|AV Clock        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-avclock)|
 | 7|Plane Control   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-planecontrol)|
-| 8|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
+| 8|HDMI CEC        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-cec)|
+| 9|HDMI Input      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-hdmiinput)|
+|10|HDMI Output     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-hdmioutput)|
+|11|Deep Sleep      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-deepsleep)|
+|12|Device Info     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-device-info)|
+|13|Boot            |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-boot)|
+|14|Flash           |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-flash)|
+|15|Indicator       |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-indicator)|
+|16|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
 
+**Note:** Building for ARM requires the RDK toolchains to be installed. For more information, see [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain).
