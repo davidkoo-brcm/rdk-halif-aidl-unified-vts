@@ -62,10 +62,6 @@ cd linux_binder_idl
 ./build-linux-binder-aidl.sh 64
 ```
 
-**Note:** **Use Prebuilt Linux Binder for ARM**
-
-For more information about RDK Docker Toolchain, please check [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain)
-
 ## Build Unified VTS
 
 ### Prerequisites for ut-core
@@ -191,5 +187,13 @@ Each individual component and their respective test repositories are listed belo
 | 5|Video Sink      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-videosink)|
 | 6|AV Clock        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-avclock)|
 | 7|Plane Control   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-planecontrol)|
-| 8|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
+| 8|HDMI CEC        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-cec)|
+| 9|HDMI Input      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-hdmiinput)|
+|10|HDMI Output     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-hdmioutput)|
+|11|Deep Sleep      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-deepsleep)|
+|12|Device Info     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-device-info)|
+|13|Boot            |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-boot)|
+|14|Flash           |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-flash)|
+|15|Indicator       |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-indicator)|
+|16|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
 
