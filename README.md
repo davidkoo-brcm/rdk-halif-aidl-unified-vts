@@ -59,12 +59,6 @@ git clone -b 1.0.0 'git@github.com:rdkcentral/linux_binder_idl.git'
 
 cd linux_binder_idl
 
-# for Linux:
-sc docker run vdevice-docker /bin/bash
-
-# for ARM:
-sc docker run rdk-kirkstone /bin/bash
-
 ./build-linux-binder-aidl.sh 64
 ```
 
@@ -74,6 +68,10 @@ For more information about RDK Docker Toolchain, please check [RDK Docker Toolch
 
 ## Build Unified VTS
 
+### Prerequisites for ut-core
+
+VTS relies on the ut-core framework. Please ensure all required packages for ut-core are installed. See the instructions here: [Packages for ut-core](https://github.com/rdkcentral/ut-core/wiki/UT-Core-Building-using-Docker-or-Vagrant#script-for-installing-basic-packages-for-ut-core)
+
 ### Clone the Repository
 
 ```bash
@@ -82,23 +80,7 @@ git clone git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.g
 cd rdk-halif-aidl-unified-vts
 ```
 
-### Set Up Docker Environment
-
-**for Linux:**
-
-```bash
-sc docker run vdevice-docker /bin/bash
-```
-
-**for ARM:**
-
-```bash
-sc docker run rdk-kirkstone /bin/bash
-
-source /opt/toolchains/rdk-glibc-x86_64-arm-toolchain/environment-setup-armv7vet2hf-neon-oe-linux-gnueabi
-```
-
-For more information about RDK Docker Toolchain, please check [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain)
+Source the appropriate tool chains for the cross compilation
 
 Set below environment variable:
 
