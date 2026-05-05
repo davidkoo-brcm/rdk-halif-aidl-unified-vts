@@ -13,15 +13,15 @@
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
-	   revision="refs/tags/0.5.0" />
+	   revision="refs/tags/0.5.1" />
 
   <project name="rdk-halif-aidl-test-videodecoder"
            path="vts_hal_test_components/videodecoder"
-	   revision="refs/tags/0.5.0" />
+	   revision="refs/tags/0.5.1" />
 
   <project name="rdk-halif-aidl-test-audiosink"
            path="vts_hal_test_components/audiosink"
-	   revision="refs/tags/0.5.0" />
+	   revision="refs/tags/0.5.2" />
 
   <project name="rdk-halif-aidl-test-videosink"
            path="vts_hal_test_components/videosink"
@@ -39,4 +39,35 @@
            path="vts_hal_test_components/l4_tests"
            revision="refs/tags/0.2.0" />
 
+   <project name="rdk-halif-aidl-test-cec"
+           path="vts_hal_test_components/hdmicec"
+           revision="refs/tags/0.2.1" />
+
+   <project name="rdk-halif-aidl-test-hdmiinput"
+           path="vts_hal_test_components/hdmiinput"
+           revision="refs/tags/0.1.1" />
+
+   <project name="rdk-halif-aidl-test-hdmioutput"
+           path="vts_hal_test_components/hdmioutput"
+           revision="refs/tags/0.1.2" />
+
+   <project name="rdk-halif-aidl-test-deepsleep"
+           path="vts_hal_test_components/deepsleep"
+           revision="refs/tags/0.2.1" />
+
+   <project name="rdk-halif-aidl-test-device-info"
+           path="vts_hal_test_components/deviceinfo"
+           revision="refs/tags/0.2.1" />
+
+   <project name="rdk-halif-aidl-test-boot"
+           path="vts_hal_test_components/boot"
+           revision="refs/tags/0.1.1" />
+
+   <project name="rdk-halif-aidl-test-flash"
+           path="vts_hal_test_components/flash"
+           revision="refs/tags/0.1.1" />
+
+   <project name="rdk-halif-aidl-test-indicator"
+           path="vts_hal_test_components/indicator"
+           revision="refs/tags/0.2.1" />
 </manifest>
