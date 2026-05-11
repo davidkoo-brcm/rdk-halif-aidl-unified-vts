@@ -12,7 +12,7 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
   - [Run Tests Manually](#run-tests-manually)
   - [Setting Python environment for L1, L2, L3 and L4 automation test cases](#setting-python-environment-for-l1-l2-l3-and-l4-automation-test-cases)
   - [Running L1, L2, L3 and L4 Automation test cases](#running-l1-l2-l3-and-l4-automation-test-cases)
-  - [AV Module Components](#av-module-components)
+  - [Test Components List](#components-list)
 
 ## Acronyms, Terms and Abbreviations
 
@@ -72,7 +72,7 @@ For detail build instruction, please refer to [Linux Binder](https://github.com/
 Here outline the simplest steps are
 
 ```bash
-git clone -b 1.0.0 'git@github.com:rdkcentral/linux_binder_idl.git'
+git clone -b 1.0.0 'https://github.com/rdkcentral/linux_binder_idl.git'
 
 cd linux_binder_idl
 
@@ -114,7 +114,7 @@ repo --version
 ### Clone the Repository
 
 ```bash
-git clone git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.git
+git clone https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git
 
 cd rdk-halif-aidl-unified-vts
 ```
@@ -232,6 +232,14 @@ Each individual component and their respective test repositories are listed belo
 |13|Boot            |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-boot)|
 |14|Flash           |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-flash)|
 |15|Indicator       |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-indicator)|
-|16|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
+|16|Audio Mixer     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-audiomixer)|
+|17|CDM             |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-cdm)|
+|18|Broadcast       |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-broadcast)|
+|19|Composite Input |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-compositeinput)|
+|20|Panel           |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-panel)|
+|21|Motion Sensor   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-motion-sensor)|
+|22|Thermal Sensor  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-thermal-sensor)|
+|23|Far Field Voice |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-farfieldvoice)|
+|24|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
 
 **Note:** Building for ARM requires the RDK toolchains to be installed. For more information, see [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain).
