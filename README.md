@@ -12,7 +12,7 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
   - [Run Tests Manually](#run-tests-manually)
   - [Setting Python environment for L1, L2, L3 and L4 automation test cases](#setting-python-environment-for-l1-l2-l3-and-l4-automation-test-cases)
   - [Running L1, L2, L3 and L4 Automation test cases](#running-l1-l2-l3-and-l4-automation-test-cases)
-  - [AV Module Components](#av-module-components)
+  - [Test Components List](#components-list)
 
 ## Acronyms, Terms and Abbreviations
 
@@ -31,7 +31,24 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 
 ## Setup
 
-### Configure SSH for GitHub
+### Configure Personal Access Token (PAT) for HTTPS access
+
+The build scripts use HTTPS URLs to clone repositories. To avoid being prompted for credentials during the build, configure a GitHub Personal Access Token (PAT) in your `~/.netrc` file:
+
+1. Generate a PAT on GitHub with `repo` (read) scope:
+   - <https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens>
+
+2. Add your credentials to `~/.netrc`:
+
+```bash
+echo "machine github.com login <your-github-username> password <your-PAT>" >> ~/.netrc
+chmod 600 ~/.netrc
+```
+
+- Replace `<your-github-username>` with your GitHub username and `<your-PAT>` with the token generated above.
+- The `chmod 600` restricts the file to owner-only access, which is required by Git.
+
+### Configure SSH for GitHub (alternative)
 
 - To avoid conflict between your organization GitHub and RDK Central GitHub, add the following in your ssh config (`~/.ssh/config`):
 
@@ -55,7 +72,7 @@ For detail build instruction, please refer to [Linux Binder](https://github.com/
 Here outline the simplest steps are
 
 ```bash
-git clone -b 1.0.0 'git@github.com:rdkcentral/linux_binder_idl.git'
+git clone -b 1.0.0 'https://github.com/rdkcentral/linux_binder_idl.git'
 
 cd linux_binder_idl
 
@@ -68,10 +85,36 @@ cd linux_binder_idl
 
 VTS relies on the ut-core framework. Please ensure all required packages for ut-core are installed. See the instructions here: [Packages for ut-core](https://github.com/rdkcentral/ut-core/wiki/UT-Core-Building-using-Docker-or-Vagrant#script-for-installing-basic-packages-for-ut-core)
 
+### Prerequisite for build.sh
+
+#### Install repo Tool
+
+The `repo` tool is required to manage multiple repositories. Install it on your build server with:
+
+```bash
+mkdir -p ~/.local/bin
+curl -o ~/.local/bin/repo https://storage.googleapis.com/git-repo-downloads/repo
+chmod a+rx ~/.local/bin/repo
+```
+
+Ensure `~/.local/bin` is on your `PATH`:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+Add the `export` line to your `~/.bashrc` or `~/.profile` to make it permanent.
+
+Verify the installation:
+
+```bash
+repo --version
+```
+
 ### Clone the Repository
 
 ```bash
-git clone git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.git
+git clone https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git
 
 cd rdk-halif-aidl-unified-vts
 ```
@@ -189,6 +232,14 @@ Each individual component and their respective test repositories are listed belo
 |13|Boot            |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-boot)|
 |14|Flash           |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-flash)|
 |15|Indicator       |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-indicator)|
-|16|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
+|16|Audio Mixer     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-audiomixer)|
+|17|CDM             |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-cdm)|
+|18|Broadcast       |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-broadcast)|
+|19|Composite Input |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-compositeinput)|
+|20|Panel           |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-panel)|
+|21|Motion Sensor   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-motion-sensor)|
+|22|Thermal Sensor  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-thermal-sensor)|
+|23|Far Field Voice |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-farfieldvoice)|
+|24|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
 
 **Note:** Building for ARM requires the RDK toolchains to be installed. For more information, see [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain).

@@ -67,6 +67,14 @@ declare -A HALIF_TEST_COMPONENTS=(
   [boot]="RDK_HALIF_BOOT_TEST_VERSION"
   [flash]="RDK_HALIF_FLASH_TEST_VERSION"
   [indicator]="RDK_HALIF_INDICATOR_TEST_VERSION"
+  [audiomixer]="RDK_HALIF_AUDIOMIXER_TEST_VERSION"
+  [cdm]="RDK_HALIF_CDM_TEST_VERSION"
+  [broadcast]="RDK_HALIF_BROADCAST_TEST_VERSION"
+  [compositeinput]="RDK_HALIF_COMPOSITEINPUT_TEST_VERSION"
+  [panel]="RDK_HALIF_PANEL_TEST_VERSION"
+  [motion-sensor]="RDK_HALIF_MOTION_SENSOR_TEST_VERSION"
+  [thermal-sensor]="RDK_HALIF_THERMAL_SENSOR_TEST_VERSION"
+  [farfieldvoice]="RDK_HALIF_FARFIELDVOICE_TEST_VERSION"
 )
 
 # Define the directory where the repository will be cloned
@@ -170,7 +178,7 @@ validate_egl_lib_path()
 unified_manifest()
 {
     echo "repo init unified manifest"
-    repo init -b $(git rev-parse --abbrev-ref HEAD) -m aidl_unified_manifest.xml -u git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
+    repo init -b $(git rev-parse --abbrev-ref HEAD) -m aidl_unified_manifest.xml -u https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
     repo sync -cd -j 16 --no-repo-verify -q
 }
 
