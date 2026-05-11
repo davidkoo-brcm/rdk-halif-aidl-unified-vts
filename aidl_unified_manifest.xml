@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
   <remote name="rdkcentral"
-          fetch="ssh://git@github.code.rdkcentral.com/rdkcentral" />
+          fetch="https://github.com/rdkcentral" />
 
   <default revision="main"
            remote="rdkcentral"

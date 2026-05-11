@@ -31,7 +31,24 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 
 ## Setup
 
-### Configure SSH for GitHub
+### Configure Personal Access Token (PAT) for HTTPS access
+
+The build scripts use HTTPS URLs to clone repositories. To avoid being prompted for credentials during the build, configure a GitHub Personal Access Token (PAT) in your `~/.netrc` file:
+
+1. Generate a PAT on GitHub with `repo` (read) scope:
+   - <https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens>
+
+2. Add your credentials to `~/.netrc`:
+
+```bash
+echo "machine github.com login <your-github-username> password <your-PAT>" >> ~/.netrc
+chmod 600 ~/.netrc
+```
+
+- Replace `<your-github-username>` with your GitHub username and `<your-PAT>` with the token generated above.
+- The `chmod 600` restricts the file to owner-only access, which is required by Git.
+
+### Configure SSH for GitHub (alternative)
 
 - To avoid conflict between your organization GitHub and RDK Central GitHub, add the following in your ssh config (`~/.ssh/config`):
 
@@ -67,6 +84,32 @@ cd linux_binder_idl
 ### Prerequisites for ut-core
 
 VTS relies on the ut-core framework. Please ensure all required packages for ut-core are installed. See the instructions here: [Packages for ut-core](https://github.com/rdkcentral/ut-core/wiki/UT-Core-Building-using-Docker-or-Vagrant#script-for-installing-basic-packages-for-ut-core)
+
+### Prerequisite for build.sh
+
+#### Install repo Tool
+
+The `repo` tool is required to manage multiple repositories. Install it on your build server with:
+
+```bash
+mkdir -p ~/.local/bin
+curl -o ~/.local/bin/repo https://storage.googleapis.com/git-repo-downloads/repo
+chmod a+rx ~/.local/bin/repo
+```
+
+Ensure `~/.local/bin` is on your `PATH`:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+Add the `export` line to your `~/.bashrc` or `~/.profile` to make it permanent.
+
+Verify the installation:
+
+```bash
+repo --version
+```
 
 ### Clone the Repository
 
