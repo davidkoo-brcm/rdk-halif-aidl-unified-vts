@@ -49,7 +49,6 @@ declare -A HALIF_COMPONENTS=(
   [boot]="current"
   [flash]="current"
   [indicator]="current"
-  [panel]="current"
 )
 
 declare -A HALIF_TEST_COMPONENTS=(
