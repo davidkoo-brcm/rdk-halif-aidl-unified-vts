@@ -83,10 +83,6 @@
            path="vts_hal_test_components/broadcast"
            revision="main" />
 
-   <project name="rdk-halif-aidl-test-compositeinput"
-           path="vts_hal_test_components/compositeinput"
-           revision="develop" />
-
    <project name="rdk-halif-aidl-test-panel"
            path="vts_hal_test_components/panel"
            revision="main" />

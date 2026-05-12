@@ -235,7 +235,6 @@ Each individual component and their respective test repositories are listed belo
 |16|Audio Mixer     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-audiomixer)|
 |17|CDM             |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-cdm)|
 |18|Broadcast       |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-broadcast)|
-|19|Composite Input |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-compositeinput)|
 |20|Panel           |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-panel)|
 |21|Motion Sensor   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-motion-sensor)|
 |22|Thermal Sensor  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-thermal-sensor)|
