@@ -235,10 +235,8 @@ Each individual component and their respective test repositories are listed belo
 |16|Audio Mixer     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-audiomixer)|
 |17|CDM             |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-cdm)|
 |18|Broadcast       |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-broadcast)|
-|20|Panel           |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-panel)|
-|21|Motion Sensor   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-motion-sensor)|
-|22|Thermal Sensor  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-thermal-sensor)|
-|23|Far Field Voice |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-farfieldvoice)|
-|24|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
+|19|Panel           |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-panel)|
+|20|Far Field Voice |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-farfieldvoice)|
+|21|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
 
 **Note:** Building for ARM requires the RDK toolchains to be installed. For more information, see [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain).

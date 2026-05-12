@@ -87,14 +87,6 @@
            path="vts_hal_test_components/panel"
            revision="main" />
 
-   <project name="rdk-halif-aidl-test-motion-sensor"
-           path="vts_hal_test_components/motion-sensor"
-           revision="main" />
-
-   <project name="rdk-halif-aidl-test-thermal-sensor"
-           path="vts_hal_test_components/thermal-sensor"
-           revision="main" />
-
    <project name="rdk-halif-aidl-test-farfieldvoice"
            path="vts_hal_test_components/farfieldvoice"
            revision="develop" />

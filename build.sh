@@ -49,6 +49,7 @@ declare -A HALIF_COMPONENTS=(
   [boot]="current"
   [flash]="current"
   [indicator]="current"
+  [panel]="current"
 )
 
 declare -A HALIF_TEST_COMPONENTS=(
@@ -71,8 +72,6 @@ declare -A HALIF_TEST_COMPONENTS=(
   [cdm]="RDK_HALIF_CDM_TEST_VERSION"
   [broadcast]="RDK_HALIF_BROADCAST_TEST_VERSION"
   [panel]="RDK_HALIF_PANEL_TEST_VERSION"
-  [motion-sensor]="RDK_HALIF_MOTION_SENSOR_TEST_VERSION"
-  [thermal-sensor]="RDK_HALIF_THERMAL_SENSOR_TEST_VERSION"
   [farfieldvoice]="RDK_HALIF_FARFIELDVOICE_TEST_VERSION"
 )
 
