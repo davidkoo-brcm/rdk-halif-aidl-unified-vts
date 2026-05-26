@@ -7,7 +7,7 @@
            remote="rdkcentral"
            sync-j="4" />
 
-  <project name="rdk-halif-aidl-test-avbuffer"
+  <!--<project name="rdk-halif-aidl-test-avbuffer"
            path="vts_hal_test_components/avbuffer"
 	   revision="refs/tags/0.4.0" />
 
@@ -27,7 +27,7 @@
            path="vts_hal_test_components/videosink"
 	   revision="refs/tags/0.5.0" />
 
-   <project name="rdk-halif-aidl-test-avclock"
+  <project name="rdk-halif-aidl-test-avclock"
            path="vts_hal_test_components/avclock"
 	   revision="refs/tags/0.4.0" />
 
@@ -37,41 +37,41 @@
 
    <project name="rdk-halif-aidl-L4-Vendor"
            path="vts_hal_test_components/l4_tests"
-           revision="refs/tags/0.2.0" />
+           revision="refs/tags/0.2.0" /> -->
 
    <project name="rdk-halif-aidl-test-cec"
            path="vts_hal_test_components/hdmicec"
-           revision="refs/tags/0.2.1" />
+           revision="refs/tags/0.3.0" />
 
    <project name="rdk-halif-aidl-test-hdmiinput"
            path="vts_hal_test_components/hdmiinput"
-           revision="refs/tags/0.1.1" />
+           revision="refs/tags/0.2.0" />
 
    <project name="rdk-halif-aidl-test-hdmioutput"
            path="vts_hal_test_components/hdmioutput"
-           revision="refs/tags/0.1.2" />
+           revision="refs/tags/0.1.3" />
 
    <project name="rdk-halif-aidl-test-deepsleep"
            path="vts_hal_test_components/deepsleep"
-           revision="refs/tags/0.2.1" />
+           revision="refs/tags/0.2.2" />
 
    <project name="rdk-halif-aidl-test-device-info"
            path="vts_hal_test_components/deviceinfo"
-           revision="refs/tags/0.2.1" />
+           revision="refs/tags/0.2.2" />
 
    <project name="rdk-halif-aidl-test-boot"
            path="vts_hal_test_components/boot"
-           revision="refs/tags/0.1.1" />
+           revision="refs/tags/0.1.2" />
 
    <project name="rdk-halif-aidl-test-flash"
            path="vts_hal_test_components/flash"
-           revision="refs/tags/0.1.1" />
+           revision="refs/tags/0.1.2" />
 
    <project name="rdk-halif-aidl-test-indicator"
            path="vts_hal_test_components/indicator"
-           revision="refs/tags/0.2.1" />
+           revision="refs/tags/0.2.2" />
 
-   <project name="rdk-halif-aidl-test-audiomixer"
+   <!--<project name="rdk-halif-aidl-test-audiomixer"
            path="vts_hal_test_components/audiomixer"
            revision="main" />
 
@@ -89,6 +89,6 @@
 
    <project name="rdk-halif-aidl-test-farfieldvoice"
            path="vts_hal_test_components/farfieldvoice"
-           revision="develop" />
+           revision="develop" /> -->
 
 </manifest>
