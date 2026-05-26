@@ -12,7 +12,7 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
   - [Run Tests Manually](#run-tests-manually)
   - [Setting Python environment for L1, L2, L3 and L4 automation test cases](#setting-python-environment-for-l1-l2-l3-and-l4-automation-test-cases)
   - [Running L1, L2, L3 and L4 Automation test cases](#running-l1-l2-l3-and-l4-automation-test-cases)
-  - [AV Module Components](#av-module-components)
+  - [Test Components List](#components-list)
 
 ## Acronyms, Terms and Abbreviations
 
@@ -23,7 +23,7 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 | **L1** | Level 1 Test Cases (Interface / basic validation tests) |
 | **L2** | Level 2 Test Cases (Functional tests) |
 | **L3** | Level 3 Test Cases (Integration tests) |
-| **L4** | Level 4 Test Cases (End-to-End / System tests) |
+| **L4** | Level 4 Test Cases (Layer & System Testing) |
 | **RDK** | Reference Design Kit |
 | **UT-Core** | RDK Unified Test Core Framework |
 | **VTS** | Vendor Test Suite |
@@ -31,7 +31,24 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 
 ## Setup
 
-### Configure SSH for GitHub
+### Configure Personal Access Token (PAT) for HTTPS access
+
+The build scripts use HTTPS URLs to clone repositories. To avoid being prompted for credentials during the build, configure a GitHub Personal Access Token (PAT) in your `~/.netrc` file:
+
+1. Generate a PAT on GitHub with `repo` (read) scope:
+   - <https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens>
+
+2. Add your credentials to `~/.netrc`:
+
+```bash
+echo "machine github.com login <your-github-username> password <your-PAT>" >> ~/.netrc
+chmod 600 ~/.netrc
+```
+
+- Replace `<your-github-username>` with your GitHub username and `<your-PAT>` with the token generated above.
+- The `chmod 600` restricts the file to owner-only access, which is required by Git.
+
+### Configure SSH for GitHub (alternative)
 
 - To avoid conflict between your organization GitHub and RDK Central GitHub, add the following in your ssh config (`~/.ssh/config`):
 
@@ -58,50 +75,54 @@ For detail build instruction, please refer to [Linux Binder](https://github.com/
 Here outline the simplest steps are
 
 ```bash
-git clone -b 1.0.0 'git@github.com:rdkcentral/linux_binder_idl.git'
+git clone -b 1.0.0 'https://github.com/rdkcentral/linux_binder_idl.git'
 
 cd linux_binder_idl
-
-# for Linux:
-sc docker run vdevice-docker /bin/bash
-
-# for ARM:
-sc docker run rdk-kirkstone /bin/bash
 
 ./build-linux-binder-aidl.sh 64
 ```
 
-**Note:** **Use Prebuilt Linux Binder for ARM**
-
-For more information about RDK Docker Toolchain, please check [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain)
-
 ## Build Unified VTS
+
+### Prerequisites for ut-core
+
+VTS relies on the ut-core framework. Please ensure all required packages for ut-core are installed. See the instructions here: [Packages for ut-core](https://github.com/rdkcentral/ut-core/wiki/UT-Core-Building-using-Docker-or-Vagrant#script-for-installing-basic-packages-for-ut-core)
+
+### Prerequisite for build.sh
+
+#### Install repo Tool
+
+The `repo` tool is required to manage multiple repositories. Install it on your build server with:
+
+```bash
+mkdir -p ~/.local/bin
+curl -o ~/.local/bin/repo https://storage.googleapis.com/git-repo-downloads/repo
+chmod a+rx ~/.local/bin/repo
+```
+
+Ensure `~/.local/bin` is on your `PATH`:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+Add the `export` line to your `~/.bashrc` or `~/.profile` to make it permanent.
+
+Verify the installation:
+
+```bash
+repo --version
+```
 
 ### Clone the Repository
 
 ```bash
-git clone git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.git
+git clone https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git
 
 cd rdk-halif-aidl-unified-vts
 ```
 
-### Set Up Docker Environment
-
-**for Linux:**
-
-```bash
-sc docker run vdevice-docker /bin/bash
-```
-
-**for ARM:**
-
-```bash
-sc docker run rdk-kirkstone /bin/bash
-
-source /opt/toolchains/rdk-glibc-x86_64-arm-toolchain/environment-setup-armv7vet2hf-neon-oe-linux-gnueabi
-```
-
-For more information about RDK Docker Toolchain, please check [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain)
+Source the appropriate tool chains for the cross compilation
 
 Set below environment variable:
 
@@ -111,25 +132,15 @@ Set below environment variable:
 
 - UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 4.7.3). Defaults to the latest tagged version.
 
-- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.12.0). Defaults to the latest HEAD.
-
-- RDK_VCOMPONENT_`<NON-AV-MODULE>` : Specific version of vcomponent module (eg, 0.1.0). Defaults to main.
-
-- EGL_LIB_PATH: Specific Path for EGL libraries.
-
-- GST_LIB_PATH: Path to the pre-built GStreamer libraries used for compiling the L4 test cases.
+- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.13.2). Defaults to the latest HEAD.
 
 Example:
 
 ```bash
 export UT_CORE_VERSION=4.7.3
-export RDK_HALIF_AIDL_VERSION=0.12.0
+export RDK_HALIF_AIDL_VERSION=0.13.2
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
-export EGL_LIB_PATH=/path/egl_libraries/
-export GST_LIB_PATH=/path/gstreamer_lib/
-export RDK_VCOMPONENT_CEC=0.1.0
-export RDK_VCOMPONENT_DEVICEINFO=0.1.0
 ```
 
 By default, UT logs are disabled. To enable them, Set below environment variable
@@ -222,4 +233,21 @@ Each individual component and their respective test repositories are listed belo
 | 5|Video Sink      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-videosink)|
 | 6|AV Clock        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-avclock)|
 | 7|Plane Control   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-planecontrol)|
-| 8|Device Info     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-device-info)|
+| 8|HDMI CEC        |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-cec)|
+| 9|HDMI Input      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-hdmiinput)|
+|10|HDMI Output     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-hdmioutput)|
+|11|Deep Sleep      |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-deepsleep)|
+|12|Device Info     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-device-info)|
+|13|Boot            |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-boot)|
+|14|Flash           |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-flash)|
+|15|Indicator       |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-indicator)|
+|16|Audio Mixer     |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-audiomixer)|
+|17|CDM             |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-cdm)|
+|18|Broadcast       |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-broadcast)|
+|19|Composite Input |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-compositeinput)|
+|20|Panel           |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-panel)|
+|21|Motion Sensor   |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-motion-sensor)|
+|22|Thermal Sensor  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-thermal-sensor)|
+|23|Far Field Voice |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-farfieldvoice)|
+|24|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
+**Note:** Building for ARM requires the RDK toolchains to be installed. For more information, see [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain).

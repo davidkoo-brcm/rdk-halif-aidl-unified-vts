@@ -1,0 +1,51 @@
+#** *****************************************************************************
+# *
+# * If not stated otherwise in this file or this component's LICENSE file the
+# * following copyright and licenses apply:
+# *
+# * Copyright 2025 RDK Management
+# *
+# * Licensed under the Apache License, Version 2.0 (the "License");
+# * you may not use this file except in compliance with the License.
+# * You may obtain a copy of the License at
+# *
+# *
+# * http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * Unless required by applicable law or agreed to in writing, software
+# * distributed under the License is distributed on an "AS IS" BASIS,
+# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# * See the License for the specific language governing permissions and
+# * limitations under the License.
+# *
+#** ******************************************************************************
+
+# =============================================================================
+# AV SYNCHRONIZATION TEST CASES
+# Purpose: Validate audio-video sync accuracy and measure drift over time
+# =============================================================================
+
+AVModule:
+  input_streams_path: assets/streams/input
+  player: gstreamer
+  L4Test:
+  # ---------------------------------------------------------------------------
+  # 1.3 AV Synchronization
+  # ---------------------------------------------------------------------------
+  - tcid: VTS_L4_AVSYNC_8001
+    use_case: "AV Synchronization"
+    action: normal_play
+    codec: "H.264 AC3"
+    stream_name: "Audio_Video/Long_Duration/AV_Sync/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_12M_ac3_48k_6ch_256k_a18750_v36000_600sec.mp4"
+
+  - tcid: VTS_L4_AVSYNC_8002
+    use_case: "AV Synchronization"
+    action: normal_play
+    codec: "H.265 EAC3"
+    stream_name: "Audio_Video/Long_Duration/AV_Sync/vts_h265_2160p_hdr10_60.0f_BT2020_yuv420p_25M_eac3_48k_6ch_512k_a18750_v36000_600sec.mp4"
+
+  - tcid: VTS_L4_AVSYNC_8003
+    use_case: "AV Synchronization"
+    action: normal_play
+    codec: "VP9 OPUS"
+    stream_name: "Audio_Video/Long_Duration/AV_Sync/vts_vp9_1080p_sdr_30.0f_BT709_yuv420p_10M_opus_48k_2ch_256k_a30001_v18000_601sec.webm"

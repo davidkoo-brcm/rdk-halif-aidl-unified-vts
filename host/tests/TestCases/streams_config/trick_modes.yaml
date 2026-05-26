@@ -1,0 +1,118 @@
+#** *****************************************************************************
+# *
+# * If not stated otherwise in this file or this component's LICENSE file the
+# * following copyright and licenses apply:
+# *
+# * Copyright 2025 RDK Management
+# *
+# * Licensed under the Apache License, Version 2.0 (the "License");
+# * you may not use this file except in compliance with the License.
+# * You may obtain a copy of the License at
+# *
+# *
+# * http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * Unless required by applicable law or agreed to in writing, software
+# * distributed under the License is distributed on an "AS IS" BASIS,
+# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# * See the License for the specific language governing permissions and
+# * limitations under the License.
+# *
+#** ******************************************************************************
+
+# =============================================================================
+# TRICK MODES & SEEK TEST CASES
+# Covers: Pause/Resume, Fast-Forward, Rewind, Seek operations
+# Includes: AV Playback, Audio Only, Video Only
+# =============================================================================
+
+AVModule:
+  input_streams_path: assets/streams/input
+  player: gstreamer
+  L4Test:
+  # ---------------------------------------------------------------------------
+  # 1.2 AV Playback - Pause/Resume, Trick Modes and Seek
+  # ---------------------------------------------------------------------------
+  - tcid: VTS_L4_H264_AAC_7001
+    use_case: "AV Trick Modes & Seek"
+    action: playBackWithTrickModes
+    codec: "H.264 AAC"
+    stream_name: "Audio_Video/Long_Duration/Trick_Modes/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_20M_aac_48k_6ch_512k_a28126_v36000_600sec.mp4"
+
+  - tcid: VTS_L4_H264_AC3_7001
+    use_case: "AV Trick Modes & Seek"
+    action: playBackWithTrickModes
+    codec: "H.264 AC3"
+    stream_name: "Audio_Video/Long_Duration/Trick_Modes/vts_h264_1080i_sdr_29.97f_BT709_yuv420p_5M_ac3_48k_6ch_256k_a18750_v17982_600sec.mp4"
+
+  - tcid: VTS_L4_H265_EAC3_7001
+    use_case: "AV Trick Modes & Seek"
+    action: playBackWithTrickModes
+    codec: "H.265 EAC3"
+    stream_name: "Audio_Video/Long_Duration/Trick_Modes/vts_h265_2160p_hdr10_60.0f_BT2020_yuv420p_18M_eac3_48k_6ch_512k_a18750_v36000_600sec.mp4"
+
+  - tcid: VTS_L4_VP9_OPUS_7001
+    use_case: "AV Trick Modes & Seek"
+    action: playBackWithTrickModes
+    codec: "VP9 OPUS"
+    stream_name: "Audio_Video/Long_Duration/Trick_Modes/vts_vp9_2160p_sdr_60.0f_BT2020_yuv420p_18M_opus_48k_8ch_256k_a30001_v35998_601sec.webm"
+
+  # - tcid: VTS_L4_AV1_AC3_7001                         #Todo
+  #   use_case: "AV Trick Modes & Seek"
+  #   action: playBackWithTrickModes
+  #   codec: "AV1 AC3"
+  #   stream_name: "Audio_Video/Long_Duration/Trick_Modes/vts_av1_2160p_hlg_60.0f_BT2020_yuv420p_20M_ac3_48k_6ch_512k_a18750_v36000_600sec.mp4"
+
+  # ---------------------------------------------------------------------------
+  # 2.2 Audio Only - Pause/Resume, Trick Modes and Seek
+  # ---------------------------------------------------------------------------
+  - tcid: VTS_L4_AAC_1301
+    use_case: "Audio Only Trick Modes"
+    action: playBackWithTrickModes
+    codec: "AAC"
+    stream_name: "Audio/Long_Duration/Trick_Modes/vts_aac_48k_6ch_512k_a28126_v0_600sec.mp4"
+
+  - tcid: VTS_L4_AC3_1301
+    use_case: "Audio Only Trick Modes"
+    action: playBackWithTrickModes
+    codec: "AC3"
+    stream_name: "Audio/Long_Duration/Trick_Modes/vts_ac3_48k_6ch_512k_a18750_v0_600sec.mp4"
+
+  - tcid: VTS_L4_EAC3_1301
+    use_case: "Audio Only Trick Modes"
+    action: playBackWithTrickModes
+    codec: "EAC3"
+    stream_name: "Audio/Long_Duration/Trick_Modes/vts_eac3_48k_6ch_512k_a18750_v0_600sec.mp4"
+
+  # ---------------------------------------------------------------------------
+  # 3.2 Video Only - Pause/Resume, Trick Modes and Seek
+  # ---------------------------------------------------------------------------
+  - tcid: VTS_L4_H264_1601
+    use_case: "Video Only Trick Modes"
+    action: playBackWithTrickModes
+    codec: "H.264"
+    stream_name: "Video/Long_Duration/Trick_Modes/vts_h264_1080p_sdr_60.0f_BT709_yuv420p_12M_a0_v36000_600sec.mp4"
+
+  - tcid: VTS_L4_HEVC_1601
+    use_case: "Video Only Trick Modes"
+    action: playBackWithTrickModes
+    codec: "H.265"
+    stream_name: "Video/Long_Duration/Trick_Modes/vts_h265_2160p_hdr10_24.0f_BT2020_yuv420p_25M_a0_v14400_600sec.mp4"
+
+  - tcid: VTS_L4_HEVC_1602
+    use_case: "Video Only Trick Modes"
+    action: playBackWithTrickModes
+    codec: "H.265"
+    stream_name: "Video/Long_Duration/Trick_Modes/vts_h265_1080p_sdr_60.0f_BT709_yuv420p_5M_a0_v36000_600sec.mp4"
+
+  - tcid: VTS_L4_VP9_1601
+    use_case: "Video Only Trick Modes"
+    action: playBackWithTrickModes
+    codec: "VP9"
+    stream_name: "Video/Long_Duration/Trick_Modes/vts_vp9_2160p_sdr_60.0f_BT709_yuv420p_15M_a0_v35998_600sec.webm"
+
+  # - tcid: VTS_L4_AV1_1601                       #Todo
+  #   use_case: "Video Only Trick Modes"
+  #   action: playBackWithTrickModes
+  #   codec: "AV1"
+  #   stream_name: "Video/Long_Duration/Trick_Modes/vts_av1_2160p_hdr10_60.0f_BT2020_yuv420p_15M_a0_v3600_600sec.mp4"

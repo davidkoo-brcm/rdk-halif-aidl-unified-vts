@@ -72,9 +72,21 @@
 #include "vts_videosink_init.h"
 #include "vts_videodecoder_init.h"
 #include "vts_avclock_init.h"
+#ifdef ENABLE_PLANE_CONTROL_TEST
 #include "vts_planecontrol_init.h"
+#endif
+#ifdef ENABLE_AV_L4_TEST
 #include "vts_av_l4_init.h"
+#endif
+
+#include "vts_hdmicec_init.h"
+#include "vts_hdmiinput_init.h"
+#include "vts_hdmioutput_init.h"
+#include "vts_deepsleep_init.h"
 #include "vts_deviceinfo_init.h"
+#include "vts_boot_init.h"
+//#include "vts_flash_init.h"
+#include "vts_indicator_init.h"
 
 int main(int argc, char **argv)
 {
@@ -94,7 +106,14 @@ int main(int argc, char **argv)
     UT_LOG_INFO("\t VTS UNIFIED AV Clock HALIF Test Version: \033[0;32m%s\033[0m",AVCLOCK_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED Plane Control HALIF Test Version: \033[0;32m%s\033[0m",PLANECONTROL_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED HALIF L4 Test Version: \033[0;32m%s\033[0m",L4_TESTS_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED DEVICEINFO Test Version: \033[0;32m%s\033[0m",DEVICEINFO_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED HDMI CEC HALIF Test Version: \033[0;32m%s\033[0m",HDMICEC_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED HDMI Input HALIF Test Version: \033[0;32m%s\033[0m",HDMIINPUT_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED HDMI Output HALIF Test Version: \033[0;32m%s\033[0m",HDMIOUTPUT_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED Deep Sleep HALIF Test Version: \033[0;32m%s\033[0m",DEEPSLEEP_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED Device Info HALIF Test Version: \033[0;32m%s\033[0m",DEVICEINFO_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED Boot HALIF Test Version: \033[0;32m%s\033[0m",BOOT_VERSION);
+    // UT_LOG_INFO("\t VTS UNIFIED Flash HALIF Test Version: \033[0;32m%s\033[0m",FLASH_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED Indicator HALIF Test Version: \033[0;32m%s\033[0m",INDICATOR_VERSION);
     UT_LOG_INFO("==========================================================================");
 
     result = VTS_AVBuffer_init();
@@ -139,24 +158,77 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
+#ifdef ENABLE_PLANE_CONTROL_TEST
     result = VTS_PlaneControl_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize Plane Control");
         result = UT_STATUS_FAILURE;
     }
+#endif
 
+#ifdef ENABLE_AV_L4_TEST
     result = VTS_AV_init();
     if(result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("Failed to initialize AV L4 Tests");
         result = UT_STATUS_FAILURE;
     }
+#endif
+
+    result = VTS_HDMICEC_init();
+    if(result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize HDMI CEC Tests");
+        result = UT_STATUS_FAILURE;
+    }
+
+    result = VTS_HDMIINPUT_init();
+    if(result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize HDMI Input Tests");
+        result = UT_STATUS_FAILURE;
+    }
+
+    result = VTS_HDMIOUTPUT_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize HDMI output service\n");
+        result = UT_STATUS_FAILURE;
+    }
+
+    result = VTS_DEEPSLEEP_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize Deep Sleep service\n");
+        result = UT_STATUS_FAILURE;
+    }
 
     result = VTS_DEVICEINFO_init();
     if (result != UT_STATUS_OK)
     {
-        UT_LOG_ERROR("Failed to initialize deviceinfo");
+        UT_LOG_ERROR("VTS_DEVICEINFO_init() failed!");
+        result = UT_STATUS_FAILURE;
+    }
+
+    result = VTS_BOOT_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("VTS_BOOT_init() failed!");
+        result = UT_STATUS_FAILURE;
+    }
+
+    // result = VTS_FLASH_init();
+    // if (result != UT_STATUS_OK)
+    // {
+    //     UT_LOG_ERROR("VTS_FLASH_init() failed!");
+    //     result = UT_STATUS_FAILURE;
+    // }
+
+    result = VTS_INDICATOR_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("VTS_INDICATOR_init() failed!");
         result = UT_STATUS_FAILURE;
     }
 
@@ -175,7 +247,16 @@ int main(int argc, char **argv)
     VTS_VideoDecoder_destroy();
     VTS_AudioSink_destroy();
     VTS_VideoSink_destroy();
+
+    VTS_HDMICEC_destroy();
+    VTS_HDMIINPUT_destroy();
+    VTS_HDMIOUTPUT_destroy();
+    VTS_DEEPSLEEP_destroy();
     VTS_DEVICEINFO_destroy();
+    VTS_BOOT_destroy();
+    // VTS_FLASH_destroy();
+    VTS_INDICATOR_destroy();
+
     return result;
 }
 

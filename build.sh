@@ -42,7 +42,14 @@ declare -A HALIF_COMPONENTS=(
   [videosink]="current"
   [avclock]="current"
   [planecontrol]="current"
+  [hdmicec]="current"
+  [hdmiinput]="current"
+  [hdmioutput]="current"
+  [deepsleep]="current"
   [deviceinfo]="current"
+  [boot]="current"
+  [flash]="current"
+  [indicator]="current"
 )
 
 declare -A HALIF_TEST_COMPONENTS=(
@@ -53,20 +60,20 @@ declare -A HALIF_TEST_COMPONENTS=(
   [videosink]="RDK_HALIF_VIDEOSINK_TEST_VERSION"
   [avclock]="RDK_HALIF_AVCLOCK_TEST_VERSION"
   [planecontrol]="RDK_HALIF_PLANECONTROL_TEST_VERSION"
+  [hdmicec]="RDK_HALIF_CEC_TEST_VERSION"
+  [hdmiinput]="RDK_HALIF_HDMIINPUT_TEST_VERSION"
+  [hdmioutput]="RDK_HALIF_HDMIOUTPUT_TEST_VERSION"
+  [deepsleep]="RDK_HALIF_DEEPSLEEP_TEST_VERSION"
   [deviceinfo]="RDK_HALIF_DEVICEINFO_TEST_VERSION"
+  [boot]="RDK_HALIF_BOOT_TEST_VERSION"
+  [flash]="RDK_HALIF_FLASH_TEST_VERSION"
+  [indicator]="RDK_HALIF_INDICATOR_TEST_VERSION"
+  [audiomixer]="RDK_HALIF_AUDIOMIXER_TEST_VERSION"
+  [cdm]="RDK_HALIF_CDM_TEST_VERSION"
+  [broadcast]="RDK_HALIF_BROADCAST_TEST_VERSION"
+  [panel]="RDK_HALIF_PANEL_TEST_VERSION"
+  [farfieldvoice]="RDK_HALIF_FARFIELDVOICE_TEST_VERSION"
 )
-
-: "${RDK_VCOMPONENT_DEFAULT_BRANCH:=main}"
-
-declare -A VCOMPONENT_MODULES=(
-    [deviceinfo]="RDK_HALIF_DEVICEINFO_VCOMP_VERSION"
-)
-
-resolve_branch() {
-    local component="$1"
-    local var="RDK_VCOMPONENT_${component^^}"
-    echo "${!var:-$RDK_VCOMPONENT_DEFAULT_BRANCH}"
-}
 
 # Define the directory where the repository will be cloned
 declare -r UT_CORE_DIR="${TOP}/ut-core"
@@ -170,7 +177,7 @@ validate_egl_lib_path()
 unified_manifest()
 {
     echo "repo init unified manifest"
-    repo init -b $(git rev-parse --abbrev-ref HEAD) -m aidl_unified_manifest.xml -u git@github.code.rdkcentral.com:rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
+    repo init -b $(git rev-parse --abbrev-ref HEAD) -m aidl_unified_manifest.xml -u https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
     repo sync -cd -j 16 --no-repo-verify -q
 }
 
@@ -491,8 +498,12 @@ echo -e "${BOLD}${GREEN}UT_CORE_VERSION        : ${RESET}${YELLOW}$UT_CORE_VERSI
 echo -e "${BOLD}${GREEN}RDK_HALIF_AIDL_VERSION : ${RESET}${YELLOW}$RDK_HALIF_AIDL_VERSION${RESET}"
 echo -e "${BOLD}${GREEN}AIDL_BIN               : ${RESET}${YELLOW}$AIDL_BIN${RESET}"
 echo -e "${BOLD}${GREEN}LINUX_BINDER_OUT_DIR   : ${RESET}${YELLOW}$LINUX_BINDER_OUT_DIR${RESET}"
+if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
 echo -e "${BOLD}${GREEN}GST_LIB_PATH           : ${RESET}${YELLOW}$GST_LIB_PATH${RESET}"
+fi
+if [ "${ENABLE_PLANE_CONTROL_TEST}" = "1" ]; then
 echo -e "${BOLD}${GREEN}EGL_LIB_PATH           : ${RESET}${YELLOW}$EGL_LIB_PATH${RESET}"
+fi
 echo -e "${BOLD}${GREEN}TARGET                 : ${RESET}${YELLOW}$TARGET${RESET}"
 
 ###############################################################################
@@ -505,12 +516,20 @@ elif [ "$1" == "dist_clean" ]; then
 elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     help
 elif [[ "$1" == [Tt]arget=* ]]; then
-    validate_gst_lib_path
-    validate_egl_lib_path
+    if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
+        validate_gst_lib_path
+    fi
+    if [ "${ENABLE_PLANE_CONTROL_TEST}" = "1" ]; then
+        validate_egl_lib_path
+    fi
     unified_manifest
     install_linux_binder
-    install_gstreamer_package
-    install_egl_package
+    if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
+        install_gstreamer_package
+    fi
+    if [ "${ENABLE_PLANE_CONTROL_TEST}" = "1" ]; then
+        install_egl_package
+    fi
     generate_hal_interfaces
     build_aidl_libs
     build_ut_core

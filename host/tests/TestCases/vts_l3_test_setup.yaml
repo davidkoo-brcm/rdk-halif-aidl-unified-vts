@@ -77,6 +77,15 @@ VTS:
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_zero.ac3
+          - /Audio_Decoder/EAC3/vts_eac3_48k_1ch_64k.eac3
+          - /Audio_Decoder/EAC3/vts_eac3_48k_2ch_128k.eac3
+          - /Audio_Decoder/EAC3/vts_eac3_48k_6ch_256k.eac3
+          - /Audio_Decoder/EAC3/vts_eac3_48k_6ch_512k.eac3
+          - /Audio_Decoder/OPUS/vts_opus_48k_1ch_64k.opus
+          - /Audio_Decoder/OPUS/vts_opus_48k_2ch_32k.opus
+          - /Audio_Decoder/OPUS/vts_opus_48k_2ch_64k.opus
+          - /Audio_Decoder/OPUS/vts_opus_48k_2ch_128k.opus
+          - /Audio_Decoder/OPUS/vts_opus_48k_6ch_256k.opus
         tests:
           - Decode_Sequential_NonTunnel_NonSecure
           - Decode_Sequential_NonTunnel_NonSecure_Error
@@ -234,6 +243,9 @@ VTS:
           - Video_Decoder/H264_HIGH_1920x1080_DR_SDR_DR_BT709_60p_PIXEL_FORMAT_YCBCR420_734_GOP.es
           - Video_Decoder/H265_HIGH_1920x1080_DR_SDR_DR_BT709_30p_PIXEL_FORMAT_YCBCR420_734.es
           - Video_Decoder/VP9_HIGH_1920x1080_DR_SDR_DR_BT709_30p_PIXEL_FORMAT_YCBCR420_734.es
+          - Video_Decoder/H265_HIGH_1920x1080_DR_HDR10_BT2020_ST2084_30p_PIXEL_FORMAT_YCBCR420_MDI.es
+          - Video_Decoder/H265_HIGH_1920x1080_DR_HDR10_BT2020_ST2084_30p_PIXEL_FORMAT_YCBCR420_COLORIMETRY.es
+          - Video_Decoder/H265_HIGH_1920x1080_DR_HDR10_BT2020_ST2084_30p_PIXEL_FORMAT_YCBCR420_CLL.es
         tests:
           - Decode_Sequential_NonTunnel_NonSecure
           - Decode_Sequential_NonTunnel_NonSecure_Error

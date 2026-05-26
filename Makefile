@@ -33,6 +33,19 @@ PLANE_CONTROL_TEST_DIR := $(VTS_TEST_DIR)/planecontrol
 DEVICEINFO_TEST_DIR := $(VTS_TEST_DIR)/deviceinfo
 L4_TEST_DIR := $(VTS_TEST_DIR)/l4_tests
 AV_L4_TESTS_DIR := $(L4_TEST_DIR)/src/av
+HDMICEC_TEST_DIR := $(VTS_TEST_DIR)/hdmicec
+HDMIINPUT_TEST_DIR := $(VTS_TEST_DIR)/hdmiinput
+HDMIOUTPUT_TEST_DIR := $(VTS_TEST_DIR)/hdmioutput
+DEEPSLEEP_TEST_DIR := $(VTS_TEST_DIR)/deepsleep
+DEVICEINFO_TEST_DIR := $(VTS_TEST_DIR)/deviceinfo
+BOOT_TEST_DIR := $(VTS_TEST_DIR)/boot
+FLASH_TEST_DIR := $(VTS_TEST_DIR)/flash
+INDICATOR_TEST_DIR := $(VTS_TEST_DIR)/indicator
+AUDIOMIXER_TEST_DIR := $(VTS_TEST_DIR)/audiomixer
+CDM_TEST_DIR := $(VTS_TEST_DIR)/cdm
+BROADCAST_TEST_DIR := $(VTS_TEST_DIR)/broadcast
+PANEL_TEST_DIR := $(VTS_TEST_DIR)/panel
+FARFIELDVOICE_TEST_DIR := $(VTS_TEST_DIR)/farfieldvoice
 
 COMMON_DIR := $(ROOT_DIR)/common
 VTS_PLAYER := $(COMMON_DIR)/vts_player
@@ -63,6 +76,19 @@ VIDEOSINK_VERSION := $(shell cd $(VIDEO_SINK_TEST_DIR) && git describe --tags --
 AVBUFFER_VERSION := $(shell cd $(AV_BUFFER_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 AVCLOCK_VERSION := $(shell cd $(AV_CLOCK_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 PLANECONTROL_VERSION := $(shell cd $(PLANE_CONTROL_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+HDMICEC_VERSION := $(shell cd $(HDMICEC_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+HDMIINPUT_VERSION := $(shell cd $(HDMIINPUT_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+HDMIOUTPUT_VERSION := $(shell cd $(HDMIOUTPUT_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+DEEPSLEEP_VERSION := $(shell cd $(DEEPSLEEP_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+DEVICEINFO_VERSION := $(shell cd $(DEVICEINFO_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+BOOT_VERSION := $(shell cd $(BOOT_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+FLASH_VERSION := $(shell cd $(FLASH_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+INDICATOR_VERSION := $(shell cd $(INDICATOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+AUDIOMIXER_VERSION := $(shell cd $(AUDIOMIXER_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+CDM_VERSION := $(shell cd $(CDM_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+BROADCAST_VERSION := $(shell cd $(BROADCAST_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+PANEL_VERSION := $(shell cd $(PANEL_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+FARFIELDVOICE_VERSION := $(shell cd $(FARFIELDVOICE_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 L4_TESTS_VERSION := $(shell cd $(L4_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 DEVICEINFO_VERSION := $(shell cd $(DEVICEINFO_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 BUILD_TIMESTAMP := $(shell date +"%Y-%m-%d_%H:%M:%S")
@@ -75,7 +101,19 @@ $(info VIDEOSINK_VERSION: $(VIDEOSINK_VERSION))
 $(info AVBUFFER_VERSION: $(AVBUFFER_VERSION))
 $(info AVCLOCK_VERSION: $(AVCLOCK_VERSION))
 $(info PLANECONTROL_VERSION: $(PLANECONTROL_VERSION))
+$(info HDMICEC_VERSION: $(HDMICEC_VERSION))
+$(info HDMIINPUT_VERSION: $(HDMIINPUT_VERSION))
+$(info HDMIOUTPUT_VERSION: $(HDMIOUTPUT_VERSION))
+$(info DEEPSLEEP_VERSION: $(DEEPSLEEP_VERSION))
 $(info DEVICEINFO_VERSION: $(DEVICEINFO_VERSION))
+$(info BOOT_VERSION: $(BOOT_VERSION))
+$(info FLASH_VERSION: $(FLASH_VERSION))
+$(info INDICATOR_VERSION: $(INDICATOR_VERSION))
+$(info AUDIOMIXER_VERSION: $(AUDIOMIXER_VERSION))
+$(info CDM_VERSION: $(CDM_VERSION))
+$(info BROADCAST_VERSION: $(BROADCAST_VERSION))
+$(info PANEL_VERSION: $(PANEL_VERSION))
+$(info FARFIELDVOICE_VERSION: $(FARFIELDVOICE_VERSION))
 $(info L4_TESTS_VERSION: $(L4_TESTS_VERSION))
 $(info BUILD_TIMESTAMP: $(BUILD_TIMESTAMP))
 $(info TARGET: $(TARGET))
@@ -96,13 +134,34 @@ CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DAVBUFFER_VERSION=\"$(AVBUFFER_VERSION)\" \
             -DAVCLOCK_VERSION=\"$(AVCLOCK_VERSION)\" \
             -DPLANECONTROL_VERSION=\"$(PLANECONTROL_VERSION)\" \
+            -DHDMICEC_VERSION=\"$(HDMICEC_VERSION)\" \
+            -DHDMIINPUT_VERSION=\"$(HDMIINPUT_VERSION)\" \
+            -DHDMIOUTPUT_VERSION=\"$(HDMIOUTPUT_VERSION)\" \
+            -DDEEPSLEEP_VERSION=\"$(DEEPSLEEP_VERSION)\" \
             -DDEVICEINFO_VERSION=\"$(DEVICEINFO_VERSION)\" \
+            -DBOOT_VERSION=\"$(BOOT_VERSION)\" \
+            -DFLASH_VERSION=\"$(FLASH_VERSION)\" \
+            -DINDICATOR_VERSION=\"$(INDICATOR_VERSION)\" \
+            -DAUDIOMIXER_VERSION=\"$(AUDIOMIXER_VERSION)\" \
+            -DCDM_VERSION=\"$(CDM_VERSION)\" \
+            -DBROADCAST_VERSION=\"$(BROADCAST_VERSION)\" \
+            -DPANEL_VERSION=\"$(PANEL_VERSION)\" \
+            -DFARFIELDVOICE_VERSION=\"$(FARFIELDVOICE_VERSION)\" \
             -DL4_TESTS_VERSION=\"$(L4_TESTS_VERSION)\"
 
 $(info CXXFLAGS: $(CXXFLAGS))
 CXXFLAGS += -DBUILD_TIMESTAMP=\"$(BUILD_TIMESTAMP)\"
 
 ENABLE_UT_INFO_LOGGING ?= 0
+
+# Add CXXFLAGS if ENABLE_PLANE_CONTROL_TEST is set
+ifeq ($(ENABLE_PLANE_CONTROL_TEST),1)
+CXXFLAGS += -DENABLE_PLANE_CONTROL_TEST
+endif
+
+ifeq ($(ENABLE_AV_L4_TEST),1)
+CXXFLAGS += -DENABLE_AV_L4_TEST
+endif
 
 # TODO: remove this once the ut-core implements runtime logging configuration
 ifeq ($(ENABLE_UT_INFO_LOGGING),1)
@@ -115,11 +174,27 @@ SRC_DIRS += $(AV_BUFFER_TEST_DIR)/src
 SRC_DIRS += $(VIDEO_DECODER_TEST_DIR)/src
 SRC_DIRS += $(VIDEO_SINK_TEST_DIR)/src
 SRC_DIRS += $(AV_CLOCK_TEST_DIR)/src
+ifeq ($(ENABLE_PLANE_CONTROL_TEST),1)
 SRC_DIRS += $(PLANE_CONTROL_TEST_DIR)/src
+endif
+SRC_DIRS += $(HDMICEC_TEST_DIR)/src
+SRC_DIRS += $(HDMIINPUT_TEST_DIR)/src
+SRC_DIRS += $(HDMIOUTPUT_TEST_DIR)/src
+SRC_DIRS += $(DEEPSLEEP_TEST_DIR)/src
 SRC_DIRS += $(DEVICEINFO_TEST_DIR)/src
+SRC_DIRS += $(BOOT_TEST_DIR)/src
+#SRC_DIRS += $(FLASH_TEST_DIR)/src
+SRC_DIRS += $(INDICATOR_TEST_DIR)/src
+SRC_DIRS += $(AUDIOMIXER_TEST_DIR)/src
+SRC_DIRS += $(CDM_TEST_DIR)/src
+SRC_DIRS += $(BROADCAST_TEST_DIR)/src
+SRC_DIRS += $(PANEL_TEST_DIR)/src
+SRC_DIRS += $(FARFIELDVOICE_TEST_DIR)/src
+ifeq ($(ENABLE_AV_L4_TEST),1)
 SRC_DIRS += $(AV_L4_TESTS_DIR)
-SRC_DIRS += $(HELPER_FUNCTIONS_DIR)
 SRC_DIRS += $(VTS_PLAYER)
+endif
+SRC_DIRS += $(HELPER_FUNCTIONS_DIR)
 SRC_DIRS += $(ROOT_DIR)/test
 
 INC_DIRS := $(ROOT_DIR)/build/current/h/
@@ -145,9 +220,13 @@ XLDFLAGS += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib
 XLDFLAGS += -lbinder -lutils
 XLDFLAGS += -laidl_client
 XLDFLAGS += -lavbufferhelper
+ifeq ($(ENABLE_AV_L4_TEST),1)
 XLDFLAGS += -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lpcre
+endif
+ifeq ($(ENABLE_PLANE_CONTROL_TEST),1)
 XLDFLAGS += -lEGL -lGLESv2 -lpthread
 XLDFLAGS += -ldrm
+endif
 # required for EGL
 CXXFLAGS += -D_EGL_NO_X11
 CXXFLAGS += -DMESA_EGL_NO_X11_HEADERS
