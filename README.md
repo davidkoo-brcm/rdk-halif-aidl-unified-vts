@@ -127,24 +127,26 @@ Set below environment variable:
 
 - LINUX_BINDER_OUT_DIR: Path to the Linux binder output directory (e.g., /path/to/linux_binder_idl/local).
 
-- UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 4.7.3). Defaults to the latest tagged version.
+- UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 5.1.0). Defaults to the latest tagged version.
 
-- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.13.2). Defaults to the latest HEAD.
+- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.15.0). Defaults to the latest HEAD.
 
 Example:
 
 ```bash
-export UT_CORE_VERSION=4.7.3
-export RDK_HALIF_AIDL_VERSION=0.13.2
+export UT_CORE_VERSION=5.1.0
+export RDK_HALIF_AIDL_VERSION=0.15.0
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
 ```
 
-By default, UT logs are disabled. To enable them, Set below environment variable
+By default, UT logs are set to WARNING level. For more details on log level filtering, refer to [UT-Core Log Level Documentation](https://github.com/rdkcentral/ut-control/blob/2.1.0/README.md#log-level-filtering)
 
 ```bash
-export ENABLE_UT_INFO_LOGGING=1
+export UT_LOG_LEVEL=3
 ```
+
+
 
 Run the build script for Target ARM:
 
