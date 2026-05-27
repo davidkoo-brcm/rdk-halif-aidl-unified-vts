@@ -7,7 +7,7 @@
            remote="rdkcentral"
            sync-j="4" />
 
-  <!--<project name="rdk-halif-aidl-test-avbuffer"
+  <project name="rdk-halif-aidl-test-avbuffer"
            path="vts_hal_test_components/avbuffer"
 	   revision="refs/tags/0.4.0" />
 
@@ -37,7 +37,7 @@
 
    <project name="rdk-halif-aidl-L4-Vendor"
            path="vts_hal_test_components/l4_tests"
-           revision="refs/tags/0.2.0" /> -->
+           revision="refs/tags/0.2.0" />
 
    <project name="rdk-halif-aidl-test-cec"
            path="vts_hal_test_components/hdmicec"
@@ -71,7 +71,7 @@
            path="vts_hal_test_components/indicator"
            revision="refs/tags/0.2.2" />
 
-   <!--<project name="rdk-halif-aidl-test-audiomixer"
+   <project name="rdk-halif-aidl-test-audiomixer"
            path="vts_hal_test_components/audiomixer"
            revision="main" />
 
@@ -89,6 +89,6 @@
 
    <project name="rdk-halif-aidl-test-farfieldvoice"
            path="vts_hal_test_components/farfieldvoice"
-           revision="develop" /> -->
+           revision="develop" />
 
 </manifest>
