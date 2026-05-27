@@ -53,13 +53,11 @@ VTS:
           - start_neg
           - stop_pos
           - stop_neg
-          - decodeBuffer_neg
+          - decodeBufferWithMetadata_neg
           - flush_pos
           - flush_neg
           - signalDiscontinuity_pos
           - signalDiscontinuity_neg
-          - signalEOS_pos
-          - signalEOS_neg
           - parseCodecSpecificData_pos
           - parseCodecSpecificData_neg
           - setProperty_pos
@@ -98,6 +96,10 @@ VTS:
           - setAudioDecoder_pos
           - setAudioDecoder_neg
           - getAudioDecoder_pos
+          - attachClock_pos
+          - attachClock_neg
+          - detachClock_pos
+          - getClock_pos
           - start_pos
           - start_neg
           - stop_pos
@@ -121,6 +123,7 @@ VTS:
           - TestAudioSinkVolumeRampMute
           - TestAudioSinkVolumeRampTwice
           - TestStopAudioSinkVolRampProgress
+          - TestClockAttachDetach
       4:
         name: "VTS_L1_AVBuffer"
         tests:
@@ -162,6 +165,8 @@ VTS:
           - getState_pos
           - open_pos
           - open_neg
+          - openWithResolution_pos
+          - openWithResolution_neg
           - close_pos
           - close_neg
           - registerEventListener_pos
@@ -174,13 +179,11 @@ VTS:
           - stop_neg
           - setProperty_pos
           - setProperty_neg
-          - decodeBuffer_neg
+          - decodeBufferWithMetadata_neg
           - flush_pos
           - flush_neg
           - signalDiscontinuity_pos
           - signalDiscontinuity_neg
-          - signalEOS_pos
-          - signalEOS_neg
           - parseCodecSpecificData_pos
           - parseCodecSpecificData_neg
           - setStreamResolution_pos
@@ -225,6 +228,7 @@ VTS:
           - setVideodecoder_pos
           - setVideodecoder_neg
           - getVideodecoder_pos
+          - getVideodecoder_neg
           - start_pos
           - start_neg
           - stop_pos
@@ -234,6 +238,11 @@ VTS:
           - flush_neg
           - discardFramesUntil_pos
           - discardFramesUntil_neg
+          - attachClock_pos
+          - attachClock_neg
+          - getClock_pos
+          - getClock_neg
+          - detachClock_getClock_pos
 
       8:
         name: "VTS_L2_VideoSink"
@@ -246,6 +255,7 @@ VTS:
         name: "VTS_L1_AVClock"
         tests:
           - getAVClockIds_pos
+          - getAVClock_pos
           - getAVClock_neg
           - getCapabilities_pos
           - getState_pos
@@ -264,18 +274,6 @@ VTS:
           - start_neg
           - stop_pos
           - stop_neg
-          - setAudioSink_pos
-          - setAudioSink_neg
-          - getAudioSink_pos
-          - getAudioSink_neg
-          - setSupplementaryAudioSink_pos
-          - setSupplementaryAudioSink_neg
-          - getSupplementaryAudioSink_pos
-          - getSupplementaryAudioSink_neg
-          - setVideoSink_pos
-          - setVideoSink_neg
-          - getVideoSink_pos
-          - getVideoSink_neg
           - setClockMode_pos
           - setClockMode_neg
           - getClockMode_pos
