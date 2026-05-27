@@ -95,6 +95,31 @@ VTS:
           - Decode_Sequential_NonTunnel_NonSecure_Flush
           - Decode_Sequential_NonTunnel_NonSecure_FlushReset
           - Decode_Sequential_NonTunnel_NonSecure_StopStart
+          - Decode_Sequential_NonTunnel_NonSecure_OnDecodeBufAvail
+          - Decode_Sequential_NonTunnel_Secure
+          - Decode_Sequential_NonTunnel_Secure_Error
+          - Decode_Sequential_NonTunnel_Secure_Trim
+          - Decode_Sequential_NonTunnel_Secure_Discontinuity
+          - Decode_Sequential_NonTunnel_Secure_EOS
+          - Decode_Sequential_NonTunnel_Secure_Flush
+          - Decode_Sequential_NonTunnel_Secure_FlushReset
+          - Decode_Sequential_NonTunnel_Secure_StopStart
+          - Decode_Sequential_Tunnel_NonSecure
+          - Decode_Sequential_Tunnel_NonSecure_Error
+          - Decode_Sequential_Tunnel_NonSecure_Trim
+          - Decode_Sequential_Tunnel_NonSecure_Discontinuity
+          - Decode_Sequential_Tunnel_NonSecure_EOS
+          - Decode_Sequential_Tunnel_NonSecure_Flush
+          - Decode_Sequential_Tunnel_NonSecure_FlushReset
+          - Decode_Sequential_Tunnel_NonSecure_StopStart
+          - Decode_Sequential_Tunnel_Secure
+          - Decode_Sequential_Tunnel_Secure_Error
+          - Decode_Sequential_Tunnel_Secure_Trim
+          - Decode_Sequential_Tunnel_Secure_Discontinuity
+          - Decode_Sequential_Tunnel_Secure_EOS
+          - Decode_Sequential_Tunnel_Secure_Flush
+          - Decode_Sequential_Tunnel_Secure_FlushReset
+          - Decode_Sequential_Tunnel_Secure_StopStart
           - Decode_Concurrent_NonTunnel_NonSecure
           - Decode_Concurrent_NonTunnel_NonSecure_Error
           - Decode_Concurrent_NonTunnel_NonSecure_Trim
@@ -103,6 +128,30 @@ VTS:
           - Decode_Concurrent_NonTunnel_NonSecure_Flush
           - Decode_Concurrent_NonTunnel_NonSecure_FlushReset
           - Decode_Concurrent_NonTunnel_NonSecure_StopStart
+          - Decode_Concurrent_NonTunnel_Secure
+          - Decode_Concurrent_NonTunnel_Secure_Error
+          - Decode_Concurrent_NonTunnel_Secure_Trim
+          - Decode_Concurrent_NonTunnel_Secure_Discontinuity
+          - Decode_Concurrent_NonTunnel_Secure_EOS
+          - Decode_Concurrent_NonTunnel_Secure_Flush
+          - Decode_Concurrent_NonTunnel_Secure_FlushReset
+          - Decode_Concurrent_NonTunnel_Secure_StopStart
+          - Decode_Concurrent_Tunnel_NonSecure
+          - Decode_Concurrent_Tunnel_NonSecure_Error
+          - Decode_Concurrent_Tunnel_NonSecure_Trim
+          - Decode_Concurrent_Tunnel_NonSecure_Discontinuity
+          - Decode_Concurrent_Tunnel_NonSecure_EOS
+          - Decode_Concurrent_Tunnel_NonSecure_Flush
+          - Decode_Concurrent_Tunnel_NonSecure_FlushReset
+          - Decode_Concurrent_Tunnel_NonSecure_StopStart
+          - Decode_Concurrent_Tunnel_Secure
+          - Decode_Concurrent_Tunnel_Secure_Error
+          - Decode_Concurrent_Tunnel_Secure_Trim
+          - Decode_Concurrent_Tunnel_Secure_Discontinuity
+          - Decode_Concurrent_Tunnel_Secure_EOS
+          - Decode_Concurrent_Tunnel_Secure_Flush
+          - Decode_Concurrent_Tunnel_Secure_FlushReset
+          - Decode_Concurrent_Tunnel_Secure_StopStart
       1:
         name: "VTS_L3_AudioSink"
         streams:
@@ -154,10 +203,34 @@ VTS:
           - Sink_Sequential_NonTunnel_NonSecure_Flush
           - Sink_Sequential_NonTunnel_NonSecure_EOS
           - Sink_Sequential_NonTunnel_NonSecure_Underflow
+          - Sink_Sequential_NonTunnel_Secure
+          - Sink_Sequential_NonTunnel_Secure_Flush
+          - Sink_Sequential_NonTunnel_Secure_EOS
+          - Sink_Sequential_NonTunnel_Secure_Underflow
+          - Sink_Sequential_Tunnel_NonSecure
+          - Sink_Sequential_Tunnel_NonSecure_Flush
+          - Sink_Sequential_Tunnel_NonSecure_EOS
+          - Sink_Sequential_Tunnel_NonSecure_Underflow
+          - Sink_Sequential_Tunnel_Secure
+          - Sink_Sequential_Tunnel_Secure_Flush
+          - Sink_Sequential_Tunnel_Secure_EOS
+          - Sink_Sequential_Tunnel_Secure_Underflow
           - Sink_Concurrent_NonTunnel_NonSecure
           - Sink_Concurrent_NonTunnel_NonSecure_Flush
           - Sink_Concurrent_NonTunnel_NonSecure_EOS
           - Sink_Concurrent_NonTunnel_NonSecure_Underflow
+          - Sink_Concurrent_NonTunnel_Secure
+          - Sink_Concurrent_NonTunnel_Secure_Flush
+          - Sink_Concurrent_NonTunnel_Secure_EOS
+          - Sink_Concurrent_NonTunnel_Secure_Underflow
+          - Sink_Concurrent_Tunnel_NonSecure
+          - Sink_Concurrent_Tunnel_NonSecure_Flush
+          - Sink_Concurrent_Tunnel_NonSecure_EOS
+          - Sink_Concurrent_Tunnel_NonSecure_Underflow
+          - Sink_Concurrent_Tunnel_Secure
+          - Sink_Concurrent_Tunnel_Secure_Flush
+          - Sink_Concurrent_Tunnel_Secure_EOS
+          - Sink_Concurrent_Tunnel_Secure_Underflow
 
       2:
         name: "VTS_L3_AVBuffer"
@@ -266,6 +339,79 @@ VTS:
           - Decode_Concurrent_NonTunnel_NonSecure_Flush
           - Decode_Concurrent_NonTunnel_NonSecure_FlushReset
           - Decode_Concurrent_NonTunnel_NonSecure_GOPStructure
+          - DecodeBufferAvailable_BackPressure_Callback
+          - Decode_NonTunnel_Secure
+          - Decode_NonTunnel_Secure_Error
+          - Decode_NonTunnel_Secure_GOP
+          - Decode_Concurrent_NonTunnel_Secure
+          - Decode_Sequential_NonTunnel_NonSecure_CODEC
+          - Decode_Sequential_NonTunnel_NonSecure_Resolutions
+          - Decode_Sequential_NonTunnel_NonSecure_HDRModes
+          - Decode_Sequential_NonTunnel_NonSecure_FrameRate
+          - Decode_Sequential_NonTunnel_NonSecure_LowLatency
+          - Decode_Sequential_NonTunnel_NonSecure_AdaptiveBitrate
+          - Decode_Sequential_NonTunnel_Secure_CODEC
+          - Decode_Sequential_NonTunnel_Secure_Discontinuity
+          - Decode_Sequential_NonTunnel_Secure_EOS
+          - Decode_Sequential_NonTunnel_Secure_Flush
+          - Decode_Sequential_NonTunnel_Secure_FlushReset
+          - Decode_Sequential_NonTunnel_Secure_Resolutions
+          - Decode_Sequential_NonTunnel_Secure_HDRModes
+          - Decode_Sequential_NonTunnel_Secure_FrameRate
+          - Decode_Sequential_NonTunnel_Secure_LowLatency
+          - Decode_Concurrent_NonTunnel_NonSecure_CODEC
+          - Decode_Concurrent_NonTunnel_NonSecure_Resolutions
+          - Decode_Concurrent_NonTunnel_NonSecure_HDRModes
+          - Decode_Concurrent_NonTunnel_NonSecure_FrameRate
+          - Decode_Concurrent_NonTunnel_NonSecure_LowLatency
+          - Decode_Concurrent_NonTunnel_Secure_Error
+          - Decode_Concurrent_NonTunnel_Secure_CODEC
+          - Decode_Concurrent_NonTunnel_Secure_Discontinuity
+          - Decode_Concurrent_NonTunnel_Secure_EOS
+          - Decode_Concurrent_NonTunnel_Secure_Flush
+          - Decode_Concurrent_NonTunnel_Secure_FlushReset
+          - Decode_Concurrent_NonTunnel_Secure_Resolutions
+          - Decode_Concurrent_NonTunnel_Secure_HDRModes
+          - Decode_Concurrent_NonTunnel_Secure_FrameRate
+          - Decode_Concurrent_NonTunnel_Secure_GOPStructure
+          - Decode_Concurrent_NonTunnel_Secure_LowLatency
+          - Decode_Tunnel_NonSecure
+          - Decode_Tunnel_Secure
+          - Decode_Tunnel_NonSecure_Error
+          - Decode_Concurrent_Tunnel_NonSecure
+          - Decode_Sequential_Tunnel_NonSecure_CODEC
+          - Decode_Sequential_Tunnel_NonSecure_Discontinuity
+          - Decode_Sequential_Tunnel_NonSecure_EOS
+          - Decode_Sequential_Tunnel_NonSecure_Flush
+          - Decode_Sequential_Tunnel_NonSecure_FlushReset
+          - Decode_Sequential_Tunnel_NonSecure_Resolutions
+          - Decode_Sequential_Tunnel_NonSecure_HDRModes
+          - Decode_Sequential_Tunnel_NonSecure_FrameRate
+          - Decode_Sequential_Tunnel_NonSecure_GOPStructure
+          - Decode_Sequential_Tunnel_NonSecure_LowLatency
+          - Decode_Sequential_Tunnel_Secure_Error
+          - Decode_Sequential_Tunnel_Secure_CODEC
+          - Decode_Sequential_Tunnel_Secure_Discontinuity
+          - Decode_Sequential_Tunnel_Secure_EOS
+          - Decode_Sequential_Tunnel_Secure_Flush
+          - Decode_Sequential_Tunnel_Secure_FlushReset
+          - Decode_Sequential_Tunnel_Secure_Resolutions
+          - Decode_Sequential_Tunnel_Secure_HDRModes
+          - Decode_Sequential_Tunnel_Secure_FrameRate
+          - Decode_Sequential_Tunnel_Secure_GOPStructure
+          - Decode_Sequential_Tunnel_Secure_LowLatency
+          - Decode_Concurrent_Tunnel_NonSecure_Error
+          - Decode_Concurrent_Tunnel_NonSecure_CODEC
+          - Decode_Concurrent_Tunnel_NonSecure_Discontinuity
+          - Decode_Concurrent_Tunnel_NonSecure_EOS
+          - Decode_Concurrent_Tunnel_NonSecure_Flush
+          - Decode_Concurrent_Tunnel_NonSecure_FlushReset
+          - Decode_Concurrent_Tunnel_NonSecure_Resolutions
+          - Decode_Concurrent_Tunnel_NonSecure_HDRModes
+          - Decode_Concurrent_Tunnel_NonSecure_FrameRate
+          - Decode_Concurrent_Tunnel_NonSecure_GOPStructure
+          - Decode_Concurrent_Tunnel_NonSecure_LowLatency
+          - Decode_Concurrent_Tunnel_Secure
       4:
         name: "VTS_L3_VideoSink"
         streams:
@@ -284,6 +430,8 @@ VTS:
           - Video_Sink/H264_UHD_60_YUV444.es
         tests:
           - Sink_Sequential_NonTunnel_NonSecure_QueueDepth
+          - Sink_Sequential_NonTunnel_NonSecure_FrameBufferAvailable
+          - Sink_Sequential_NonTunnel_NonSecure_FrameBufferAvailable_NoClockAttach
           - Sink_Sequential_NonTunnel_NonSecure_FramesReceived
           - Sink_Sequential_NonTunnel_NonSecure_FramesDroppedLate
           - Sink_Sequential_NonTunnel_NonSecure_FramesRepeatedFRC
@@ -303,6 +451,66 @@ VTS:
           - Sink_Concurrent_NonTunnel_NonSecure_EOS
           - Sink_Concurrent_NonTunnel_NonSecure_UnderflowResumed
           - Sink_Concurrent_NonTunnel_NonSecure_DiscardFramesUntil
+          - Sink_Sequential_NonTunnel_Secure_QueueDepth
+          - Sink_Sequential_NonTunnel_Secure_FramesReceived
+          - Sink_Sequential_NonTunnel_Secure_FramesDroppedLate
+          - Sink_Sequential_NonTunnel_Secure_FramesRepeatedFRC
+          - Sink_Sequential_NonTunnel_Secure_FramesMiss
+          - Sink_Sequential_NonTunnel_Secure_FramesDroppedFRC
+          - Sink_Sequential_NonTunnel_Secure_VideoFlush
+          - Sink_Sequential_NonTunnel_Secure_EOS
+          - Sink_Sequential_NonTunnel_Secure_UnderflowResumed
+          - Sink_Sequential_NonTunnel_Secure_DiscardFramesUntil
+          - Sink_Concurrent_NonTunnel_Secure_QueueDepth
+          - Sink_Concurrent_NonTunnel_Secure_FramesReceived
+          - Sink_Concurrent_NonTunnel_Secure_FramesDroppedLate
+          - Sink_Concurrent_NonTunnel_Secure_FramesDroppedFRC
+          - Sink_Concurrent_NonTunnel_Secure_FramesRepeatedFRC
+          - Sink_Concurrent_NonTunnel_Secure_FramesMiss
+          - Sink_Concurrent_NonTunnel_Secure_VideoFlush
+          - Sink_Concurrent_NonTunnel_Secure_EOS
+          - Sink_Concurrent_NonTunnel_Secure_UnderflowResumed
+          - Sink_Concurrent_NonTunnel_Secure_DiscardFramesUntil
+          - Sink_Sequential_Tunnel_NonSecure_QueueDepth
+          - Sink_Sequential_Tunnel_NonSecure_FramesReceived
+          - Sink_Sequential_Tunnel_NonSecure_FramesDroppedLate
+          - Sink_Sequential_Tunnel_NonSecure_FramesRepeatedFRC
+          - Sink_Sequential_Tunnel_NonSecure_FramesMiss
+          - Sink_Sequential_Tunnel_NonSecure_FramesDroppedFRC
+          - Sink_Sequential_Tunnel_NonSecure_VideoFlush
+          - Sink_Sequential_Tunnel_NonSecure_EOS
+          - Sink_Sequential_Tunnel_NonSecure_UnderflowResumed
+          - Sink_Sequential_Tunnel_NonSecure_DiscardFramesUntil
+          - Sink_Concurrent_Tunnel_NonSecure_QueueDepth
+          - Sink_Concurrent_Tunnel_NonSecure_FramesReceived
+          - Sink_Concurrent_Tunnel_NonSecure_FramesDroppedLate
+          - Sink_Concurrent_Tunnel_NonSecure_FramesDroppedFRC
+          - Sink_Concurrent_Tunnel_NonSecure_FramesRepeatedFRC
+          - Sink_Concurrent_Tunnel_NonSecure_FramesMiss
+          - Sink_Concurrent_Tunnel_NonSecure_VideoFlush
+          - Sink_Concurrent_Tunnel_NonSecure_EOS
+          - Sink_Concurrent_Tunnel_NonSecure_UnderflowResumed
+          - Sink_Concurrent_Tunnel_NonSecure_DiscardFramesUntil
+          - Sink_Sequential_Tunnel_Secure_QueueDepth
+          - Sink_Sequential_Tunnel_Secure_FramesReceived
+          - Sink_Sequential_Tunnel_Secure_FramesDroppedLate
+          - Sink_Sequential_Tunnel_Secure_FramesRepeatedFRC
+          - Sink_Sequential_Tunnel_Secure_FramesMiss
+          - Sink_Sequential_Tunnel_Secure_FramesDroppedFRC
+          - Sink_Sequential_Tunnel_Secure_VideoFlush
+          - Sink_Sequential_Tunnel_Secure_EOS
+          - Sink_Sequential_Tunnel_Secure_UnderflowResumed
+          - Sink_Sequential_Tunnel_Secure_DiscardFramesUntil
+          - Sink_Concurrent_Tunnel_Secure_QueueDepth
+          - Sink_Concurrent_Tunnel_Secure_FramesReceived
+          - Sink_Concurrent_Tunnel_Secure_FramesDroppedLate
+          - Sink_Concurrent_Tunnel_Secure_FramesDroppedFRC
+          - Sink_Concurrent_Tunnel_Secure_FramesRepeatedFRC
+          - Sink_Concurrent_Tunnel_Secure_FramesMiss
+          - Sink_Concurrent_Tunnel_Secure_VideoFlush
+          - Sink_Concurrent_Tunnel_Secure_EOS
+          - Sink_Concurrent_Tunnel_Secure_UnderflowResumed
+          - Sink_Concurrent_Tunnel_Secure_DiscardFramesUntil
       5:
         name: "VTS_L3_AVClock"
         streams:

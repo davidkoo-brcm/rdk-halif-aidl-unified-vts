@@ -150,7 +150,6 @@ CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
 $(info CXXFLAGS: $(CXXFLAGS))
 CXXFLAGS += -DBUILD_TIMESTAMP=\"$(BUILD_TIMESTAMP)\"
 
-ENABLE_UT_INFO_LOGGING ?= 0
 
 # Add CXXFLAGS if ENABLE_PLANE_CONTROL_TEST is set
 ifeq ($(ENABLE_PLANE_CONTROL_TEST),1)
@@ -159,11 +158,6 @@ endif
 
 ifeq ($(ENABLE_AV_L4_TEST),1)
 CXXFLAGS += -DENABLE_AV_L4_TEST
-endif
-
-# TODO: remove this once the ut-core implements runtime logging configuration
-ifeq ($(ENABLE_UT_INFO_LOGGING),1)
-CXXFLAGS += -DENABLE_UT_INFO_LOGGING
 endif
 
 SRC_DIRS := $(AUDIO_DECODER_TEST_DIR)/src
