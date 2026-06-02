@@ -31,7 +31,6 @@ declare -r TOP=`dirname $(realpath $0)`
 declare -r HALIF_VERSION=current
 RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION="main"}"
 RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-aidl-test-"
-VCOMPONENT_BASE_URL="ssh://git@github.code.rdkcentral.com/rdkcentral"
 OUT_TAR_FILE=vts_unified.tar.gz.bz
 
 declare -A HALIF_COMPONENTS=(
@@ -86,7 +85,6 @@ declare -r RDK_HAL_TEST_DIR=${TOP}/vts_hal_test_components
 declare -r PROFILES_DIR=${TOP}/profiles
 declare -r L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests
 declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests/src/av/
-declare -r VCOMPONENT_DIR=${TOP}/vcomponents
 
 DEF_LINUX_BINDER="`realpath ${TOP}/../`/linux_binder_idl"
 # AIDL_BIN: path of aidl compiler
@@ -354,7 +352,6 @@ install_test()
     install -t ${INSTALL_PATH} ${TOP_BUILD_DIR}/usr/bin/*
     install -t ${INSTALL_PATH} ${TOP_BUILD_DIR}/usr/lib/*
     install -t ${INSTALL_PATH} run.sh
-    install -t ${INSTALL_PATH} start_services.sh
 
     # Remove gstreamer and egl libraries from the install path (not needed in final tar)
     rm -rf ${INSTALL_PATH}/libgst*  ${INSTALL_PATH}/libEGL* ${INSTALL_PATH}/libGL* ${INSTALL_PATH}/libMali* ${INSTALL_PATH}/libwayland* ${INSTALL_PATH}/libgbm* ${INSTALL_PATH}/libgio*
@@ -377,12 +374,6 @@ install_test()
     done
     cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/
 
-    for component in "${!VCOMPONENT_MODULES[@]}"; do
-        if [ -d "${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}" ]; then
-            cp -rf ${VCOMPONENT_DIR}/rdk-aidl-vcomponent-${component}/vcomponent_configurations ${INSTALL_PATH}/
-        fi
-    done
-
     mkdir -p ${INSTALL_PATH}/assets/streams/input
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
     rm -rf ${INSTALL_PATH}/libavbufferhelper.so
@@ -390,59 +381,6 @@ install_test()
     cd ${TOP_BUILD_DIR}
     tar -zcf ${OUT_TAR_FILE} bin
     cd -
-}
-
-#TODO: This function needs to be removed, once the vcomponent is available in vDevice
-###############################################################################
-# Function to install and build vcomponent services
-###############################################################################
-
-build_vcomponent_services()
-{
-    mkdir -p "${VCOMPONENT_DIR}" || return 1
-
-    for component in "${!VCOMPONENT_MODULES[@]}"; do
-        local repo="rdk-aidl-vcomponent-${component}"
-        local repo_dir="${VCOMPONENT_DIR}/${repo}"
-        local branch
-        branch="$(resolve_branch "$component")"
-
-        echo -e "${BOLD}Building ${repo} [branch: ${branch}]${RESET}"
-
-        # Clone if missing
-        if [[ ! -d "${repo_dir}/.git" ]]; then
-            git clone "${VCOMPONENT_BASE_URL}/${repo}.git" "${repo_dir}"
-            if [ $? -ne 0 ]; then
-                echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
-                echo -e "${BOLD}* ${RED}Failed to clone ${repo}. Exiting.${RESET}"
-                echo -e "${BOLD}╚══════════════════════════════════════════════════════╝${RESET}"
-                return 1
-            fi
-        fi
-
-        pushd "${repo_dir}" >/dev/null
-
-        git fetch origin || exit 1
-
-        git checkout "${branch}" 2>/dev/null \
-            || git checkout -b "${branch}" "origin/${branch}" || {
-                echo -e "${BOLD}${RED}Branch '${branch}' not found in ${repo}${RESET}"
-                exit 1
-            }
-
-        git pull origin "${branch}" || exit 1
-
-        make -j"$(nproc)" \
-            BUILD_DIR="${TOP_BUILD_DIR}" \
-            UT_CORE_DIR="${UT_CORE_DIR}" || {
-                echo -e "${BOLD}╔════════════════════════════════════════════════╗${RESET}"
-                echo -e "${BOLD}* ${RED}Failed to build the vcomponent Service. Exiting.${RESET}"
-                echo -e "${BOLD}╚════════════════════════════════════════════════╝${RESET}"
-                exit 1
-            }
-
-        popd >/dev/null
-    done
 }
 
 ###############################################################################
@@ -460,7 +398,6 @@ clean_test()
     rm -rf ${COMMON_DIR}/helper_functions/*.o
     rm -rf ${COMMON_DIR}/vts_player/*.o
 
-    find "$VCOMPONENT_DIR" -type f -name "*.o" -delete
     find "$RDK_HAL_TEST_DIR" -type f -name "*.o" -delete
     find "$TOP_BUILD_DIR" -type f -name "*.o" -delete
 }
@@ -474,7 +411,6 @@ dist_clean_test()
     rm -rf $RDK_HAL_DIR
     rm -rf ${UT_CORE_DIR}
     rm -rf $RDK_HAL_TEST_DIR
-    rm -rf $VCOMPONENT_DIR #TODO: Remove this when vDevice is completely done
     rm -rf .repo
 }
 
@@ -535,7 +471,6 @@ elif [[ "$1" == [Tt]arget=* ]]; then
     build_ut_core
     generate_avbufferhelper_skeleton
     build_halif_test
-    build_vcomponent_services
     install_test
 else
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"

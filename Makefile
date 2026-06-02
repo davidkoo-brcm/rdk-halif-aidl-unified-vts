@@ -30,7 +30,6 @@ VIDEO_SINK_TEST_DIR := $(VTS_TEST_DIR)/videosink
 AV_BUFFER_TEST_DIR := $(VTS_TEST_DIR)/avbuffer
 AV_CLOCK_TEST_DIR := $(VTS_TEST_DIR)/avclock
 PLANE_CONTROL_TEST_DIR := $(VTS_TEST_DIR)/planecontrol
-DEVICEINFO_TEST_DIR := $(VTS_TEST_DIR)/deviceinfo
 L4_TEST_DIR := $(VTS_TEST_DIR)/l4_tests
 AV_L4_TESTS_DIR := $(L4_TEST_DIR)/src/av
 HDMICEC_TEST_DIR := $(VTS_TEST_DIR)/hdmicec
@@ -90,7 +89,6 @@ BROADCAST_VERSION := $(shell cd $(BROADCAST_TEST_DIR) && git describe --tags --a
 PANEL_VERSION := $(shell cd $(PANEL_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 FARFIELDVOICE_VERSION := $(shell cd $(FARFIELDVOICE_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 L4_TESTS_VERSION := $(shell cd $(L4_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
-DEVICEINFO_VERSION := $(shell cd $(DEVICEINFO_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 BUILD_TIMESTAMP := $(shell date +"%Y-%m-%d_%H:%M:%S")
 
 # Print module versions

@@ -30,8 +30,5 @@ fi
 
 export LD_LIBRARY_PATH=/usr/lib:/lib:/home/root:./:$RUN_DIR:$LD_LIBRARY_PATH
 
-#Starting non av services
-./start_services.sh
-
 echo "Executing [vts_hal_test]"
 "${RUN_DIR}/vts_hal_test" "$@"
