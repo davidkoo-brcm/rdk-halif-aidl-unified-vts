@@ -49,6 +49,7 @@ declare -A HALIF_COMPONENTS=(
   [boot]="current"
   [flash]="current"
   [indicator]="current"
+  [sensor]="current"
 )
 
 declare -A HALIF_TEST_COMPONENTS=(
@@ -72,6 +73,8 @@ declare -A HALIF_TEST_COMPONENTS=(
   [broadcast]="RDK_HALIF_BROADCAST_TEST_VERSION"
   [panel]="RDK_HALIF_PANEL_TEST_VERSION"
   [farfieldvoice]="RDK_HALIF_FARFIELDVOICE_TEST_VERSION"
+  [thermalsensor]="RDK_HALIF_THERMALSENSOR_TEST_VERSION"
+  [motionsensor]="RDK_HALIF_MOTIONSENSOR_TEST_VERSION"
 )
 
 # Define the directory where the repository will be cloned

@@ -327,3 +327,55 @@ VTS:
           - TestGetSetProperty
           - TestGetSetPropertyMultiAtomic
           - TestGetSetVideoSourceDestinationPlaneMapping
+
+      13:
+        name: "VTS_L1_FLASH"
+        tests:
+          - flashImageFromFile_invalid_params
+
+      14:
+        name: "VTS_L1_MOTIONSENSOR"
+        tests:
+          - getMotionSensorIds_pos
+          - getMotionSensor_pos
+          - getMotionSensor_neg
+          - getCapabilities_pos
+          - getState_pos
+          - open_pos
+          - open_neg
+          - close_neg
+          - registerEventListener_pos
+          - registerEventListener_neg
+          - unregisterEventListener_neg
+          - start_pos
+          - start_neg
+          - stop_neg
+          - getStartConfig_pos
+          - getStartConfig_neg
+          - getSensitivity_pos
+          - setSensitivity_pos
+          - setSensitivity_neg
+          - isAutonomousDuringDeepSleepEnabled_pos
+          - setAutonomousDuringDeepSleep_pos
+          - setAutonomousDuringDeepSleep_neg
+          - setActiveWindows_pos
+          - setActiveWindows_neg
+          - getActiveWindows_pos
+          - clearActiveWindows_pos
+          - clearActiveWindows_neg
+
+      15:
+        name: "VTS_L2_MOTIONSENSOR"
+        tests:
+          - StateTransitions
+          - ConfigurationMethodsRequireStopped
+
+      16:
+        name: "VTS_L1_THERMALSENSOR"
+        tests:
+          - registerEventListener_pos
+          - registerEventListener_neg
+          - unregisterEventListener_pos
+          - unregisterEventListener_neg
+          - getCurrentThermalState_pos
+          - getCurrentTemperatures_pos

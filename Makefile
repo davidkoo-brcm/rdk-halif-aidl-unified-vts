@@ -45,6 +45,8 @@ CDM_TEST_DIR := $(VTS_TEST_DIR)/cdm
 BROADCAST_TEST_DIR := $(VTS_TEST_DIR)/broadcast
 PANEL_TEST_DIR := $(VTS_TEST_DIR)/panel
 FARFIELDVOICE_TEST_DIR := $(VTS_TEST_DIR)/farfieldvoice
+THERMALSENSOR_TEST_DIR := $(VTS_TEST_DIR)/thermalsensor
+MOTIONSENSOR_TEST_DIR := $(VTS_TEST_DIR)/motionsensor
 
 COMMON_DIR := $(ROOT_DIR)/common
 VTS_PLAYER := $(COMMON_DIR)/vts_player
@@ -88,6 +90,8 @@ CDM_VERSION := $(shell cd $(CDM_TEST_DIR) && git describe --tags --always 2>/dev
 BROADCAST_VERSION := $(shell cd $(BROADCAST_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 PANEL_VERSION := $(shell cd $(PANEL_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 FARFIELDVOICE_VERSION := $(shell cd $(FARFIELDVOICE_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+THERMALSENSOR_VERSION := $(shell cd $(THERMALSENSOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+MOTIONSENSOR_VERSION := $(shell cd $(MOTIONSENSOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 L4_TESTS_VERSION := $(shell cd $(L4_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 BUILD_TIMESTAMP := $(shell date +"%Y-%m-%d_%H:%M:%S")
 
@@ -112,6 +116,8 @@ $(info CDM_VERSION: $(CDM_VERSION))
 $(info BROADCAST_VERSION: $(BROADCAST_VERSION))
 $(info PANEL_VERSION: $(PANEL_VERSION))
 $(info FARFIELDVOICE_VERSION: $(FARFIELDVOICE_VERSION))
+$(info THERMALSENSOR_VERSION: $(THERMALSENSOR_VERSION))
+$(info MOTIONSENSOR_VERSION: $(MOTIONSENSOR_VERSION))
 $(info L4_TESTS_VERSION: $(L4_TESTS_VERSION))
 $(info BUILD_TIMESTAMP: $(BUILD_TIMESTAMP))
 $(info TARGET: $(TARGET))
@@ -145,6 +151,8 @@ CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DBROADCAST_VERSION=\"$(BROADCAST_VERSION)\" \
             -DPANEL_VERSION=\"$(PANEL_VERSION)\" \
             -DFARFIELDVOICE_VERSION=\"$(FARFIELDVOICE_VERSION)\" \
+            -DTHERMALSENSOR_VERSION=\"$(THERMALSENSOR_VERSION)\" \
+            -DMOTIONSENSOR_VERSION=\"$(MOTIONSENSOR_VERSION)\" \
             -DL4_TESTS_VERSION=\"$(L4_TESTS_VERSION)\"
 
 $(info CXXFLAGS: $(CXXFLAGS))
@@ -175,13 +183,15 @@ SRC_DIRS += $(HDMIOUTPUT_TEST_DIR)/src
 SRC_DIRS += $(DEEPSLEEP_TEST_DIR)/src
 SRC_DIRS += $(DEVICEINFO_TEST_DIR)/src
 SRC_DIRS += $(BOOT_TEST_DIR)/src
-#SRC_DIRS += $(FLASH_TEST_DIR)/src
+SRC_DIRS += $(FLASH_TEST_DIR)/src
 SRC_DIRS += $(INDICATOR_TEST_DIR)/src
 SRC_DIRS += $(AUDIOMIXER_TEST_DIR)/src
 SRC_DIRS += $(CDM_TEST_DIR)/src
 SRC_DIRS += $(BROADCAST_TEST_DIR)/src
 SRC_DIRS += $(PANEL_TEST_DIR)/src
 SRC_DIRS += $(FARFIELDVOICE_TEST_DIR)/src
+SRC_DIRS += $(THERMALSENSOR_TEST_DIR)/src
+SRC_DIRS += $(MOTIONSENSOR_TEST_DIR)/src
 ifeq ($(ENABLE_AV_L4_TEST),1)
 SRC_DIRS += $(AV_L4_TESTS_DIR)
 SRC_DIRS += $(VTS_PLAYER)
