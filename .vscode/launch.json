@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "args": [
+        "--config", "host/tests/configs/vts_rack_config.yml",
+        "--deviceConfig", "host/tests/configs/vts_deviceConfig.yml"
+      ],
+      "console": "integratedTerminal",
+      "preLaunchTask": "Patch interactiveShell.py for Windows"
+
+    }
+  ]
+}
