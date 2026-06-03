@@ -9,27 +9,27 @@
 
   <project name="rdk-halif-aidl-test-avbuffer"
            path="vts_hal_test_components/avbuffer"
-	   revision="refs/tags/0.4.0" />
+	   revision="refs/tags/0.5.0" />
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
-	   revision="refs/tags/0.5.1" />
+	   revision="refs/tags/0.6.0" />
 
   <project name="rdk-halif-aidl-test-videodecoder"
            path="vts_hal_test_components/videodecoder"
-	   revision="refs/tags/0.5.1" />
+	   revision="refs/tags/0.6.0" />
 
   <project name="rdk-halif-aidl-test-audiosink"
            path="vts_hal_test_components/audiosink"
-	   revision="refs/tags/0.5.2" />
+	   revision="refs/tags/0.6.0" />
 
   <project name="rdk-halif-aidl-test-videosink"
            path="vts_hal_test_components/videosink"
-	   revision="refs/tags/0.5.0" />
+	   revision="refs/tags/0.6.0" />
 
-  <project name="rdk-halif-aidl-test-avclock"
+   <project name="rdk-halif-aidl-test-avclock"
            path="vts_hal_test_components/avclock"
-	   revision="refs/tags/0.4.0" />
+	   revision="refs/tags/0.5.0" />
 
    <project name="rdk-halif-aidl-test-planecontrol"
            path="vts_hal_test_components/planecontrol"
@@ -83,9 +83,21 @@
            path="vts_hal_test_components/broadcast"
            revision="main" />
 
+   <project name="rdk-halif-aidl-test-compositeinput"
+           path="vts_hal_test_components/compositeinput"
+           revision="refs/tags/0.1.0" />
+
    <project name="rdk-halif-aidl-test-panel"
            path="vts_hal_test_components/panel"
            revision="main" />
+
+   <project name="rdk-halif-aidl-test-motion-sensor"
+           path="vts_hal_test_components/motionsensor"
+           revision="refs/tags/0.1.0" />
+
+   <project name="rdk-halif-aidl-test-thermal-sensor"
+           path="vts_hal_test_components/thermalsensor"
+           revision="refs/tags/0.1.0" />
 
    <project name="rdk-halif-aidl-test-farfieldvoice"
            path="vts_hal_test_components/farfieldvoice"
