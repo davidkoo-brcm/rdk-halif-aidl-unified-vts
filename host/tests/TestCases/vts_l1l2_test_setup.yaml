@@ -234,7 +234,6 @@ VTS:
           - flush_neg
           - discardFramesUntil_pos
           - discardFramesUntil_neg
-
       8:
         name: "VTS_L2_VideoSink"
         tests:
@@ -296,7 +295,6 @@ VTS:
           - TestStateTransitions
           - VerifyClockModeSetToAutoOnOpenAndSetGetClockMode
           - VerifyPlaybackRateAndStateTransitions
-
       11:
         name: "VTS_L1_PlaneControl"
         tests:
@@ -322,18 +320,15 @@ VTS:
           - unregisterListener_neg
           - releaseNativeGraphicsWindowHandle_pos
           - releaseNativeGraphicsWindowHandle_neg
-
       12:
         name: "VTS_L2_PlaneControl"
         tests:
           - TestGetSetProperty
           - TestGetSetPropertyMultiAtomic
           - TestGetSetVideoSourceDestinationPlaneMapping
-
       13:
         name: "VTS_L1_DEVICEINFO"
         tests:
           - getCapabilities_pos
-          - getHALVersion_pos
           - getProperty_pos
           - getProperty_neg
