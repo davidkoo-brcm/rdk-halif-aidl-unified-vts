@@ -683,3 +683,19 @@ VTS:
           - Planecontrol_Pixelformat
           - Planecontrol_Graphicsplane
           - Planecontrol_Vsync
+      7:
+        name: "VTS_L3_FLASH"
+        tests:
+          - flash_imageTypes
+          - flash_concurrentReject
+          - flash_validateAllErrorcodes
+      8:
+        name: "VTS_L3_MOTIONSENSOR"
+        tests:
+          - EventDetection
+          - ActiveWindowBehavior
+          - DeepSleepAutonomy
+      9:
+        name: "VTS_L3_THERMALSENSOR"
+        tests:
+          - ThermalStateTransition
