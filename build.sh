@@ -398,7 +398,6 @@ clean_test()
     rm -rf ${COMMON_DIR}/helper_functions/*.o
     rm -rf ${COMMON_DIR}/vts_player/*.o
 
-    find "$RDK_HAL_TEST_DIR" -type f -name "*.o" -delete
     find "$TOP_BUILD_DIR" -type f -name "*.o" -delete
 }
 ###############################################################################

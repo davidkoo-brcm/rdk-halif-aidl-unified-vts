@@ -63,9 +63,6 @@ chmod 600 ~/.netrc
 
   - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account>
 
-- You may face issue with repo init as repo-tool gets downloaded from different path
-  - For SKY users, follow <https://skyswteam.com/-/user_settings/ssh_keys>
-
 ## Build linux binder for Target Linux
 
 The test suite depends on the Linux binder with `AIDL` support. Follow these steps to build it:
@@ -130,24 +127,26 @@ Set below environment variable:
 
 - LINUX_BINDER_OUT_DIR: Path to the Linux binder output directory (e.g., /path/to/linux_binder_idl/local).
 
-- UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 4.7.3). Defaults to the latest tagged version.
+- UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 5.1.0). Defaults to the latest tagged version.
 
-- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.13.2). Defaults to the latest HEAD.
+- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.15.0). Defaults to the latest HEAD.
 
 Example:
 
 ```bash
-export UT_CORE_VERSION=4.7.3
-export RDK_HALIF_AIDL_VERSION=0.13.2
+export UT_CORE_VERSION=5.1.0
+export RDK_HALIF_AIDL_VERSION=0.15.0
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
 ```
 
-By default, UT logs are disabled. To enable them, Set below environment variable
+By default, UT logs are set to WARNING level. For more details on log level filtering, refer to [UT-Core Log Level Documentation](https://github.com/rdkcentral/ut-control/blob/2.1.0/README.md#log-level-filtering)
 
 ```bash
-export ENABLE_UT_INFO_LOGGING=1
+export UT_LOG_LEVEL=3
 ```
+
+
 
 Run the build script for Target ARM:
 
@@ -163,7 +162,7 @@ Run the build script for Target Linux:
 
 The build.sh script:
 
-- Clones the `rdk-halif-aidl` repository, Vendor test modules, vcomponent for non-av modules and UT-Core framework.
+- Clones the `rdk-halif-aidl` repository, Vendor test modules and UT-Core framework.
 
 - Compiles the test suite.
 
@@ -206,17 +205,11 @@ sudo ./run.sh -p profiles/hfp-vdevice.yaml
 - For running the L1, L2, L3 and L4 test suite, a host PC with a Python environment is required.
 - Install Python Environment and Activation Scripts as detailed in [Python Installation](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite)
 
-## Running L1 and L2 automation test cases
+## Running L1, L2, L3 and L4 Automation test cases
 
-- To run the `L1` and `L2` test cases, follow the `L1` and `L2` Test Procedure document - [vts_L1_L2_TestProcedure.md](docs/vts_L1_L2_TestProcedure.md)
-
-## Running L3 automation test cases
+- To run the VTS `L1`, `L2` test cases follow the `L1` `L2` Test Procedure document - [vts_L1_L2_TestProcedure.md](docs/vts_L1_L2_TestProcedure.md)
 
 - To run the AV Module `L3` test cases follow the `L3` Test Procedure document - [vts_avmodule_L3_TestProcedure.md](docs/vts_avmodule_L3_TestProcedure.md)
-
-- To run the non av `L3` test cases, follow the `non av L3` Test Procedure document - [vts_nonav_L3_TestProcedure.md](docs/vts_nonav_L3_TestProcedure.md)
-
-## Running L4 Automation test cases
 
 - To run the AV  Module `L4` test cases follow the `L4` Test Procedure document - [vts_avmodule_L4_TestProcedure.md](docs/vts_avmodule_L4_TestProcedure.md)
 
@@ -250,4 +243,5 @@ Each individual component and their respective test repositories are listed belo
 |22|Thermal Sensor  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-thermal-sensor)|
 |23|Far Field Voice |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-test-farfieldvoice)|
 |24|L4 Vendor Test  |[Test Repo](https://github.com/rdkcentral/rdk-halif-aidl-L4-Vendor)|
+
 **Note:** Building for ARM requires the RDK toolchains to be installed. For more information, see [RDK Docker Toolchain](https://github.com/rdkcentral/ut-core/wiki/FAQ:-RDK-Docker-Toolchain).
