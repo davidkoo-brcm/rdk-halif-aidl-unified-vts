@@ -38,4 +38,5 @@ include_10: profiles/hfp-deepsleep-vcomponent.yaml
 include_11: profiles/hfp-deviceinfo-vcomponent.yaml
 include_12: profiles/hfp-boot-vcomponent.yaml
 # include_13: profiles/hfp-flash-vcomponent.yaml --- IGNORE ---
-include_14: profiles/hfp-indicator-vcomponent.yaml
+include_14: profiles/hfp-indicator_vcomponent.yaml
+include_15: profiles/hfp-compositeinput.yaml

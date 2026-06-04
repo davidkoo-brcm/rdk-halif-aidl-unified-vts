@@ -76,6 +76,13 @@ rackConfig:
                             ip: "" #IP address
                             password:
                         #For multiple instance tests, all SSH configs are used, single test uses 0th instance.
+                        - ssh_hal_test:
+                            type: "ssh"
+                            port: 7722
+                            username: "root"
+                            ip: "127.0.0.1" #IP address
+                            password: 'tel@123'
+                            prompt: "~#" # Prompt string on console
                         - ssh_hal_test_0:
                             type: "ssh"
                             port:
@@ -106,3 +113,19 @@ rackConfig:
                         upload_url_base_dir: "sftp://server-address/home/workspace/tftp/rack1/slot1" # alternative upload location
                         httpProxy:    # Local Proxy if required
                         workspaceDirectory: './logs/workspace'   # Local working directory
+                    hdmiController:
+                        type: virtual-hdmi-controller
+                        vendor: "vComponent"
+                        address: "127.0.0.1" # Needs to be be filled out with IP address
+                        username: "" # Needs to be filled out with login username
+                        password: '' # Needs to be filled out with login password
+                        port: 7722
+                        control_port: 8085
+                    compositeController:
+                        type: virtual-composite-controller
+                        vendor: "vComponent"
+                        address: "127.0.0.1" # Needs to be be filled out with IP address
+                        username: "" # Needs to be filled out with login username
+                        password: '' # Needs to be filled out with login password
+                        port: 7722
+                        control_port: 8086

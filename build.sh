@@ -45,6 +45,7 @@ declare -A HALIF_COMPONENTS=(
   [hdmiinput]="current"
   [hdmioutput]="current"
   [deepsleep]="current"
+  [compositeinput]="current"
   [deviceinfo]="current"
   [boot]="current"
   [flash]="current"
@@ -63,6 +64,7 @@ declare -A HALIF_TEST_COMPONENTS=(
   [hdmiinput]="RDK_HALIF_HDMIINPUT_TEST_VERSION"
   [hdmioutput]="RDK_HALIF_HDMIOUTPUT_TEST_VERSION"
   [deepsleep]="RDK_HALIF_DEEPSLEEP_TEST_VERSION"
+  [compositeinput]="RDK_HALIF_COMPOSITEINPUT_TEST_VERSION"
   [deviceinfo]="RDK_HALIF_DEVICEINFO_TEST_VERSION"
   [boot]="RDK_HALIF_BOOT_TEST_VERSION"
   [flash]="RDK_HALIF_FLASH_TEST_VERSION"
@@ -370,6 +372,9 @@ install_test()
         fi
         if [ -d "${RDK_HAL_TEST_DIR}/${component}/profiles" ]; then
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/profiles ${INSTALL_PATH}/
+        fi
+        if [ -d "${RDK_HAL_TEST_DIR}/${component}/test_configuration" ]; then
+            cp -rf ${RDK_HAL_TEST_DIR}/${component}/test_configuration ${INSTALL_PATH}/
         fi
     done
     cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/

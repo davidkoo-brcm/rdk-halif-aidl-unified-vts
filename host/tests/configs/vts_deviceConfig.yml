@@ -32,8 +32,14 @@ deviceConfig:
         download_path: "assets/streams/input/" #Download path where streams are saved inside the bin folder
         playback_manual_verification: 0 # flag to enable manual playback verification
         test_config_path: "bin/av_test_configurations"
-        wait_time: 60 #Configurable timeout value to limit the total duration of individual tests
-        all_wait_time: 240 #Configurable timeout value to limit the total duration of individual suite
+        wait_time: 320 #Configurable timeout value to limit the total duration of individual tests
+        all_wait_time: 2400 #Configurable timeout value to limit the total duration of individual suite
         test:
             profile: "../../../profiles/hfp-vdevice.yaml" #HFP profile used to meet platform requirements
             streams_download_url: "<http stream path>" #URL path from which the streams are downloaded to the device
+            deepsleep_controller_port: 8085
+        remote:
+            deepsleep:
+                RCU_IR: 6
+                RCU_BT: 7
+                RCU_RF4CE: 8

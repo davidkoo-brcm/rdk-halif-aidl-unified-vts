@@ -45,6 +45,7 @@ CDM_TEST_DIR := $(VTS_TEST_DIR)/cdm
 BROADCAST_TEST_DIR := $(VTS_TEST_DIR)/broadcast
 PANEL_TEST_DIR := $(VTS_TEST_DIR)/panel
 FARFIELDVOICE_TEST_DIR := $(VTS_TEST_DIR)/farfieldvoice
+COMPOSITEINPUT_TEST_DIR := $(VTS_TEST_DIR)/compositeinput
 
 COMMON_DIR := $(ROOT_DIR)/common
 VTS_PLAYER := $(COMMON_DIR)/vts_player
@@ -79,6 +80,7 @@ HDMICEC_VERSION := $(shell cd $(HDMICEC_TEST_DIR) && git describe --tags --alway
 HDMIINPUT_VERSION := $(shell cd $(HDMIINPUT_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 HDMIOUTPUT_VERSION := $(shell cd $(HDMIOUTPUT_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 DEEPSLEEP_VERSION := $(shell cd $(DEEPSLEEP_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
+COMPOSITEINPUT_VERSION := $(shell cd $(COMPOSITEINPUT_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 DEVICEINFO_VERSION := $(shell cd $(DEVICEINFO_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 BOOT_VERSION := $(shell cd $(BOOT_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 FLASH_VERSION := $(shell cd $(FLASH_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
@@ -103,6 +105,7 @@ $(info HDMICEC_VERSION: $(HDMICEC_VERSION))
 $(info HDMIINPUT_VERSION: $(HDMIINPUT_VERSION))
 $(info HDMIOUTPUT_VERSION: $(HDMIOUTPUT_VERSION))
 $(info DEEPSLEEP_VERSION: $(DEEPSLEEP_VERSION))
+$(info COMPOSITEINPUT_VERSION: $(COMPOSITEINPUT_VERSION))
 $(info DEVICEINFO_VERSION: $(DEVICEINFO_VERSION))
 $(info BOOT_VERSION: $(BOOT_VERSION))
 $(info FLASH_VERSION: $(FLASH_VERSION))
@@ -136,6 +139,7 @@ CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DHDMIINPUT_VERSION=\"$(HDMIINPUT_VERSION)\" \
             -DHDMIOUTPUT_VERSION=\"$(HDMIOUTPUT_VERSION)\" \
             -DDEEPSLEEP_VERSION=\"$(DEEPSLEEP_VERSION)\" \
+            -DCOMPOSITEINPUT_VERSION=\"$(COMPOSITEINPUT_VERSION)\" \
             -DDEVICEINFO_VERSION=\"$(DEVICEINFO_VERSION)\" \
             -DBOOT_VERSION=\"$(BOOT_VERSION)\" \
             -DFLASH_VERSION=\"$(FLASH_VERSION)\" \
@@ -173,6 +177,7 @@ SRC_DIRS += $(HDMICEC_TEST_DIR)/src
 SRC_DIRS += $(HDMIINPUT_TEST_DIR)/src
 SRC_DIRS += $(HDMIOUTPUT_TEST_DIR)/src
 SRC_DIRS += $(DEEPSLEEP_TEST_DIR)/src
+SRC_DIRS += $(COMPOSITEINPUT_TEST_DIR)/src
 SRC_DIRS += $(DEVICEINFO_TEST_DIR)/src
 SRC_DIRS += $(BOOT_TEST_DIR)/src
 #SRC_DIRS += $(FLASH_TEST_DIR)/src
