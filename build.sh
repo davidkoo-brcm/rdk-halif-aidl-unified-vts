@@ -185,6 +185,7 @@ unified_manifest()
 
 	 repo init \
 	 --repo-url=https://gerrit.googlesource.com/git-repo \
+	 --no-clone-bundle \
 	 --repo-rev=stable \
 	 -b "$BRANCH" \
 	 -m aidl_unified_manifest.xml \
