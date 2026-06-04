@@ -229,9 +229,19 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
-    VTS_THERMALSENSOR_init();
+    result = VTS_THERMALSENSOR_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize Thermal Sensor service");
+        result = UT_STATUS_FAILURE;
+    }
 
-    VTS_MOTIONSENSOR_init();
+    result = VTS_MOTIONSENSOR_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize Motion Sensor service");
+        result = UT_STATUS_FAILURE;
+    }
 
     result = VTS_INDICATOR_init();
     if (result != UT_STATUS_OK)

@@ -4,7 +4,7 @@
 # * If not stated otherwise in this file or this component's LICENSE file the
 # * following copyright and licenses apply:
 # *
-# * Copyright 2026 RDK Management
+# * Copyright 2025 RDK Management
 # *
 # * Licensed under the Apache License, Version 2.0 (the "License");
 # * you may not use this file except in compliance with the License.
@@ -20,133 +20,85 @@
 # *
 #* *****************************************************************************
 
+#This python script runs Non-AV L3 VTS test cases
+
 import os
 import sys
 import time
-import yaml
-import inspect
-import importlib.util
-from pathlib import Path
+import logging
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-module_path = Path(dir_path) / "../../../vts_hal_test_components"
-DEFAULT_CONFIG_FILE = "vts_nonav_l3_test_suite.yaml"
-
 sys.path.append(os.path.join(dir_path, "../"))
-sys.path.append(os.path.join(dir_path, "../raft"))
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmicec/host/tests")) # For hdmicec module
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/flash/host/tests")) # For flash module
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/motionsensor/host/tests")) # For motionsensor module
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/thermalsensor/host/tests")) # For thermalsensor module
+
+from vts_hdmicec_L3_ReceiveMessage import VTS_HDMICEC_L3_ReceiveMessage as vts_hdmicec_L3_receive_message
+from vts_hdmicec_L3_SendMessage import VTS_HDMICEC_L3_SendMessage as vts_hdmicec_L3_send_message
+from vts_flash_L3_ConcurrentImage import VTS_FLASH_L3_ConcurrentImage as vts_flash_L3_concurrent_image
+from vts_flash_L3_TestAllImages import VTS_FLASH_L3_TestAllImages as vts_flash_L3_test_all_images
+from vts_flash_L3_validateAllErrorcodes import VTS_FLASH_L3_ValidateAllErrorCodes as vts_flash_L3_validate_all_errorcodes
+from vts_motionsensor_L3_ActiveWindowBehavior import VTS_MOTIONSENSOR_L3_ActiveWindowBehavior as vts_motionsensor_L3_active_window_behavior
+from vts_motionsensor_L3_DeepSleepAutonomy import VTS_MOTIONSENSOR_L3_DeepSleepAutonomy as vts_motionsensor_L3_deep_sleep_autonomy
+from vts_motionsensor_L3_MotionEventDetection import VTS_MOTIONSENSOR_L3_MotionEventDetection as vts_motionsensor_L3_motion_event_detection
+from vts_motionsensor_L3_NoMotionEventDetection import VTS_MOTIONSENSOR_L3_NoMotionEventDetection as vts_motionsensor_L3_no_motion_event_detection
+from vts_thermalsensor_L3_CriticalShutdownWithSuppression import VTS_THERMALSENSOR_L3_CriticalShutdownWithSuppression as vts_thermalsensor_L3_critical_shutdown_with_suppression
+from vts_thermalsensor_L3_ThermalExceedRecoveryLifecycle import VTS_THERMALSENSOR_L3_ThermalExceedRecoveryLifecycle as vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle
 from raft.framework.core.logModule import logModule
 
+def dedupe_python_log_handlers():
+    """Remove duplicate handlers attached to existing Python loggers.
 
-def _loadPythonModule(pyFile: Path):
-    """Load a Python module from the given file path.
-
-    Args:
-        pyFile (Path): Path to the Python source file to load.
-
-    Returns:
-        module: The loaded module, or None if loading failed.
+    RAFT logModule creates handlers by logger name. When multiple test objects are
+    constructed in one process, some logger names are reused and handlers stack,
+    causing each line to be printed multiple times.
     """
-    fileDir = str(pyFile.parent)
-    if fileDir not in sys.path:
-        sys.path.append(fileDir)
-
-    moduleName = f"vts_nonav_l3_{pyFile.stem}"
-    spec = importlib.util.spec_from_file_location(moduleName, str(pyFile))
-    if spec is None or spec.loader is None:
-        return None
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-def runTestInstance(testClass, summary_log, component):
-    """Instantiate and run a single L3 test class.
-
-    Injects the common ``vts_l3_test_setup.yaml`` menu config and component
-    path into the test class before instantiation, then calls ``run()``.
-
-    Args:
-        testClass: The L3 test class to instantiate and run.
-        summary_log (logModule): Logger for test output.
-        component (str): Component name (e.g. ``"flash"``), used to resolve
-            the component directory under ``vts_hal_test_components``.
-    """
-    testClass._menuConfigFile = os.path.join(dir_path, "vts_l3_test_setup.yaml")
-    testClass._moduleName = "VTS"
-    testClass._dirPath = dir_path
-    testClass._profilePath = module_path / component
-    testInstance = testClass(summary_log)
-    testInstance.run(False)
-    time.sleep(2)  # Short delay between tests
-
-
-def runNonAvL3TestInstances(summary_log):
-    """Load and run all Non-AV L3 tests defined in the YAML suite config.
-
-    Reads the test suite config (default: ``vts_nonav_l3_test_suite.yaml``)
-    and discovers L3 test classes for each enabled module, then runs them sequentially.
-
-    Args:
-        summary_log (logModule): Logger for test output.
-
-    Returns:
-        bool: True if all tests were processed, False on config error.
-    """
-    configPath = Path(dir_path) / DEFAULT_CONFIG_FILE
-    if not configPath.exists():
-        summary_log.error(f"Config file not found: {configPath}")
-        return False
-
-    try:
-        with open(configPath, "r", encoding="utf-8") as cfg_file:
-            data = yaml.safe_load(cfg_file) or {}
-    except Exception as e:
-        summary_log.error(f"Failed to read config file {configPath}: {e}")
-        return False
-
-    testEntries = data.get("nonAvL3TestSuite", {}).get("tests", [])
-    if not isinstance(testEntries, list):
-        summary_log.error("Invalid config format: nonAvL3TestSuite.tests must be a list")
-        return False
-
-    for entry in testEntries:
-        if not isinstance(entry, dict):
-            continue
-        if not entry.get("enabled", True):
+    logger_dict = logging.root.manager.loggerDict
+    for logger in logger_dict.values():
+        if not isinstance(logger, logging.Logger):
             continue
 
-        component = entry.get("module")
-        requestedClasses = entry.get("tests", [])
-        if not component or not isinstance(requestedClasses, list):
-            summary_log.warning(f"Skipping invalid test entry (module/tests missing): {entry}")
-            continue
-
-        testsDir = (module_path / component / "host/tests").resolve()
-        if not testsDir.is_dir():
-            summary_log.warning(f"Host tests directory not found for module '{component}': {testsDir}")
-            continue
-
-        classMap = {}
-        for pyFile in sorted(testsDir.glob("*L3*.py")):
-            module = _loadPythonModule(pyFile)
-            if module is None:
+        seen = set()
+        unique_handlers = []
+        for handler in logger.handlers:
+            key = (
+                type(handler),
+                getattr(handler, "baseFilename", None),
+                getattr(handler, "stream", None),
+            )
+            if key in seen:
                 continue
-            for name, obj in inspect.getmembers(module, inspect.isclass):
-                if "_L3_" in name and obj.__module__ == module.__name__:
-                    classMap[name] = (obj, pyFile)
+            seen.add(key)
+            unique_handlers.append(handler)
 
-        for className in requestedClasses:
-            if className not in classMap:
-                summary_log.warning(
-                    f"Class {className} not found under module '{component}' L3 host tests"
-                )
-                continue
-            testClass, moduleFile = classMap[className]
-            summary_log.info(f"Loading L3 test class {className} from {moduleFile}")
-            runTestInstance(testClass, summary_log, component)
+        if len(unique_handlers) != len(logger.handlers):
+            logger.handlers = unique_handlers
 
-    return True
+if __name__ == '__main__':
+    summaryLogName = "run_non_av_vts_summary"
+    summaryLog = logModule(summaryLogName, level=logModule.INFO)
+    testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml")
+    # Define test classes and construct each instance right before execution.
+    test_specs = [
+        # (vts_hdmicec_L3_receive_message, {"testMenuConfigFile": testMenuConfigFile, "moduleName": "VTS", "artifactDirPath": dir_path}),
+        # (vts_hdmicec_L3_send_message, {"testMenuConfigFile": testMenuConfigFile, "moduleName": "VTS", "artifactDirPath": dir_path}),
+        (vts_flash_L3_concurrent_image, {"moduleName": "VTS"}),
+        (vts_flash_L3_test_all_images, {"moduleName": "VTS"}),
+        (vts_flash_L3_validate_all_errorcodes, {"moduleName": "VTS"}),
+        (vts_motionsensor_L3_active_window_behavior, {"moduleName": "VTS"}),
+        (vts_motionsensor_L3_deep_sleep_autonomy, {"moduleName": "VTS"}),
+        (vts_motionsensor_L3_motion_event_detection, {"moduleName": "VTS"}),
+        (vts_motionsensor_L3_no_motion_event_detection, {"moduleName": "VTS"}),
+        (vts_thermalsensor_L3_critical_shutdown_with_suppression, {"moduleName": "VTS"}),
+        (vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle, {"moduleName": "VTS"})
+        # Add more test specifications here
+    ]
 
-if __name__ == "__main__":
-    summaryLog = logModule("L3NonAvTests", level=logModule.INFO)
-    runNonAvL3TestInstances(summaryLog)
+    # Run each test
+    for test_class, kwargs in test_specs:
+        dedupe_python_log_handlers()
+        test = test_class(summaryLog, **kwargs)
+        dedupe_python_log_handlers()
+        test.run(False)
+        time.sleep(2)  # Short delay between tests
