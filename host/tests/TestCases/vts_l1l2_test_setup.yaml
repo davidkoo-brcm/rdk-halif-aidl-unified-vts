@@ -329,7 +329,7 @@ VTS:
           - TestGetSetVideoSourceDestinationPlaneMapping
       13:
         name: "VTS_L1_DEEPSLEEP"
-        test_cases:
+        tests:
           - "getCapabilities_pos"
           - "gettimer_pos"
           - "settimer_pos"
@@ -337,12 +337,12 @@ VTS:
           - "enterdeepsleep_neg"
       14:
         name: "VTS_L2_DEEPSLEEP"
-        test_cases:
+        tests:
           - "setgettimer"
           - "enterdeepsleep"
       15:
         name: "VTS_L1_HDMIOUTPUT"
-        test_cases:
+        tests:
           - "getHDMIOutputIds_pos"
           - "getHDMIOutput_pos"
           - "getHDMIOutput_neg"
@@ -375,7 +375,7 @@ VTS:
           - "getSPDInfoFrame_pos"
       16:
         name: "VTS_L2_HDMIOUTPUT"
-        test_cases:
+        tests:
           - "StateTransitions"
           - "HPDStateTransition"
           - "SetGetIndividualProperty"
@@ -383,7 +383,7 @@ VTS:
           - "SPDInfoFrame"
       17:
         name: "VTS_L1_COMPOSITEINPUT"
-        test_cases:
+        tests:
           - "getPortIds_pos"
           - "getPort_pos"
           - "getPort_neg"
@@ -415,7 +415,7 @@ VTS:
           - "setPropertyMulti_neg"
       18:
         name: "VTS_L2_COMPOSITEINPUT"
-        test_cases:
+        tests:
           - "StateTransitions"
           - "ConnectionState"
           - "PropertySetGetStarted"
