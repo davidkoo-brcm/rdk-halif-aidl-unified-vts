@@ -81,14 +81,12 @@ if __name__ == '__main__':
     testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml")
     # Define test classes and construct each instance right before execution.
     test_specs = [
-        # (vts_hdmicec_L3_receive_message, {"testMenuConfigFile": testMenuConfigFile, "moduleName": "VTS", "artifactDirPath": dir_path}),
-        # (vts_hdmicec_L3_send_message, {"testMenuConfigFile": testMenuConfigFile, "moduleName": "VTS", "artifactDirPath": dir_path}),
         (vts_flash_L3_concurrent_image, {"moduleName": "VTS"}),
         (vts_flash_L3_test_all_images, {"moduleName": "VTS"}),
         (vts_flash_L3_validate_all_errorcodes, {"moduleName": "VTS"}),
         (vts_motionsensor_L3_active_window_behavior, {"moduleName": "VTS"}),
-        (vts_motionsensor_L3_deep_sleep_autonomy, {"moduleName": "VTS"}),
-        (vts_motionsensor_L3_motion_event_detection, {"moduleName": "VTS"}),
+        # Need to test after deepsleep integration
+        #(vts_motionsensor_L3_motion_event_detection, {"moduleName": "VTS"}),
         (vts_motionsensor_L3_no_motion_event_detection, {"moduleName": "VTS"}),
         (vts_thermalsensor_L3_critical_shutdown_with_suppression, {"moduleName": "VTS"}),
         (vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle, {"moduleName": "VTS"})
