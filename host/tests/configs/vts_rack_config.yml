@@ -77,6 +77,12 @@ rackConfig:
                             password: "xxxx"
                             prompt: "~#"
                         #For multiple instance tests, all SSH configs are used, single test uses 0th instance.
+                        - ssh_hal_test:
+                            type: "ssh"
+                            port:
+                            username: "root"
+                            ip: "" #IP address
+                            password:
                         - ssh_hal_test_0:
                             type: "ssh"
                             port: "5522"
@@ -133,6 +139,7 @@ rackConfig:
                         address: "127.0.0.1" # Needs to be be filled out with IP address
                         username: "" # Needs to be filled out with login username
                         password: '' # Needs to be filled out with login password
+<<<<<<< HEAD
                         port: 7722
                         control_port: 8080
                     compositeController:
@@ -142,4 +149,7 @@ rackConfig:
                         username: "" # Needs to be filled out with login username
                         password: '' # Needs to be filled out with login password
                         port: 7722
+=======
+                        port: 
+>>>>>>> c1c211c (gh #90 rebase)
                         control_port: 8080
