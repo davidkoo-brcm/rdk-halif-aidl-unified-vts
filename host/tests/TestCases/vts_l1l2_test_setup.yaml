@@ -349,3 +349,16 @@ VTS:
           - removeLogicalAddresses_neg
           - sendMessage_pos
           - sendMessage_neg
+      14:
+        name: "VTS_L1_BOOT"
+        tests:
+            - "getCapabilities_pos"
+            - "setBootReason_pos"
+            - "setBootReason_neg"
+            - "getBootReason_pos"
+            - "reboot_neg"
+            - "getPowerSource_pos"
+      15:
+        name: "VTS_L2_BOOT"
+        tests:
+            - "setAndGetBootReason"

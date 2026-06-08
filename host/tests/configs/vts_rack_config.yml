@@ -65,53 +65,53 @@ rackConfig:
                 # [ type: "ssh": port: 22 username: "test" password: "test" ]
                 # [ type: "telnet": port: 23 username: "test" password: "test" ]
                 - dut:
-                    ip: ""  # IP Address of the ADA Hub
+                    ip: "xxx.0.0.1"  # IP Address of the ADA Hub
                     description: "PC"
                     platform: "vDevice"
                     consoles:
                         - default:
                             type: "ssh"
-                            port: 5522
-                            username: ""
-                            ip: "" #IP address
-                            password: ""
-                            prompt: "~#" # Prompt string on console
+                            port: "5522"
+                            username: "xxxx"
+                            ip: "xxx.0.0.1" #IP address
+                            password: "xxxx"
+                            prompt: "~#"
                         #For multiple instance tests, all SSH configs are used, single test uses 0th instance.
                         - ssh_hal_test_0:
                             type: "ssh"
-                            port: 5522
-                            username: ""
-                            ip: "" #IP address
-                            password: ""
-                            prompt: "~#" # Prompt string on console
+                            port: "5522"
+                            username: "xxxx"
+                            ip: "xxx.0.0.1" #IP address
+                            password: "xxxx"
+                            prompt: "~#"
                         - ssh_hal_test_1:
                             type: "ssh"
-                            port: 5522
-                            username: ""
-                            ip: "" #IP address
-                            password: ""
-                            prompt: "~#" # Prompt string on console
+                            port: "5522"
+                            username: "xxxx"
+                            ip: "xxx.0.0.1" #IP address
+                            password: "xxxx"
+                            prompt: "~#"
                         - ssh_hal_test_2:
                             type: "ssh"
-                            port: 5522
-                            username: ""
-                            ip: "" #IP address
-                            password: ""
-                            prompt: "~#" # Prompt string on console
+                            port: "5522"
+                            username: "xxxx"
+                            ip: "xxx.0.0.1" #IP address
+                            password: "xxxx"
+                            prompt: "~#"
                         - ssh_player:
                             type: "ssh"
-                            port: 5522
-                            username: ""
-                            ip: "" #IP address
-                            password: ""
-                            prompt: "~#" # Prompt string on console
+                            port: "5522"
+                            username: "xxxx"
+                            ip: "xxx.0.0.1" #IP address
+                            password: "xxxx"
+                            prompt: "~#"
                         - ssh_hal_test:
                             type: "ssh"
-                            port: 5522
-                            username: ""
-                            ip: "" #IP address
-                            password: ""
-                            prompt: "~#" # Prompt string on console
+                            port: "5522"
+                            username: "xxxx"
+                            ip: "xxx.0.0.1" #IP address
+                            password: "xxxx"
+                            prompt: "~#"
                     outbound:
                         download_url: "tftp://tftp-server.com/rack1/slot1/"    # download location for the CPE device
                         upload_url: "sftp://server-address/home/workspace/tftp/rack1/slot1/" # upload location
@@ -121,9 +121,17 @@ rackConfig:
                     # hdmiCECController:
                     #     type: virtual-cec-client
                     #     vendor: "vComponent"
-                    #     address: "" # Needs to be be filled out with IP address
-                    #     username: "" # Needs to be filled out with login username
-                    #     password: '' # Needs to be filled out with login password
+                    #     address: "xxx.0.0.1" # Needs to be be filled out with IP address
+                    #     username: "xxxx" # Needs to be filled out with login username
+                    #     password: 'xxxx' # Needs to be filled out with login password
                     #     port: 5522
                     #     control_port: 8080
-                    #     device_network_configuration: "path of hdmicec_device_config_add_network.yaml"
+                    #     device_network_configuration: "/Users/jpn323/workspace/rdk-halif-aidl-unified-vts/host/tests/configs/hdmicec_device_config_add_network.yaml"
+                    dutRebootController:
+                        type: virtual-dut-reboot-controller
+                        vendor: "vComponent"
+                        address: "xxx.0.0.1" # Needs to be be filled out with IP address
+                        username: "xxxx" # Needs to be filled out with login username
+                        password: 'xxxx' # Needs to be filled out with login password
+                        port: 5522
+                        control_port: 9081
