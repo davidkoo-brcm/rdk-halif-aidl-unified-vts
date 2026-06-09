@@ -36,7 +36,7 @@ globalConfig:
     includes:
         # [ includes: ]
         # [ deviceConfig: "required.yml file"  ]
-        deviceConfig: "vts_deviceConfig.yml"
+        deviceConfig: "example_device_config.yml"
     capture:
         # [capture: optional]
             # [ocrEnginePath: "/usr/bin/tesseract"] # "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" (For Windows) - tesseract binary
@@ -65,41 +65,41 @@ rackConfig:
                 # [ type: "ssh": port: 22 username: "test" password: "test" ]
                 # [ type: "telnet": port: 23 username: "test" password: "test" ]
                 - dut:
-                    ip: "x.x.x.x"  # IP Address of the ADA Hub
+                    ip: "" # IP Address of the ADA Hub
                     description: "PC"
                     platform: "vDevice"
                     consoles:
                         - default:
                             type: "ssh"
-                            port: "xxxx"
-                            username: "xxxx"
-                            ip: "x.x.x.x" #IP address
-                            password: "xxxx"
+                            port:
+                            username: "root"
+                            ip: "" #IP address
+                            password:
                         #For multiple instance tests, all SSH configs are used, single test uses 0th instance.
                         - ssh_hal_test_0:
                             type: "ssh"
-                            port: "xxxx"
-                            username: "xxxx"
-                            ip: "x.x.x.x" #IP address
-                            password: "xxxx"
+                            port:
+                            username: "root"
+                            ip: "" #IP address
+                            password:
                         - ssh_hal_test_1:
                             type: "ssh"
-                            port: "xxxx"
-                            username: "xxxx"
-                            ip: "x.x.x.x" #IP address
-                            password: "xxxx"
+                            port:
+                            username: "root"
+                            ip: "" #IP address
+                            password:
                         - ssh_hal_test_2:
                             type: "ssh"
-                            port: "xxxx"
-                            username: "xxxx"
-                            ip: "x.x.x.x" #IP address
-                            password: "xxxx"
+                            port:
+                            username: "root"
+                            ip: "" #IP address
+                            password:
                         - ssh_player:
                             type: "ssh"
-                            port: "xxxx"
-                            username: "xxxx"
-                            ip: "x.x.x.x" #IP address
-                            password: "xxxx"
+                            port:
+                            username: "root"
+                            ip: "" #IP address
+                            password:
                     outbound:
                         download_url: "tftp://tftp-server.com/rack1/slot1/"    # download location for the CPE device
                         upload_url: "sftp://server-address/home/workspace/tftp/rack1/slot1/" # upload location
