@@ -25,17 +25,13 @@
 import os
 import sys
 import time
-import logging
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dir_path, "../"))
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmicec/host/tests")) # For hdmicec module
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/flash/host/tests")) # For flash module
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/motionsensor/host/tests")) # For motionsensor module
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/thermalsensor/host/tests")) # For thermalsensor module
 
-from vts_hdmicec_L3_ReceiveMessage import VTS_HDMICEC_L3_ReceiveMessage as vts_hdmicec_L3_receive_message
-from vts_hdmicec_L3_SendMessage import VTS_HDMICEC_L3_SendMessage as vts_hdmicec_L3_send_message
 from vts_flash_L3_ConcurrentImage import VTS_FLASH_L3_ConcurrentImage as vts_flash_L3_concurrent_image
 from vts_flash_L3_TestAllImages import VTS_FLASH_L3_TestAllImages as vts_flash_L3_test_all_images
 from vts_flash_L3_validateAllErrorcodes import VTS_FLASH_L3_ValidateAllErrorCodes as vts_flash_L3_validate_all_errorcodes
@@ -51,23 +47,24 @@ from raft.framework.core.logModule import logModule
 if __name__ == '__main__':
     summaryLogName = "run_non_av_vts_summary"
     summaryLog = logModule(summaryLogName, level=logModule.INFO)
-    # Define test classes and construct each instance right before execution.
-    test_specs = [
-        (vts_flash_L3_concurrent_image, {"moduleName": "VTS"}),
-        (vts_flash_L3_test_all_images, {"moduleName": "VTS"}),
-        (vts_flash_L3_validate_all_errorcodes, {"moduleName": "VTS"}),
-        (vts_motionsensor_L3_motion_event_detection, {"moduleName": "VTS"}),
-        (vts_motionsensor_L3_no_motion_event_detection, {"moduleName": "VTS"}),
-        (vts_motionsensor_L3_active_window_behavior, {"moduleName": "VTS"}),
+
+    # Lambdas defer instantiation so each test opens fresh SSH sessions after the
+    # previous test may have rebooted the device (closing any pre-existing connections).
+    tests = [
+        lambda: vts_flash_L3_concurrent_image(summaryLog, moduleName="VTS"),
+        lambda: vts_flash_L3_test_all_images(summaryLog, moduleName="VTS"),
+        lambda: vts_flash_L3_validate_all_errorcodes(summaryLog, moduleName="VTS"),
+        lambda: vts_motionsensor_L3_motion_event_detection(summaryLog, moduleName="VTS"),
+        lambda: vts_motionsensor_L3_no_motion_event_detection(summaryLog, moduleName="VTS"),
+        lambda: vts_motionsensor_L3_active_window_behavior(summaryLog, moduleName="VTS"),
         # Need to test after deepsleep integration
-        #(vts_motionsensor_L3_deep_sleep_autonomy, {"moduleName": "VTS"}),
-        (vts_thermalsensor_L3_critical_shutdown_with_suppression, {"moduleName": "VTS"}),
-        (vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle, {"moduleName": "VTS"})
-        # Add more test specifications here
+        #lambda: vts_motionsensor_L3_deep_sleep_autonomy(summaryLog, moduleName="VTS"),
+        lambda: vts_thermalsensor_L3_critical_shutdown_with_suppression(summaryLog, moduleName="VTS"),
+        lambda: vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle(summaryLog, moduleName="VTS")
+        # Add more test instances here
     ]
 
     # Run each test
-    for test_class, kwargs in test_specs:
-        test = test_class(summaryLog, **kwargs)
-        test.run(False)
+    for test_factory in tests:
+        test_factory().run(False)
         time.sleep(2)  # Short delay between tests
