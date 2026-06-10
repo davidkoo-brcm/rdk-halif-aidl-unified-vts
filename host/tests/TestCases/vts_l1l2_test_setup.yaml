@@ -360,7 +360,7 @@ VTS:
         name: "VTS_L2_BOOT"
         tests:
             - "setAndGetBootReason"
-      13:
+      16:
         name: "VTS_L1_DEVICEINFO"
         tests:
           - getCapabilities_pos
