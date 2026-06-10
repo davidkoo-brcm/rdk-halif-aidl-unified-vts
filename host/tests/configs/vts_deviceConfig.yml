@@ -27,14 +27,18 @@ deviceConfig:
         platform:   "vDevice"
         model:      "UK"
         soc_vendor: "intel"
-        target_directory: "/tmp/"
+        target_directory: "/tmp" # Directory on the device where the test binary will be copied to and executed from
+        boot_process_name: "Vendor-Boot"
         prompt: "~#" # Prompt string on console
-        download_path: "assets/streams/input/" #Download path where streams are saved inside the bin folder
+        download_path: "assets/streams/input/" # Download path where streams are saved inside the bin folder
         playback_manual_verification: 0 # flag to enable manual playback verification
         test_config_path: "bin/av_test_configurations"
         all_wait_time: 240 #Configurable timeout value to limit the total duration of individual suite
         device_type: ["TV"] # Possible values: ["TV", "RecordingDevice", "Tuner", "PlaybackDevice", "AudioSystem", "VideoProcessor", "PureCecSwitch", "Reserved"]
-        wait_time: 240 #Configurable timeout value to limit the total duration of individual tests
+        wait_time: 40 #Configurable timeout value to limit the total duration of individual tests
+        boot_non_volatile_directory: "/tmp"  # User needs to update based on their soc
+        boot_volatile_directory: "/home/root/" # User needs to update based on their soc
         test:
             profile: "../../../profiles/hfp-vdevice.yaml" #HFP profile used to meet platform requirements
             streams_download_url: "<http stream path>" #URL path from which the streams are downloaded to the device
+
