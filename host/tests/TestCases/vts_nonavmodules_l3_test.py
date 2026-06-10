@@ -44,6 +44,16 @@ from vts_thermalsensor_L3_ThermalExceedRecoveryLifecycle import VTS_THERMALSENSO
 from raft.framework.core.logModule import logModule
 
 
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmicec/host/tests")) # For hdmicec module
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/boot/host/tests")) # For boot module
+
+from vts_hdmicec_L3_ReceiveMessage import VTS_HDMICEC_L3_ReceiveMessage as vts_hdmicec_L3_receive_message
+from vts_hdmicec_L3_SendMessage import VTS_HDMICEC_L3_SendMessage as vts_hdmicec_L3_send_message
+from vts_boot_L3_VerifyBootReasonExternalCause import VTS_BOOT_L3_VerifyBootReasonExternalCause as vts_boot_L3_verify_boot_reason_external_cause
+from vts_boot_L3_VerifyOverrideBootReason import VTS_BOOT_L3_VerifyOverrideBootReason as vts_boot_L3_verify_override_boot_reason
+from vts_boot_L3_VerifyReboot import VTS_BOOT_L3_VerifyReboot as vts_boot_L3_verify_reboot
+from raft.framework.core.logModule import logModule
+
 if __name__ == '__main__':
     summaryLogName = "run_non_av_vts_summary"
     summaryLog = logModule(summaryLogName, level=logModule.INFO)
@@ -61,6 +71,11 @@ if __name__ == '__main__':
         #lambda: vts_motionsensor_L3_deep_sleep_autonomy(summaryLog, moduleName="VTS"),
         lambda: vts_thermalsensor_L3_critical_shutdown_with_suppression(summaryLog, moduleName="VTS"),
         lambda: vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle(summaryLog, moduleName="VTS")
+        lambda: vts_hdmicec_L3_receive_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda: vts_hdmicec_L3_send_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda: vts_boot_L3_verify_boot_reason_external_cause(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda: vts_boot_L3_verify_override_boot_reason(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda: vts_boot_L3_verify_reboot(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
         # Add more test instances here
     ]
 
