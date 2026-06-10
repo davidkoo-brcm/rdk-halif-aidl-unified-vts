@@ -365,7 +365,6 @@ VTS:
           - getCapabilities_pos
           - getProperty_pos
           - getProperty_neg
-<<<<<<< HEAD
       17:
         name: "VTS_L1_DEEPSLEEP"
         tests:
@@ -461,7 +460,6 @@ VTS:
           - "PropertyMultiSetGetStarted"
           - "ResetMetrics"
           - "MaximumConcurrentStartedPorts"
-=======
       15:
         name: "VTS_L1_HDMIINPUT"
         tests:
@@ -501,4 +499,3 @@ VTS:
             - "DefaultCallbacks"
             - "SetandGetEDID"
             - "MaxConcurrentPorts"      
->>>>>>> c1c211c (gh #90 rebase)
