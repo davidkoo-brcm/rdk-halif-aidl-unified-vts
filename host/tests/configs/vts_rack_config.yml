@@ -76,13 +76,6 @@ rackConfig:
                             ip: "" #IP address
                             password:
                         #For multiple instance tests, all SSH configs are used, single test uses 0th instance.
-                        - ssh_hal_test:
-                            type: "ssh"
-                            port: 7722
-                            username: "root"
-                            ip: "127.0.0.1" #IP address
-                            password: ''
-                            prompt: "~#" # Prompt string on console
                         - ssh_hal_test_0:
                             type: "ssh"
                             port:
