@@ -398,6 +398,9 @@ install_test()
         if [ -d "${RDK_HAL_TEST_DIR}/${component}/profiles" ]; then
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/profiles ${INSTALL_PATH}/
         fi
+        if [ -d "${RDK_HAL_TEST_DIR}/${component}/test_configuration" ]; then
+            cp -rf ${RDK_HAL_TEST_DIR}/${component}/test_configuration ${INSTALL_PATH}/
+        fi
     done
     cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/
 
@@ -425,6 +428,7 @@ clean_test()
     rm -rf ${COMMON_DIR}/helper_functions/*.o
     rm -rf ${COMMON_DIR}/vts_player/*.o
 
+    find "$RDK_HAL_TEST_DIR" -type f -name "*.o" -delete
     find "$TOP_BUILD_DIR" -type f -name "*.o" -delete
 }
 ###############################################################################

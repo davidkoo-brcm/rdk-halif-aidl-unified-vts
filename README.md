@@ -52,7 +52,6 @@ chmod 600 ~/.netrc
 
 - To avoid conflict between your organization GitHub and RDK Central GitHub, add the following in your ssh config (`~/.ssh/config`):
 
-<!-- -->
 
     Host github.code.rdkcentral.com
       Hostname github.com
@@ -62,6 +61,7 @@ chmod 600 ~/.netrc
 - The instruction to generate SSH key for GitHub:
 
   - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account>
+
 
 ## Build linux binder for Target Linux
 
@@ -205,11 +205,17 @@ sudo ./run.sh -p profiles/hfp-vdevice.yaml
 - For running the L1, L2, L3 and L4 test suite, a host PC with a Python environment is required.
 - Install Python Environment and Activation Scripts as detailed in [Python Installation](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite)
 
-## Running L1, L2, L3 and L4 Automation test cases
+## Running L1 and L2 automation test cases
 
-- To run the VTS `L1`, `L2` test cases follow the `L1` `L2` Test Procedure document - [vts_L1_L2_TestProcedure.md](docs/vts_L1_L2_TestProcedure.md)
+- To run the `L1` and `L2` test cases, follow the `L1` and `L2` Test Procedure document - [vts_L1_L2_TestProcedure.md](docs/vts_L1_L2_TestProcedure.md)
+
+## Running L3 automation test cases
 
 - To run the AV Module `L3` test cases follow the `L3` Test Procedure document - [vts_avmodule_L3_TestProcedure.md](docs/vts_avmodule_L3_TestProcedure.md)
+
+- To run the non av `L3` test cases, follow the `non av L3` Test Procedure document - [vts_nonav_L3_TestProcedure.md](docs/vts_nonav_L3_TestProcedure.md)
+
+## Running L4 Automation test cases
 
 - To run the AV  Module `L4` test cases follow the `L4` Test Procedure document - [vts_avmodule_L4_TestProcedure.md](docs/vts_avmodule_L4_TestProcedure.md)
 
