@@ -118,20 +118,12 @@ rackConfig:
                         upload_url_base_dir: "sftp://server-address/home/workspace/tftp/rack1/slot1" # alternative upload location
                         httpProxy:    # Local Proxy if required
                         workspaceDirectory: './logs/workspace'   # Local working directory
-                    # hdmiCECController:
-                    #     type: virtual-cec-client
-                    #     vendor: "vComponent"
-                    #     address: "xxx.0.0.1" # Needs to be be filled out with IP address
-                    #     username: "xxxx" # Needs to be filled out with login username
-                    #     password: 'xxxx' # Needs to be filled out with login password
-                    #     port: 5522
-                    #     control_port: 8080
-                    #     device_network_configuration: "/Users/jpn323/workspace/rdk-halif-aidl-unified-vts/host/tests/configs/hdmicec_device_config_add_network.yaml"
-                    dutRebootController:
-                        type: virtual-dut-reboot-controller
+                    hdmiCECController:
+                        type: virtual-cec-client
                         vendor: "vComponent"
                         address: "xxx.0.0.1" # Needs to be be filled out with IP address
                         username: "xxxx" # Needs to be filled out with login username
                         password: 'xxxx' # Needs to be filled out with login password
-                        port: 5522
-                        control_port: 9081
+                        port: xxyy
+                        control_port: 8080
+                        device_network_configuration: "path to hdmicec_device_config_add_network.yaml"

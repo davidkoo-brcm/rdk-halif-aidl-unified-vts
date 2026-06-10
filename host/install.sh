@@ -128,8 +128,7 @@ function setup_and_enable_venv()
     # Check if virtual environment directory exists, create if not
     if [[ ! -d "$VENV_DIR" ]]; then
         ECHO "Creating Virtual environment ${YELLOW}'$VENV_NAME'${NO_COLOR}"
-        #python3 -m venv "$VENV_DIR"
-        python3.12 -m venv "$VENV_DIR"
+        python3 -m venv "$VENV_DIR"
         ECHO "Virtual environment created."
     fi
 
