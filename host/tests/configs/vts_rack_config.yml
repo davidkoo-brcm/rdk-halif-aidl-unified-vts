@@ -65,7 +65,7 @@ rackConfig:
                 # [ type: "ssh": port: 22 username: "test" password: "test" ]
                 # [ type: "telnet": port: 23 username: "test" password: "test" ]
                 - dut:
-                    ip: "xxx.0.0.1"  # IP Address of the ADA Hub
+                    ip: "" # IP Address of the ADA Hub
                     description: "PC"
                     platform: "vDevice"
                     consoles:

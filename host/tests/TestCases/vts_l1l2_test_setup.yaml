@@ -294,7 +294,6 @@ VTS:
           - TestStateTransitions
           - VerifyClockModeSetToAutoOnOpenAndSetGetClockMode
           - VerifyPlaybackRateAndStateTransitions
-
       11:
         name: "VTS_L1_PlaneControl"
         tests:
@@ -320,7 +319,6 @@ VTS:
           - unregisterListener_neg
           - releaseNativeGraphicsWindowHandle_pos
           - releaseNativeGraphicsWindowHandle_neg
-
       12:
         name: "VTS_L2_PlaneControl"
         tests:
@@ -362,3 +360,9 @@ VTS:
         name: "VTS_L2_BOOT"
         tests:
             - "setAndGetBootReason"
+      13:
+        name: "VTS_L1_DEVICEINFO"
+        tests:
+          - getCapabilities_pos
+          - getProperty_pos
+          - getProperty_neg
