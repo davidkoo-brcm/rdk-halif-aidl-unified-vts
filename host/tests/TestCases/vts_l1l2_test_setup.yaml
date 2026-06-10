@@ -294,7 +294,6 @@ VTS:
           - TestStateTransitions
           - VerifyClockModeSetToAutoOnOpenAndSetGetClockMode
           - VerifyPlaybackRateAndStateTransitions
-
       11:
         name: "VTS_L1_PlaneControl"
         tests:
@@ -320,20 +319,25 @@ VTS:
           - unregisterListener_neg
           - releaseNativeGraphicsWindowHandle_pos
           - releaseNativeGraphicsWindowHandle_neg
-
       12:
         name: "VTS_L2_PlaneControl"
         tests:
           - TestGetSetProperty
           - TestGetSetPropertyMultiAtomic
           - TestGetSetVideoSourceDestinationPlaneMapping
-
       13:
+        name: "VTS_L1_DEVICEINFO"
+        tests:
+          - getCapabilities_pos
+          - getProperty_pos
+          - getProperty_neg
+
+      14:
         name: "VTS_L1_FLASH"
         tests:
           - flashImageFromFile_invalid_params
 
-      14:
+      15:
         name: "VTS_L1_MOTIONSENSOR"
         tests:
           - getMotionSensorIds_pos
@@ -364,13 +368,13 @@ VTS:
           - clearActiveWindows_pos
           - clearActiveWindows_neg
 
-      15:
+      16:
         name: "VTS_L2_MOTIONSENSOR"
         tests:
           - StateTransitions
           - ConfigurationMethodsRequireStopped
 
-      16:
+      17:
         name: "VTS_L1_THERMALSENSOR"
         tests:
           - registerEventListener_pos
