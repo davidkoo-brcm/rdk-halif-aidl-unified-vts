@@ -33,7 +33,6 @@ deviceConfig:
         playback_manual_verification: 0 # flag to enable manual playback verification
         test_config_path: "bin/av_test_configurations"
         all_wait_time: 240 #Configurable timeout value to limit the total duration of individual suite
-        hdmicec_process_name: "Vendor-HdmiCec"
         device_type: ["TV"] # Possible values: ["TV", "RecordingDevice", "Tuner", "PlaybackDevice", "AudioSystem", "VideoProcessor", "PureCecSwitch", "Reserved"]
         wait_time: 240 #Configurable timeout value to limit the total duration of individual tests
         test:
