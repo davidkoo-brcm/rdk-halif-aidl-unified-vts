@@ -55,7 +55,10 @@ def _loadPythonModule(pyFile: Path):
     if spec is None or spec.loader is None:
         return None
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    try:
+        spec.loader.exec_module(module)
+    except Exception:
+        return None
     return module
 
 
