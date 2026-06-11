@@ -550,3 +550,21 @@ VTS:
           - unregisterEventListener_neg
           - getCurrentThermalState_pos
           - getCurrentTemperatures_pos
+      
+      29:
+        name: "VTS_L1_INDICATOR"
+        tests:
+          -  getIndicatorIds_pos
+          -  getIndicator_pos
+          -  getIndicator_neg
+          -  getCapabilities_pos
+          -  getState_pos
+          -  setState_pos
+          -  setState_neg
+      30:
+        name: "VTS_L2_INDICATOR"
+        tests:
+          - "test_l2_setgetGeneralStates"
+          - "test_l2_setgetWpsStates"
+          - "test_l2_setgetNetworkStates"
+          - "test_l2_setgetMaintenanceStates"

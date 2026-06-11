@@ -40,6 +40,7 @@ deviceConfig:
         boot_volatile_directory: "/home/root/" # User needs to update based on their soc
         test:
             profile: "../../../profiles/hfp-vdevice.yaml" #HFP profile used to meet platform requirements
+            platform_led_config: "../../../vts_hal_test_components/indicator/test_configuration/vts_indicator_LED_config_vdevice.yaml"
             streams_download_url: "<http stream path>" #URL path from which the streams are downloaded to the device
             motionsensor_controller_port: 8080 # Port where the vcomponent control plane is listening
             thermalsensor_controller_port: 8081 # Port where the vcomponent control plane is listening

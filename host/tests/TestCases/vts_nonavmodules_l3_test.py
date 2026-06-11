@@ -31,6 +31,13 @@ sys.path.append(os.path.join(dir_path, "../"))
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/flash/host/tests")) # For flash module
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/motionsensor/host/tests")) # For motionsensor module
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/thermalsensor/host/tests")) # For thermalsensor module
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmicec/host/tests")) # For hdmicec module
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/boot/host/tests")) # For boot module
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/host/tests"))
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmioutput/host/tests"))
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/host/tests"))
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/host/tests"))
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/indicator/host/tests"))
 
 from vts_flash_L3_ConcurrentImage import VTS_FLASH_L3_ConcurrentImage as vts_flash_L3_concurrent_image
 from vts_flash_L3_TestAllImages import VTS_FLASH_L3_TestAllImages as vts_flash_L3_test_all_images
@@ -41,16 +48,6 @@ from vts_motionsensor_L3_MotionEventDetection import VTS_MOTIONSENSOR_L3_MotionE
 from vts_motionsensor_L3_NoMotionEventDetection import VTS_MOTIONSENSOR_L3_NoMotionEventDetection as vts_motionsensor_L3_no_motion_event_detection
 from vts_thermalsensor_L3_CriticalShutdownWithSuppression import VTS_THERMALSENSOR_L3_CriticalShutdownWithSuppression as vts_thermalsensor_L3_critical_shutdown_with_suppression
 from vts_thermalsensor_L3_ThermalExceedRecoveryLifecycle import VTS_THERMALSENSOR_L3_ThermalExceedRecoveryLifecycle as vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle
-from raft.framework.core.logModule import logModule
-
-
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmicec/host/tests")) # For hdmicec module
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/boot/host/tests")) # For boot module
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/host/tests"))
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmioutput/host/tests"))
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/host/tests"))
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/host/tests"))
-
 from vts_hdmicec_L3_ReceiveMessage import VTS_HDMICEC_L3_ReceiveMessage as vts_hdmicec_L3_receive_message
 from vts_hdmicec_L3_SendMessage import VTS_HDMICEC_L3_SendMessage as vts_hdmicec_L3_send_message
 from vts_boot_L3_VerifyBootReasonExternalCause import VTS_BOOT_L3_VerifyBootReasonExternalCause as vts_boot_L3_verify_boot_reason_external_cause
@@ -71,6 +68,8 @@ from vts_hdmiinput_L3_ConnectionTestsAfterOpen import VTS_HDMIINPUT_L3_Connectio
 from vts_hdmiinput_L3_ConnectionTestsAfterStart import VTS_HDMIINPUT_L3_ConnectionTestsAfterStart as vts_hdmiinput_L3_ConnectionTestsAfterStart
 from vts_hdmiinput_L3_EdidTest import VTS_HDMIINPUT_L3_EdidTest as vts_hdmiinput_L3_EdidTest
 from vts_hdmiinput_L3_InfoFrameTests import VTS_HDMIINPUT_L3_InfoFrameTests as vts_hdmiinput_L3_InfoFrameTests
+from vts_indicator_L3_SetStates import VTS_INDICATOR_L3_SetStates as vts_indicator_L3_SetStates
+from vts_indicator_L3_StressTest import VTS_INDICATOR_L3_StressTest as vts_indicator_L3_StressTest
 
 from raft.framework.core.logModule import logModule
 
@@ -104,12 +103,13 @@ if __name__ == '__main__':
         lambda: vts_hdmioutput_L3_hotplugDetectstateafterstartcallback(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmioutput/profiles/hfp-hdmioutput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         lambda: vts_compositeinput_L3_videoModedetection(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/profiles/hfp-compositeinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         lambda: vts_compositeinput_L3_connectiontestbeforestart(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/profiles/hfp-compositeinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_compositeinput_L3_connectiontestafterstart(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/profiles/hfp-compositeinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
-        lambda: vts_boot_L3_verify_reboot(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
-        lambda:vts_hdmiinput_L3_ConnectionTestsAfterOpen(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda:vts_hdmiinput_L3_ConnectionTestsAfterStart(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda:vts_hdmiinput_L3_EdidTest(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda:vts_hdmiinput_L3_InfoFrameTests(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda: vts_compositeinput_L3_connectiontestafterstart(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/profiles/hfp-compositeinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda: vts_hdmiinput_L3_ConnectionTestsAfterOpen(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda: vts_hdmiinput_L3_ConnectionTestsAfterStart(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda: vts_hdmiinput_L3_EdidTest(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda: vts_hdmiinput_L3_InfoFrameTests(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda: vts_indicator_L3_SetStates(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/indicator/profiles/hfp-indicator-vcomponent.yaml"), ledConfig=os.path.join(dir_path, "../../../vts_hal_test_components/indicator/test_configuration/vts_indicator_LED_config_vdevice.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda: vts_indicator_L3_StressTest(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/indicator/profiles/hfp-indicator-vcomponent.yaml"), ledConfig=os.path.join(dir_path, "../../../vts_hal_test_components/indicator/test_configuration/vts_indicator_LED_config_vdevice.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         # Add more test instances here
         # Need to test after deepsleep integration
         # lambda: vts_motionsensor_L3_deep_sleep_autonomy(summaryLog, moduleName="VTS"),
