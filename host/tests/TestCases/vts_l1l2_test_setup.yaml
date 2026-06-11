@@ -550,7 +550,7 @@ VTS:
           - unregisterEventListener_neg
           - getCurrentThermalState_pos
           - getCurrentTemperatures_pos
-          - "MaxConcurrentPorts"      
+      
       29:
         name: "VTS_L1_INDICATOR"
         tests:
