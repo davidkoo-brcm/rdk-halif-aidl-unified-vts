@@ -460,7 +460,7 @@ VTS:
           - "PropertyMultiSetGetStarted"
           - "ResetMetrics"
           - "MaximumConcurrentStartedPorts"
-      15:
+      23:
         name: "VTS_L1_HDMIINPUT"
         tests:
             - "getHDMIInputIds_pos"
@@ -492,7 +492,7 @@ VTS:
             - "stop_neg"
             - "setEDID_pos"
             - "setEDID_neg"
-      16:
+      24:
         name: "VTS_L2_HDMIINPUT"
         tests:
             - "StateTransitions"
