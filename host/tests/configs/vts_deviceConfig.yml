@@ -41,7 +41,10 @@ deviceConfig:
         test:
             profile: "../../../profiles/hfp-vdevice.yaml" #HFP profile used to meet platform requirements
             streams_download_url: "<http stream path>" #URL path from which the streams are downloaded to the device
+            motionsensor_controller_port: 8080 # Port where the vcomponent control plane is listening
+            thermalsensor_controller_port: 8081 # Port where the vcomponent control plane is listening
             deepsleep_controller_port: 8085
+            deep_sleep_duration_seconds: 60 # Seconds to simulate idle before deep sleep
         remote:
             deepsleep:
                 RCU_IR: 6

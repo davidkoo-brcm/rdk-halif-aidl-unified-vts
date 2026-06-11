@@ -28,6 +28,22 @@ import time
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dir_path, "../"))
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/flash/host/tests")) # For flash module
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/motionsensor/host/tests")) # For motionsensor module
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/thermalsensor/host/tests")) # For thermalsensor module
+
+from vts_flash_L3_ConcurrentImage import VTS_FLASH_L3_ConcurrentImage as vts_flash_L3_concurrent_image
+from vts_flash_L3_TestAllImages import VTS_FLASH_L3_TestAllImages as vts_flash_L3_test_all_images
+from vts_flash_L3_validateAllErrorcodes import VTS_FLASH_L3_ValidateAllErrorCodes as vts_flash_L3_validate_all_errorcodes
+from vts_motionsensor_L3_ActiveWindowBehavior import VTS_MOTIONSENSOR_L3_ActiveWindowBehavior as vts_motionsensor_L3_active_window_behavior
+from vts_motionsensor_L3_DeepSleepAutonomy import VTS_MOTIONSENSOR_L3_DeepSleepAutonomy as vts_motionsensor_L3_deep_sleep_autonomy
+from vts_motionsensor_L3_MotionEventDetection import VTS_MOTIONSENSOR_L3_MotionEventDetection as vts_motionsensor_L3_motion_event_detection
+from vts_motionsensor_L3_NoMotionEventDetection import VTS_MOTIONSENSOR_L3_NoMotionEventDetection as vts_motionsensor_L3_no_motion_event_detection
+from vts_thermalsensor_L3_CriticalShutdownWithSuppression import VTS_THERMALSENSOR_L3_CriticalShutdownWithSuppression as vts_thermalsensor_L3_critical_shutdown_with_suppression
+from vts_thermalsensor_L3_ThermalExceedRecoveryLifecycle import VTS_THERMALSENSOR_L3_ThermalExceedRecoveryLifecycle as vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle
+from raft.framework.core.logModule import logModule
+
+
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmicec/host/tests")) # For hdmicec module
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/boot/host/tests")) # For boot module
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/host/tests"))
@@ -65,6 +81,14 @@ if __name__ == '__main__':
     # Lambdas defer instantiation so each test opens fresh SSH sessions after the
     # previous test may have rebooted the device (closing any pre-existing connections).
     tests = [
+        lambda: vts_flash_L3_concurrent_image(summaryLog, moduleName="VTS"),
+        lambda: vts_flash_L3_test_all_images(summaryLog, moduleName="VTS"),
+        lambda: vts_flash_L3_validate_all_errorcodes(summaryLog, moduleName="VTS"),
+        lambda: vts_motionsensor_L3_motion_event_detection(summaryLog, moduleName="VTS"),
+        lambda: vts_motionsensor_L3_no_motion_event_detection(summaryLog, moduleName="VTS"),
+        lambda: vts_motionsensor_L3_active_window_behavior(summaryLog, moduleName="VTS"),
+        lambda: vts_thermalsensor_L3_critical_shutdown_with_suppression(summaryLog, moduleName="VTS"),
+        lambda: vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle(summaryLog, moduleName="VTS"),
         lambda: vts_hdmicec_L3_receive_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         lambda: vts_hdmicec_L3_send_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         lambda: vts_boot_L3_verify_boot_reason_external_cause(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
@@ -87,6 +111,9 @@ if __name__ == '__main__':
         lambda:vts_hdmiinput_L3_EdidTest(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         lambda:vts_hdmiinput_L3_InfoFrameTests(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         # Add more test instances here
+        # Need to test after deepsleep integration
+        # lambda: vts_motionsensor_L3_deep_sleep_autonomy(summaryLog, moduleName="VTS"),
+
     ]
 
     # Run each test
