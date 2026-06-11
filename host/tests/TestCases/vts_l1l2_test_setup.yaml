@@ -551,7 +551,7 @@ VTS:
           - getCurrentThermalState_pos
           - getCurrentTemperatures_pos
             - "MaxConcurrentPorts"      
-      13:
+      29:
         name: "VTS_L1_INDICATOR"
         tests:
           -  getIndicatorIds_pos
@@ -561,7 +561,7 @@ VTS:
           -  getState_pos
           -  setState_pos
           -  setState_neg
-      26:
+      30:
         name: "VTS_L2_INDICATOR"
         tests:
           - "test_l2_setgetGeneralStates"
