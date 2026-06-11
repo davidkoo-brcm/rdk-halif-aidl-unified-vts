@@ -4,7 +4,7 @@
 # * If not stated otherwise in this file or this component's LICENSE file the
 # * following copyright and licenses apply:
 # *
-# * Copyright 2025 RDK Management
+# * Copyright 2026 RDK Management
 # *
 # * Licensed under the Apache License, Version 2.0 (the "License");
 # * you may not use this file except in compliance with the License.
@@ -20,103 +20,189 @@
 # *
 #* *****************************************************************************
 
-#This python script runs Non-AV L3 VTS test cases
-
 import os
 import sys
 import time
+import yaml
+import inspect
+import importlib.util
+from pathlib import Path
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
+module_path = Path(dir_path) / "../../../vts_hal_test_components"
+DEFAULT_CONFIG_FILE = "vts_l3_test_nonav_setup.yaml"
+
 sys.path.append(os.path.join(dir_path, "../"))
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/flash/host/tests")) # For flash module
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/motionsensor/host/tests")) # For motionsensor module
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/thermalsensor/host/tests")) # For thermalsensor module
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmicec/host/tests")) # For hdmicec module
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/boot/host/tests")) # For boot module
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/host/tests"))
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmioutput/host/tests"))
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/host/tests"))
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/host/tests"))
-sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/indicator/host/tests"))
-
-from vts_flash_L3_ConcurrentImage import VTS_FLASH_L3_ConcurrentImage as vts_flash_L3_concurrent_image
-from vts_flash_L3_TestAllImages import VTS_FLASH_L3_TestAllImages as vts_flash_L3_test_all_images
-from vts_flash_L3_validateAllErrorcodes import VTS_FLASH_L3_ValidateAllErrorCodes as vts_flash_L3_validate_all_errorcodes
-from vts_motionsensor_L3_ActiveWindowBehavior import VTS_MOTIONSENSOR_L3_ActiveWindowBehavior as vts_motionsensor_L3_active_window_behavior
-from vts_motionsensor_L3_DeepSleepAutonomy import VTS_MOTIONSENSOR_L3_DeepSleepAutonomy as vts_motionsensor_L3_deep_sleep_autonomy
-from vts_motionsensor_L3_MotionEventDetection import VTS_MOTIONSENSOR_L3_MotionEventDetection as vts_motionsensor_L3_motion_event_detection
-from vts_motionsensor_L3_NoMotionEventDetection import VTS_MOTIONSENSOR_L3_NoMotionEventDetection as vts_motionsensor_L3_no_motion_event_detection
-from vts_thermalsensor_L3_CriticalShutdownWithSuppression import VTS_THERMALSENSOR_L3_CriticalShutdownWithSuppression as vts_thermalsensor_L3_critical_shutdown_with_suppression
-from vts_thermalsensor_L3_ThermalExceedRecoveryLifecycle import VTS_THERMALSENSOR_L3_ThermalExceedRecoveryLifecycle as vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle
-from vts_hdmicec_L3_ReceiveMessage import VTS_HDMICEC_L3_ReceiveMessage as vts_hdmicec_L3_receive_message
-from vts_hdmicec_L3_SendMessage import VTS_HDMICEC_L3_SendMessage as vts_hdmicec_L3_send_message
-from vts_boot_L3_VerifyBootReasonExternalCause import VTS_BOOT_L3_VerifyBootReasonExternalCause as vts_boot_L3_verify_boot_reason_external_cause
-from vts_boot_L3_VerifyOverrideBootReason import VTS_BOOT_L3_VerifyOverrideBootReason as vts_boot_L3_verify_override_boot_reason
-from vts_boot_L3_VerifyReboot import VTS_BOOT_L3_VerifyReboot as vts_boot_L3_verify_reboot
-from vts_deepsleep_L3_WakeFromSupportedTrigger import VTS_DEEPSLEEP_L3_WakeFromSupportedTrigger as vts_deepsleep_L3_wakefromsupportedtrigger
-from vts_deepsleep_L3_WakeFromPreconfiguredTrigger import VTS_DEEPSLEEP_L3_WakeFromPreconfiguredTrigger as vts_deepsleep_L3_wakefrompreconfiguredtrigger
-from vts_deepsleep_L3_VerifyWakeWithMixedInputTriggerList import VTS_DEEPSLEEP_L3_VerifyWakeWithMixedInputTriggerList as vts_deepsleep_L3_verifywakewithmixedinputtriggerlist
-from vts_deepsleep_L3_NoWakeFromUnspecifiedOrUnsupportedTrigger import VTS_DEEPSLEEP_L3_NoWakeFromUnspecifiedOrUnsupportedTrigger as vts_deepsleep_L3_nowakefromunspecifiedorunsupportedtrigger
-from vts_hdmioutput_L3_PropertyApplicationVerification import VTS_HDMIOUTPUT_L3_PropertyApplicationVerification as vts_hdmioutput_L3_propertyapplicationverification
-from vts_hdmioutput_L3_SPDInfoFrameTransmission import VTS_HDMIOUTPUT_L3_SPDInfoFrameTransmission as vts_hdmioutput_L3_spdinfoframetransmission
-from vts_hdmioutput_L3_HotPlugDetectStateBeforeStartCallback import VTS_HDMIOUTPUT_L3_HotPlugDetectStateBeforeStartCallback as vts_hdmioutput_L3_hotplugDetectstatebeforestartcallback
-from vts_hdmioutput_L3_HotPlugDetectStateAfterStartCallback import VTS_HDMIOUTPUT_L3_HotPlugDetectStateAfterStartCallback as vts_hdmioutput_L3_hotplugDetectstateafterstartcallback
-from vts_compositeinput_L3_VideoModeDetection import VTS_COMPOSITEINPUT_L3_VideoModeDetection as vts_compositeinput_L3_videoModedetection
-from vts_compositeinput_L3_ConnectionTestBeforeStart import VTS_COMPOSITEINPUT_L3_ConnectionTestBeforeStart as vts_compositeinput_L3_connectiontestbeforestart
-from vts_compositeinput_L3_ConnectionTestAfterStart import VTS_COMPOSITEINPUT_L3_ConnectionTestAfterStart as vts_compositeinput_L3_connectiontestafterstart
-from vts_hdmiinput_L3_ConnectionTestsAfterOpen import VTS_HDMIINPUT_L3_ConnectionTestsAfterOpen as vts_hdmiinput_L3_ConnectionTestsAfterOpen
-from vts_hdmiinput_L3_ConnectionTestsAfterStart import VTS_HDMIINPUT_L3_ConnectionTestsAfterStart as vts_hdmiinput_L3_ConnectionTestsAfterStart
-from vts_hdmiinput_L3_EdidTest import VTS_HDMIINPUT_L3_EdidTest as vts_hdmiinput_L3_EdidTest
-from vts_hdmiinput_L3_InfoFrameTests import VTS_HDMIINPUT_L3_InfoFrameTests as vts_hdmiinput_L3_InfoFrameTests
-from vts_indicator_L3_SetStates import VTS_INDICATOR_L3_SetStates as vts_indicator_L3_SetStates
-from vts_indicator_L3_StressTest import VTS_INDICATOR_L3_StressTest as vts_indicator_L3_StressTest
-
+sys.path.append(os.path.join(dir_path, "../raft"))
 from raft.framework.core.logModule import logModule
 
-if __name__ == '__main__':
-    summaryLogName = "run_non_av_vts_summary"
-    summaryLog = logModule(summaryLogName, level=logModule.INFO)
 
-    # Lambdas defer instantiation so each test opens fresh SSH sessions after the
-    # previous test may have rebooted the device (closing any pre-existing connections).
-    tests = [
-        lambda: vts_flash_L3_concurrent_image(summaryLog, moduleName="VTS"),
-        lambda: vts_flash_L3_test_all_images(summaryLog, moduleName="VTS"),
-        lambda: vts_flash_L3_validate_all_errorcodes(summaryLog, moduleName="VTS"),
-        lambda: vts_motionsensor_L3_motion_event_detection(summaryLog, moduleName="VTS"),
-        lambda: vts_motionsensor_L3_no_motion_event_detection(summaryLog, moduleName="VTS"),
-        lambda: vts_motionsensor_L3_active_window_behavior(summaryLog, moduleName="VTS"),
-        lambda: vts_thermalsensor_L3_critical_shutdown_with_suppression(summaryLog, moduleName="VTS"),
-        lambda: vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle(summaryLog, moduleName="VTS"),
-        lambda: vts_hdmicec_L3_receive_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_hdmicec_L3_send_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_boot_L3_verify_boot_reason_external_cause(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_boot_L3_verify_override_boot_reason(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_boot_L3_verify_reboot(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_deepsleep_L3_wakefromsupportedtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_deepsleep_L3_wakefrompreconfiguredtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_deepsleep_L3_verifywakewithmixedinputtriggerlist(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_deepsleep_L3_nowakefromunspecifiedorunsupportedtrigger(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/profiles/hfp-deepsleep-vcomponent.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_hdmioutput_L3_propertyapplicationverification(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmioutput/profiles/hfp-hdmioutput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_hdmioutput_L3_spdinfoframetransmission(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmioutput/profiles/hfp-hdmioutput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_hdmioutput_L3_hotplugDetectstatebeforestartcallback(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmioutput/profiles/hfp-hdmioutput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_hdmioutput_L3_hotplugDetectstateafterstartcallback(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmioutput/profiles/hfp-hdmioutput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_compositeinput_L3_videoModedetection(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/profiles/hfp-compositeinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_compositeinput_L3_connectiontestbeforestart(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/profiles/hfp-compositeinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_compositeinput_L3_connectiontestafterstart(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/profiles/hfp-compositeinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_hdmiinput_L3_ConnectionTestsAfterOpen(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_hdmiinput_L3_ConnectionTestsAfterStart(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_hdmiinput_L3_EdidTest(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_hdmiinput_L3_InfoFrameTests(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_indicator_L3_SetStates(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/indicator/profiles/hfp-indicator-vcomponent.yaml"), ledConfig=os.path.join(dir_path, "../../../vts_hal_test_components/indicator/test_configuration/vts_indicator_LED_config_vdevice.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        lambda: vts_indicator_L3_StressTest(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/indicator/profiles/hfp-indicator-vcomponent.yaml"), ledConfig=os.path.join(dir_path, "../../../vts_hal_test_components/indicator/test_configuration/vts_indicator_LED_config_vdevice.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
-        # Add more test instances here
-        # Need to test after deepsleep integration
-        # lambda: vts_motionsensor_L3_deep_sleep_autonomy(summaryLog, moduleName="VTS"),
+def _loadPythonModule(pyFile: Path):
+    """Load a Python module from the given file path.
 
-    ]
+    Args:
+        pyFile (Path): Path to the Python source file to load.
 
-    # Run each test
-    for test_factory in tests:
-        test_factory().run(False)
-        time.sleep(2)  # Short delay between tests
+    Returns:
+        module: The loaded module, or None if loading failed.
+    """
+    fileDir = str(pyFile.parent)
+    if fileDir not in sys.path:
+        sys.path.append(fileDir)
+
+    moduleName = f"vts_nonav_l3_{pyFile.stem}"
+    spec = importlib.util.spec_from_file_location(moduleName, str(pyFile))
+    if spec is None or spec.loader is None:
+        return None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _resolveKwargsForClass(testClass, component):
+    """Inspect the test class constructor and return only the kwargs it accepts.
+
+    Supports the well-known optional params used across Non-AV L3 tests:
+    - ``moduleName``         - always injected as ``"VTS"``
+    - ``testMenuConfigFile`` - resolved to ``<dir_path>/vts_l3_test_setup.yaml``
+    - ``artifactDirPath``    - resolved to ``<dir_path>``
+    - ``hfpfile``            - auto-discovered as the first
+                               ``<components_root>/<module>/profiles/hfp-*.yaml``
+    - ``ledConfig``          - auto-discovered from indicator test configuration
+                               files (``*LED*config*.yaml``)
+
+    Args:
+        testClass: The L3 test class whose ``__init__`` will be inspected.
+        component (str): Module name, used for hfpfile path resolution.
+
+    Returns:
+        dict: Only the kwargs accepted by the constructor, pre-filled.
+    """
+    try:
+        sig = inspect.signature(testClass.__init__)
+    except (ValueError, TypeError):
+        return {}
+
+    known = {
+        "moduleName": "VTS",
+        "testMenuConfigFile": os.path.join(dir_path, "vts_l3_test_setup.yaml"),
+        "artifactDirPath": dir_path,
+        "hfpfile": None,  # resolved lazily below only if the constructor wants it
+        "ledConfig": None,  # resolved lazily below only if the constructor wants it
+    }
+
+    kwargs = {}
+    for param_name in sig.parameters:
+        if param_name in ("self", "log", "summaryLog", "summary_log", "args", "kwargs"):
+            continue
+        if param_name not in known:
+            continue
+        value = known[param_name]
+        if param_name == "hfpfile" and value is None:
+            profiles_dir = module_path / component / "profiles"
+            hfp_files = sorted(profiles_dir.glob("hfp-*.yaml")) if profiles_dir.is_dir() else []
+            value = str(hfp_files[0]) if hfp_files else None
+        if param_name == "ledConfig" and value is None:
+            cfg_dir = module_path / component / "test_configuration"
+            led_cfgs = sorted(cfg_dir.glob("*LED*config*.yaml")) if cfg_dir.is_dir() else []
+            if not led_cfgs and cfg_dir.is_dir():
+                led_cfgs = sorted(cfg_dir.glob("*led*config*.yaml"))
+            value = str(led_cfgs[0]) if led_cfgs else None
+        if value is not None:
+            kwargs[param_name] = value
+    return kwargs
+
+
+def runTestInstance(testClass, summary_log, component):
+    """Instantiate and run a single L3 test class.
+
+    Injects common class-level attributes then auto-detects which constructor
+    kwargs (``moduleName``, ``testMenuConfigFile``, ``artifactDirPath``,
+    ``hfpfile``, ``ledConfig``) the test accepts and passes only those — no per-test or
+    per-module config required.
+
+    Args:
+        testClass: The L3 test class to instantiate and run.
+        summary_log (logModule): Logger for test output.
+        component (str): Component name (e.g. ``"flash"``), used to resolve
+            the component directory under ``vts_hal_test_components``.
+    """
+    testClass._menuConfigFile = os.path.join(dir_path, "vts_l3_test_setup.yaml")
+    testClass._moduleName = "VTS"
+    testClass._dirPath = dir_path
+    testClass._profilePath = module_path / component
+    kwargs = _resolveKwargsForClass(testClass, component)
+    testInstance = testClass(summary_log, **kwargs)
+    testInstance.run(False)
+    time.sleep(2)  # Short delay between tests
+
+def runNonAvL3TestInstances(summary_log):
+    """Load and run all Non-AV L3 tests defined in the YAML suite config.
+
+    Reads the test suite config (default: ``vts_nonav_l3_test_suite.yaml``)
+    and discovers L3 test classes for each enabled module, then runs them sequentially.
+
+    Args:
+        summary_log (logModule): Logger for test output.
+
+    Returns:
+        bool: True if all tests were processed, False on config error.
+    """
+    configPath = Path(dir_path) / DEFAULT_CONFIG_FILE
+    if not configPath.exists():
+        summary_log.error(f"Config file not found: {configPath}")
+        return False
+
+    try:
+        with open(configPath, "r", encoding="utf-8") as cfg_file:
+            data = yaml.safe_load(cfg_file) or {}
+    except Exception as e:
+        summary_log.error(f"Failed to read config file {configPath}: {e}")
+        return False
+
+    testEntries = data.get("nonAvL3Tests", {}).get("tests", [])
+    if not isinstance(testEntries, list):
+        summary_log.error("Invalid config format: nonAvL3Tests.tests must be a list")
+        return False
+
+    for entry in testEntries:
+        if not isinstance(entry, dict):
+            continue
+        if not entry.get("enabled", True):
+            continue
+
+        component = entry.get("module")
+        requestedClasses = entry.get("tests", [])
+        if not component or not isinstance(requestedClasses, list):
+            summary_log.warning(f"Skipping invalid test entry (module/tests missing): {entry}")
+            continue
+
+        testsDir = (module_path / component / "host/tests").resolve()
+        if not testsDir.is_dir():
+            summary_log.warning(f"Host tests directory not found for module '{component}': {testsDir}")
+            continue
+
+        classMap = {}
+        for pyFile in sorted(testsDir.glob("*L3*.py")):
+            module = _loadPythonModule(pyFile)
+            if module is None:
+                continue
+            for name, obj in inspect.getmembers(module, inspect.isclass):
+                if "_L3_" in name and obj.__module__ == module.__name__:
+                    classMap[name] = (obj, pyFile)
+
+        for className in requestedClasses:
+            if className not in classMap:
+                summary_log.warning(
+                    f"Class {className} not found under module '{component}' L3 host tests"
+                )
+                continue
+            testClass, moduleFile = classMap[className]
+            summary_log.info(f"Loading L3 test class {className} from {moduleFile}")
+            runTestInstance(testClass, summary_log, component)
+
+    return True
+
+if __name__ == "__main__":
+    summaryLog = logModule("L3NonAvTests", level=logModule.INFO)
+    runNonAvL3TestInstances(summaryLog)

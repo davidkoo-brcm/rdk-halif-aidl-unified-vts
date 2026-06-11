@@ -131,6 +131,9 @@ Set below environment variable:
 
 - RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.15.0). Defaults to the latest HEAD.
 
+- By default, UT logs are set to WARNING level. For more details on log level filtering, refer to [UT-Core Log Level Documentation](https://github.com/rdkcentral/ut-control/blob/2.1.0/README.md#log-level-filtering)
+
+
 Example:
 
 ```bash
@@ -138,14 +141,8 @@ export UT_CORE_VERSION=5.1.0
 export RDK_HALIF_AIDL_VERSION=0.15.0
 export AIDL_BIN=/path/linux_binder_idl/out/aidl
 export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
-```
-
-By default, UT logs are set to WARNING level. For more details on log level filtering, refer to [UT-Core Log Level Documentation](https://github.com/rdkcentral/ut-control/blob/2.1.0/README.md#log-level-filtering)
-
-```bash
 export UT_LOG_LEVEL=3
 ```
-
 
 
 Run the build script for Target ARM:
