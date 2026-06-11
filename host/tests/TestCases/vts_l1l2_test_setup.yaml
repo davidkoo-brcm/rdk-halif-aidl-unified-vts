@@ -461,11 +461,50 @@ VTS:
           - "ResetMetrics"
           - "MaximumConcurrentStartedPorts"
       23:
+        name: "VTS_L1_HDMIINPUT"
+        tests:
+            - "getHDMIInputIds_pos"
+            - "getHDMIInput_pos"
+            - "getHDMIInput_neg"
+            - "getPlatformCapabilities_pos"
+            - "getCapabilities_pos"
+            - "getProperty_pos"
+            - "getProperty_neg"
+            - "getState_pos"
+            - "getEDID_pos"
+            - "getDefaultEDID_pos"
+            - "getDefaultEDID_neg"
+            - "getHDCPCurrentVersion_pos"
+            - "getHDCPStatus_pos"
+            - "getSPDInfoFrame_pos"
+            - "open_pos"
+            - "open_neg"
+            - "close_pos"
+            - "close_neg"
+            - "registerEventListener_pos"
+            - "registerEventListener_neg"
+            - "unregisterEventListener_pos"
+            - "unregisterEventListener_neg"
+            - "getConnectionState_pos"
+            - "start_pos"
+            - "start_neg"
+            - "stop_pos"
+            - "stop_neg"
+            - "setEDID_pos"
+            - "setEDID_neg"
+      24:
+        name: "VTS_L2_HDMIINPUT"
+        tests:
+            - "StateTransitions"
+            - "DefaultCallbacks"
+            - "SetandGetEDID"
+            - "MaxConcurrentPorts"
+      25:
         name: "VTS_L1_FLASH"
         tests:
           - flashImageFromFile_invalid_params
 
-      24:
+      26:
         name: "VTS_L1_MOTIONSENSOR"
         tests:
           - getMotionSensorIds_pos
@@ -496,13 +535,13 @@ VTS:
           - clearActiveWindows_pos
           - clearActiveWindows_neg
 
-      25:
+      27:
         name: "VTS_L2_MOTIONSENSOR"
         tests:
           - StateTransitions
           - ConfigurationMethodsRequireStopped
 
-      26:
+      28:
         name: "VTS_L1_THERMALSENSOR"
         tests:
           - registerEventListener_pos

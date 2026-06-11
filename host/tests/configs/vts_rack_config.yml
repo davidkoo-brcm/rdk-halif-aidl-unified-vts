@@ -130,10 +130,10 @@ rackConfig:
                     hdmiController:
                         type: virtual-hdmi-controller
                         vendor: "vComponent"
-                        address: "127.0.0.1" # Needs to be be filled out with IP address
-                        username: "" # Needs to be filled out with login username
-                        password: '' # Needs to be filled out with login password
-                        port: 7722
+                        address: "xxx.0.0.1" # Needs to be be filled out with IP address
+                        username: "xxxx" # Needs to be filled out with login username
+                        password:  'xxxx' # Needs to be filled out with login password
+                        port: xxyy
                         control_port: 8080
                     compositeController:
                         type: virtual-composite-controller
