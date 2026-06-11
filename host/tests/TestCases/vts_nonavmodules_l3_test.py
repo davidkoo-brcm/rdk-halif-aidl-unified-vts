@@ -67,15 +67,15 @@ if __name__ == '__main__':
         lambda: vts_motionsensor_L3_motion_event_detection(summaryLog, moduleName="VTS"),
         lambda: vts_motionsensor_L3_no_motion_event_detection(summaryLog, moduleName="VTS"),
         lambda: vts_motionsensor_L3_active_window_behavior(summaryLog, moduleName="VTS"),
-        # Need to test after deepsleep integration
-        #lambda: vts_motionsensor_L3_deep_sleep_autonomy(summaryLog, moduleName="VTS"),
         lambda: vts_thermalsensor_L3_critical_shutdown_with_suppression(summaryLog, moduleName="VTS"),
-        lambda: vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle(summaryLog, moduleName="VTS")
+        lambda: vts_thermalsensor_L3_thermal_exceed_recovery_lifecycle(summaryLog, moduleName="VTS"),
         lambda: vts_hdmicec_L3_receive_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         lambda: vts_hdmicec_L3_send_message(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         lambda: vts_boot_L3_verify_boot_reason_external_cause(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         lambda: vts_boot_L3_verify_override_boot_reason(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         lambda: vts_boot_L3_verify_reboot(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
+        # Need to test after deepsleep integration
+        # lambda: vts_motionsensor_L3_deep_sleep_autonomy(summaryLog, moduleName="VTS"),
         # Add more test instances here
     ]
 
