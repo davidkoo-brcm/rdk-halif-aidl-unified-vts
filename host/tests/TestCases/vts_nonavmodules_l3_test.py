@@ -33,6 +33,7 @@ sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/boot/ho
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/deepsleep/host/tests"))
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmioutput/host/tests"))
 sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/host/tests"))
+sys.path.append(os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/host/tests"))
 
 from vts_hdmicec_L3_ReceiveMessage import VTS_HDMICEC_L3_ReceiveMessage as vts_hdmicec_L3_receive_message
 from vts_hdmicec_L3_SendMessage import VTS_HDMICEC_L3_SendMessage as vts_hdmicec_L3_send_message
@@ -50,6 +51,11 @@ from vts_hdmioutput_L3_HotPlugDetectStateAfterStartCallback import VTS_HDMIOUTPU
 from vts_compositeinput_L3_VideoModeDetection import VTS_COMPOSITEINPUT_L3_VideoModeDetection as vts_compositeinput_L3_videoModedetection
 from vts_compositeinput_L3_ConnectionTestBeforeStart import VTS_COMPOSITEINPUT_L3_ConnectionTestBeforeStart as vts_compositeinput_L3_connectiontestbeforestart
 from vts_compositeinput_L3_ConnectionTestAfterStart import VTS_COMPOSITEINPUT_L3_ConnectionTestAfterStart as vts_compositeinput_L3_connectiontestafterstart
+from vts_hdmiinput_L3_ConnectionTestsAfterOpen import VTS_HDMIINPUT_L3_ConnectionTestsAfterOpen as vts_hdmiinput_L3_ConnectionTestsAfterOpen
+from vts_hdmiinput_L3_ConnectionTestsAfterStart import VTS_HDMIINPUT_L3_ConnectionTestsAfterStart as vts_hdmiinput_L3_ConnectionTestsAfterStart
+from vts_hdmiinput_L3_EdidTest import VTS_HDMIINPUT_L3_EdidTest as vts_hdmiinput_L3_EdidTest
+from vts_hdmiinput_L3_InfoFrameTests import VTS_HDMIINPUT_L3_InfoFrameTests as vts_hdmiinput_L3_InfoFrameTests
+
 from raft.framework.core.logModule import logModule
 
 if __name__ == '__main__':
@@ -75,6 +81,11 @@ if __name__ == '__main__':
         lambda: vts_compositeinput_L3_videoModedetection(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/profiles/hfp-compositeinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         lambda: vts_compositeinput_L3_connectiontestbeforestart(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/profiles/hfp-compositeinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         lambda: vts_compositeinput_L3_connectiontestafterstart(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/compositeinput/profiles/hfp-compositeinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
+        lambda: vts_boot_L3_verify_reboot(summaryLog, testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path)
+        lambda:vts_hdmiinput_L3_ConnectionTestsAfterOpen(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda:vts_hdmiinput_L3_ConnectionTestsAfterStart(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda:vts_hdmiinput_L3_EdidTest(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
+        lambda:vts_hdmiinput_L3_InfoFrameTests(summaryLog, hfpfile=os.path.join(dir_path, "../../../vts_hal_test_components/hdmiinput/profiles/hfp-hdmiinput.yaml"), testMenuConfigFile=os.path.join(dir_path, "vts_l3_test_setup.yaml"), moduleName="VTS", artifactDirPath=dir_path),
         # Add more test instances here
     ]
 
