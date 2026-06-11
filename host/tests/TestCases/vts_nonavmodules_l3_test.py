@@ -139,7 +139,7 @@ def runTestInstance(testClass, summary_log, component):
 def runNonAvL3TestInstances(summary_log):
     """Load and run all Non-AV L3 tests defined in the YAML suite config.
 
-    Reads the test suite config (default: ``vts_nonav_l3_test_suite.yaml``)
+    Reads the test suite config (default: ``vts_l3_test_nonav_setup.yaml``)
     and discovers L3 test classes for each enabled module, then runs them sequentially.
 
     Args:
