@@ -294,7 +294,6 @@ VTS:
           - TestStateTransitions
           - VerifyClockModeSetToAutoOnOpenAndSetGetClockMode
           - VerifyPlaybackRateAndStateTransitions
-
       11:
         name: "VTS_L1_PlaneControl"
         tests:
@@ -320,7 +319,6 @@ VTS:
           - unregisterListener_neg
           - releaseNativeGraphicsWindowHandle_pos
           - releaseNativeGraphicsWindowHandle_neg
-
       12:
         name: "VTS_L2_PlaneControl"
         tests:
@@ -328,6 +326,46 @@ VTS:
           - TestGetSetPropertyMultiAtomic
           - TestGetSetVideoSourceDestinationPlaneMapping
       13:
+        name: "VTS_L1_HDMICEC"
+        tests:
+          - getState_pos
+          - getProperty_pos
+          - getProperty_neg
+          - getLogicalAddresses_pos
+          - open_pos
+          - open_neg
+          - close_pos
+          - close_neg
+          - registerEventListener_pos
+          - registerEventListener_neg
+          - unregisterEventListener_pos
+          - unregisterEventListener_neg
+          - addLogicalAddresses_pos
+          - addLogicalAddresses_neg
+          - removeLogicalAddresses_pos
+          - removeLogicalAddresses_neg
+          - sendMessage_pos
+          - sendMessage_neg
+      14:
+        name: "VTS_L1_BOOT"
+        tests:
+            - "getCapabilities_pos"
+            - "setBootReason_pos"
+            - "setBootReason_neg"
+            - "getBootReason_pos"
+            - "reboot_neg"
+            - "getPowerSource_pos"
+      15:
+        name: "VTS_L2_BOOT"
+        tests:
+            - "setAndGetBootReason"
+      16:
+        name: "VTS_L1_DEVICEINFO"
+        tests:
+          - getCapabilities_pos
+          - getProperty_pos
+          - getProperty_neg
+      17:
         name: "VTS_L1_DEEPSLEEP"
         tests:
           - "getCapabilities_pos"
@@ -335,12 +373,12 @@ VTS:
           - "settimer_pos"
           - "settimer_neg"
           - "enterdeepsleep_neg"
-      14:
+      18:
         name: "VTS_L2_DEEPSLEEP"
         tests:
           - "setgettimer"
           - "enterdeepsleep"
-      15:
+      19:
         name: "VTS_L1_HDMIOUTPUT"
         tests:
           - "getHDMIOutputIds_pos"
@@ -373,7 +411,7 @@ VTS:
           - "getHDCPStatus_pos"
           - "setSPDInfoFrame_pos"
           - "getSPDInfoFrame_pos"
-      16:
+      20:
         name: "VTS_L2_HDMIOUTPUT"
         tests:
           - "StateTransitions"
@@ -381,7 +419,7 @@ VTS:
           - "SetGetIndividualProperty"
           - "SetGetMultiProperties"
           - "SPDInfoFrame"
-      17:
+      21:
         name: "VTS_L1_COMPOSITEINPUT"
         tests:
           - "getPortIds_pos"
@@ -413,7 +451,7 @@ VTS:
           - "setProperty_neg"
           - "setPropertyMulti_pos"
           - "setPropertyMulti_neg"
-      18:
+      22:
         name: "VTS_L2_COMPOSITEINPUT"
         tests:
           - "StateTransitions"
