@@ -87,6 +87,7 @@
 #include "vts_boot_init.h"
 //#include "vts_flash_init.h"
 #include "vts_indicator_init.h"
+#include "vts_compositeinput_init.h"
 
 int main(int argc, char **argv)
 {
@@ -114,6 +115,7 @@ int main(int argc, char **argv)
     UT_LOG_INFO("\t VTS UNIFIED Boot HALIF Test Version: \033[0;32m%s\033[0m",BOOT_VERSION);
     // UT_LOG_INFO("\t VTS UNIFIED Flash HALIF Test Version: \033[0;32m%s\033[0m",FLASH_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED Indicator HALIF Test Version: \033[0;32m%s\033[0m",INDICATOR_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED Compositeinput HALIF Test Version: \033[0;32m%s\033[0m",COMPOSITEINPUT_VERSION);
     UT_LOG_INFO("==========================================================================");
 
     result = VTS_AVBuffer_init();
@@ -232,6 +234,13 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
+    result = VTS_COMPOSITEINPUT_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize Compositeinput service\n");
+        result = UT_STATUS_FAILURE;
+    }
+
     UT_status_t ut_result = UT_run_tests();
 
     if (result != UT_STATUS_OK || ut_result != UT_STATUS_OK)
@@ -256,6 +265,7 @@ int main(int argc, char **argv)
     VTS_BOOT_destroy();
     // VTS_FLASH_destroy();
     VTS_INDICATOR_destroy();
+    VTS_COMPOSITEINPUT_destroy();
 
     return result;
 }
