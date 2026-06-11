@@ -561,8 +561,7 @@ VTS:
           -  getState_pos
           -  setState_pos
           -  setState_neg
-
-      14:
+      26:
         name: "VTS_L2_INDICATOR"
         tests:
           - "test_l2_setgetGeneralStates"
