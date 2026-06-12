@@ -568,3 +568,10 @@ VTS:
           - "test_l2_setgetWpsStates"
           - "test_l2_setgetNetworkStates"
           - "test_l2_setgetMaintenanceStates"
+      31:
+        name: "VTS_L2_HDMICEC"
+        tests:
+          - "StateTransitions"
+          - "metricValidation"
+          - "logicalAddressesValidation"
+          - "sendMessageValidation"
