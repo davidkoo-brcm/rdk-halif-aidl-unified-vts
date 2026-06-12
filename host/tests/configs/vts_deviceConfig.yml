@@ -28,7 +28,6 @@ deviceConfig:
         model:      "UK"
         soc_vendor: "intel"
         target_directory: "/tmp" # Directory on the device where the test binary will be copied to and executed from
-        boot_process_name: "Vendor-Boot"
         prompt: "~#" # Prompt string on console
         download_path: "assets/streams/input/" # Download path where streams are saved inside the bin folder
         playback_manual_verification: 0 # flag to enable manual playback verification
