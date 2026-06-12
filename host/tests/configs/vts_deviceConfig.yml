@@ -35,8 +35,8 @@ deviceConfig:
         all_wait_time: 2400 #Configurable timeout value to limit the total duration of individual suite
         device_type: ["TV"] # Possible values: ["TV", "RecordingDevice", "Tuner", "PlaybackDevice", "AudioSystem", "VideoProcessor", "PureCecSwitch", "Reserved"]
         wait_time: 320 #Configurable timeout value to limit the total duration of individual tests
-        boot_non_volatile_directory: "/tmp"  # User needs to update based on their soc
-        boot_volatile_directory: "/home/root/" # User needs to update based on their soc
+        boot_non_volatile_directory: "/home/root"  # User needs to update based on their soc
+        boot_volatile_directory: "/tmp" # User needs to update based on their soc
         test:
             profile: "../../../profiles/hfp-vdevice.yaml" #HFP profile used to meet platform requirements
             platform_led_config: "../../../vts_hal_test_components/indicator/test_configuration/vts_indicator_LED_config_vdevice.yaml"
