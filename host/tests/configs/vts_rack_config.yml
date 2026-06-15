@@ -65,52 +65,52 @@ rackConfig:
                 # [ type: "ssh": port: 22 username: "test" password: "test" ]
                 # [ type: "telnet": port: 23 username: "test" password: "test" ]
                 - dut:
-                    ip: "" # IP Address of the ADA Hub
+                    ip: "xxx.0.0.x" # IP Address of the ADA Hub
                     description: "PC"
                     platform: "vDevice"
                     consoles:
                         - default:
                             type: "ssh"
-                            port: "5522"
-                            username: "xxxx"
-                            ip: "xxx.0.0.1" #IP address
-                            password: "xxxx"
+                            port: "xxxx"
+                            username: "xyz"
+                            ip: "xxx.0.0.x" #IP address
+                            password: "xyz"
                             prompt: "~#"
                         #For multiple instance tests, all SSH configs are used, single test uses 0th instance.
                         - ssh_hal_test_0:
                             type: "ssh"
-                            port: "5522"
-                            username: "xxxx"
-                            ip: "xxx.0.0.1" #IP address
-                            password: "xxxx"
+                            port: "xxxx"
+                            username: "xyz"
+                            ip: "xxx.0.0.x" #IP address
+                            password: "xyz"
                             prompt: "~#"
                         - ssh_hal_test_1:
                             type: "ssh"
-                            port: "5522"
-                            username: "xxxx"
-                            ip: "xxx.0.0.1" #IP address
-                            password: "xxxx"
+                            port: "xxxx"
+                            username: "xyz"
+                            ip: "xxx.0.0.x" #IP address
+                            password: "xyz"
                             prompt: "~#"
                         - ssh_hal_test_2:
                             type: "ssh"
-                            port: "5522"
-                            username: "xxxx"
-                            ip: "xxx.0.0.1" #IP address
-                            password: "xxxx"
+                            port: "xxxx"
+                            username: "xyz"
+                            ip: "xxx.0.0.x" #IP address
+                            password: "xyz"
                             prompt: "~#"
                         - ssh_player:
                             type: "ssh"
-                            port: "5522"
-                            username: "xxxx"
-                            ip: "xxx.0.0.1" #IP address
-                            password: "xxxx"
+                            port: "xxxx"
+                            username: "xyz"
+                            ip: "xxx.0.0.x" #IP address
+                            password: "xyz"
                             prompt: "~#"
                         - ssh_hal_test:
                             type: "ssh"
-                            port: "5522"
-                            username: "xxxx"
-                            ip: "xxx.0.0.1" #IP address
-                            password: "xxxx"
+                            port: "xxxx"
+                            username: "xyz"
+                            ip: "xxx.0.0.x" #IP address
+                            password: "xyz"
                             prompt: "~#"
                     outbound:
                         download_url: "tftp://tftp-server.com/rack1/slot1/"    # download location for the CPE device
@@ -121,25 +121,33 @@ rackConfig:
                     hdmiCECController:
                         type: virtual-cec-client
                         vendor: "vComponent"
-                        address: "xxx.0.0.1" # Needs to be be filled out with IP address
-                        username: "xxxx" # Needs to be filled out with login username
-                        password: 'xxxx' # Needs to be filled out with login password
-                        port: xxyy
+                        address: "xxx.0.0.x" # Needs to be be filled out with IP address
+                        username: "xyz" # Needs to be filled out with login username
+                        password: 'xyz' # Needs to be filled out with login password
+                        port: xxxx
                         control_port: 8080
                         device_network_configuration: "path to hdmicec_device_config_add_network.yaml"
                     hdmiController:
                         type: virtual-hdmi-controller
                         vendor: "vComponent"
-                        address: "xxx.0.0.1" # Needs to be be filled out with IP address
-                        username: "xxxx" # Needs to be filled out with login username
-                        password:  'xxxx' # Needs to be filled out with login password
-                        port: xxyy
+                        address: "xxx.0.0.x" # Needs to be be filled out with IP address
+                        username: "xyz" # Needs to be filled out with login username
+                        password:  'xyz' # Needs to be filled out with login password
+                        port: xxxx
                         control_port: 8080
                     compositeController:
                         type: virtual-composite-controller
                         vendor: "vComponent"
-                        address: "127.0.0.1" # Needs to be be filled out with IP address
+                        address: "xxx.0.0.x" # Needs to be be filled out with IP address
                         username: "" # Needs to be filled out with login username
                         password: '' # Needs to be filled out with login password
                         port: 7722
                         control_port: 8080
+                    dutRebootController:
+                        type: virtual-dut-reboot-controller
+                        vendor: "vComponent"
+                        address: "xxx.0.0.x" # Needs to be be filled out with IP address
+                        username: "xyz" # Needs to be filled out with login username
+                        password: 'xyz' # Needs to be filled out with login password
+                        port: xxxx
+                        control_port: 9081
