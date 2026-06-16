@@ -20,6 +20,11 @@
 
 TARGET ?= linux
 VARIANT := CPP
+ENABLE_L4_ONLY ?= 1
+
+ifeq ($(ENABLE_L4_ONLY),1)
+ENABLE_AV_L4_TEST := 1
+endif
 
 ROOT_DIR := $(CURDIR)
 VTS_TEST_DIR := $(ROOT_DIR)/vts_hal_test_components
@@ -160,6 +165,10 @@ ifeq ($(ENABLE_AV_L4_TEST),1)
 CXXFLAGS += -DENABLE_AV_L4_TEST
 endif
 
+ifeq ($(ENABLE_L4_ONLY),1)
+SRC_DIRS := $(AV_L4_TESTS_DIR)
+SRC_DIRS += $(VTS_PLAYER)
+else
 SRC_DIRS := $(AUDIO_DECODER_TEST_DIR)/src
 SRC_DIRS += $(AUDIO_SINK_TEST_DIR)/src
 SRC_DIRS += $(AV_BUFFER_TEST_DIR)/src
@@ -186,6 +195,7 @@ ifeq ($(ENABLE_AV_L4_TEST),1)
 SRC_DIRS += $(AV_L4_TESTS_DIR)
 SRC_DIRS += $(VTS_PLAYER)
 endif
+endif
 SRC_DIRS += $(HELPER_FUNCTIONS_DIR)
 SRC_DIRS += $(ROOT_DIR)/test
 
@@ -211,7 +221,6 @@ XLDFLAGS := -L$(ROOT_DIR)/build/usr/lib
 XLDFLAGS += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib
 XLDFLAGS += -lbinder -lutils
 XLDFLAGS += -laidl_client
-XLDFLAGS += -lavbufferhelper
 ifeq ($(ENABLE_AV_L4_TEST),1)
 XLDFLAGS += -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lpcre
 endif
