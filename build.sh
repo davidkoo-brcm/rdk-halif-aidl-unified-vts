@@ -92,6 +92,29 @@ AIDL_BIN=${AIDL_BIN:-${DEF_LINUX_BINDER}/out/aidl}
 # LINUX_BINDER_OUT_DIR: output installed after building linux_binder_idl
 # contains bin/servicemanager, lib/libbinder etc
 LINUX_BINDER_OUT_DIR=${LINUX_BINDER_OUT_DIR:-${DEF_LINUX_BINDER}/local}
+# LINUX_BINDER_SOURCE: root of linux_binder_idl source (needed for >= 0.20.0)
+LINUX_BINDER_SOURCE=${LINUX_BINDER_SOURCE:-$(dirname "$(dirname "$(realpath "${AIDL_BIN}")")")}
+
+###############################################################################
+# Determine build mode based on RDK_HALIF_AIDL_VERSION
+# Versions > 0.20.0 use the new cmake interface in rdk-halif-aidl
+###############################################################################
+_halif_version_is_prebuilt() {
+    local ver="${RDK_HALIF_AIDL_VERSION}"
+    # Non-semver (main, HEAD, etc.) defaults to prebuilt
+    if ! [[ "$ver" =~ ^[0-9]+\.[0-9]+ ]]; then return 0; fi
+    local major minor
+    major=$(echo "$ver" | cut -d. -f1)
+    minor=$(echo "$ver" | cut -d. -f2)
+    [ "$major" -gt 0 ] || [ "$minor" -gt 20 ]
+}
+
+if _halif_version_is_prebuilt; then
+    HALIF_BUILD_MODE="prebuilt"    # C++ interfaces pre-committed in rdk-halif-aidl repo
+else
+    HALIF_BUILD_MODE="generated"   # aidl compiler generates C++ interfaces at build time
+fi
+export HALIF_BUILD_MODE
 
 #TODO: change to server path
 DEF_GST_LIB_PATH="`realpath ${TOP}/../`/gstreamer_aidl_package/build/install"
@@ -104,17 +127,24 @@ EGL_LIB_PATH=${EGL_LIB_PATH:-${DEF_EGL_LIB_PATH}}
 
 mkdir -p $TOP_BUILD_DIR
 
-if [ ! -x $AIDL_BIN ]; then
-    echo "AIDL_BIN: path does not exists, consider building the linux_binder_idl in $AIDL_BIN"
-    exit 1
+if [ "${HALIF_BUILD_MODE}" = "generated" ]; then
+    if [ ! -x "$AIDL_BIN" ]; then
+        echo "AIDL_BIN: path does not exist, consider building the linux_binder_idl in $AIDL_BIN"
+        exit 1
+    fi
+    if [ ! -d "$LINUX_BINDER_OUT_DIR" ]; then
+        echo "LINUX_BINDER_OUT_DIR: path does not exist, consider building the linux_binder_idl in $DEF_LINUX_BINDER"
+        exit 1
+    fi
+    declare -r AIDL_BIN=`realpath ${AIDL_BIN}`
+    declare -r LINUX_BINDER_OUT_DIR=`realpath ${LINUX_BINDER_OUT_DIR}`
+elif [ "${HALIF_BUILD_MODE}" = "prebuilt" ]; then
+    if [ ! -d "$LINUX_BINDER_OUT_DIR" ]; then
+        echo "LINUX_BINDER_OUT_DIR: path does not exist, set it to the ARM linux_binder_idl/local/ directory"
+        exit 1
+    fi
+    declare -r LINUX_BINDER_OUT_DIR=`realpath ${LINUX_BINDER_OUT_DIR}`
 fi
-if [ ! -d $LINUX_BINDER_OUT_DIR ]; then
-    echo "LINUX_BINDER_OUT_DIR: path does not exists, consider building the linux_binder_idl in $DEF_LINUX_BINDER"
-    exit 1
-fi
-
-declare -r AIDL_BIN=`realpath ${AIDL_BIN}`
-declare -r LINUX_BINDER_OUT_DIR=`realpath ${LINUX_BINDER_OUT_DIR}`
 
 # Parse Target argument (e.g., Target=arm or target=linux)
 # Default to 'linux' if not provided
@@ -173,39 +203,12 @@ validate_egl_lib_path()
 # Function to clone  unified VTS repo's
 ###############################################################################
 unified_manifest()
-(
-	 set -euo pipefail
+{
+    echo "repo init unified manifest"
+    repo init -b $(git rev-parse --abbrev-ref HEAD) -m aidl_unified_manifest.xml -u https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
+    repo sync -cd -j 16 --no-repo-verify -q
+}
 
-	 BRANCH=$(git rev-parse --abbrev-ref HEAD)
-
-	 if [ "$BRANCH" = "HEAD" ]; then
-	    echo "Error: Detached HEAD state"
-	    exit 1
-	 fi
-
-	 repo init \
-	 --repo-url=https://gerrit.googlesource.com/git-repo \
-	 --no-clone-bundle \
-	 --repo-rev=stable \
-	 -b "$BRANCH" \
-	 -m aidl_unified_manifest.xml \
-	 -u https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git
-
-	 repo sync -cd -j 16 -q
-
-	 # Basic validation (defense-in-depth)
-         if [ ! -d .repo/manifests ]; then
-            echo "Expected .repo/manifests to exist after repo sync, but it was not found."
-            exit 1
-         fi
-         if grep -r "http://" .repo/manifests; then
-            echo "Insecure repo URL detected!"
-            exit 1
-         elif [ $? -ne 1 ]; then
-            echo "Failed to scan .repo/manifests for insecure repo URLs."
-            exit 1
-         fi
-)
 
 ###############################################################################
 # Function to install linux-binder service manager, headers, and libraries
@@ -237,18 +240,10 @@ install_egl_package()
 }
 
 ###############################################################################
-# Function to checkout the halif aidl repository and convert the aidl files
-# to C++ headers
+# (old path, rdk-halif-aidl < 0.21.0) Per-component cmake loop
 ###############################################################################
-generate_hal_interfaces()
+_generate_hal_interfaces_old()
 {
-    # Clone the repository if not already present
-    if [ ! -d "$RDK_HAL_DIR" ]; then
-        echo "Checking out version: " $RDK_HALIF_AIDL_VERSION
-        git clone -b $RDK_HALIF_AIDL_VERSION 'http://git@github.com/rdkcentral/rdk-halif-aidl.git' $RDK_HAL_DIR
-    fi
-
-    # Iterate through the HALIF components
     for component in "${!HALIF_COMPONENTS[@]}"; do
         version=${HALIF_COMPONENTS[$component]}
         echo "Component: $component, Version: $version"
@@ -271,6 +266,150 @@ generate_hal_interfaces()
             exit 1
         fi
     done
+}
+
+###############################################################################
+# (prebuilt mode) Build HOST (x86) binder SDK to obtain the aidl compiler binary.
+# Must run without the Yocto cross-compile environment so the host toolchain is used.
+###############################################################################
+build_host_binder_sdk()
+{
+    local HOST_BINDER_SDK="${RDK_HAL_DIR}/out/target"
+
+    if [ ! -f "${HOST_BINDER_SDK}/.sdk_ready" ]; then
+        echo "Building HOST binder SDK (x86 aidl compiler)..."
+        (
+            unset CC CXX AR STRIP OBJCOPY LD RANLIB NM
+            unset CFLAGS CXXFLAGS LDFLAGS
+            unset PKG_CONFIG_PATH PKG_CONFIG_SYSROOT_DIR CMAKE_TOOLCHAIN_FILE
+            unset OECORE_NATIVE_SYSROOT OECORE_TARGET_SYSROOT
+            export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
+            cd "${RDK_HAL_DIR}"
+            bash build_binder.sh
+        ) || { echo "ERROR: build_binder.sh failed"; exit 1; }
+    else
+        echo "HOST binder SDK already built, skipping..."
+    fi
+
+    # Install Python packages required by aidl_ops.py into a local dir so
+    # cmake finds them regardless of which python3 interpreter is in PATH
+    local PYTHON_PKGS="${TOP_BUILD_DIR}/python_pkgs"
+    /usr/bin/pip3 install --target "${PYTHON_PKGS}" colorama pyyaml --quiet 2>/dev/null || \
+    /usr/bin/python3 -m pip install --target "${PYTHON_PKGS}" colorama pyyaml --quiet 2>/dev/null || \
+    echo "Warning: could not install colorama/pyyaml; cmake configure may fail"
+    export PYTHONPATH="${PYTHON_PKGS}:${PYTHONPATH:-}"
+}
+
+###############################################################################
+# (prebuilt mode, ARM target) Stage the ARM binder SDK for cmake:
+#   - ARM runtime libs from LINUX_BINDER_OUT_DIR (cross-compiled)
+#   - HOST aidl binary from rdk-halif-aidl/out/target/bin/ (x86, for code-gen)
+###############################################################################
+stage_arm_binder_sdk()
+{
+    local ARM_SDK="${TOP_BUILD_DIR}/binder_sdk_arm"
+
+    if [ -f "${ARM_SDK}/.sdk_ready" ]; then
+        echo "ARM binder SDK already staged, skipping..."
+        return
+    fi
+
+    echo "Staging ARM binder SDK from ${LINUX_BINDER_OUT_DIR}..."
+    mkdir -p "${ARM_SDK}/lib/binder"
+
+    find "${LINUX_BINDER_OUT_DIR}/lib" -maxdepth 1 -name "*.so*" \
+        -exec cp -a {} "${ARM_SDK}/lib/binder/" \;
+    touch "${ARM_SDK}/.sdk_ready"
+}
+
+###############################################################################
+# (prebuilt mode) Single cmake call that compiles pre-committed C++ interfaces
+# in rdk-halif-aidl into per-module .so files (rdk-halif-aidl > 0.20.0).
+###############################################################################
+_generate_hal_interfaces_prebuilt()
+{
+    local HALIF_OUT_DIR="${TOP_BUILD_DIR}/halif_out"
+    local HAL_BUILD_DIR="${TOP_BUILD_DIR}/halif_aidl"
+    local BINDER_INC_DIR="${RDK_HAL_DIR}/out/build"
+    local BINDER_SDK_DIR
+
+    # ARM: use staged SDK (ARM libs + HOST aidl); linux: use HOST SDK directly
+    if [ "${TARGET}" = "arm" ]; then
+        BINDER_SDK_DIR="${TOP_BUILD_DIR}/binder_sdk_arm"
+    else
+        BINDER_SDK_DIR="${RDK_HAL_DIR}/out/target"
+    fi
+
+    # Skip cmake if HAL interfaces are already built
+    if [ -d "${HALIF_OUT_DIR}/target/lib/halif" ] && \
+       [ -n "$(ls ${HALIF_OUT_DIR}/target/lib/halif/lib*-vcurrent-cpp.so 2>/dev/null)" ] && \
+       [ -f "${HAL_BUILD_DIR}/CMakeCache.txt" ]; then
+        echo "HAL interfaces already built, skipping cmake..."
+        return
+    fi
+
+    mkdir -p "${HALIF_OUT_DIR}"
+
+    cmake \
+        -DINTERFACE_TARGET=all \
+        -DBINDER_SDK_DIR="${BINDER_SDK_DIR}" \
+        -DBINDER_SDK_INCLUDE_DIR="${BINDER_INC_DIR}" \
+        -DHOST_AIDL_DIR="${RDK_HAL_DIR}/build-tools/linux_binder_idl/host" \
+        -DOUT_DIR="${HALIF_OUT_DIR}" \
+        -B "${HAL_BUILD_DIR}" \
+        "${RDK_HAL_DIR}"
+
+    if [ $? -ne 0 ]; then
+        echo -e "${BOLD}╔══════════════════════════════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to configure HAL interfaces. Exiting.${RESET}"
+        echo -e "${BOLD}╚══════════════════════════════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
+
+    cmake --build "${HAL_BUILD_DIR}" -j$(nproc)
+    if [ $? -ne 0 ]; then
+        echo -e "${BOLD}╔══════════════════════════════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to build HAL interfaces. Exiting.${RESET}"
+        echo -e "${BOLD}╚══════════════════════════════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
+}
+
+###############################################################################
+# Dispatcher: clone rdk-halif-aidl then run old or new build path
+###############################################################################
+generate_hal_interfaces()
+{
+    # If the directory exists, verify it is at the expected version.
+    # A mismatch (e.g. main cloned previously, now pinning to 0.21.0) causes
+    # the cmake dependency resolver to see modules that don't belong to this
+    # version (e.g. car-v1-cpp requiring common-v1-cpp which doesn't exist).
+    if [ -d "$RDK_HAL_DIR" ]; then
+        actual_tag=$(git -C "$RDK_HAL_DIR" describe --tags --exact-match 2>/dev/null || echo "")
+        if [ "$actual_tag" != "$RDK_HALIF_AIDL_VERSION" ]; then
+            echo "rdk-halif-aidl is at '${actual_tag:-unknown}', expected '$RDK_HALIF_AIDL_VERSION' — re-cloning"
+            rm -rf "$RDK_HAL_DIR"
+            rm -rf "${TOP_BUILD_DIR}/halif_aidl"
+            rm -rf "${TOP_BUILD_DIR}/halif_out"
+        fi
+    fi
+
+    if [ ! -d "$RDK_HAL_DIR" ]; then
+        echo "Checking out rdk-halif-aidl version: $RDK_HALIF_AIDL_VERSION"
+        git clone -b $RDK_HALIF_AIDL_VERSION 'http://git@github.com/rdkcentral/rdk-halif-aidl.git' $RDK_HAL_DIR
+    fi
+
+    if [ "${HALIF_BUILD_MODE}" = "prebuilt" ]; then
+        echo "Using prebuilt HAL interface build path (rdk-halif-aidl > 0.20.0)"
+        build_host_binder_sdk
+        if [ "${TARGET}" = "arm" ]; then
+            stage_arm_binder_sdk
+        fi
+        _generate_hal_interfaces_prebuilt
+    else
+        echo "Using generated HAL interface build path (rdk-halif-aidl <= 0.20.0)"
+        _generate_hal_interfaces_old
+    fi
 }
 
 ###############################################################################
@@ -398,11 +537,16 @@ install_test()
         if [ -d "${RDK_HAL_TEST_DIR}/${component}/profiles" ]; then
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/profiles ${INSTALL_PATH}/
         fi
-        if [ -d "${RDK_HAL_TEST_DIR}/${component}/test_configuration" ]; then
-            cp -rf ${RDK_HAL_TEST_DIR}/${component}/test_configuration ${INSTALL_PATH}/
-        fi
     done
     cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/
+
+    # Install per-module halif libs produced by the prebuilt build path (> 0.20.0)
+    if [ "${HALIF_BUILD_MODE}" = "prebuilt" ]; then
+        local HALIF_LIB_DIR="${TOP_BUILD_DIR}/halif_out/target/lib/halif"
+        if [ -d "${HALIF_LIB_DIR}" ]; then
+            find "${HALIF_LIB_DIR}" -maxdepth 1 -name "*.so" -exec install -t "${INSTALL_PATH}" {} \; 2>/dev/null || true
+        fi
+    fi
 
     mkdir -p ${INSTALL_PATH}/assets/streams/input
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
@@ -428,7 +572,6 @@ clean_test()
     rm -rf ${COMMON_DIR}/helper_functions/*.o
     rm -rf ${COMMON_DIR}/vts_player/*.o
 
-    find "$RDK_HAL_TEST_DIR" -type f -name "*.o" -delete
     find "$TOP_BUILD_DIR" -type f -name "*.o" -delete
 }
 ###############################################################################
@@ -462,7 +605,10 @@ help()
 echo -e "${BOLD}${GREEN}VTS Unified Version    : ${RESET}${YELLOW}$(git rev-parse --abbrev-ref HEAD)${RESET}"
 echo -e "${BOLD}${GREEN}UT_CORE_VERSION        : ${RESET}${YELLOW}$UT_CORE_VERSION${RESET}"
 echo -e "${BOLD}${GREEN}RDK_HALIF_AIDL_VERSION : ${RESET}${YELLOW}$RDK_HALIF_AIDL_VERSION${RESET}"
+echo -e "${BOLD}${GREEN}HALIF_BUILD_MODE       : ${RESET}${YELLOW}$HALIF_BUILD_MODE${RESET}"
+if [ "${HALIF_BUILD_MODE}" = "generated" ]; then
 echo -e "${BOLD}${GREEN}AIDL_BIN               : ${RESET}${YELLOW}$AIDL_BIN${RESET}"
+fi
 echo -e "${BOLD}${GREEN}LINUX_BINDER_OUT_DIR   : ${RESET}${YELLOW}$LINUX_BINDER_OUT_DIR${RESET}"
 if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
 echo -e "${BOLD}${GREEN}GST_LIB_PATH           : ${RESET}${YELLOW}$GST_LIB_PATH${RESET}"
@@ -497,7 +643,9 @@ elif [[ "$1" == [Tt]arget=* ]]; then
         install_egl_package
     fi
     generate_hal_interfaces
-    build_aidl_libs
+    if [ "${HALIF_BUILD_MODE}" = "generated" ]; then
+        build_aidl_libs
+    fi
     build_ut_core
     generate_avbufferhelper_skeleton
     build_halif_test
