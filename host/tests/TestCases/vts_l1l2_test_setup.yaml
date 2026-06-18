@@ -464,20 +464,20 @@ VTS:
       23:
         name: "VTS_L1_HDMIINPUT"
         tests:
-            - getHDMIInputIds_pos
-            - getHDMIInput_pos
-            - getHDMIInput_neg
-            - getPlatformCapabilities_pos
-            - getCapabilities_pos
-            - getProperty_pos
-            - getProperty_neg
-            - getState_pos
-            - getEDID_pos
-            - getDefaultEDID_pos
-            - getDefaultEDID_neg
-            - getHDCPCurrentVersion_pos
-            - getHDCPStatus_pos
-            - getSPDInfoFrame_pos
+          - getHDMIInputIds_pos
+          - getHDMIInput_pos
+          - getHDMIInput_neg
+          - getPlatformCapabilities_pos
+          - getCapabilities_pos
+          - getProperty_pos
+          - getProperty_neg
+          - getState_pos
+          - getEDID_pos
+          - getDefaultEDID_pos
+          - getDefaultEDID_neg
+          - getHDCPCurrentVersion_pos
+          - getHDCPStatus_pos
+          - getSPDInfoFrame_pos
             - open_pos
             - open_neg
             - close_pos
