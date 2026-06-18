@@ -496,10 +496,10 @@ VTS:
       24:
         name: "VTS_L2_HDMIINPUT"
         tests:
-            - StateTransitions
-            - DefaultCallbacks
-            - SetandGetEDID
-            - MaxConcurrentPorts
+          - StateTransitions
+          - DefaultCallbacks
+          - SetandGetEDID
+          - MaxConcurrentPorts
       25:
         name: "VTS_L1_FLASH"
         tests:
