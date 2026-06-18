@@ -118,7 +118,6 @@ int main(int argc, char **argv)
     UT_LOG_INFO("\t VTS UNIFIED Indicator HALIF Test Version: \033[0;32m%s\033[0m",INDICATOR_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED Thermal Sensor HALIF Test Version: \033[0;32m%s\033[0m",THERMALSENSOR_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED Motion Sensor HALIF Test Version: \033[0;32m%s\033[0m",MOTIONSENSOR_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED Composite Input HALIF Test Version: \033[0;32m%s\033[0m",COMPOSITEINPUT_VERSION);
     UT_LOG_INFO("==========================================================================");
 
     result = VTS_AVBuffer_init();
