@@ -421,47 +421,6 @@ VTS:
           - SetGetMultiProperties
           - SPDInfoFrame
       21:
-        name: "VTS_L1_COMPOSITEINPUT"
-        tests:
-          - getPortIds_pos
-          - getPort_pos
-          - getPort_neg
-          - getPlatformCapabilities_pos
-          - getPortInfo_pos
-          - getId_pos
-          - getCapabilities_pos
-          - getState_initial
-          - getStatus_pos
-          - open_pos
-          - close_pos
-          - open_neg
-          - close_neg
-          - registerEventListener_pos
-          - unregisterEventListener_pos
-          - unregisterEventListener_neg
-          - controller_start_pos
-          - controller_stop_pos
-          - controller_start_neg
-          - controller_stop_neg
-          - getProperty_pos
-          - getProperty_neg
-          - getPropertyMulti_pos
-          - getPropertyMulti_neg
-          - resetMetrics_pos
-          - setProperty_pos
-          - setProperty_neg
-          - setPropertyMulti_pos
-          - setPropertyMulti_neg
-      22:
-        name: "VTS_L2_COMPOSITEINPUT"
-        tests:
-          - StateTransitions
-          - ConnectionState
-          - PropertySetGetStarted
-          - PropertyMultiSetGetStarted
-          - ResetMetrics
-          - MaximumConcurrentStartedPorts
-      23:
         name: "VTS_L1_HDMIINPUT"
         tests:
           - getHDMIInputIds_pos
@@ -493,19 +452,19 @@ VTS:
             - stop_neg
             - setEDID_pos
             - setEDID_neg
-      24:
+      22:
         name: "VTS_L2_HDMIINPUT"
         tests:
           - StateTransitions
           - DefaultCallbacks
           - SetandGetEDID
           - MaxConcurrentPorts
-      25:
+      23:
         name: "VTS_L1_FLASH"
         tests:
           - flashImageFromFile_invalid_params
 
-      26:
+      24:
         name: "VTS_L1_MOTIONSENSOR"
         tests:
           - getMotionSensorIds_pos
@@ -536,13 +495,13 @@ VTS:
           - clearActiveWindows_pos
           - clearActiveWindows_neg
 
-      27:
+      25:
         name: "VTS_L2_MOTIONSENSOR"
         tests:
           - StateTransitions
           - ConfigurationMethodsRequireStopped
 
-      28:
+      26:
         name: "VTS_L1_THERMALSENSOR"
         tests:
           - registerEventListener_pos
@@ -552,7 +511,7 @@ VTS:
           - getCurrentThermalState_pos
           - getCurrentTemperatures_pos
 
-      29:
+      27:
         name: "VTS_L1_INDICATOR"
         tests:
           -  getIndicatorIds_pos
@@ -562,14 +521,14 @@ VTS:
           -  getState_pos
           -  setState_pos
           -  setState_neg
-      30:
+      28:
         name: "VTS_L2_INDICATOR"
         tests:
           - test_l2_setgetGeneralStates
           - test_l2_setgetWpsStates
           - test_l2_setgetNetworkStates
           - test_l2_setgetMaintenanceStates
-      31:
+      29:
         name: "VTS_L2_HDMICEC"
         tests:
           - StateTransitions

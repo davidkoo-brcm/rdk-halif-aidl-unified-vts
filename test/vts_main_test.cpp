@@ -89,7 +89,6 @@
 #include "vts_indicator_init.h"
 #include "vts_thermalsensor_init.h"
 #include "vts_motionsensor_init.h"
-#include "vts_compositeinput_init.h"
 
 int main(int argc, char **argv)
 {
@@ -242,13 +241,6 @@ int main(int argc, char **argv)
 
     VTS_MOTIONSENSOR_init();
 
-    result = VTS_COMPOSITEINPUT_init();
-    if (result != UT_STATUS_OK)
-    {
-        UT_LOG_ERROR("Failed to initialize Composite Input service");
-        result = UT_STATUS_FAILURE;
-    }
-
     UT_status_t ut_result = UT_run_tests();
 
     if (result != UT_STATUS_OK || ut_result != UT_STATUS_OK)
@@ -275,8 +267,6 @@ int main(int argc, char **argv)
     VTS_INDICATOR_destroy();
     VTS_THERMALSENSOR_destroy();
     VTS_MOTIONSENSOR_destroy();
-    VTS_COMPOSITEINPUT_destroy();
-
     return result;
 }
 

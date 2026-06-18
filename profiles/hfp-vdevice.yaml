@@ -41,4 +41,3 @@ include_13: profiles/hfp-flash-vcomponent.yaml
 include_14: profiles/hfp-indicator-vcomponent.yaml
 include_15: profiles/hfp-thermalsensor-vcomponent.yaml
 include_16: profiles/hfp-motionsensor-vcomponent.yaml
-include_17: profiles/hfp-compositeinput.yaml
