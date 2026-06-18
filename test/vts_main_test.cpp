@@ -252,9 +252,10 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
+    result = VTS_COMPOSITEINPUT_init();
     if (result != UT_STATUS_OK)
     {
-        UT_LOG_ERROR("Failed to initialize Compositeinput service\n");
+        UT_LOG_ERROR("Failed to initialize Composite Input service");
         result = UT_STATUS_FAILURE;
     }
 
