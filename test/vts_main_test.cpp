@@ -85,8 +85,11 @@
 #include "vts_deepsleep_init.h"
 #include "vts_deviceinfo_init.h"
 #include "vts_boot_init.h"
-//#include "vts_flash_init.h"
+#include "vts_flash_init.h"
 #include "vts_indicator_init.h"
+#include "vts_thermalsensor_init.h"
+#include "vts_motionsensor_init.h"
+#include "vts_compositeinput_init.h"
 
 int main(int argc, char **argv)
 {
@@ -112,8 +115,11 @@ int main(int argc, char **argv)
     UT_LOG_INFO("\t VTS UNIFIED Deep Sleep HALIF Test Version: \033[0;32m%s\033[0m",DEEPSLEEP_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED Device Info HALIF Test Version: \033[0;32m%s\033[0m",DEVICEINFO_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED Boot HALIF Test Version: \033[0;32m%s\033[0m",BOOT_VERSION);
-    // UT_LOG_INFO("\t VTS UNIFIED Flash HALIF Test Version: \033[0;32m%s\033[0m",FLASH_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED Flash HALIF Test Version: \033[0;32m%s\033[0m",FLASH_VERSION);
     UT_LOG_INFO("\t VTS UNIFIED Indicator HALIF Test Version: \033[0;32m%s\033[0m",INDICATOR_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED Thermal Sensor HALIF Test Version: \033[0;32m%s\033[0m",THERMALSENSOR_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED Motion Sensor HALIF Test Version: \033[0;32m%s\033[0m",MOTIONSENSOR_VERSION);
+    UT_LOG_INFO("\t VTS UNIFIED Composite Input HALIF Test Version: \033[0;32m%s\033[0m",COMPOSITEINPUT_VERSION);
     UT_LOG_INFO("==========================================================================");
 
     result = VTS_AVBuffer_init();
@@ -218,17 +224,37 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
-    // result = VTS_FLASH_init();
-    // if (result != UT_STATUS_OK)
-    // {
-    //     UT_LOG_ERROR("VTS_FLASH_init() failed!");
-    //     result = UT_STATUS_FAILURE;
-    // }
+    result = VTS_FLASH_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("VTS_FLASH_init() failed!");
+        result = UT_STATUS_FAILURE;
+    }
 
     result = VTS_INDICATOR_init();
     if (result != UT_STATUS_OK)
     {
         UT_LOG_ERROR("VTS_INDICATOR_init() failed!");
+        result = UT_STATUS_FAILURE;
+    }
+
+    result = VTS_THERMALSENSOR_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize Thermal Sensor service");
+        result = UT_STATUS_FAILURE;
+    }
+
+    result = VTS_MOTIONSENSOR_init();
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize Motion Sensor service");
+        result = UT_STATUS_FAILURE;
+    }
+
+    if (result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize Compositeinput service\n");
         result = UT_STATUS_FAILURE;
     }
 
@@ -254,8 +280,11 @@ int main(int argc, char **argv)
     VTS_DEEPSLEEP_destroy();
     VTS_DEVICEINFO_destroy();
     VTS_BOOT_destroy();
-    // VTS_FLASH_destroy();
+    VTS_FLASH_destroy();
     VTS_INDICATOR_destroy();
+    VTS_THERMALSENSOR_destroy();
+    VTS_MOTIONSENSOR_destroy();
+    VTS_COMPOSITEINPUT_destroy();
 
     return result;
 }
