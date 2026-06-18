@@ -139,9 +139,24 @@ unified_manifest()
         echo "Manifest already synced, skipping repo sync"
         return
     fi
+    local BRANCH
+    BRANCH=$(git rev-parse --abbrev-ref HEAD) || {
+        echo "ERROR: Failed to determine current branch. Is the repo in a detached HEAD state?"
+        exit 1
+    }
+    if [ "${BRANCH}" = "HEAD" ]; then
+        echo "ERROR: Detached HEAD state detected — cannot determine branch for repo init."
+        exit 1
+    fi
     echo "repo init unified manifest"
-    repo init -b $(git rev-parse --abbrev-ref HEAD) -m aidl_unified_manifest.xml -u https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
-    repo sync -cd -j 16 --no-repo-verify -q
+    repo init -b "${BRANCH}" -m aidl_unified_manifest.xml -u https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q || {
+        echo "ERROR: repo init failed."
+        exit 1
+    }
+    repo sync -cd -j 16 --no-repo-verify -q || {
+        echo "ERROR: repo sync failed."
+        exit 1
+    }
 }
 
 ###############################################################################

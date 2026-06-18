@@ -7,7 +7,7 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 - [Unified Vendor Testing Suite For AIDL HAL](#unified-vendor-testing-suite-for-aidl-hal)
   - [Acronyms, Terms and Abbreviations](#acronyms-terms-and-abbreviations)
   - [Setup](#setup)
-  - [Build linux binder for Target Linux](#build-linux-binder-for-target-linux)
+  - [Build Linux Binder](#build-linux-binder)
   - [Build Unified VTS](#build-unified-vts)
   - [Run Tests Manually](#run-tests-manually)
   - [Setting Python environment for L1, L2, L3 and L4 automation test cases](#setting-python-environment-for-l1-l2-l3-and-l4-automation-test-cases)
@@ -52,6 +52,7 @@ chmod 600 ~/.netrc
 
 - To avoid conflict between your organization GitHub and RDK Central GitHub, add the following in your ssh config (`~/.ssh/config`):
 
+<!-- -->
 
     Host github.code.rdkcentral.com
       Hostname github.com
@@ -62,22 +63,11 @@ chmod 600 ~/.netrc
 
   - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account>
 
+## Build Linux Binder
 
-## Build linux binder for Target Linux
+The Linux Binder with `AIDL` support is built automatically by `build.sh` — no manual steps are required. `build.sh` clones `linux_binder_idl` and builds the binder libraries for the selected target.
 
-The test suite depends on the Linux binder with `AIDL` support. Follow these steps to build it:
-
-For detail build instruction, please refer to [Linux Binder](https://github.com/rdkcentral/linux_binder_idl/tree/1.0.0)
-
-Here outline the simplest steps are
-
-```bash
-git clone -b 1.0.0 'https://github.com/rdkcentral/linux_binder_idl.git'
-
-cd linux_binder_idl
-
-./build-linux-binder-aidl.sh 64
-```
+For reference, full build instructions are available in the [linux_binder_idl](https://github.com/rdkcentral/linux_binder_idl) repository.
 
 ## Build Unified VTS
 
@@ -119,34 +109,46 @@ git clone https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git
 cd rdk-halif-aidl-unified-vts
 ```
 
-Source the appropriate tool chains for the cross compilation
+### Environment Variables
 
-Set below environment variable:
+#### For Linux (x86) target
 
-- AIDL_BIN: Path to the `AIDL` compiler (e.g., /path/to/linux_binder_idl/out/aidl).
+No environment variables are required. `build.sh` uses the host gcc automatically.
 
-- LINUX_BINDER_OUT_DIR: Path to the Linux binder output directory (e.g., /path/to/linux_binder_idl/local).
+#### For ARM target
 
-- UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 5.1.0). Defaults to the latest tagged version.
-
-- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.15.0). Defaults to the latest HEAD.
-
-Example:
+Source the RDK ARM toolchain before running the build:
 
 ```bash
+source /opt/toolchains/rdk-glibc-x86_64-arm-toolchain/environment-setup-armv7vet2hf-neon-oe-linux-gnueabi
+```
+
+`build.sh` automatically:
+- Builds the AIDL host tools (x86) required by the build system
+- Cross-compiles the ARM binder libraries using the sourced toolchain
+- Builds all HAL modules for ARM
+
+#### Optional variables
+
+```bash
+# Override UT Core version (default: 5.1.0)
 export UT_CORE_VERSION=5.1.0
-export RDK_HALIF_AIDL_VERSION=0.15.0
-export AIDL_BIN=/path/linux_binder_idl/out/aidl
-export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
+
+# Override UT log level (default: WARNING)
+export UT_LOG_LEVEL=3
+
+# Enable AV L4 test cases (requires GStreamer)
+export ENABLE_AV_L4_TEST=1
+export GST_LIB_PATH=/path/to/gstreamer_pkg
+
+# Enable Plane Control test cases (requires EGL)
+export ENABLE_PLANE_CONTROL_TEST=1
+export EGL_LIB_PATH=/path/to/egl_pkg
 ```
 
 By default, UT logs are set to WARNING level. For more details on log level filtering, refer to [UT-Core Log Level Documentation](https://github.com/rdkcentral/ut-control/blob/2.1.0/README.md#log-level-filtering)
 
-```bash
-export UT_LOG_LEVEL=3
-```
-
-
+### Run the Build
 
 Run the build script for Target ARM:
 
@@ -160,13 +162,20 @@ Run the build script for Target Linux:
 ./build.sh Target=linux
 ```
 
-The build.sh script:
+The `build.sh` script automatically:
 
-- Clones the `rdk-halif-aidl` repository, Vendor test modules and UT-Core framework.
+- Clones `rdk-halif-aidl`, vendor test modules, and the UT-Core framework
+- Builds the Linux Binder libraries for the selected target (x86 or ARM)
+- Builds all HAL modules from versioned snapshots in `versions_released.yaml`
+- Compiles the VTS test suite
+- Packages the binaries into `build/vts_unified.tar.gz.bz`
 
-- Compiles the test suite.
+To clean the build:
 
-- Generates binaries and packages the binaries in the `build/vts_unified.tar.gz.bz` directory.
+```bash
+./build.sh clean Target=linux
+./build.sh clean Target=arm
+```
 
 ## Run Tests Manually
 
@@ -205,17 +214,11 @@ sudo ./run.sh -p profiles/hfp-vdevice.yaml
 - For running the L1, L2, L3 and L4 test suite, a host PC with a Python environment is required.
 - Install Python Environment and Activation Scripts as detailed in [Python Installation](https://github.com/rdkcentral/ut-raft/wiki/Guide-for-Setting-up-the-Python-RAFT-Testing-Suite)
 
-## Running L1 and L2 automation test cases
+## Running L1, L2, L3 and L4 Automation test cases
 
-- To run the `L1` and `L2` test cases, follow the `L1` and `L2` Test Procedure document - [vts_L1_L2_TestProcedure.md](docs/vts_L1_L2_TestProcedure.md)
-
-## Running L3 automation test cases
+- To run the VTS `L1`, `L2` test cases follow the `L1` `L2` Test Procedure document - [vts_L1_L2_TestProcedure.md](docs/vts_L1_L2_TestProcedure.md)
 
 - To run the AV Module `L3` test cases follow the `L3` Test Procedure document - [vts_avmodule_L3_TestProcedure.md](docs/vts_avmodule_L3_TestProcedure.md)
-
-- To run the non av `L3` test cases, follow the `non av L3` Test Procedure document - [vts_nonav_L3_TestProcedure.md](docs/vts_nonav_L3_TestProcedure.md)
-
-## Running L4 Automation test cases
 
 - To run the AV  Module `L4` test cases follow the `L4` Test Procedure document - [vts_avmodule_L4_TestProcedure.md](docs/vts_avmodule_L4_TestProcedure.md)
 
