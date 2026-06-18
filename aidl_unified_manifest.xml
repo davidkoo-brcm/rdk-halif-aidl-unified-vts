@@ -65,7 +65,7 @@
 
    <project name="rdk-halif-aidl-test-flash"
            path="vts_hal_test_components/flash"
-           revision="refs/tags/0.1.2" />
+           revision="develop" />
 
    <project name="rdk-halif-aidl-test-indicator"
            path="vts_hal_test_components/indicator"
