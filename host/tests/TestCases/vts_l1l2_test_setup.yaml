@@ -325,7 +325,6 @@ VTS:
           - TestGetSetProperty
           - TestGetSetPropertyMultiAtomic
           - TestGetSetVideoSourceDestinationPlaneMapping
-
       13:
         name: "VTS_L1_HDMICEC"
         tests:
@@ -348,6 +347,13 @@ VTS:
           - sendMessage_pos
           - sendMessage_neg
       14:
+        name: "VTS_L2_HDMICEC"
+        tests:
+          - "StateTransitions"
+          - "metricValidation"
+          - "logicalAddressesValidation"
+          - "sendMessageValidation"
+      15:
         name: "VTS_L1_BOOT"
         tests:
             - "getCapabilities_pos"
@@ -356,13 +362,7 @@ VTS:
             - "getBootReason_pos"
             - "reboot_neg"
             - "getPowerSource_pos"
-      15:
+      16:
         name: "VTS_L2_BOOT"
         tests:
             - "setAndGetBootReason"
-      16:
-        name: "VTS_L1_DEVICEINFO"
-        tests:
-          - getCapabilities_pos
-          - getProperty_pos
-          - getProperty_neg

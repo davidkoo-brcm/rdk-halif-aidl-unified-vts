@@ -127,3 +127,11 @@ rackConfig:
                         port: xxyy
                         control_port: 8080
                         device_network_configuration: "path to hdmicec_device_config_add_network.yaml"
+                    dutRebootController:
+                        type: virtual-dut-reboot-controller
+                        vendor: "vComponent"
+                        address: "xxx.0.0.x" # Needs to be be filled out with IP address
+                        username: "xyz" # Needs to be filled out with login username
+                        password: 'xyz' # Needs to be filled out with login password
+                        port: xxxx
+                        control_port: 9081
