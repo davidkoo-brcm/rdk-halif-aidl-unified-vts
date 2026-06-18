@@ -41,35 +41,35 @@
 
    <project name="rdk-halif-aidl-test-cec"
            path="vts_hal_test_components/hdmicec"
-           revision="feature/gh16-modifications-unified-vts" />
+           revision="refs/tags/0.3.0" />
 
    <project name="rdk-halif-aidl-test-hdmiinput"
            path="vts_hal_test_components/hdmiinput"
-           revision="feature/gh17_unified_changes" />
+           revision="refs/tags/0.2.0" />
 
    <project name="rdk-halif-aidl-test-hdmioutput"
            path="vts_hal_test_components/hdmioutput"
-           revision="feature/issue21_unified_vts_compatible_changes" />
+           revision="refs/tags/0.1.3" />
 
    <project name="rdk-halif-aidl-test-deepsleep"
            path="vts_hal_test_components/deepsleep"
-           revision="feature/issue19_unified_vts_compatible_changes" />
+           revision="refs/tags/0.2.2" />
 
    <project name="rdk-halif-aidl-test-device-info"
            path="vts_hal_test_components/deviceinfo"
-           revision="feature/align_with_unified" />
+           revision="refs/tags/0.2.2" />
 
    <project name="rdk-halif-aidl-test-boot"
            path="vts_hal_test_components/boot"
-           revision="feature/unified-repo-fix" />
+           revision="refs/tags/0.1.2" />
 
    <project name="rdk-halif-aidl-test-flash"
            path="vts_hal_test_components/flash"
-           revision="feature/gh25_unified_flash_changes" />
+           revision="refs/tags/0.1.2" />
 
    <project name="rdk-halif-aidl-test-indicator"
            path="vts_hal_test_components/indicator"
-           revision="feature/gh18_unified_vts" />
+           revision="refs/tags/0.2.2" />
 
    <project name="rdk-halif-aidl-test-audiomixer"
            path="vts_hal_test_components/audiomixer"
@@ -85,7 +85,7 @@
 
    <project name="rdk-halif-aidl-test-compositeinput"
            path="vts_hal_test_components/compositeinput"
-           revision="feature/issue8_unifiedvts_compatible_changes" />
+           revision="refs/tags/0.1.0" />
 
    <project name="rdk-halif-aidl-test-panel"
            path="vts_hal_test_components/panel"
@@ -93,11 +93,11 @@
 
    <project name="rdk-halif-aidl-test-motion-sensor"
            path="vts_hal_test_components/motionsensor"
-           revision="feature/gh11_unified_compatible_changes" />
+           revision="refs/tags/0.1.0" />
 
    <project name="rdk-halif-aidl-test-thermal-sensor"
            path="vts_hal_test_components/thermalsensor"
-           revision="feature/gh13_python_changes_for_unified" />
+           revision="refs/tags/0.1.0" />
 
    <project name="rdk-halif-aidl-test-farfieldvoice"
            path="vts_hal_test_components/farfieldvoice"
