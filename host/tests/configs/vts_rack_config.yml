@@ -134,7 +134,7 @@ rackConfig:
                         username: "" # Needs to be filled out with login username
                         password: '' # Needs to be filled out with login password
                         port: 7722
-                        control_port: 8080
+                        sink_control_port: 8080
                     compositeController:
                         type: virtual-composite-controller
                         vendor: "vComponent"
