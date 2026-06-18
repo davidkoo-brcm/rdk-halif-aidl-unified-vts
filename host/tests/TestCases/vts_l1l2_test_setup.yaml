@@ -437,21 +437,21 @@ VTS:
           - getHDCPCurrentVersion_pos
           - getHDCPStatus_pos
           - getSPDInfoFrame_pos
-            - open_pos
-            - open_neg
-            - close_pos
-            - close_neg
-            - registerEventListener_pos
-            - registerEventListener_neg
-            - unregisterEventListener_pos
-            - unregisterEventListener_neg
-            - getConnectionState_pos
-            - start_pos
-            - start_neg
-            - stop_pos
-            - stop_neg
-            - setEDID_pos
-            - setEDID_neg
+          - open_pos
+          - open_neg
+          - close_pos
+          - close_neg
+          - registerEventListener_pos
+          - registerEventListener_neg
+          - unregisterEventListener_pos
+          - unregisterEventListener_neg
+          - getConnectionState_pos
+          - start_pos
+          - start_neg
+          - stop_pos
+          - stop_neg
+          - setEDID_pos
+          - setEDID_neg
       22:
         name: "VTS_L2_HDMIINPUT"
         tests:
