@@ -325,7 +325,6 @@ VTS:
           - TestGetSetProperty
           - TestGetSetPropertyMultiAtomic
           - TestGetSetVideoSourceDestinationPlaneMapping
-
       13:
         name: "VTS_L1_HDMICEC"
         tests:
@@ -348,6 +347,13 @@ VTS:
           - sendMessage_pos
           - sendMessage_neg
       14:
+        name: "VTS_L2_HDMICEC"
+        tests:
+          - "StateTransitions"
+          - "metricValidation"
+          - "logicalAddressesValidation"
+          - "sendMessageValidation"
+      15:
         name: "VTS_L1_BOOT"
         tests:
             - getCapabilities_pos
@@ -356,17 +362,17 @@ VTS:
             - getBootReason_pos
             - reboot_neg
             - getPowerSource_pos
-      15:
+      16:
         name: "VTS_L2_BOOT"
         tests:
             - setAndGetBootReason
-      16:
+      17:
         name: "VTS_L1_DEVICEINFO"
         tests:
           - getCapabilities_pos
           - getProperty_pos
           - getProperty_neg
-      17:
+      18:
         name: "VTS_L1_DEEPSLEEP"
         tests:
           - getCapabilities_pos
@@ -374,12 +380,12 @@ VTS:
           - settimer_pos
           - settimer_neg
           - enterdeepsleep_neg
-      18:
+      19:
         name: "VTS_L2_DEEPSLEEP"
         tests:
           - setgettimer
           - enterdeepsleep
-      19:
+      20:
         name: "VTS_L1_HDMIOUTPUT"
         tests:
           - getHDMIOutputIds_pos
@@ -412,7 +418,7 @@ VTS:
           - getHDCPStatus_pos
           - setSPDInfoFrame_pos
           - getSPDInfoFrame_pos
-      20:
+      21:
         name: "VTS_L2_HDMIOUTPUT"
         tests:
           - StateTransitions
@@ -420,7 +426,7 @@ VTS:
           - SetGetIndividualProperty
           - SetGetMultiProperties
           - SPDInfoFrame
-      21:
+      22:
         name: "VTS_L1_HDMIINPUT"
         tests:
           - getHDMIInputIds_pos
@@ -452,19 +458,19 @@ VTS:
           - stop_neg
           - setEDID_pos
           - setEDID_neg
-      22:
+      23:
         name: "VTS_L2_HDMIINPUT"
         tests:
           - StateTransitions
           - DefaultCallbacks
           - SetandGetEDID
           - MaxConcurrentPorts
-      23:
+      24:
         name: "VTS_L1_FLASH"
         tests:
           - flashImageFromFile_invalid_params
 
-      24:
+      25:
         name: "VTS_L1_MOTIONSENSOR"
         tests:
           - getMotionSensorIds_pos
@@ -495,13 +501,13 @@ VTS:
           - clearActiveWindows_pos
           - clearActiveWindows_neg
 
-      25:
+      26:
         name: "VTS_L2_MOTIONSENSOR"
         tests:
           - StateTransitions
           - ConfigurationMethodsRequireStopped
 
-      26:
+      27:
         name: "VTS_L1_THERMALSENSOR"
         tests:
           - registerEventListener_pos
@@ -511,7 +517,7 @@ VTS:
           - getCurrentThermalState_pos
           - getCurrentTemperatures_pos
 
-      27:
+      28:
         name: "VTS_L1_INDICATOR"
         tests:
           -  getIndicatorIds_pos
@@ -521,14 +527,14 @@ VTS:
           -  getState_pos
           -  setState_pos
           -  setState_neg
-      28:
+      29:
         name: "VTS_L2_INDICATOR"
         tests:
           - test_l2_setgetGeneralStates
           - test_l2_setgetWpsStates
           - test_l2_setgetNetworkStates
           - test_l2_setgetMaintenanceStates
-      29:
+      30:
         name: "VTS_L2_HDMICEC"
         tests:
           - StateTransitions

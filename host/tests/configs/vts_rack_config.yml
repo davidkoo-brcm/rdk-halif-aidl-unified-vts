@@ -37,15 +37,15 @@ globalConfig:
         # [ includes: ]
         # [ deviceConfig: "required.yml file"  ]
         deviceConfig: "example_device_config.yml"
-    capture:
-        # [capture: optional]
-            # [ocrEnginePath: "/usr/bin/tesseract"] # "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" (For Windows) - tesseract binary
-            # [resolution: "1080p"] - Capture resolution
-            # [input: 0] - which input is connected to the video path
-        # Note: Video capture will not be installed unless screenRegions: is defined in deviceConfig:
-        ocrEnginePath: "/usr/bin/tesseract" # "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" (For Windows)
-        resolution: "1080p"
-        input: 0
+    # capture:
+    #     # [capture: optional]
+    #         # [ocrEnginePath: "/usr/bin/tesseract"] # "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" (For Windows) - tesseract binary
+    #         # [resolution: "1080p"] - Capture resolution
+    #         # [input: 0] - which input is connected to the video path
+    #     # Note: Video capture will not be installed unless screenRegions: is defined in deviceConfig:
+    #     ocrEnginePath: "/usr/bin/tesseract" # "C:\\Program Files\\Tesseract-OCR\\tesseract.exe" (For Windows)
+    #     resolution: "1080p"
+    #     input: 0
     local:
         log:                # log for each slot
             directory: "./logs"
@@ -127,3 +127,11 @@ rackConfig:
                         port: xxyy
                         control_port: 8080
                         device_network_configuration: "path to hdmicec_device_config_add_network.yaml"
+                    dutRebootController:
+                        type: virtual-dut-reboot-controller
+                        vendor: "vComponent"
+                        address: "xxx.0.0.x" # Needs to be be filled out with IP address
+                        username: "xyz" # Needs to be filled out with login username
+                        password: 'xyz' # Needs to be filled out with login password
+                        port: xxxx
+                        control_port: 9081
