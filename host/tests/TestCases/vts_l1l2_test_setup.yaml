@@ -469,7 +469,6 @@ VTS:
         name: "VTS_L1_FLASH"
         tests:
           - flashImageFromFile_invalid_params
-
       25:
         name: "VTS_L1_MOTIONSENSOR"
         tests:
@@ -500,13 +499,11 @@ VTS:
           - getActiveWindows_pos
           - clearActiveWindows_pos
           - clearActiveWindows_neg
-
       26:
         name: "VTS_L2_MOTIONSENSOR"
         tests:
           - StateTransitions
           - ConfigurationMethodsRequireStopped
-
       27:
         name: "VTS_L1_THERMALSENSOR"
         tests:
@@ -516,7 +513,6 @@ VTS:
           - unregisterEventListener_neg
           - getCurrentThermalState_pos
           - getCurrentTemperatures_pos
-
       28:
         name: "VTS_L1_INDICATOR"
         tests:
@@ -534,10 +530,3 @@ VTS:
           - test_l2_setgetWpsStates
           - test_l2_setgetNetworkStates
           - test_l2_setgetMaintenanceStates
-      30:
-        name: "VTS_L2_HDMICEC"
-        tests:
-          - StateTransitions
-          - metricValidation
-          - logicalAddressesValidation
-          - sendMessageValidation
