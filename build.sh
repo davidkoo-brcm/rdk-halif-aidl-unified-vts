@@ -263,8 +263,6 @@ build_arm_binder()
     #
     # cmake 3.22+ auto-loads OEToolchainConfig.cmake even when CMAKE_TOOLCHAIN_FILE
     # is cleared. Writing our own toolchain file takes precedence over that.
-    # TODO: build_binder.sh does not support ARM cross-compilation — it always builds
-    #       for the host (x86). Raise an issue in build_binder.sh to support ARM builds.
     local cc_bin cxx_bin cc_flags
     cc_bin=$(echo "${CC}" | awk '{print $1}')
     cxx_bin=$(echo "${CXX}" | awk '{print $1}')
@@ -425,7 +423,6 @@ generate_hal_interfaces()
         #            the AIDL host compiler tools.
         #   Step 2 — restore ARM env and call build_arm_binder() with BUILD_HOST_AIDL=OFF
         #            to cross-compile the ARM binder runtime.
-        # TODO: build_binder.sh to support a --host-tools-only flag to avoid this two-step.
         if [ -z "${BINDER_SDK_DIR:-}" ]; then
             if [ -n "${OECORE_TARGET_SYSROOT:-}" ] && [ -d "${OECORE_TARGET_SYSROOT}/usr/lib/binder" ]; then
                 export BINDER_SDK_DIR="${OECORE_TARGET_SYSROOT}/usr"
@@ -443,8 +440,6 @@ generate_hal_interfaces()
                 local _OECORE_TARGET="${OECORE_TARGET_SYSROOT:-}"
                 unset CC CXX CFLAGS CXXFLAGS LDFLAGS ARCH CMAKE_TOOLCHAIN_FILE
                 unset OECORE_NATIVE_SYSROOT OECORE_TARGET_SYSROOT
-                # TODO: build_binder.sh should detect and override the m4 path
-                #       internally so callers don't need to set M4 before invoking it.
                 export M4=/usr/bin/m4
                 (
                     cd "${RDK_HAL_DIR}"
