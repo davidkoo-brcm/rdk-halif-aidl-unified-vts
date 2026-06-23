@@ -177,12 +177,12 @@ def runNonAvL3TestInstances(summary_log):
         component = entry.get("module")
         requestedClasses = entry.get("tests", [])
         if not component or not isinstance(requestedClasses, list):
-            summary_log.warning(f"Skipping invalid test entry (module/tests missing): {entry}")
+            summary_log.warn(f"Skipping invalid test entry (module/tests missing): {entry}")
             continue
 
         testsDir = (module_path / component / "host/tests").resolve()
         if not testsDir.is_dir():
-            summary_log.warning(f"Host tests directory not found for module '{component}': {testsDir}")
+            summary_log.warn(f"Host tests directory not found for module '{component}': {testsDir}")
             continue
 
         classMap = {}
@@ -196,7 +196,7 @@ def runNonAvL3TestInstances(summary_log):
 
         for className in requestedClasses:
             if className not in classMap:
-                summary_log.warning(
+                summary_log.warn(
                     f"Class {className} not found under module '{component}' L3 host tests"
                 )
                 continue
