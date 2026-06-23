@@ -34,7 +34,8 @@ deviceConfig:
         test_config_path: "bin/av_test_configurations"
         all_wait_time: 2400 # Configurable timeout value to limit the total duration of individual suite
         device_type: ["TV"] # Possible values: ["TV", "RecordingDevice", "Tuner", "PlaybackDevice", "AudioSystem", "VideoProcessor", "PureCecSwitch", "Reserved"]
-        wait_time: 40 # Configurable timeout value in seconds to limit the total duration of individual tests, also used by boot module to wait for device to boot up
+        # Configurable timeout value in seconds to limit the total duration of individual tests, also used by boot module to wait for device to boot up default value is 320 seconds.
+        wait_time: 320
         boot_non_volatile_directory: "/home/root"  # User needs to update based on their soc
         boot_volatile_directory: "/tmp" # User needs to update based on their soc
         test:
