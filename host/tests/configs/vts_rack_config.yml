@@ -64,6 +64,7 @@ rackConfig:
                 # [ type: "serial": port: "COM7" baudRate: "(default)115200" dataBits: "optional(8)" stopBits: "optional(1)" parity: "optional(None)" FlowControl: "optional(None)" ]
                 # [ type: "ssh": port: 22 username: "test" password: "test" ]
                 # [ type: "telnet": port: 23 username: "test" password: "test" ]
+                # Ensure all controller ports are unique. If a device service is not listening on the specified port, change it to a free port and update the device service configuration accordingly.
                 - dut:
                     ip: "xxx.0.0.x" # IP Address of the ADA Hub
                     description: "PC"
@@ -125,7 +126,7 @@ rackConfig:
                         username: "xyz" # Needs to be filled out with login username
                         password: 'xyz' # Needs to be filled out with login password
                         port: xxxx
-                        control_port: 8080
+                        control_port: yyyy # Controller port must be unique for each <ControllerName>Controller
                         device_network_configuration: "path to hdmicec_device_config_add_network.yaml"
                     hdmiController:
                         type: virtual-hdmi-controller
@@ -134,16 +135,16 @@ rackConfig:
                         username: "xyz" # Needs to be filled out with login username
                         password:  'xyz' # Needs to be filled out with login password
                         port: xxxx
-                        source_control_port: 8080
-                        sink_control_port: 8080
+                        source_control_port: yyyy  # Controller port must be unique for each <ControllerName>Controller
+                        sink_control_port: yyyy    # Controller port must be unique for each <ControllerName>Controller
                     compositeController:
                         type: virtual-composite-controller
                         vendor: "vComponent"
                         address: "xxx.0.0.x" # Needs to be be filled out with IP address
                         username: "" # Needs to be filled out with login username
                         password: '' # Needs to be filled out with login password
-                        port: 7722
-                        control_port: 8080
+                        port: xxxx
+                        control_port: yyyy # Controller port must be unique for each <ControllerName>Controller
                     dutRebootController:
                         type: virtual-dut-reboot-controller
                         vendor: "vComponent"
@@ -151,4 +152,4 @@ rackConfig:
                         username: "xyz" # Needs to be filled out with login username
                         password: 'xyz' # Needs to be filled out with login password
                         port: xxxx
-                        control_port: 9081
+                        control_port: yyyy # Unique controller port (default vdevice controller port: 9081)
