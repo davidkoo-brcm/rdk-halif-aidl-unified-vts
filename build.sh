@@ -521,23 +521,30 @@ generate_hal_interfaces()
         fi
     done
 
-    echo "Building HAL modules from versions_released.yaml..."
-    local manifest_file="${RDK_HAL_DIR}/versions_released.yaml"
-    local sdk_dir_arg=""
-    if [ "${TARGET}" = "arm" ] && [ -n "${BINDER_SDK_DIR:-}" ]; then
-        sdk_dir_arg="--sdk-dir ${BINDER_SDK_DIR}"
-    fi
-    (
-        cd "${RDK_HAL_DIR}"
-        ./build_modules.sh manifest --file "${manifest_file}" ${sdk_dir_arg}
-    ) || {
-        echo -e "${BOLD}╔══════════════════════════════════════════════════════════════════════╗${RESET}"
-        echo -e "${BOLD}* ${RED}Failed to build HAL modules. Exiting.${RESET}"
-        echo -e "${BOLD}╚══════════════════════════════════════════════════════════════════════╝${RESET}"
-        exit 1
-    }
+    local HALIF_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/halif"
+    local HALIF_READY="${HALIF_LIB_DIR}/.halif_modules_ready"
 
-    create_halif_softlinks
+    if [ -f "${HALIF_READY}" ]; then
+        echo "HAL module .so files already present, skipping build_modules.sh..."
+    else
+        echo "Building HAL modules from versions_released.yaml..."
+        local manifest_file="${RDK_HAL_DIR}/versions_released.yaml"
+        local sdk_dir_arg=""
+        if [ "${TARGET}" = "arm" ] && [ -n "${BINDER_SDK_DIR:-}" ]; then
+            sdk_dir_arg="--sdk-dir ${BINDER_SDK_DIR}"
+        fi
+        (
+            cd "${RDK_HAL_DIR}"
+            ./build_modules.sh manifest --file "${manifest_file}" ${sdk_dir_arg}
+        ) || {
+            echo -e "${BOLD}╔══════════════════════════════════════════════════════════════════════╗${RESET}"
+            echo -e "${BOLD}* ${RED}Failed to build HAL modules. Exiting.${RESET}"
+            echo -e "${BOLD}╚══════════════════════════════════════════════════════════════════════╝${RESET}"
+            exit 1
+        }
+        touch "${HALIF_READY}"
+        create_halif_softlinks
+    fi
 }
 
 ###############################################################################
