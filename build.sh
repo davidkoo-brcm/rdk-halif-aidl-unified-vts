@@ -697,6 +697,11 @@ clean_test()
     # Remove HAL snapshot cmake build dirs, binder SDK build, and installed out/.
     rm -rf "${RDK_HAL_DIR}/build"
     rm -rf "${RDK_HAL_DIR}/out"
+
+    # Clean ut-core compiled objects so ut_log.c recompiles with the correct UT_LOG_LEVEL
+    if [ -d "${UT_CORE_DIR}/framework/ut-control" ]; then
+        make -C "${UT_CORE_DIR}/framework/ut-control" TARGET=${TARGET} clean 2>/dev/null || true
+    fi
 }
 ###############################################################################
 # Function to clean the test build directory
