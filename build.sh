@@ -30,6 +30,7 @@ RESET='\033[0m'
 declare -r TOP=`dirname $(realpath $0)`
 UT_CORE_DEFAULT_VERSION="5.1.0"
 export UT_CORE_VERSION="${UT_CORE_VERSION:-${UT_CORE_DEFAULT_VERSION}}"
+RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION:-feature/623-snapshot-dep-versions}"
 RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-aidl-test-"
 OUT_TAR_FILE=vts_unified.tar.gz.bz
 
@@ -402,13 +403,32 @@ create_halif_softlinks()
 ###############################################################################
 generate_hal_interfaces()
 {
-    # rdk-halif-aidl is not in the repo manifest — clone it if not present.
+    # rdk-halif-aidl is not in the repo manifest — clone it if not present,
+    # or switch to the required branch if it is already cloned on a different one.
     if [ ! -d "$RDK_HAL_DIR" ]; then
-        echo "Cloning rdk-halif-aidl..."
-        git clone https://github.com/rdkcentral/rdk-halif-aidl.git "$RDK_HAL_DIR"
+        echo "Cloning rdk-halif-aidl (branch: $RDK_HALIF_AIDL_VERSION)..."
+        git clone -b "$RDK_HALIF_AIDL_VERSION" https://github.com/rdkcentral/rdk-halif-aidl.git "$RDK_HAL_DIR"
         if [ $? -ne 0 ]; then
             echo "ERROR: Failed to clone rdk-halif-aidl."
             exit 1
+        fi
+    else
+        local current_branch
+        current_branch=$(git -C "$RDK_HAL_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null)
+        if [ "${current_branch}" != "${RDK_HALIF_AIDL_VERSION}" ]; then
+            echo "rdk-halif-aidl is on '${current_branch}', switching to '${RDK_HALIF_AIDL_VERSION}'..."
+            git -C "$RDK_HAL_DIR" fetch origin "$RDK_HALIF_AIDL_VERSION" || {
+                echo "ERROR: Failed to fetch branch ${RDK_HALIF_AIDL_VERSION}."
+                exit 1
+            }
+            git -C "$RDK_HAL_DIR" checkout "$RDK_HALIF_AIDL_VERSION" || {
+                echo "ERROR: Failed to checkout branch ${RDK_HALIF_AIDL_VERSION}."
+                exit 1
+            }
+            # Branch changed — invalidate the halif modules stamp so they are rebuilt.
+            rm -f "${RDK_HAL_DIR}/out/target/lib/halif/.halif_modules_ready"
+        else
+            echo "rdk-halif-aidl already on '${RDK_HALIF_AIDL_VERSION}'"
         fi
     fi
 
@@ -488,38 +508,34 @@ generate_hal_interfaces()
     fi
 
     # Build HAL modules from versioned snapshots listed in versions_released.yaml.
-    # WORKAROUND: Several snapshot CMakeLists.txt files still reference common/0.1.0.0
-    # and videodecoder/0.1.0.0 but versions_released.yaml builds 0.2.0.0 only.
-    # Stage old headers and create lib symlinks BEFORE build_modules.sh manifest runs.
-    # TODO: Fix snapshot CMakeLists.txt files in rdk-halif-aidl to match versions_released.yaml.
-
+    # WORKAROUND: Fixed in feature/623-snapshot-dep-versions — snapshot CMakeLists.txt
+    # files now reference the correct versions from versions_released.yaml directly.
     # Workaround part 1: stage 0.1.0.0 headers so stale include paths in CMakeLists.txt resolve.
-    local HALIF_INC_STAGE="${RDK_HAL_DIR}/out/build/include"
-    mkdir -p "${HALIF_INC_STAGE}"
-    for component in common videodecoder; do
-        local old_ver="0.1.0.0"
-        local src="${RDK_HAL_DIR}/${component}/${old_ver}/include"
-        local dst="${HALIF_INC_STAGE}/${component}/${old_ver}/include"
-        if [ -d "${src}" ] && [ ! -d "${dst}" ]; then
-            echo "Staging legacy headers: ${component}/${old_ver}"
-            mkdir -p "${dst}"
-            cp -r "${src}/." "${dst}/"
-        fi
-    done
+    # local HALIF_INC_STAGE="${RDK_HAL_DIR}/out/build/include"
+    # mkdir -p "${HALIF_INC_STAGE}"
+    # for component in common videodecoder; do
+    #     local old_ver="0.1.0.0"
+    #     local src="${RDK_HAL_DIR}/${component}/${old_ver}/include"
+    #     local dst="${HALIF_INC_STAGE}/${component}/${old_ver}/include"
+    #     if [ -d "${src}" ] && [ ! -d "${dst}" ]; then
+    #         echo "Staging legacy headers: ${component}/${old_ver}"
+    #         mkdir -p "${dst}"
+    #         cp -r "${src}/." "${dst}/"
+    #     fi
+    # done
 
     # Workaround part 2: create 0.1.0.0 lib symlinks pointing to 0.2.0.0 so stale
     # target_link_libraries in CMakeLists.txt resolve at link time.
-    # TODO: Fix snapshot CMakeLists.txt in rdk-halif-aidl to link against 0.2.0.0 directly.
-    local HALIF_LIB_STAGE="${RDK_HAL_DIR}/out/target/lib/halif"
-    mkdir -p "${HALIF_LIB_STAGE}"
-    for component in common videodecoder; do
-        local old_lib="lib${component}-v0.1.0.0-cpp.so"
-        local new_lib="lib${component}-v0.2.0.0-cpp.so"
-        if [ ! -e "${HALIF_LIB_STAGE}/${old_lib}" ]; then
-            echo "Creating legacy lib symlink: ${old_lib} -> ${new_lib}"
-            ln -sf "${new_lib}" "${HALIF_LIB_STAGE}/${old_lib}"
-        fi
-    done
+    # local HALIF_LIB_STAGE="${RDK_HAL_DIR}/out/target/lib/halif"
+    # mkdir -p "${HALIF_LIB_STAGE}"
+    # for component in common videodecoder; do
+    #     local old_lib="lib${component}-v0.1.0.0-cpp.so"
+    #     local new_lib="lib${component}-v0.2.0.0-cpp.so"
+    #     if [ ! -e "${HALIF_LIB_STAGE}/${old_lib}" ]; then
+    #         echo "Creating legacy lib symlink: ${old_lib} -> ${new_lib}"
+    #         ln -sf "${new_lib}" "${HALIF_LIB_STAGE}/${old_lib}"
+    #     fi
+    # done
 
     local HALIF_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/halif"
     local HALIF_READY="${HALIF_LIB_DIR}/.halif_modules_ready"
@@ -583,6 +599,13 @@ build_ut_core()
 generate_avbufferhelper_skeleton()
 {
     declare -r AVBUFFER_HELPER_DIR=${COMMON_DIR}/avbufferhelper_skeleton
+    local AVBUFFER_READY="${BUILD_INSTALL_PREFIX}/lib/.avbufferhelper_ready"
+
+    if [ -f "${AVBUFFER_READY}" ]; then
+        echo "avbufferhelper skeleton already built, skipping..."
+        return
+    fi
+
     mkdir -p $AVBUFFER_HELPER_DIR/build
     cd $AVBUFFER_HELPER_DIR/build
 
@@ -604,6 +627,7 @@ generate_avbufferhelper_skeleton()
 
     cp libavbufferhelper.so ${TOP_BUILD_DIR}/usr/lib/
     install -m 644 "${RDK_HAL_DIR}/avbuffer/current/avbufferhelper.h" "${BUILD_INSTALL_PREFIX}/include/"
+    touch "${AVBUFFER_READY}"
     cd -
     rm -rf $AVBUFFER_HELPER_DIR/build
 }
@@ -733,6 +757,7 @@ help()
 
 echo -e "${BOLD}${GREEN}VTS Unified Version    : ${RESET}${YELLOW}$(git rev-parse --abbrev-ref HEAD)${RESET}"
 echo -e "${BOLD}${GREEN}UT_CORE_VERSION        : ${RESET}${YELLOW}$UT_CORE_VERSION${RESET}"
+echo -e "${BOLD}${GREEN}RDK_HALIF_AIDL_VERSION : ${RESET}${YELLOW}$RDK_HALIF_AIDL_VERSION${RESET}"
 echo -e "${BOLD}${GREEN}RDK_HAL_DIR            : ${RESET}${YELLOW}$RDK_HAL_DIR${RESET}"
 if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
 echo -e "${BOLD}${GREEN}GST_LIB_PATH           : ${RESET}${YELLOW}$GST_LIB_PATH${RESET}"
