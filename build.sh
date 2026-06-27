@@ -737,7 +737,6 @@ dist_clean_test()
     rm -rf $RDK_HAL_DIR
     rm -rf ${UT_CORE_DIR}
     rm -rf $RDK_HAL_TEST_DIR
-    rm -rf .repo
 }
 
 ###############################################################################
