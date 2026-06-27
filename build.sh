@@ -135,41 +135,11 @@ validate_egl_lib_path()
 # Function to clone  unified VTS repo's
 ###############################################################################
 unified_manifest()
-(
-    set -euo pipefail
-
-    if [ -d "${RDK_HAL_TEST_DIR}" ] && [ -n "$(ls -A ${RDK_HAL_TEST_DIR} 2>/dev/null)" ]; then
-        echo "Manifest already synced, skipping repo sync"
-        exit 0
-    fi
-
-    BRANCH=$(git rev-parse --abbrev-ref HEAD)
-    if [ "${BRANCH}" = "HEAD" ]; then
-        echo "ERROR: Detached HEAD state detected — cannot determine branch for repo init."
-        exit 1
-    fi
-
+{
     echo "repo init unified manifest"
-    repo init \
-        --repo-url=https://gerrit.googlesource.com/git-repo \
-        --no-clone-bundle \
-        --repo-rev=stable \
-        -b "${BRANCH}" \
-        -m aidl_unified_manifest.xml \
-        -u https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git \
-        --no-repo-verify -q
-
+    repo init -b $(git rev-parse --abbrev-ref HEAD) -m aidl_unified_manifest.xml -u https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git --no-repo-verify -q
     repo sync -cd -j 16 --no-repo-verify -q
-
-    if [ ! -d .repo/manifests ]; then
-        echo "ERROR: Expected .repo/manifests to exist after repo sync, but it was not found."
-        exit 1
-    fi
-    if grep -r "http://" .repo/manifests; then
-        echo "ERROR: Insecure repo URL detected!"
-        exit 1
-    fi
-)
+}
 
 ###############################################################################
 # Install Binder service manager, headers and libraries into build/usr/ from
