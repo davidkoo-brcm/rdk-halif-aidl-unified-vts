@@ -86,12 +86,12 @@ declare -r PROFILES_DIR=${TOP}/profiles
 declare -r L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests
 declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests/src/av/
 
-DEF_LINUX_BINDER="`realpath ${TOP}/../`/linux_binder_idl"
+DEF_LINUX_BINDER="${TOP}/linux_binder_idl"
 # AIDL_BIN: path of aidl compiler
-AIDL_BIN=${AIDL_BIN:-${DEF_LINUX_BINDER}/out/aidl}
+AIDL_BIN=${AIDL_BIN:-${DEF_LINUX_BINDER}/out/host/bin/aidl}
 # LINUX_BINDER_OUT_DIR: output installed after building linux_binder_idl
 # contains bin/servicemanager, lib/libbinder etc
-LINUX_BINDER_OUT_DIR=${LINUX_BINDER_OUT_DIR:-${DEF_LINUX_BINDER}/local}
+LINUX_BINDER_OUT_DIR=${LINUX_BINDER_OUT_DIR:-${DEF_LINUX_BINDER}/out/target}
 
 #TODO: change to server path
 DEF_GST_LIB_PATH="`realpath ${TOP}/../`/gstreamer_aidl_package/build/install"
@@ -104,17 +104,10 @@ EGL_LIB_PATH=${EGL_LIB_PATH:-${DEF_EGL_LIB_PATH}}
 
 mkdir -p $TOP_BUILD_DIR
 
-if [ ! -x $AIDL_BIN ]; then
-    echo "AIDL_BIN: path does not exists, consider building the linux_binder_idl in $AIDL_BIN"
-    exit 1
-fi
-if [ ! -d $LINUX_BINDER_OUT_DIR ]; then
-    echo "LINUX_BINDER_OUT_DIR: path does not exists, consider building the linux_binder_idl in $DEF_LINUX_BINDER"
-    exit 1
-fi
-
-declare -r AIDL_BIN=`realpath ${AIDL_BIN}`
-declare -r LINUX_BINDER_OUT_DIR=`realpath ${LINUX_BINDER_OUT_DIR}`
+AIDL_BIN="$(realpath "${AIDL_BIN}" 2>/dev/null || printf '%s' "${AIDL_BIN}")"
+LINUX_BINDER_OUT_DIR="$(realpath "${LINUX_BINDER_OUT_DIR}" 2>/dev/null || printf '%s' "${LINUX_BINDER_OUT_DIR}")"
+readonly AIDL_BIN
+readonly LINUX_BINDER_OUT_DIR
 
 # Parse Target argument (e.g., Target=arm or target=linux)
 # Default to 'linux' if not provided
@@ -136,6 +129,83 @@ if [[ ! " ${valid_targets[@]} " =~ " ${TARGET} " ]]; then
     help
     exit 1
 fi
+
+###############################################################################
+# Function to validate repo tool is installed
+###############################################################################
+validate_repo_tool()
+{
+    if ! command -v repo &>/dev/null; then
+        echo -e "${BOLD}${RED}Error: 'repo' tool is not installed or not in PATH.${RESET}"
+        echo -e "${BOLD}${YELLOW}Install it with:${RESET}"
+        echo -e "${BOLD}${CYAN}  mkdir -p ~/.local/bin${RESET}"
+        echo -e "${BOLD}${CYAN}  curl -o ~/.local/bin/repo https://storage.googleapis.com/git-repo-downloads/repo${RESET}"
+        echo -e "${BOLD}${CYAN}  chmod a+rx ~/.local/bin/repo${RESET}"
+        echo -e "${BOLD}${YELLOW}Then add ~/.local/bin to your PATH:${RESET}"
+        echo -e "${BOLD}${CYAN}  export PATH=\"\$HOME/.local/bin:\$PATH\"${RESET}"
+        exit 1
+    fi
+}
+
+###############################################################################
+# Function to validate cross compiler for arm target
+###############################################################################
+validate_cross_compiler()
+{
+    if [ -z "${CC}" ]; then
+        echo -e "${BOLD}${RED}Error: CC is not set. A cross-compiler is required to build for arm target.${RESET}"
+        echo -e "${BOLD}${YELLOW}Please set CC to your cross-compiler (e.g. export CC=aarch64-linux-gnu-gcc)${RESET}"
+        echo -e "${BOLD}${YELLOW}Alternatively, consider using the provided Docker environment to build for arm.${RESET}"
+        exit 1
+    fi
+
+    # Extract just the compiler binary (first word) for PATH check
+    local CC_BIN
+    CC_BIN=$(echo "${CC}" | awk '{print $1}')
+    if ! command -v "${CC_BIN}" &>/dev/null; then
+        echo -e "${BOLD}${RED}Error: Cross-compiler '${CC_BIN}' not found in PATH.${RESET}"
+        echo -e "${BOLD}${YELLOW}Please install the cross-compiler or consider using the provided Docker environment to build for arm.${RESET}"
+        exit 1
+    fi
+
+    # Derive CXX from CC if not already set (replace gcc with g++)
+    if [ -z "${CXX}" ]; then
+        export CXX="${CC/gcc/g++}"
+        echo -e "${BOLD}${GREEN}Derived CXX=${CXX}${RESET}"
+    fi
+
+    # Extract flags from CC (everything after the binary)
+    local CC_FLAGS
+    CC_FLAGS=$(echo "${CC}" | cut -d' ' -f2-)
+
+    # Extract sysroot value from CC flags
+    local SYSROOT
+    SYSROOT=$(echo "${CC_FLAGS}" | sed -n 's/.*--sysroot=\([^ ]*\).*/\1/p')
+
+    # Set CFLAGS from CC flags if not already set
+    if [ -z "${CFLAGS}" ] && [ -n "${CC_FLAGS}" ]; then
+        export CFLAGS="${CC_FLAGS}"
+        echo -e "${BOLD}${GREEN}Derived CFLAGS=${CFLAGS}${RESET}"
+    fi
+
+    # Set CXXFLAGS from CC flags if not already set
+    if [ -z "${CXXFLAGS}" ] && [ -n "${CC_FLAGS}" ]; then
+        export CXXFLAGS="${CC_FLAGS}"
+        echo -e "${BOLD}${GREEN}Derived CXXFLAGS=${CXXFLAGS}${RESET}"
+    fi
+
+    # Set LDFLAGS with sysroot if not already set
+    if [ -z "${LDFLAGS}" ] && [ -n "${SYSROOT}" ]; then
+        export LDFLAGS="--sysroot=${SYSROOT}"
+        echo -e "${BOLD}${GREEN}Derived LDFLAGS=${LDFLAGS}${RESET}"
+    fi
+
+    # Set TARGET_LIB32_VERSION for 32-bit ARM (arm- prefix, not aarch64)
+    if [ -z "${TARGET_LIB32_VERSION}" ] && [[ "${CC_BIN}" == arm-* ]]; then
+        export TARGET_LIB32_VERSION=ON
+        echo -e "${BOLD}${GREEN}Derived TARGET_LIB32_VERSION=${TARGET_LIB32_VERSION}${RESET}"
+    fi
+}
 
 ###############################################################################
 # Function to validate and set GST_LIB_PATH
@@ -176,18 +246,18 @@ unified_manifest()
 (
 	 set -euo pipefail
 
-	 BRANCH=$(git rev-parse --abbrev-ref HEAD)
+     echo "repo init unified manifest"
 
-	 if [ "$BRANCH" = "HEAD" ]; then
-	    echo "Error: Detached HEAD state"
-	    exit 1
-	 fi
+    REPO_BRANCH="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME:-$(git rev-parse --abbrev-ref HEAD)}}"
+    if [ "$REPO_BRANCH" = "HEAD" ] || [ -z "$REPO_BRANCH" ]; then
+        REPO_BRANCH="main"
+    fi
 
 	 repo init \
 	 --repo-url=https://gerrit.googlesource.com/git-repo \
 	 --no-clone-bundle \
 	 --repo-rev=stable \
-	 -b "$BRANCH" \
+	 -b "$REPO_BRANCH" \
 	 -m aidl_unified_manifest.xml \
 	 -u https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git
 
@@ -206,6 +276,46 @@ unified_manifest()
             exit 1
          fi
 )
+
+###############################################################################
+# Function to clone and build the linux_binder_idl repository
+###############################################################################
+build_linux_binder()
+{
+    # Skip if already successfully built
+    if [ -x "${AIDL_BIN}" ] && [ -d "${LINUX_BINDER_OUT_DIR}" ]; then
+        echo "linux_binder_idl already built, skipping."
+        return
+    fi
+
+    if [ ! -d "${DEF_LINUX_BINDER}" ]; then
+        git clone -b 2.3.0 'https://github.com/rdkcentral/linux_binder_idl.git' "${DEF_LINUX_BINDER}"
+        if [ $? -ne 0 ]; then
+            echo -e "${BOLD}╔══════════════════════════════════════════════════════════════════╗${RESET}"
+            echo -e "${BOLD}* ${RED}Failed to clone linux_binder_idl repository. Exiting.${RESET}"
+            echo -e "${BOLD}╚══════════════════════════════════════════════════════════════════╝${RESET}"
+            exit 1
+        fi
+    fi
+
+    # Remove stale build directories (e.g. from a prior run as root/sudo)
+    for stale_dir in "${DEF_LINUX_BINDER}/build-host" "${DEF_LINUX_BINDER}/build-target"; do
+        if [ -d "${stale_dir}" ] && [ ! -w "${stale_dir}" ]; then
+            echo "Removing root-owned stale build directory: ${stale_dir}"
+            sudo rm -rf "${stale_dir}"
+        fi
+    done
+
+    pushd "${DEF_LINUX_BINDER}"
+    ./build-linux-binder-aidl.sh
+    if [ $? -ne 0 ]; then
+        echo -e "${BOLD}╔══════════════════════════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to build linux_binder_idl. Exiting.${RESET}"
+        echo -e "${BOLD}╚══════════════════════════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
+    popd
+}
 
 ###############################################################################
 # Function to install linux-binder service manager, headers, and libraries
@@ -441,6 +551,7 @@ dist_clean_test()
     rm -rf $RDK_HAL_DIR
     rm -rf ${UT_CORE_DIR}
     rm -rf $RDK_HAL_TEST_DIR
+    rm -rf $DEF_LINUX_BINDER
     rm -rf .repo
 }
 
@@ -482,6 +593,10 @@ elif [ "$1" == "dist_clean" ]; then
 elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     help
 elif [[ "$1" == [Tt]arget=* ]]; then
+    validate_repo_tool
+    if [ "${TARGET}" = "arm" ]; then
+        validate_cross_compiler
+    fi
     if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
         validate_gst_lib_path
     fi
@@ -489,6 +604,7 @@ elif [[ "$1" == [Tt]arget=* ]]; then
         validate_egl_lib_path
     fi
     unified_manifest
+    build_linux_binder
     install_linux_binder
     if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
         install_gstreamer_package
