@@ -7,7 +7,6 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
 - [Unified Vendor Testing Suite For AIDL HAL](#unified-vendor-testing-suite-for-aidl-hal)
   - [Acronyms, Terms and Abbreviations](#acronyms-terms-and-abbreviations)
   - [Setup](#setup)
-  - [Build linux binder for Target Linux](#build-linux-binder-for-target-linux)
   - [Build Unified VTS](#build-unified-vts)
   - [Run Tests Manually](#run-tests-manually)
   - [Setting Python environment for L1, L2, L3 and L4 automation test cases](#setting-python-environment-for-l1-l2-l3-and-l4-automation-test-cases)
@@ -63,6 +62,7 @@ chmod 600 ~/.netrc
 
   - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account>
 
+<<<<<<< HEAD
 ## Build linux binder for Target Linux
 
 The test suite depends on the Linux binder with `AIDL` support. Follow these steps to build it:
@@ -78,6 +78,8 @@ cd linux_binder_idl
 
 ./build-linux-binder-aidl.sh 64
 ```
+=======
+>>>>>>> a7f8531 (Adding all scripts for coverity check)
 
 ## Build Unified VTS
 
@@ -123,21 +125,19 @@ Source the appropriate tool chains for the cross compilation
 
 Set below environment variable:
 
-- AIDL_BIN: Path to the `AIDL` compiler (e.g., /path/to/linux_binder_idl/out/aidl).
-
-- LINUX_BINDER_OUT_DIR: Path to the Linux binder output directory (e.g., /path/to/linux_binder_idl/local).
-
 - UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 5.1.0). Defaults to the latest tagged version.
 
 - RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.15.0). Defaults to the latest HEAD.
+
+- AIDL_BIN: *(Optional)* Path to a pre-built `AIDL` compiler. Defaults to `../linux_binder_idl/out/host/bin/aidl` (auto-built by the script).
+
+- LINUX_BINDER_OUT_DIR: *(Optional)* Path to a pre-built Linux binder output directory. Defaults to `../linux_binder_idl/out/target` (auto-built by the script).
 
 Example:
 
 ```bash
 export UT_CORE_VERSION=5.1.0
 export RDK_HALIF_AIDL_VERSION=0.15.0
-export AIDL_BIN=/path/linux_binder_idl/out/aidl
-export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
 ```
 
 By default, UT logs are set to WARNING level. For more details on log level filtering, refer to [UT-Core Log Level Documentation](https://github.com/rdkcentral/ut-control/blob/2.1.0/README.md#log-level-filtering)
@@ -161,6 +161,8 @@ Run the build script for Target Linux:
 ```
 
 The build.sh script:
+
+- Clones and builds the `linux_binder_idl` (tag `2.3.0`) automatically if not already present.
 
 - Clones the `rdk-halif-aidl` repository, Vendor test modules and UT-Core framework.
 

@@ -1,0 +1,54 @@
+name: Build Component in Native Environment
+
+on:
+  push:
+    branches: [ main, 'sprint/**', 'release/**', develop ]
+  pull_request:
+    branches: [ main, 'sprint/**', 'release/**', topic/RDK*, develop ]
+
+jobs:
+  build-unified-vts-on-pr:
+    name: Build unified-vts component in github rdkcentral
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/rdkcentral/docker-rdk-ci:latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure git safe.directory
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /__w/rdk-halif-aidl-unified-vts/rdk-halif-aidl-unified-vts
+
+      - name: Configure GitHub auth for repo tool
+        env:
+          GITHUB_TOKEN: ${{ secrets.RDKCM_RDKE }}
+        run: |
+          # Make any https://github.com/* clone use token auth (non-interactive)
+          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+          git config --global credential.helper store
+
+      - name: Install repo tool
+        run: |
+          mkdir -p ~/.local/bin
+          curl -o ~/.local/bin/repo https://storage.googleapis.com/git-repo-downloads/repo
+          chmod a+rx ~/.local/bin/repo
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Configure Git credentials for repo tool
+        run: |
+          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+        env:
+          GITHUB_TOKEN: ${{ secrets.RDKCM_RDKE }}
+
+      - name: native build
+        run: |
+          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+          sh -x build_dependencies.sh
+          sh -x cov_build.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.RDKCM_RDKE }}
+          REPO_MANIFEST_URL: https://x-access-token:${GITHUB_TOKEN}@github.com/rdkcentral/rdk-halif-aidl-unified-vts.git
