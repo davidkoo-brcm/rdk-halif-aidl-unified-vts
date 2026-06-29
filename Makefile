@@ -195,18 +195,20 @@ SRC_DIRS += $(ROOT_DIR)/test
 #   out/build/include/<module>/<version>/include/        (staged headers)
 # build.sh create_halif_softlinks() adds:
 #   out/target/lib/halif/lib<module>-cpp.so -> lib<module>-v<version>-cpp.so
+# and writes halif_generated.mk with HALIF_INC_DIRS and HALIF_MODULE_LIBS set
+# to the exact paths captured at that moment — avoiding wildcard/find at make
+# parse time, which silently returns empty on a clean tree.
 HALIF_OUT_DIR        := $(ROOT_DIR)/rdk-halif-aidl/out
 HALIF_LIB_DIR        := $(HALIF_OUT_DIR)/target/lib/halif
-HALIF_INC_DIRS       := $(wildcard $(HALIF_OUT_DIR)/build/include/*/*/include)
+
+-include $(HALIF_OUT_DIR)/halif_generated.mk
+
 INC_DIRS             := $(HALIF_INC_DIRS)
 
 XLDFLAGS             := -L$(ROOT_DIR)/build/usr/lib
 XLDFLAGS             += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib
 XLDFLAGS             += -L$(HALIF_LIB_DIR)
 XLDFLAGS             += -Wl,-rpath-link=$(HALIF_LIB_DIR)
-# Use only the softlinks (type l) so the -l flags carry no version number
-HALIF_LINK_LIBS      := $(shell find $(HALIF_LIB_DIR) -maxdepth 1 -type l -name 'lib*-cpp.so' 2>/dev/null)
-HALIF_MODULE_LIBS    := $(patsubst $(HALIF_LIB_DIR)/lib%.so,-l%,$(HALIF_LINK_LIBS))
 XLDFLAGS             += $(HALIF_MODULE_LIBS)
 XLDFLAGS             += -lbinder -lutils
 XLDFLAGS             += -lavbufferhelper
@@ -253,11 +255,18 @@ export XLDFLAGS
 export CXXFLAGS
 export TARGET
 
-.PHONY: all clean
+.PHONY: all clean check-halif-built
 
 all: $(TARGET_EXEC)
 
-$(TARGET_EXEC):
+check-halif-built:
+	@[ -n "$(HALIF_INC_DIRS)" ] || { \
+		echo "ERROR: HAL interfaces not built."; \
+		echo "       Run: ./build.sh Target=$(TARGET)"; \
+		exit 1; \
+	}
+
+$(TARGET_EXEC): check-halif-built
 	make -C $(UT_CORE_DIR) -j $(shell nproc) TARGET=$(TARGET) VARIANT=$(VARIANT)
 
 clean:
