@@ -59,6 +59,7 @@
 
 #include "vts_helper_functions.h"
 
+#ifndef ENABLE_L4_ONLY
 /* Status::Exception */
 const ut_control_keyStringMapping_t statusException_mapTable[] =
 {
@@ -76,6 +77,7 @@ const ut_control_keyStringMapping_t statusException_mapTable[] =
     {"EX_TRANSACTION_FAILED",    (int32_t) Status::EX_TRANSACTION_FAILED},
     {NULL, -1}
 };
+#endif
 
 /* bool */
 const ut_control_keyStringMapping_t bool_mapTable[] =
@@ -119,6 +121,7 @@ void vts_kvp_destroy_instance(void *instance)
     ut_kvp_destroyInstance((ut_kvp_instance_t*)instance);
 }
 
+#ifndef ENABLE_L4_ONLY
 size_t vts_bytesPerSample(audiodecoder::PCMFormat format)
 {
     switch (format) {
@@ -260,6 +263,7 @@ audiodecoder::PCMFormat vts_audioDecoder_helper_StringToPCMFormat(const std::str
     }
     return static_cast<audiodecoder::PCMFormat>(-1);
 }
+#endif
 
 /** @} */ // End of VTS_HELPER_FUNCTIOS
 /** @} */ // End of HPK

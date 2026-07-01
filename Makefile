@@ -28,6 +28,7 @@ endif
 
 ROOT_DIR := $(CURDIR)
 VTS_TEST_DIR := $(ROOT_DIR)/vts_hal_test_components
+GST_LIB_PATH ?= $(ROOT_DIR)/../gstreamer_aidl_package/build/install
 AUDIO_DECODER_TEST_DIR := $(VTS_TEST_DIR)/audiodecoder
 AUDIO_SINK_TEST_DIR := $(VTS_TEST_DIR)/audiosink
 VIDEO_DECODER_TEST_DIR := $(VTS_TEST_DIR)/videodecoder
@@ -122,14 +123,15 @@ $(info BUILD_TIMESTAMP: $(BUILD_TIMESTAMP))
 $(info TARGET: $(TARGET))
 $(info VARIANT: $(VARIANT))
 
+ifneq ($(ENABLE_L4_ONLY),1)
 # Read RDK_HALIF_AIDL_VERSION from environment, default to 'main'
 RDK_HALIF_AIDL_VERSION ?= main
 $(info RDK_HALIF_AIDL_VERSION: $(RDK_HALIF_AIDL_VERSION))
+endif
 
 # Compiler flags with version and debug info
 CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DHALIF_TEST_PROJECT_VERSION=\"$(VERSION)\" \
-            -DRDK_HALIF_AIDL_VERSION=\"$(RDK_HALIF_AIDL_VERSION)\" \
             -DAUDIODECODER_VERSION=\"$(AUDIODECODER_VERSION)\" \
             -DAUDIOSINK_VERSION=\"$(AUDIOSINK_VERSION)\" \
             -DVIDEODECODER_VERSION=\"$(VIDEODECODER_VERSION)\" \
@@ -152,6 +154,10 @@ CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DFARFIELDVOICE_VERSION=\"$(FARFIELDVOICE_VERSION)\" \
             -DL4_TESTS_VERSION=\"$(L4_TESTS_VERSION)\"
 
+ifneq ($(ENABLE_L4_ONLY),1)
+CXXFLAGS += -DRDK_HALIF_AIDL_VERSION=\"$(RDK_HALIF_AIDL_VERSION)\"
+endif
+
 $(info CXXFLAGS: $(CXXFLAGS))
 CXXFLAGS += -DBUILD_TIMESTAMP=\"$(BUILD_TIMESTAMP)\"
 
@@ -163,6 +169,10 @@ endif
 
 ifeq ($(ENABLE_AV_L4_TEST),1)
 CXXFLAGS += -DENABLE_AV_L4_TEST
+endif
+
+ifeq ($(ENABLE_L4_ONLY),1)
+CXXFLAGS += -DENABLE_L4_ONLY
 endif
 
 ifeq ($(ENABLE_L4_ONLY),1)
@@ -201,9 +211,12 @@ SRC_DIRS += $(ROOT_DIR)/test
 
 INC_DIRS := $(ROOT_DIR)/build/current/h/
 
+ifeq ($(ENABLE_L4_ONLY),1)
+else
 INC_DIRS += $(ROOT_DIR)/rdk-halif-aidl/avbuffer/current
-INC_DIRS += $(ROOT_DIR)/build/usr/include
 INC_DIRS += $(ROOT_DIR)/common/avbufferhelper_skeleton/
+endif
+INC_DIRS += $(ROOT_DIR)/build/usr/include
 INC_DIRS += $(SRC_DIRS)
 INC_DIRS += $(ROOT_DIR)/common/graphics_libraries/include
 
@@ -216,12 +229,20 @@ INC_DIRS += $(ROOT_DIR)/build/usr/include/KHR/
 INC_DIRS += $(ROOT_DIR)/build/usr/include/gstreamer-1.0/
 INC_DIRS += $(ROOT_DIR)/build/usr/include/glib-2.0/
 INC_DIRS += $(ROOT_DIR)/build/usr/lib/glib-2.0/include/
+INC_DIRS += $(GST_LIB_PATH)/usr/include/gstreamer-1.0/
+INC_DIRS += $(GST_LIB_PATH)/usr/include/glib-2.0/
+INC_DIRS += $(GST_LIB_PATH)/usr/lib/glib-2.0/include/
 
 XLDFLAGS := -L$(ROOT_DIR)/build/usr/lib
 XLDFLAGS += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib
+ifeq ($(ENABLE_L4_ONLY),1)
+else
 XLDFLAGS += -lbinder -lutils
 XLDFLAGS += -laidl_client
+endif
 ifeq ($(ENABLE_AV_L4_TEST),1)
+XLDFLAGS += -L$(GST_LIB_PATH)/usr/lib
+XLDFLAGS += -Wl,-rpath-link=$(GST_LIB_PATH)/usr/lib
 XLDFLAGS += -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lpcre
 endif
 ifeq ($(ENABLE_PLANE_CONTROL_TEST),1)

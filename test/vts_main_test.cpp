@@ -81,23 +81,9 @@ int main(int argc, char **argv)
     UT_LOG_INFO("==========================================================================");
     UT_LOG("\t BUILD_TIMESTAMP: \033[0;32m%s\033[0m", BUILD_TIMESTAMP);
     UT_LOG("\t UNIFIED VTS Version: \033[0;32m%s\033[0m", HALIF_TEST_PROJECT_VERSION);
-    UT_LOG_INFO("\t AIDL HALIF Version: \033[0;32m%s\033[0m",RDK_HALIF_AIDL_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED Audio Decoder HALIF Test Version: \033[0;32m%s\033[0m",AUDIODECODER_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED Audio Sink HALIF Test Version: \033[0;32m%s\033[0m",AUDIOSINK_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED Video Decoder HALIF Test Version: \033[0;32m%s\033[0m",VIDEODECODER_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED Video Sink HALIF Test Version: \033[0;32m%s\033[0m",VIDEOSINK_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED AVBuffer HALIF Test Version: \033[0;32m%s\033[0m",AVBUFFER_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED AV Clock HALIF Test Version: \033[0;32m%s\033[0m",AVCLOCK_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED Plane Control HALIF Test Version: \033[0;32m%s\033[0m",PLANECONTROL_VERSION);
+
     UT_LOG_INFO("\t VTS UNIFIED HALIF L4 Test Version: \033[0;32m%s\033[0m",L4_TESTS_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED HDMI CEC HALIF Test Version: \033[0;32m%s\033[0m",HDMICEC_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED HDMI Input HALIF Test Version: \033[0;32m%s\033[0m",HDMIINPUT_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED HDMI Output HALIF Test Version: \033[0;32m%s\033[0m",HDMIOUTPUT_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED Deep Sleep HALIF Test Version: \033[0;32m%s\033[0m",DEEPSLEEP_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED Device Info HALIF Test Version: \033[0;32m%s\033[0m",DEVICEINFO_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED Boot HALIF Test Version: \033[0;32m%s\033[0m",BOOT_VERSION);
-    // UT_LOG_INFO("\t VTS UNIFIED Flash HALIF Test Version: \033[0;32m%s\033[0m",FLASH_VERSION);
-    UT_LOG_INFO("\t VTS UNIFIED Indicator HALIF Test Version: \033[0;32m%s\033[0m",INDICATOR_VERSION);
+
     UT_LOG_INFO("==========================================================================");
 
 

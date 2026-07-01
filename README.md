@@ -1,13 +1,12 @@
 # Unified Vendor Testing Suite For AIDL HAL
 
-This document outlines the steps to build and run the Unified Vendor Testing Suite (VTS) for AIDL HAL, targeting Linux or ARM platforms. The test suite depends on the Linux Binder with AIDL support and requires specific setup, build, and execution steps.
+This document outlines the steps to build and run the Unified Vendor Testing Suite (VTS) for AIDL HAL, targeting Linux or ARM platforms.
 
 ## Table of Contents
 
 - [Unified Vendor Testing Suite For AIDL HAL](#unified-vendor-testing-suite-for-aidl-hal)
   - [Acronyms, Terms and Abbreviations](#acronyms-terms-and-abbreviations)
   - [Setup](#setup)
-  - [Build linux binder for Target Linux](#build-linux-binder-for-target-linux)
   - [Build Unified VTS](#build-unified-vts)
   - [Run Tests Manually](#run-tests-manually)
   - [Setting Python environment for L1, L2, L3 and L4 automation test cases](#setting-python-environment-for-l1-l2-l3-and-l4-automation-test-cases)
@@ -63,22 +62,6 @@ chmod 600 ~/.netrc
   - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account>
 
 
-## Build linux binder for Target Linux
-
-The test suite depends on the Linux binder with `AIDL` support. Follow these steps to build it:
-
-For detail build instruction, please refer to [Linux Binder](https://github.com/rdkcentral/linux_binder_idl/tree/1.0.0)
-
-Here outline the simplest steps are
-
-```bash
-git clone -b 1.0.0 'https://github.com/rdkcentral/linux_binder_idl.git'
-
-cd linux_binder_idl
-
-./build-linux-binder-aidl.sh 64
-```
-
 ## Build Unified VTS
 
 ### Prerequisites for ut-core
@@ -123,21 +106,20 @@ Source the appropriate tool chains for the cross compilation
 
 Set below environment variable:
 
-- AIDL_BIN: Path to the `AIDL` compiler (e.g., /path/to/linux_binder_idl/out/aidl).
+- UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 5.1.0). This is required.
 
-- LINUX_BINDER_OUT_DIR: Path to the Linux binder output directory (e.g., /path/to/linux_binder_idl/local).
-
-- UT_CORE_VERSION: Specific version of the UT-Core framework (e.g., 5.1.0). Defaults to the latest tagged version.
-
-- RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF Specification (e.g, 0.15.0). Defaults to the latest HEAD.
+- For non-L4-only builds (`ENABLE_L4_ONLY != 1`) only:
+  - AIDL_BIN: Path to the `AIDL` compiler.
+  - RDK_HALIF_AIDL_VERSION: Specific version of the AIDL HALIF specification (e.g., 0.15.0). Defaults to `main` if not set.
 
 Example:
 
 ```bash
 export UT_CORE_VERSION=5.1.0
+
+# Required only when ENABLE_L4_ONLY != 1
 export RDK_HALIF_AIDL_VERSION=0.15.0
-export AIDL_BIN=/path/linux_binder_idl/out/aidl
-export LINUX_BINDER_OUT_DIR=/path/linux_binder_idl/local/
+export AIDL_BIN=/path/to/aidl/compiler
 ```
 
 By default, UT logs are set to WARNING level. For more details on log level filtering, refer to [UT-Core Log Level Documentation](https://github.com/rdkcentral/ut-control/blob/2.1.0/README.md#log-level-filtering)

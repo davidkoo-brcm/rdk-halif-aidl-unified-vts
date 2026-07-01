@@ -59,41 +59,53 @@
 #include <ut_kvp_profile.h>
 #include <ut_log.h>
 #include <ut_control_plane.h>
+#ifndef ENABLE_L4_ONLY
 #include <binder/IServiceManager.h>
 #include <binder/ProcessState.h>
 #include <binder/IPCThreadState.h>
 #include <binder/Status.h>
 #include <utils/String16.h>
+#endif
 #include <stdio.h>
 #include <vector>
 #include <optional>
 #include <algorithm>
 #include <unordered_set>
+#ifndef ENABLE_L4_ONLY
 #include "com/rdk/hal/audiodecoder/IAudioDecoderManager.h"
 #include "com/rdk/hal/audiodecoder/BnAudioDecoderControllerListener.h"
 #include "com/rdk/hal/audiodecoder/BnAudioDecoderEventListener.h"
 #include "com/rdk/hal/videodecoder/IVideoDecoderManager.h"
 #include "com/rdk/hal/videodecoder/Codec.h"
+#endif
 
+#ifndef ENABLE_L4_ONLY
 using android::sp;
 using android::String16;
 using android::defaultServiceManager;
 using android::binder::Status;
+#endif
 
+#ifndef ENABLE_L4_ONLY
 using namespace com::rdk::hal;
 using namespace com::rdk::hal::audiodecoder;
+#endif
 
+#ifndef ENABLE_L4_ONLY
 extern const ut_control_keyStringMapping_t statusException_mapTable[];
+#endif
 extern const ut_control_keyStringMapping_t bool_mapTable[];
 
-size_t vts_bytesPerSample(audiodecoder::PCMFormat format);
-//size_t vts_bytesPerPixel(PixelFormat format);
 void* vts_kvp_create_instance(char *fileName);
 void vts_kvp_destroy_instance(void *instance);
+#ifndef ENABLE_L4_ONLY
+size_t vts_bytesPerSample(audiodecoder::PCMFormat format);
+//size_t vts_bytesPerPixel(PixelFormat format);
 videodecoder::Codec videoDecoderStringToCodec(const std::string& codecStr);
 std::vector<std::string> videoDecoderGetAllCodecNames();
 audiodecoder::Codec vts_audioDecoder_helper_StringToCodec(const std::string& format);
 audiodecoder::PCMFormat vts_audioDecoder_helper_StringToPCMFormat(const std::string& format);
+#endif
 
 #endif //__VTS_HELPER_H__
 

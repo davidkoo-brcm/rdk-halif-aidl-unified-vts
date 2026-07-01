@@ -29,7 +29,6 @@ RESET='\033[0m'
 
 declare -r TOP=`dirname $(realpath $0)`
 declare -r HALIF_VERSION=current
-RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION="main"}"
 RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-aidl-test-"
 OUT_TAR_FILE=vts_unified.tar.gz.bz
 
@@ -51,35 +50,11 @@ declare -A HALIF_COMPONENTS=(
   [indicator]="current"
 )
 
-declare -A HALIF_TEST_COMPONENTS=(
-  [avbuffer]="RDK_HALIF_AVBUFFER_TEST_VERSION"
-  [audiodecoder]="RDK_HALIF_AUDIODECODER_TEST_VERSION"
-  [audiosink]="RDK_HALIF_AUDIOSINK_TEST_VERSION"
-  [videodecoder]="RDK_HALIF_VIDEODECODER_TEST_VERSION"
-  [videosink]="RDK_HALIF_VIDEOSINK_TEST_VERSION"
-  [avclock]="RDK_HALIF_AVCLOCK_TEST_VERSION"
-  [planecontrol]="RDK_HALIF_PLANECONTROL_TEST_VERSION"
-  [hdmicec]="RDK_HALIF_CEC_TEST_VERSION"
-  [hdmiinput]="RDK_HALIF_HDMIINPUT_TEST_VERSION"
-  [hdmioutput]="RDK_HALIF_HDMIOUTPUT_TEST_VERSION"
-  [deepsleep]="RDK_HALIF_DEEPSLEEP_TEST_VERSION"
-  [deviceinfo]="RDK_HALIF_DEVICEINFO_TEST_VERSION"
-  [boot]="RDK_HALIF_BOOT_TEST_VERSION"
-  [flash]="RDK_HALIF_FLASH_TEST_VERSION"
-  [indicator]="RDK_HALIF_INDICATOR_TEST_VERSION"
-  [audiomixer]="RDK_HALIF_AUDIOMIXER_TEST_VERSION"
-  [cdm]="RDK_HALIF_CDM_TEST_VERSION"
-  [broadcast]="RDK_HALIF_BROADCAST_TEST_VERSION"
-  [panel]="RDK_HALIF_PANEL_TEST_VERSION"
-  [farfieldvoice]="RDK_HALIF_FARFIELDVOICE_TEST_VERSION"
-)
-
 # Define the directory where the repository will be cloned
 declare -r UT_CORE_DIR="${TOP}/ut-core"
 declare -r TOP_BUILD_DIR="${TOP}/build"
 declare -r COMMON_DIR="${TOP}/common"
 declare -r BUILD_INSTALL_PREFIX=${TOP_BUILD_DIR}/usr
-declare -r AIDL_LIB_DIR=${TOP}/aidl_lib
 declare -r RDK_HAL_DIR=${TOP}/rdk-halif-aidl
 declare -r RDK_HAL_TEST_DIR=${TOP}/vts_hal_test_components
 declare -r PROFILES_DIR=${TOP}/profiles
@@ -89,9 +64,6 @@ declare -r AV_L4_TEST_DIR=${RDK_HAL_TEST_DIR}/l4_tests/src/av/
 DEF_LINUX_BINDER="`realpath ${TOP}/../`/linux_binder_idl"
 # AIDL_BIN: path of aidl compiler
 AIDL_BIN=${AIDL_BIN:-${DEF_LINUX_BINDER}/out/aidl}
-# LINUX_BINDER_OUT_DIR: output installed after building linux_binder_idl
-# contains bin/servicemanager, lib/libbinder etc
-LINUX_BINDER_OUT_DIR=${LINUX_BINDER_OUT_DIR:-${DEF_LINUX_BINDER}/local}
 
 #TODO: change to server path
 DEF_GST_LIB_PATH="`realpath ${TOP}/../`/gstreamer_aidl_package/build/install"
@@ -101,20 +73,22 @@ GST_LIB_PATH=${GST_LIB_PATH:-${DEF_GST_LIB_PATH}}
 #TODO: change to server path
 declare -r DEF_EGL_LIB_PATH="${TOP}/../egl_pkg"
 EGL_LIB_PATH=${EGL_LIB_PATH:-${DEF_EGL_LIB_PATH}}
+ENABLE_L4_ONLY="${ENABLE_L4_ONLY:-1}"
 
 mkdir -p $TOP_BUILD_DIR
 
-if [ ! -x $AIDL_BIN ]; then
-    echo "AIDL_BIN: path does not exists, consider building the linux_binder_idl in $AIDL_BIN"
-    exit 1
-fi
-if [ ! -d $LINUX_BINDER_OUT_DIR ]; then
-    echo "LINUX_BINDER_OUT_DIR: path does not exists, consider building the linux_binder_idl in $DEF_LINUX_BINDER"
-    exit 1
-fi
+if [ "${ENABLE_L4_ONLY}" != "1" ]; then
+    if [ ! -x $AIDL_BIN ]; then
+        echo "AIDL_BIN: path does not exists, consider building the linux_binder_idl in $AIDL_BIN"
+        exit 1
+    fi
+    if [ ! -d ${DEF_LINUX_BINDER}/local ]; then
+        echo "linux_binder local output path does not exist, consider building linux_binder_idl in $DEF_LINUX_BINDER"
+        exit 1
+    fi
 
-declare -r AIDL_BIN=`realpath ${AIDL_BIN}`
-declare -r LINUX_BINDER_OUT_DIR=`realpath ${LINUX_BINDER_OUT_DIR}`
+    declare -r AIDL_BIN=`realpath ${AIDL_BIN}`
+fi
 
 # Parse Target argument (e.g., Target=arm or target=linux)
 # Default to 'linux' if not provided
@@ -213,10 +187,12 @@ unified_manifest()
 install_linux_binder()
 {
     echo "Install linux-binder 'service manager, headers and libraries'"
+    local linux_binder_dir
+    linux_binder_dir=`realpath ${DEF_LINUX_BINDER}/local`
     install -d ${BUILD_INSTALL_PREFIX}/bin ${BUILD_INSTALL_PREFIX}/lib ${BUILD_INSTALL_PREFIX}/include
-    install -t ${BUILD_INSTALL_PREFIX}/bin ${LINUX_BINDER_OUT_DIR}/bin/*
-    install -t ${BUILD_INSTALL_PREFIX}/lib ${LINUX_BINDER_OUT_DIR}/lib/*
-    cp -apr ${LINUX_BINDER_OUT_DIR}/include/* ${BUILD_INSTALL_PREFIX}/include/
+    install -t ${BUILD_INSTALL_PREFIX}/bin ${linux_binder_dir}/bin/*
+    install -t ${BUILD_INSTALL_PREFIX}/lib ${linux_binder_dir}/lib/*
+    cp -apr ${linux_binder_dir}/include/* ${BUILD_INSTALL_PREFIX}/include/
 }
 
 ###############################################################################
@@ -242,10 +218,12 @@ install_egl_package()
 ###############################################################################
 generate_hal_interfaces()
 {
+    local aidl_version="${RDK_HALIF_AIDL_VERSION:-main}"
+
     # Clone the repository if not already present
     if [ ! -d "$RDK_HAL_DIR" ]; then
-        echo "Checking out version: " $RDK_HALIF_AIDL_VERSION
-        git clone -b $RDK_HALIF_AIDL_VERSION 'http://git@github.com/rdkcentral/rdk-halif-aidl.git' $RDK_HAL_DIR
+        echo "Checking out version: " $aidl_version
+        git clone -b $aidl_version 'http://git@github.com/rdkcentral/rdk-halif-aidl.git' $RDK_HAL_DIR
     fi
 
     # Iterate through the HALIF components
@@ -278,7 +256,7 @@ generate_hal_interfaces()
 ###############################################################################
 build_aidl_libs()
 {
-    pushd ${AIDL_LIB_DIR}
+    pushd ${TOP}/aidl_lib
     make -j`nproc` TARGET=$TARGET VARIANT=CPP
     if [ $? -ne 0 ]; then
         echo -e "${BOLD}╔══════════════════════════════════════════════╗${RESET}"
@@ -305,9 +283,10 @@ build_ut_core()
     pushd ${UT_CORE_DIR}
 
     git fetch -q -t origin
-    # get the latest version of ut-core
+    # UT_CORE_VERSION is mandatory to keep ut-core selection explicit.
     if [ -z "$UT_CORE_VERSION" ]; then
-        UT_CORE_VERSION=`git tag | sort -Vr | head -n1`
+        echo "UT_CORE_VERSION is required. Export UT_CORE_VERSION to a valid ut-core tag before building."
+        exit 1
     fi
 
     git checkout $UT_CORE_VERSION
@@ -385,23 +364,29 @@ install_test()
 
     cp -r ${PROFILES_DIR} ${INSTALL_PATH}
 
-    for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
-        if [ -d "${RDK_HAL_TEST_DIR}/${component}/${component}_test_configuration" ]; then
-            cp -rf ${RDK_HAL_TEST_DIR}/${component}/${component}_test_configuration ${INSTALL_PATH}/
-        fi
-        if [ -d "${RDK_HAL_TEST_DIR}/${component}/stream_configuration" ]; then
-            cp -rf ${RDK_HAL_TEST_DIR}/${component}/stream_configuration ${INSTALL_PATH}/
-        fi
-        if [ -d "${RDK_HAL_TEST_DIR}/${component}/${component}_stream_configuration" ]; then
-            cp -rf ${RDK_HAL_TEST_DIR}/${component}/${component}_stream_configuration ${INSTALL_PATH}/
-        fi
-        if [ -d "${RDK_HAL_TEST_DIR}/${component}/profiles" ]; then
-            cp -rf ${RDK_HAL_TEST_DIR}/${component}/profiles ${INSTALL_PATH}/
-        fi
-        if [ -d "${RDK_HAL_TEST_DIR}/${component}/test_configuration" ]; then
-            cp -rf ${RDK_HAL_TEST_DIR}/${component}/test_configuration ${INSTALL_PATH}/
-        fi
-    done
+    if [ "${ENABLE_L4_ONLY}" != "1" ]; then
+        for component_dir in ${RDK_HAL_TEST_DIR}/*; do
+            component=$(basename "${component_dir}")
+            if [ ! -d "${component_dir}" ] || [ "${component}" = "l4_tests" ]; then
+                continue
+            fi
+            if [ -d "${component_dir}/${component}_test_configuration" ]; then
+                cp -rf ${component_dir}/${component}_test_configuration ${INSTALL_PATH}/
+            fi
+            if [ -d "${component_dir}/stream_configuration" ]; then
+                cp -rf ${component_dir}/stream_configuration ${INSTALL_PATH}/
+            fi
+            if [ -d "${component_dir}/${component}_stream_configuration" ]; then
+                cp -rf ${component_dir}/${component}_stream_configuration ${INSTALL_PATH}/
+            fi
+            if [ -d "${component_dir}/profiles" ]; then
+                cp -rf ${component_dir}/profiles ${INSTALL_PATH}/
+            fi
+            if [ -d "${component_dir}/test_configuration" ]; then
+                cp -rf ${component_dir}/test_configuration ${INSTALL_PATH}/
+            fi
+        done
+    fi
     cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/
 
     mkdir -p ${INSTALL_PATH}/assets/streams/input
@@ -419,11 +404,6 @@ install_test()
 clean_test()
 {
     rm -rf ${TOP}/test/*.o
-    for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
-        rm -rf ${RDK_HAL_TEST_DIR}/${component}/mockservice/src/*.o
-        rm -rf ${RDK_HAL_TEST_DIR}/${component}/src/*.o
-    done
-
     rm -rf ${AV_L4_TEST_DIR}/*.o
     rm -rf ${COMMON_DIR}/helper_functions/*.o
     rm -rf ${COMMON_DIR}/vts_player/*.o
@@ -460,10 +440,13 @@ help()
 }
 
 echo -e "${BOLD}${GREEN}VTS Unified Version    : ${RESET}${YELLOW}$(git rev-parse --abbrev-ref HEAD)${RESET}"
-echo -e "${BOLD}${GREEN}UT_CORE_VERSION        : ${RESET}${YELLOW}$UT_CORE_VERSION${RESET}"
-echo -e "${BOLD}${GREEN}RDK_HALIF_AIDL_VERSION : ${RESET}${YELLOW}$RDK_HALIF_AIDL_VERSION${RESET}"
+echo -e "${BOLD}${GREEN}UT_CORE_VERSION        : ${RESET}${YELLOW}${UT_CORE_VERSION:-unset}${RESET}"
+echo -e "${BOLD}${GREEN}ENABLE_L4_ONLY         : ${RESET}${YELLOW}$ENABLE_L4_ONLY${RESET}"
+if [ "${ENABLE_L4_ONLY}" != "1" ]; then
+echo -e "${BOLD}${GREEN}RDK_HALIF_AIDL_VERSION : ${RESET}${YELLOW}${RDK_HALIF_AIDL_VERSION:-main}${RESET}"
 echo -e "${BOLD}${GREEN}AIDL_BIN               : ${RESET}${YELLOW}$AIDL_BIN${RESET}"
-echo -e "${BOLD}${GREEN}LINUX_BINDER_OUT_DIR   : ${RESET}${YELLOW}$LINUX_BINDER_OUT_DIR${RESET}"
+echo -e "${BOLD}${GREEN}LINUX_BINDER_PATH      : ${RESET}${YELLOW}${DEF_LINUX_BINDER}/local${RESET}"
+fi
 if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
 echo -e "${BOLD}${GREEN}GST_LIB_PATH           : ${RESET}${YELLOW}$GST_LIB_PATH${RESET}"
 fi
@@ -482,6 +465,10 @@ elif [ "$1" == "dist_clean" ]; then
 elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     help
 elif [[ "$1" == [Tt]arget=* ]]; then
+    if [ -z "${UT_CORE_VERSION}" ]; then
+        echo -e "${BOLD}${RED}UT_CORE_VERSION is required. Export UT_CORE_VERSION before building.${RESET}"
+        exit 1
+    fi
     if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
         validate_gst_lib_path
     fi
@@ -489,17 +476,23 @@ elif [[ "$1" == [Tt]arget=* ]]; then
         validate_egl_lib_path
     fi
     unified_manifest
-    install_linux_binder
+    if [ "${ENABLE_L4_ONLY}" != "1" ]; then
+        install_linux_binder
+    fi
     if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
         install_gstreamer_package
     fi
     if [ "${ENABLE_PLANE_CONTROL_TEST}" = "1" ]; then
         install_egl_package
     fi
-    generate_hal_interfaces
-    build_aidl_libs
+    if [ "${ENABLE_L4_ONLY}" != "1" ]; then
+        generate_hal_interfaces
+        build_aidl_libs
+    fi
     build_ut_core
-    generate_avbufferhelper_skeleton
+    if [ "${ENABLE_L4_ONLY}" != "1" ]; then
+        generate_avbufferhelper_skeleton
+    fi
     build_halif_test
     install_test
 else
