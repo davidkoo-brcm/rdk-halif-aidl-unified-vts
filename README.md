@@ -128,7 +128,6 @@ export UT_LOG_LEVEL=3
 ```
 
 
-
 Run the build script for Target ARM:
 
 ```bash
