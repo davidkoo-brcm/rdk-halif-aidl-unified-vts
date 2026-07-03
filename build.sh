@@ -498,6 +498,9 @@ install_test()
     # Remove gstreamer and egl libraries from the install path (not needed in final tar)
     rm -rf ${INSTALL_PATH}/libgst*  ${INSTALL_PATH}/libEGL* ${INSTALL_PATH}/libGL* ${INSTALL_PATH}/libMali* ${INSTALL_PATH}/libwayland* ${INSTALL_PATH}/libgbm* ${INSTALL_PATH}/libgio*
 
+    # Remove binder libraries from the install path (not needed in final tar)
+    rm -rf ${INSTALL_PATH}/libb* ${INSTALL_PATH}/libcutils* ${INSTALL_PATH}/liblog.so
+
     cp -r ${PROFILES_DIR} ${INSTALL_PATH}
 
     for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
