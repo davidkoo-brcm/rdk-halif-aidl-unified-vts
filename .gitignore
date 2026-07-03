@@ -7,3 +7,4 @@ ut-core
 vts_hal_test_components
 .repo
 logs
+linux_binder_idl
