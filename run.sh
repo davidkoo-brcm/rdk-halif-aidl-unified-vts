@@ -28,7 +28,8 @@ if [ ! -w "$DEV_BINDER" ]; then
     exit 1
 fi
 
-export LD_LIBRARY_PATH=/usr/lib:/lib:/home/root:./:$RUN_DIR:$LD_LIBRARY_PATH
+# Put RUN_DIR at the front of LD_LIBRARY_PATH to ensure our test binaries use the correct libraries
+export LD_LIBRARY_PATH=$RUN_DIR:/usr/lib:/lib:/home/root:./:$LD_LIBRARY_PATH
 
 echo "Executing [vts_hal_test]"
 "${RUN_DIR}/vts_hal_test" "$@"

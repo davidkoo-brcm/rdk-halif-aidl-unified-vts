@@ -45,10 +45,12 @@ declare -A HALIF_COMPONENTS=(
   [hdmiinput]="current"
   [hdmioutput]="current"
   [deepsleep]="current"
+  [compositeinput]="current"
   [deviceinfo]="current"
   [boot]="current"
   [flash]="current"
   [indicator]="current"
+  [sensor]="current"
 )
 
 declare -A HALIF_TEST_COMPONENTS=(
@@ -63,6 +65,7 @@ declare -A HALIF_TEST_COMPONENTS=(
   [hdmiinput]="RDK_HALIF_HDMIINPUT_TEST_VERSION"
   [hdmioutput]="RDK_HALIF_HDMIOUTPUT_TEST_VERSION"
   [deepsleep]="RDK_HALIF_DEEPSLEEP_TEST_VERSION"
+  [compositeinput]="RDK_HALIF_COMPOSITEINPUT_TEST_VERSION"
   [deviceinfo]="RDK_HALIF_DEVICEINFO_TEST_VERSION"
   [boot]="RDK_HALIF_BOOT_TEST_VERSION"
   [flash]="RDK_HALIF_FLASH_TEST_VERSION"
@@ -72,6 +75,8 @@ declare -A HALIF_TEST_COMPONENTS=(
   [broadcast]="RDK_HALIF_BROADCAST_TEST_VERSION"
   [panel]="RDK_HALIF_PANEL_TEST_VERSION"
   [farfieldvoice]="RDK_HALIF_FARFIELDVOICE_TEST_VERSION"
+  [thermalsensor]="RDK_HALIF_THERMALSENSOR_TEST_VERSION"
+  [motionsensor]="RDK_HALIF_MOTIONSENSOR_TEST_VERSION"
 )
 
 # Define the directory where the repository will be cloned
@@ -492,6 +497,9 @@ install_test()
 
     # Remove gstreamer and egl libraries from the install path (not needed in final tar)
     rm -rf ${INSTALL_PATH}/libgst*  ${INSTALL_PATH}/libEGL* ${INSTALL_PATH}/libGL* ${INSTALL_PATH}/libMali* ${INSTALL_PATH}/libwayland* ${INSTALL_PATH}/libgbm* ${INSTALL_PATH}/libgio*
+
+    # Remove binder libraries from the install path (not needed in final tar)
+    rm -rf ${INSTALL_PATH}/libb* ${INSTALL_PATH}/libcutils* ${INSTALL_PATH}/liblog.so
 
     cp -r ${PROFILES_DIR} ${INSTALL_PATH}
 

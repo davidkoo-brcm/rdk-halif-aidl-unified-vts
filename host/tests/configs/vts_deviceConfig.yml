@@ -27,13 +27,28 @@ deviceConfig:
         platform:   "vDevice"
         model:      "UK"
         soc_vendor: "intel"
-        target_directory: "/tmp/"
+        target_directory: "/tmp" # Directory on the device where the test binary will be copied to and executed from
         prompt: "~#" # Prompt string on console
-        download_path: "assets/streams/input/" #Download path where streams are saved inside the bin folder
+        download_path: "assets/streams/input/" # Download path where streams are saved inside the bin folder
         playback_manual_verification: 0 # flag to enable manual playback verification
         test_config_path: "bin/av_test_configurations"
-        wait_time: 60 #Configurable timeout value to limit the total duration of individual tests
-        all_wait_time: 240 #Configurable timeout value to limit the total duration of individual suite
+        all_wait_time: 2400 # Configurable timeout value to limit the total duration of individual suite
+        device_type: ["TV"] # Possible values: ["TV", "RecordingDevice", "Tuner", "PlaybackDevice", "AudioSystem", "VideoProcessor", "PureCecSwitch", "Reserved"]
+        # Configurable timeout value in seconds to limit the total duration of individual tests, also used by boot module to wait for device to boot up default value is 320 seconds.
+        wait_time: 320
+        boot_non_volatile_directory: "/home/root"  # User needs to update based on their soc
+        boot_volatile_directory: "/tmp" # User needs to update based on their soc
         test:
             profile: "../../../profiles/hfp-vdevice.yaml" #HFP profile used to meet platform requirements
             streams_download_url: "<http stream path>" #URL path from which the streams are downloaded to the device
+            device_network_list: "path on target device for hdmi_cec_device_list_info.txt" # File path where the connected HDMI CEC device list is stored
+            platform_led_config: "../../../vts_hal_test_components/indicator/test_configuration/vts_indicator_LED_config_vdevice.yaml"
+            motionsensor_controller_port: xxxx # Port where the motionsensor vcomponent control plane is listening
+            thermalsensor_controller_port: xxxx # Port where the thermalsensor vcomponent control plane is listening
+            deepsleep_controller_port: 8081 # Port where the deepsleep vcomponent control plane is listening
+            deep_sleep_duration_seconds: 60 # Seconds to simulate idle before deep sleep
+        remote:
+            deepsleep:
+                RCU_IR: 6
+                RCU_BT: 7
+                RCU_RF4CE: 8
