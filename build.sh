@@ -561,6 +561,10 @@ build_halif_modules()
     fi
     (
         cd "${RDK_HAL_DIR}"
+        # Bypass build_modules.sh's Yocto/cross-toolchain guard: our ARM binder SDK is already cross-compiled correctly
+        if [ "${TARGET}" = "arm" ]; then
+            export BINDER_ALLOW_CROSS_ENV=1
+        fi
         ./build_modules.sh manifest --file "${manifest_file}" ${sdk_dir_arg}
     ) || {
         echo -e "${BOLD}╔══════════════════════════════════════════════════════════════════════╗${RESET}"
