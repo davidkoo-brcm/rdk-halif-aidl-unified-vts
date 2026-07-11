@@ -34,27 +34,10 @@ RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION:-develop}"
 RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-aidl-test-"
 OUT_TAR_FILE=vts_unified.tar.gz.bz
 
-declare -A HALIF_TEST_COMPONENTS=(
-  [avbuffer]="RDK_HALIF_AVBUFFER_TEST_VERSION"
-  [audiodecoder]="RDK_HALIF_AUDIODECODER_TEST_VERSION"
-  [audiosink]="RDK_HALIF_AUDIOSINK_TEST_VERSION"
-  [videodecoder]="RDK_HALIF_VIDEODECODER_TEST_VERSION"
-  [videosink]="RDK_HALIF_VIDEOSINK_TEST_VERSION"
-  [avclock]="RDK_HALIF_AVCLOCK_TEST_VERSION"
-  [planecontrol]="RDK_HALIF_PLANECONTROL_TEST_VERSION"
-  [hdmicec]="RDK_HALIF_CEC_TEST_VERSION"
-  [hdmiinput]="RDK_HALIF_HDMIINPUT_TEST_VERSION"
-  [hdmioutput]="RDK_HALIF_HDMIOUTPUT_TEST_VERSION"
-  [deepsleep]="RDK_HALIF_DEEPSLEEP_TEST_VERSION"
-  [deviceinfo]="RDK_HALIF_DEVICEINFO_TEST_VERSION"
-  [boot]="RDK_HALIF_BOOT_TEST_VERSION"
-  [flash]="RDK_HALIF_FLASH_TEST_VERSION"
-  [indicator]="RDK_HALIF_INDICATOR_TEST_VERSION"
-  [audiomixer]="RDK_HALIF_AUDIOMIXER_TEST_VERSION"
-  [cdm]="RDK_HALIF_CDM_TEST_VERSION"
-  [broadcast]="RDK_HALIF_BROADCAST_TEST_VERSION"
-  [panel]="RDK_HALIF_PANEL_TEST_VERSION"
-  [farfieldvoice]="RDK_HALIF_FARFIELDVOICE_TEST_VERSION"
+declare -a HALIF_TEST_COMPONENTS=(
+  avbuffer audiodecoder audiosink videodecoder videosink avclock planecontrol
+  hdmicec hdmiinput hdmioutput deepsleep deviceinfo boot flash indicator
+  audiomixer cdm broadcast panel farfieldvoice
 )
 
 # Define the directory where the repository will be cloned
@@ -172,9 +155,8 @@ unified_manifest()
 )
 
 ###############################################################################
-# Install Binder service manager, headers and libraries into build/usr/ from
-# the rdk-halif-aidl Binder SDK (built by build_modules.sh -> build_binder.sh).
-# Must be called after generate_hal_interfaces().
+# Install Binder headers/libs into build/usr/ from the rdk-halif-aidl Binder SDK.
+# Call after generate_hal_interfaces().
 ###############################################################################
 install_linux_binder()
 {
@@ -218,14 +200,8 @@ install_egl_package()
 }
 
 ###############################################################################
-# Cross-compile ARM binder runtime (libbinder.so, libutils.so, etc.) from
-# the linux_binder_idl sources using the ARM cross-compiler.
-#
-# build_modules.sh intentionally does not build binder for ARM — it expects
-# the linux-binder Yocto recipe to pre-stage it. For standalone ARM builds
-# outside Yocto, we cross-compile it here with BUILD_HOST_AIDL=OFF so only
-# the runtime libs are built (skipping the AIDL host tools that require a
-# host/x86 compiler).
+# Cross-compile ARM binder runtime - build_modules.sh doesn't build it for ARM.
+# BUILD_HOST_AIDL=OFF skips the host-only AIDL compiler.
 ###############################################################################
 build_arm_binder()
 {
@@ -238,11 +214,7 @@ build_arm_binder()
         return 0
     fi
 
-    # Clone linux_binder_idl directly — not via build_binder.sh.
-    # build_binder.sh would try to build the full host AIDL compiler, but OE
-    # prepends its own native tools (including an older m4) to PATH even when
-    # CC/CXX are unset — that m4 rejects the --gnu flag bison passes and
-    # breaks the AIDL parser build.  A plain git clone avoids PATH entirely.
+    # Clone directly, not via build_binder.sh - OE's native m4 breaks its AIDL parser build.
     if [ ! -d "${BINDER_REPO_DIR}/.git" ]; then
         echo "Cloning linux_binder_idl for ARM build..."
         local _binder_version
@@ -269,12 +241,8 @@ build_arm_binder()
         }
     fi
 
-    # The OE toolchain sets CC/CXX to "compiler-path <flags>" (flags embedded).
-    # cmake requires CMAKE_C_COMPILER to be just the binary path; flags go into
-    # CMAKE_C_FLAGS_INIT inside a toolchain file.
-    #
-    # cmake 3.22+ auto-loads OEToolchainConfig.cmake even when CMAKE_TOOLCHAIN_FILE
-    # is cleared. Writing our own toolchain file takes precedence over that.
+    # CC/CXX embed flags; CMAKE_C_COMPILER needs just the binary, so flags go into
+    # CMAKE_C_FLAGS_INIT via our own toolchain file instead.
     local cc_bin cxx_bin cc_flags
     cc_bin=$(echo "${CC}" | awk '{print $1}')
     cxx_bin=$(echo "${CXX}" | awk '{print $1}')
@@ -296,12 +264,7 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 TOOLCHAIN_EOF
 
-    # linux_binder_idl cmake auto-enables BUILD_ENV_YOCTO when OECORE_* env
-    # vars are set (line 174 of its CMakeLists.txt), which skips ALL install()
-    # rules so cmake never installs libs or headers.  Temporarily clear these
-    # vars during cmake configure so BUILD_ENV_YOCTO stays OFF.  The sysroot
-    # path is baked into our toolchain file's CMAKE_C_FLAGS_INIT, so clearing
-    # the OE detection vars does not affect cross-compilation.
+    # Clear OECORE_* vars - if set, cmake auto-enables BUILD_ENV_YOCTO and skips install() rules.
     local _OECORE_NATIVE="${OECORE_NATIVE_SYSROOT:-}"
     local _OECORE_TARGET="${OECORE_TARGET_SYSROOT:-}"
     unset OECORE_NATIVE_SYSROOT OECORE_TARGET_SYSROOT
@@ -335,10 +298,8 @@ TOOLCHAIN_EOF
         exit 1
     }
 
-    # Reorganise the install tree to match what build_binder.sh produces for
-    # the linux target, so that build_modules.sh finds the SDK at the expected
-    # paths (out/target/lib/binder/, out/build/include/binder_sdk/).
-    # Always wipe lib/binder/ — Step 1 (x86 build) may have put x86_64 libs here.
+    # Match build_binder.sh's linux-target layout so build_modules.sh finds the SDK.
+    # Wipe lib/binder/ first - Step 1 (x86 build) may have left x86_64 libs there.
     local ARM_BINDER_INCLUDE="${RDK_HAL_DIR}/out/build"
     if [ -d "${ARM_BINDER_SDK}/lib" ]; then
         rm -rf "${ARM_BINDER_SDK}/lib/binder"
@@ -360,10 +321,9 @@ TOOLCHAIN_EOF
 }
 
 ###############################################################################
-# Create convenience softlinks so the Makefile can link with -l<module>-cpp
-# without embedding the version number:
-#   lib<module>-cpp.so  ->  lib<module>-v<version>-cpp.so
-# Versions are read from rdk-halif-aidl/versions_released.yaml.
+# Rename each halif module lib to lib<module>-cpp_vts.so (filename only - SONAME
+# rewrite via patchelf dropped for now) and symlink the old versioned name to it,
+# so it can't collide with a vendor lib.
 ###############################################################################
 create_halif_softlinks()
 {
@@ -387,10 +347,13 @@ create_halif_softlinks()
                 local module="${BASH_REMATCH[1]}"
                 local version="${BASH_REMATCH[2]}"
                 local versioned="lib${module}-v${version}-cpp.so"
-                local link="lib${module}-cpp.so"
-                if [ -f "${LIB_DIR}/${versioned}" ]; then
-                    ln -sf "${versioned}" "${LIB_DIR}/${link}"
-                    echo "  ${link} -> ${versioned}"
+                local vts="lib${module}-cpp_vts.so"
+                # Only act on a still-pristine build output; skip if already renamed
+                # (e.g. versioned name is already a symlink from a prior run).
+                if [ -f "${LIB_DIR}/${versioned}" ] && [ ! -L "${LIB_DIR}/${versioned}" ]; then
+                    mv "${LIB_DIR}/${versioned}" "${LIB_DIR}/${vts}"
+                    ln -sf "${vts}" "${LIB_DIR}/${versioned}"
+                    echo "  ${versioned} -> ${vts} (SONAME still says ${versioned} - patchelf step dropped)"
                 fi
             elif [[ "$line" =~ ^[^[:space:]] && ! "$line" =~ ^# ]]; then
                 in_components=0
@@ -398,14 +361,12 @@ create_halif_softlinks()
         fi
     done < "$YAML"
 
-    # Write halif_generated.mk so the Makefile reads exact paths captured at
-    # build time rather than using wildcard/find at parse time, which silently
-    # returns empty on a clean tree before build.sh has produced the files.
+    # Write exact include/lib paths captured now, since Makefile wildcards can't see them before build.sh runs
     local MK_FILE="${RDK_HAL_DIR}/out/halif_generated.mk"
     local mk_inc_dirs mk_module_libs
     mk_inc_dirs=$(find "${RDK_HAL_DIR}/out/build/include" -mindepth 3 -maxdepth 3 \
         -type d -name "include" 2>/dev/null | tr '\n' ' ' | sed 's/ $//')
-    mk_module_libs=$(find "${LIB_DIR}" -maxdepth 1 -type l -name 'lib*-cpp.so' \
+    mk_module_libs=$(find "${LIB_DIR}" -maxdepth 1 -type f -name 'lib*-cpp_vts.so' \
         2>/dev/null | sed 's|.*/lib\(.*\)\.so|-l\1|' | tr '\n' ' ' | sed 's/ $//')
     {
         echo "# Auto-generated by build.sh create_halif_softlinks() — do not edit"
@@ -416,9 +377,7 @@ create_halif_softlinks()
 }
 
 ###############################################################################
-# Clone rdk-halif-aidl if not present, or switch to the required branch.
-# Invalidates the halif modules sentinel when the branch changes so the next
-# build_halif_modules() call does a full rebuild.
+# Clone rdk-halif-aidl or switch branches; invalidates the halif modules sentinel on a branch change.
 ###############################################################################
 checkout_halif_repo()
 {
@@ -428,45 +387,42 @@ checkout_halif_repo()
             echo "ERROR: Failed to clone rdk-halif-aidl."
             exit 1
         }
-        return
+    else
+        # Undo our build_binder.sh patch first so branch checkout isn't blocked by local edits
+        git -C "$RDK_HAL_DIR" checkout -- build_binder.sh 2>/dev/null || true
+
+        local current_branch
+        current_branch=$(git -C "$RDK_HAL_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null)
+        if [ "${current_branch}" = "${RDK_HALIF_AIDL_VERSION}" ]; then
+            echo "rdk-halif-aidl already on '${RDK_HALIF_AIDL_VERSION}'"
+        else
+            echo "rdk-halif-aidl is on '${current_branch}', switching to '${RDK_HALIF_AIDL_VERSION}'..."
+            git -C "$RDK_HAL_DIR" fetch origin "$RDK_HALIF_AIDL_VERSION" || {
+                echo "ERROR: Failed to fetch branch ${RDK_HALIF_AIDL_VERSION}."
+                exit 1
+            }
+            git -C "$RDK_HAL_DIR" checkout "$RDK_HALIF_AIDL_VERSION" || {
+                echo "ERROR: Failed to checkout branch ${RDK_HALIF_AIDL_VERSION}."
+                exit 1
+            }
+            # Branch changed — invalidate the halif modules stamp so they are rebuilt.
+            rm -f "${RDK_HAL_DIR}/out/target/lib/halif/.halif_modules_ready"
+        fi
     fi
 
-    local current_branch
-    current_branch=$(git -C "$RDK_HAL_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null)
-    if [ "${current_branch}" = "${RDK_HALIF_AIDL_VERSION}" ]; then
-        echo "rdk-halif-aidl already on '${RDK_HALIF_AIDL_VERSION}'"
-        return
+    if [ "${TARGET}" = "linux" ]; then
+        # Force 64-bit binder protocol; vendored default is 32-bit and mismatches a 64-bit vdevice kernel
+        sed -i 's/-DBUILD_HOST_AIDL=ON/-DBUILD_HOST_AIDL=ON -DTARGET_LIB64_VERSION=ON/' \
+            "${RDK_HAL_DIR}/build_binder.sh"
     fi
-
-    echo "rdk-halif-aidl is on '${current_branch}', switching to '${RDK_HALIF_AIDL_VERSION}'..."
-    git -C "$RDK_HAL_DIR" fetch origin "$RDK_HALIF_AIDL_VERSION" || {
-        echo "ERROR: Failed to fetch branch ${RDK_HALIF_AIDL_VERSION}."
-        exit 1
-    }
-    git -C "$RDK_HAL_DIR" checkout "$RDK_HALIF_AIDL_VERSION" || {
-        echo "ERROR: Failed to checkout branch ${RDK_HALIF_AIDL_VERSION}."
-        exit 1
-    }
-    # Branch changed — invalidate the halif modules stamp so they are rebuilt.
-    rm -f "${RDK_HAL_DIR}/out/target/lib/halif/.halif_modules_ready"
 }
 
 ###############################################################################
-# Set up the Binder SDK required by build_modules.sh.
-#
-# Linux: runs build_binder.sh (no-op if .sdk_ready already exists).
-# ARM:   uses BINDER_SDK_DIR if already set, or the OE sysroot binder if
-#        available. Otherwise does two steps:
-#          Step 1 — build the AIDL host tools with the x86 compiler.
-#          Step 2 — cross-compile the ARM binder runtime via build_arm_binder().
-#
-# Sets BINDER_SDK_DIR in the environment for downstream use by build_modules.sh.
+# Set up the Binder SDK required by build_modules.sh; sets BINDER_SDK_DIR.
 ###############################################################################
 setup_binder_sdk()
 {
-    # build_modules.sh preflight check requires out/target/lib/binder to exist before
-    # it can run, so build_binder.sh must be called explicitly first.
-    # TODO: build_modules.sh to skip the preflight binder check in manifest mode.
+    # build_binder.sh must run first - build_modules.sh's preflight check needs out/target/lib/binder to exist.
     local binder_toolchain_dir="${RDK_HAL_DIR}/build-tools/linux_binder_idl"
 
     if [ "${TARGET}" = "arm" ]; then
@@ -480,10 +436,7 @@ setup_binder_sdk()
             return
         fi
 
-        # Step 1: build AIDL host tools using x86 compiler.
-        # Clear ARM cross-compile env AND OECORE vars — linux_binder_idl
-        # CMakeLists.txt auto-sets BUILD_ENV_YOCTO=ON when OECORE_* vars
-        # are present, which skips all cmake install() rules.
+        # Step 1: build AIDL host tools with x86 compiler; clear cross-compile/OECORE env so cmake installs run
         echo "ARM build: building AIDL host tools with x86 compiler..."
         local _CC="${CC:-}" _CXX="${CXX:-}" _CFLAGS="${CFLAGS:-}"
         local _CXXFLAGS="${CXXFLAGS:-}" _LDFLAGS="${LDFLAGS:-}"
@@ -511,19 +464,14 @@ setup_binder_sdk()
         [ -n "${_OECORE_NATIVE}" ]        && export OECORE_NATIVE_SYSROOT="${_OECORE_NATIVE}"
         [ -n "${_OECORE_TARGET}" ]        && export OECORE_TARGET_SYSROOT="${_OECORE_TARGET}"
 
-        # Step 2: cross-compile ARM binder runtime.
-        # Remove .sdk_ready written by Step 1 — build_arm_binder() skips
-        # itself if this file exists, leaving x86_64 libs in place.
-        # TODO: build_binder.sh to use a separate sentinel for ARM runtime.
+        # Step 2: remove Step 1's .sdk_ready so build_arm_binder() doesn't skip itself, then cross-compile
         rm -f "${RDK_HAL_DIR}/out/target/.sdk_ready"
         echo "ARM build: cross-compiling ARM binder runtime..."
         build_arm_binder
         export BINDER_SDK_DIR="${RDK_HAL_DIR}/out/target"
     else
-        # Linux native build: always call build_binder.sh so linux_binder_idl
-        # is cloned and host/aidl_ops.py exists before build_modules.sh preflight
-        # runs.  build_binder.sh exits immediately if .sdk_ready is already
-        # present, so there is no cost when the SDK is up to date.
+        # Linux: always call build_binder.sh first so linux_binder_idl/aidl_ops.py exist
+        # before build_modules.sh's preflight check; it's a no-op if the SDK is up to date.
         if [ -d "${binder_toolchain_dir}" ] && [ ! -d "${binder_toolchain_dir}/.git" ]; then
             echo "Removing incomplete toolchain stub before fresh clone..."
             rm -rf "${binder_toolchain_dir}"
@@ -539,9 +487,7 @@ setup_binder_sdk()
 }
 
 ###############################################################################
-# Build HAL modules from the versioned snapshot manifest (versions_released.yaml)
-# into lib<module>-v<version>-cpp.so, then create unversioned softlinks.
-# Skips the build entirely if the sentinel .halif_modules_ready already exists.
+# Build HAL modules from versions_released.yaml; skips if .halif_modules_ready sentinel exists.
 ###############################################################################
 build_halif_modules()
 {
@@ -577,16 +523,7 @@ build_halif_modules()
 }
 
 ###############################################################################
-# Clone rdk-halif-aidl and build HAL interfaces using its own build system.
-#
-# build_modules.sh manifest:
-#   - Reads versions_released.yaml and compiles each component's pre-committed
-#     C++ from the pinned versioned snapshot into lib<module>-v<version>-cpp.so
-#   - Outputs libraries to rdk-halif-aidl/out/target/lib/halif/
-#   - Outputs headers  to rdk-halif-aidl/out/build/include/<module>/<version>/include/
-#
-# For ARM cross-compilation set CC/CXX/CFLAGS/CXXFLAGS/LDFLAGS in the
-# environment and BINDER_SDK_DIR to the ARM-compiled Binder SDK location.
+# Clone rdk-halif-aidl, set up its Binder SDK, and build HAL modules from it.
 ###############################################################################
 generate_hal_interfaces()
 {
@@ -630,7 +567,13 @@ build_ut_core()
 ###############################################################################
 generate_avbufferhelper_skeleton()
 {
-    declare -r AVBUFFER_HELPER_DIR=${COMMON_DIR}/avbufferhelper_skeleton
+    # linux target uses the real shm-backed mock helper; arm keeps the generic stub (real HW supplies its own)
+    local AVBUFFER_HELPER_DIR
+    if [ "${TARGET}" = "linux" ]; then
+        AVBUFFER_HELPER_DIR=${COMMON_DIR}/avbufferhelper_mock
+    else
+        AVBUFFER_HELPER_DIR=${COMMON_DIR}/avbufferhelper_skeleton
+    fi
     local AVBUFFER_READY="${BUILD_INSTALL_PREFIX}/lib/.avbufferhelper_ready"
 
     if [ -f "${AVBUFFER_READY}" ]; then
@@ -685,17 +628,20 @@ build_halif_test()
 install_test()
 {
     declare -r INSTALL_PATH=${TOP_BUILD_DIR}/bin
+    declare -r INSTALL_LIB_PATH=${INSTALL_PATH}/lib
+
+    mkdir -p ${INSTALL_LIB_PATH}
 
     install -t ${INSTALL_PATH} ${TOP_BUILD_DIR}/usr/bin/*
-    install -t ${INSTALL_PATH} ${TOP_BUILD_DIR}/usr/lib/*
+    install -t ${INSTALL_LIB_PATH} ${TOP_BUILD_DIR}/usr/lib/*
     install -t ${INSTALL_PATH} run.sh
 
     # Remove gstreamer and egl libraries from the install path (not needed in final tar)
-    rm -rf ${INSTALL_PATH}/libgst*  ${INSTALL_PATH}/libEGL* ${INSTALL_PATH}/libGL* ${INSTALL_PATH}/libMali* ${INSTALL_PATH}/libwayland* ${INSTALL_PATH}/libgbm* ${INSTALL_PATH}/libgio*
+    rm -rf ${INSTALL_LIB_PATH}/libgst*  ${INSTALL_LIB_PATH}/libEGL* ${INSTALL_LIB_PATH}/libGL* ${INSTALL_LIB_PATH}/libMali* ${INSTALL_LIB_PATH}/libwayland* ${INSTALL_LIB_PATH}/libgbm* ${INSTALL_LIB_PATH}/libgio*
 
     cp -r ${PROFILES_DIR} ${INSTALL_PATH}
 
-    for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
+    for component in "${HALIF_TEST_COMPONENTS[@]}"; do
         if [ -d "${RDK_HAL_TEST_DIR}/${component}/${component}_test_configuration" ]; then
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/${component}_test_configuration ${INSTALL_PATH}/
         fi
@@ -713,16 +659,20 @@ install_test()
         cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/
     fi
 
-    # Install versioned halif libs and their softlinks from the snapshot build
+    # Install halif module libs from the snapshot build
     local HALIF_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/halif"
     if [ -d "${HALIF_LIB_DIR}" ]; then
         find "${HALIF_LIB_DIR}" -maxdepth 1 -name "*.so" \
-            -exec cp -a {} "${INSTALL_PATH}/" \; 2>/dev/null || true
+            -exec cp -a {} "${INSTALL_LIB_PATH}/" \; 2>/dev/null || true
     fi
 
     mkdir -p ${INSTALL_PATH}/assets/streams/input
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
-    rm -rf ${INSTALL_PATH}/libavbufferhelper.so
+    rm -rf ${INSTALL_LIB_PATH}/libavbufferhelper.so
+
+    # Drop the generic binder runtime libs - device already provides these
+    rm -rf ${INSTALL_LIB_PATH}/libbinder.so ${INSTALL_LIB_PATH}/libutils.so ${INSTALL_LIB_PATH}/liblog.so \
+           ${INSTALL_LIB_PATH}/libcutils.so ${INSTALL_LIB_PATH}/libcutils_sockets.so ${INSTALL_LIB_PATH}/libbase.so
 
     cd ${TOP_BUILD_DIR}
     tar -zcf ${OUT_TAR_FILE} bin
@@ -735,7 +685,7 @@ install_test()
 clean_test()
 {
     rm -rf ${TOP}/test/*.o
-    for component in "${!HALIF_TEST_COMPONENTS[@]}"; do
+    for component in "${HALIF_TEST_COMPONENTS[@]}"; do
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/mockservice/src/*.o
         rm -rf ${RDK_HAL_TEST_DIR}/${component}/src/*.o
     done
