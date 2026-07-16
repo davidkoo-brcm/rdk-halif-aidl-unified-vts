@@ -37,7 +37,7 @@
 
    <project name="rdk-halif-aidl-L4-Vendor"
            path="vts_hal_test_components/l4_tests"
-           revision="refs/tags/0.2.0" />
+           revision="feature/gh20_CodecSwitch" />
 
    <project name="rdk-halif-aidl-test-cec"
            path="vts_hal_test_components/hdmicec"
