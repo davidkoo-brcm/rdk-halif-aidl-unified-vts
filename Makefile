@@ -199,9 +199,6 @@ HALIF_LIB_DIR        := $(HALIF_OUT_DIR)/target/lib/halif
 INC_DIRS             := $(HALIF_INC_DIRS)
 
 XLDFLAGS             := -rdynamic
-ifeq ($(TARGET),linux)
-XLDFLAGS             += -static-libstdc++ -static-libgcc
-endif
 XLDFLAGS             += -L$(ROOT_DIR)/build/usr/lib
 XLDFLAGS             += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib
 XLDFLAGS             += -L$(HALIF_LIB_DIR)

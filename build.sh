@@ -567,13 +567,9 @@ build_ut_core()
 ###############################################################################
 generate_avbufferhelper_skeleton()
 {
-    # linux target uses the real shm-backed mock helper; arm keeps the generic stub (real HW supplies its own)
-    local AVBUFFER_HELPER_DIR
-    if [ "${TARGET}" = "linux" ]; then
-        AVBUFFER_HELPER_DIR=${COMMON_DIR}/avbufferhelper_mock
-    else
-        AVBUFFER_HELPER_DIR=${COMMON_DIR}/avbufferhelper_skeleton
-    fi
+    # generic stub used for both targets; real HW/vdevice middleware supplies its own
+    # implementation at runtime, this is only a link-time placeholder (stripped by install_test())
+    local AVBUFFER_HELPER_DIR=${COMMON_DIR}/avbufferhelper_skeleton
     local AVBUFFER_READY="${BUILD_INSTALL_PREFIX}/lib/.avbufferhelper_ready"
 
     if [ -f "${AVBUFFER_READY}" ]; then
