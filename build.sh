@@ -83,6 +83,83 @@ if [[ ! " ${valid_targets[@]} " =~ " ${TARGET} " ]]; then
 fi
 
 ###############################################################################
+# Function to validate repo tool is installed
+###############################################################################
+validate_repo_tool()
+{
+    if ! command -v repo &>/dev/null; then
+        echo -e "${BOLD}${RED}Error: 'repo' tool is not installed or not in PATH.${RESET}"
+        echo -e "${BOLD}${YELLOW}Install it with:${RESET}"
+        echo -e "${BOLD}${CYAN}  mkdir -p ~/.local/bin${RESET}"
+        echo -e "${BOLD}${CYAN}  curl -o ~/.local/bin/repo https://storage.googleapis.com/git-repo-downloads/repo${RESET}"
+        echo -e "${BOLD}${CYAN}  chmod a+rx ~/.local/bin/repo${RESET}"
+        echo -e "${BOLD}${YELLOW}Then add ~/.local/bin to your PATH:${RESET}"
+        echo -e "${BOLD}${CYAN}  export PATH=\"\$HOME/.local/bin:\$PATH\"${RESET}"
+        exit 1
+    fi
+}
+
+###############################################################################
+# Function to validate cross compiler for arm target
+###############################################################################
+validate_cross_compiler()
+{
+    if [ -z "${CC}" ]; then
+        echo -e "${BOLD}${RED}Error: CC is not set. A cross-compiler is required to build for arm target.${RESET}"
+        echo -e "${BOLD}${YELLOW}Please set CC to your cross-compiler (e.g. export CC=aarch64-linux-gnu-gcc)${RESET}"
+        echo -e "${BOLD}${YELLOW}Alternatively, consider using the provided Docker environment to build for arm.${RESET}"
+        exit 1
+    fi
+
+    # Extract just the compiler binary (first word) for PATH check
+    local CC_BIN
+    CC_BIN=$(echo "${CC}" | awk '{print $1}')
+    if ! command -v "${CC_BIN}" &>/dev/null; then
+        echo -e "${BOLD}${RED}Error: Cross-compiler '${CC_BIN}' not found in PATH.${RESET}"
+        echo -e "${BOLD}${YELLOW}Please install the cross-compiler or consider using the provided Docker environment to build for arm.${RESET}"
+        exit 1
+    fi
+
+    # Derive CXX from CC if not already set (replace gcc with g++)
+    if [ -z "${CXX}" ]; then
+        export CXX="${CC/gcc/g++}"
+        echo -e "${BOLD}${GREEN}Derived CXX=${CXX}${RESET}"
+    fi
+
+    # Extract flags from CC (everything after the binary)
+    local CC_FLAGS
+    CC_FLAGS=$(echo "${CC}" | cut -d' ' -f2-)
+
+    # Extract sysroot value from CC flags
+    local SYSROOT
+    SYSROOT=$(echo "${CC_FLAGS}" | sed -n 's/.*--sysroot=\([^ ]*\).*/\1/p')
+
+    # Set CFLAGS from CC flags if not already set
+    if [ -z "${CFLAGS}" ] && [ -n "${CC_FLAGS}" ]; then
+        export CFLAGS="${CC_FLAGS}"
+        echo -e "${BOLD}${GREEN}Derived CFLAGS=${CFLAGS}${RESET}"
+    fi
+
+    # Set CXXFLAGS from CC flags if not already set
+    if [ -z "${CXXFLAGS}" ] && [ -n "${CC_FLAGS}" ]; then
+        export CXXFLAGS="${CC_FLAGS}"
+        echo -e "${BOLD}${GREEN}Derived CXXFLAGS=${CXXFLAGS}${RESET}"
+    fi
+
+    # Set LDFLAGS with sysroot if not already set
+    if [ -z "${LDFLAGS}" ] && [ -n "${SYSROOT}" ]; then
+        export LDFLAGS="--sysroot=${SYSROOT}"
+        echo -e "${BOLD}${GREEN}Derived LDFLAGS=${LDFLAGS}${RESET}"
+    fi
+
+    # Set TARGET_LIB32_VERSION for 32-bit ARM (arm- prefix, not aarch64)
+    if [ -z "${TARGET_LIB32_VERSION}" ] && [[ "${CC_BIN}" == arm-* ]]; then
+        export TARGET_LIB32_VERSION=ON
+        echo -e "${BOLD}${GREEN}Derived TARGET_LIB32_VERSION=${TARGET_LIB32_VERSION}${RESET}"
+    fi
+}
+
+###############################################################################
 # Function to validate and set GST_LIB_PATH
 ###############################################################################
 validate_gst_lib_path()
@@ -685,6 +762,9 @@ install_test()
     # Remove gstreamer and egl libraries from the install path (not needed in final tar)
     rm -rf ${INSTALL_LIB_PATH}/libgst*  ${INSTALL_LIB_PATH}/libEGL* ${INSTALL_LIB_PATH}/libGL* ${INSTALL_LIB_PATH}/libMali* ${INSTALL_LIB_PATH}/libwayland* ${INSTALL_LIB_PATH}/libgbm* ${INSTALL_LIB_PATH}/libgio*
 
+    # Remove binder libraries from the install path (not needed in final tar)
+    rm -rf ${INSTALL_PATH}/libb* ${INSTALL_PATH}/libcutils* ${INSTALL_PATH}/liblog.so
+
     cp -r ${PROFILES_DIR} ${INSTALL_PATH}
 
     for component in "${HALIF_TEST_COMPONENTS[@]}"; do
@@ -769,6 +849,7 @@ dist_clean_test()
     rm -rf $RDK_HAL_DIR
     rm -rf ${UT_CORE_DIR}
     rm -rf $RDK_HAL_TEST_DIR
+    rm -rf $DEF_LINUX_BINDER
     rm -rf .repo
 }
 
@@ -810,6 +891,10 @@ elif [ "$1" == "dist_clean" ]; then
 elif [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     help
 elif [[ "$1" == [Tt]arget=* ]]; then
+    validate_repo_tool
+    if [ "${TARGET}" = "arm" ]; then
+        validate_cross_compiler
+    fi
     if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
         validate_gst_lib_path
     fi

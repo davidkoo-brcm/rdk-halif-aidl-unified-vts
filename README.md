@@ -11,7 +11,9 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
   - [Build Unified VTS](#build-unified-vts)
   - [Run Tests Manually](#run-tests-manually)
   - [Setting Python environment for L1, L2, L3 and L4 automation test cases](#setting-python-environment-for-l1-l2-l3-and-l4-automation-test-cases)
-  - [Running L1, L2, L3 and L4 Automation test cases](#running-l1-l2-l3-and-l4-automation-test-cases)
+  - [Running L1 and L2 automation test cases](#running-l1-and-l2-automation-test-cases)
+  - [Running L3 automation test cases](#running-l3-automation-test-cases)
+  - [Running L4 automation test cases](#running-l4-automation-test-cases)
   - [Test Components List](#components-list)
 
 ## Acronyms, Terms and Abbreviations

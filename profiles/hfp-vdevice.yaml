@@ -21,7 +21,7 @@
 #** ******************************************************************************
 
 AVModule:
-  description: "hfp profiles all av modules"
+  description: "hfp profiles for vdevice"
 
 include_0: profiles/hfp-audiodecoder_vdevice.yaml
 include_1: profiles/hfp-audiosink_vdevice.yaml
@@ -37,5 +37,8 @@ include_9: profiles/hfp-hdmioutput.yaml
 include_10: profiles/hfp-deepsleep-vcomponent.yaml
 include_11: profiles/hfp-deviceinfo-vcomponent.yaml
 include_12: profiles/hfp-boot-vcomponent.yaml
-# include_13: profiles/hfp-flash-vcomponent.yaml --- IGNORE ---
+include_13: profiles/hfp-flash-vcomponent.yaml
 include_14: profiles/hfp-indicator-vcomponent.yaml
+include_15: profiles/hfp-thermalsensor-vcomponent.yaml
+include_16: profiles/hfp-motionsensor-vcomponent.yaml
+include_17: profiles/hfp-compositeinput.yaml
