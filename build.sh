@@ -30,9 +30,9 @@ RESET='\033[0m'
 declare -r TOP=`dirname $(realpath $0)`
 UT_CORE_DEFAULT_VERSION="5.1.0"
 export UT_CORE_VERSION="${UT_CORE_VERSION:-${UT_CORE_DEFAULT_VERSION}}"
-RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION:-develop}"
+RDK_HALIF_AIDL_VERSION="${RDK_HALIF_AIDL_VERSION:-main}"
 RDK_HALIF_TEST_BASE_URL="https://github.com/rdkcentral/rdk-halif-aidl-test-"
-OUT_TAR_FILE=vts_unified.tar.gz.bz
+OUT_TAR_FILE=vts_unified.tar.gz
 
 declare -a HALIF_TEST_COMPONENTS=(
   avbuffer audiodecoder audiosink videodecoder videosink avclock planecontrol
@@ -762,9 +762,6 @@ install_test()
     # Remove gstreamer and egl libraries from the install path (not needed in final tar)
     rm -rf ${INSTALL_LIB_PATH}/libgst*  ${INSTALL_LIB_PATH}/libEGL* ${INSTALL_LIB_PATH}/libGL* ${INSTALL_LIB_PATH}/libMali* ${INSTALL_LIB_PATH}/libwayland* ${INSTALL_LIB_PATH}/libgbm* ${INSTALL_LIB_PATH}/libgio*
 
-    # Remove binder libraries from the install path (not needed in final tar)
-    rm -rf ${INSTALL_PATH}/libb* ${INSTALL_PATH}/libcutils* ${INSTALL_PATH}/liblog.so
-
     cp -r ${PROFILES_DIR} ${INSTALL_PATH}
 
     for component in "${HALIF_TEST_COMPONENTS[@]}"; do
@@ -849,7 +846,6 @@ dist_clean_test()
     rm -rf $RDK_HAL_DIR
     rm -rf ${UT_CORE_DIR}
     rm -rf $RDK_HAL_TEST_DIR
-    rm -rf $DEF_LINUX_BINDER
     rm -rf .repo
 }
 

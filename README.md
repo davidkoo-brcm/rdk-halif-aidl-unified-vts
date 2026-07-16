@@ -11,9 +11,7 @@ This document outlines the steps to build and run the Unified Vendor Testing Sui
   - [Build Unified VTS](#build-unified-vts)
   - [Run Tests Manually](#run-tests-manually)
   - [Setting Python environment for L1, L2, L3 and L4 automation test cases](#setting-python-environment-for-l1-l2-l3-and-l4-automation-test-cases)
-  - [Running L1 and L2 automation test cases](#running-l1-and-l2-automation-test-cases)
-  - [Running L3 automation test cases](#running-l3-automation-test-cases)
-  - [Running L4 automation test cases](#running-l4-automation-test-cases)
+  - [Running L1, L2, L3 and L4 Automation test cases](#running-l1-l2-l3-and-l4-automation-test-cases)
   - [Test Components List](#components-list)
 
 ## Acronyms, Terms and Abbreviations
@@ -170,7 +168,7 @@ The `build.sh` script automatically:
 - Builds the Linux Binder libraries for the selected target (x86 or ARM)
 - Builds all HAL modules from versioned snapshots in `versions_released.yaml`
 - Compiles the VTS test suite
-- Packages the binaries into `build/vts_unified.tar.gz.bz`
+- Packages the binaries into `build/vts_unified.tar.gz`
 
 To clean the build:
 
@@ -183,10 +181,10 @@ To clean the build:
 
 - In order to run the test cases manually on target device:
 
-Copy the tarball `build/vts_unified.tar.gz.bz` to the target device (e.g., using scp):
+Copy the tarball `build/vts_unified.tar.gz` to the target device (e.g., using scp):
 
 ```bash
-scp build/vts_unified.tar.gz.bz root@target-device:/home/root/
+scp build/vts_unified.tar.gz root@target-device:/home/root/
 
 ```
 
@@ -197,7 +195,7 @@ Log into the target device and extract the tarball:
 ```bash
 ssh root@target-device
 cd /home/root
-tar -zxf vts_unified.tar.gz.bz
+tar -zxf vts_unified.tar.gz
 cd bin
 ```
 
