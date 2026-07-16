@@ -121,8 +121,12 @@ unified_manifest()
 (
     set -euo pipefail
 
-    if [ -d "${RDK_HAL_TEST_DIR}" ] && [ -n "$(ls -A ${RDK_HAL_TEST_DIR} 2>/dev/null)" ]; then
+    # .repo/manifests is the same marker used below to confirm a sync actually completed
+    # (see the check after `repo sync`); a non-empty RDK_HAL_TEST_DIR alone doesn't prove
+    # that - a partially failed sync or a manually created directory would look identical.
+    if [ "${FORCE_REPO_SYNC:-0}" != "1" ] && [ -d .repo/manifests ] && [ -d "${RDK_HAL_TEST_DIR}" ] && [ -n "$(ls -A ${RDK_HAL_TEST_DIR} 2>/dev/null)" ]; then
         echo "Manifest already synced, skipping repo sync"
+        echo "  (set FORCE_REPO_SYNC=1 to re-sync, e.g. after switching branches or editing the manifest)"
         exit 0
     fi
 
@@ -140,9 +144,9 @@ unified_manifest()
         -b "${BRANCH}" \
         -m aidl_unified_manifest.xml \
         -u https://github.com/rdkcentral/rdk-halif-aidl-unified-vts.git \
-        --no-repo-verify -q
+        -q
 
-    repo sync -cd -j 16 --no-repo-verify -q
+    repo sync -cd -j 16 -q
 
     if [ ! -d .repo/manifests ]; then
         echo "ERROR: Expected .repo/manifests to exist after repo sync, but it was not found."
@@ -150,6 +154,9 @@ unified_manifest()
     fi
     if grep -r "http://" .repo/manifests; then
         echo "ERROR: Insecure repo URL detected!"
+        exit 1
+    elif [ $? -ne 1 ]; then
+        echo "ERROR: Failed to scan .repo/manifests for insecure repo URLs."
         exit 1
     fi
 )
@@ -241,12 +248,21 @@ build_arm_binder()
         }
     fi
 
+    if [ -z "${CC:-}" ] || [ -z "${CXX:-}" ]; then
+        echo -e "${BOLD}╔══════════════════════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}CC/CXX are not set. Source the ARM toolchain environment${RESET}   ${BOLD}*${RESET}"
+        echo -e "${BOLD}* ${RED}before running with Target=arm. Exiting.${RESET}                   ${BOLD}*${RESET}"
+        echo -e "${BOLD}╚══════════════════════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
+
     # CC/CXX embed flags; CMAKE_C_COMPILER needs just the binary, so flags go into
     # CMAKE_C_FLAGS_INIT via our own toolchain file instead.
-    local cc_bin cxx_bin cc_flags
+    local cc_bin cxx_bin cc_flags cxx_flags
     cc_bin=$(echo "${CC}" | awk '{print $1}')
     cxx_bin=$(echo "${CXX}" | awk '{print $1}')
-    cc_flags=$(echo "${CC}" | cut -d' ' -f2-)   # flags embedded in CC by OE
+    cc_flags=$(echo "${CC}" | cut -d' ' -f2-)    # flags embedded in CC by OE
+    cxx_flags=$(echo "${CXX}" | cut -d' ' -f2-)  # flags embedded in CXX by OE
 
     mkdir -p "${ARM_BINDER_BUILD}"
     local TOOLCHAIN_FILE="${ARM_BINDER_BUILD}/arm-cross.cmake"
@@ -256,7 +272,7 @@ set(CMAKE_SYSTEM_PROCESSOR arm)
 set(CMAKE_C_COMPILER   "${cc_bin}")
 set(CMAKE_CXX_COMPILER "${cxx_bin}")
 set(CMAKE_C_FLAGS_INIT   "${cc_flags} ${CFLAGS:-}")
-set(CMAKE_CXX_FLAGS_INIT "${cc_flags} ${CXXFLAGS:-}")
+set(CMAKE_CXX_FLAGS_INIT "${cxx_flags} ${CXXFLAGS:-}")
 set(CMAKE_EXE_LINKER_FLAGS_INIT    "${LDFLAGS:-}")
 set(CMAKE_SHARED_LINKER_FLAGS_INIT "${LDFLAGS:-}")
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
@@ -391,21 +407,28 @@ checkout_halif_repo()
         # Undo our build_binder.sh patch first so branch checkout isn't blocked by local edits
         git -C "$RDK_HAL_DIR" checkout -- build_binder.sh 2>/dev/null || true
 
-        local current_branch
-        current_branch=$(git -C "$RDK_HAL_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null)
-        if [ "${current_branch}" = "${RDK_HALIF_AIDL_VERSION}" ]; then
-            echo "rdk-halif-aidl already on '${RDK_HALIF_AIDL_VERSION}'"
+        git -C "$RDK_HAL_DIR" fetch origin "$RDK_HALIF_AIDL_VERSION" || {
+            echo "ERROR: Failed to fetch ${RDK_HALIF_AIDL_VERSION}."
+            exit 1
+        }
+
+        # Compare resolved commits, not ref names: rev-parse --abbrev-ref HEAD returns the
+        # literal string "HEAD" for a detached checkout (tags/commit SHAs), which would never
+        # match RDK_HALIF_AIDL_VERSION and would force a needless re-checkout - and halif-modules
+        # rebuild - on every run.
+        local current_commit target_commit
+        current_commit=$(git -C "$RDK_HAL_DIR" rev-parse HEAD 2>/dev/null)
+        target_commit=$(git -C "$RDK_HAL_DIR" rev-parse FETCH_HEAD 2>/dev/null)
+
+        if [ -n "${target_commit}" ] && [ "${current_commit}" = "${target_commit}" ]; then
+            echo "rdk-halif-aidl already on '${RDK_HALIF_AIDL_VERSION}' (${target_commit})"
         else
-            echo "rdk-halif-aidl is on '${current_branch}', switching to '${RDK_HALIF_AIDL_VERSION}'..."
-            git -C "$RDK_HAL_DIR" fetch origin "$RDK_HALIF_AIDL_VERSION" || {
-                echo "ERROR: Failed to fetch branch ${RDK_HALIF_AIDL_VERSION}."
-                exit 1
-            }
+            echo "rdk-halif-aidl is on '${current_commit}', switching to '${RDK_HALIF_AIDL_VERSION}' (${target_commit})..."
             git -C "$RDK_HAL_DIR" checkout "$RDK_HALIF_AIDL_VERSION" || {
                 echo "ERROR: Failed to checkout branch ${RDK_HALIF_AIDL_VERSION}."
                 exit 1
             }
-            # Branch changed — invalidate the halif modules stamp so they are rebuilt.
+            # Version changed — invalidate the halif modules stamp so they are rebuilt.
             rm -f "${RDK_HAL_DIR}/out/target/lib/halif/.halif_modules_ready"
         fi
     fi
@@ -445,8 +468,8 @@ setup_binder_sdk()
         local _OECORE_TARGET="${OECORE_TARGET_SYSROOT:-}"
         unset CC CXX CFLAGS CXXFLAGS LDFLAGS ARCH CMAKE_TOOLCHAIN_FILE
         unset OECORE_NATIVE_SYSROOT OECORE_TARGET_SYSROOT
-        export M4=/usr/bin/m4
         (
+            export M4=/usr/bin/m4
             cd "${RDK_HAL_DIR}"
             ./build_binder.sh
         ) || {
@@ -548,7 +571,20 @@ build_ut_core()
     pushd ${UT_CORE_DIR}
 
     git fetch -q -t origin
+    if [ $? -ne 0 ]; then
+        echo -e "${BOLD}╔══════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to fetch ut-core. Exiting.${RESET}            ${BOLD}*${RESET}"
+        echo -e "${BOLD}╚══════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
+
     git checkout $UT_CORE_VERSION
+    if [ $? -ne 0 ]; then
+        echo -e "${BOLD}╔══════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to checkout ut-core version '$UT_CORE_VERSION'. Exiting.${RESET}"
+        echo -e "${BOLD}╚══════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
 
     # Use the user-provided TARGET or default to 'linux'
     ./build.sh TARGET=$TARGET VARIANT=CPP
@@ -597,7 +633,21 @@ generate_avbufferhelper_skeleton()
     fi
 
     cp libavbufferhelper.so ${TOP_BUILD_DIR}/usr/lib/
+    if [ $? -ne 0 ]; then
+        echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to install libavbufferhelper.so. Exiting.${RESET}"
+        echo -e "${BOLD}╚══════════════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
+
     install -m 644 "${RDK_HAL_DIR}/avbuffer/current/avbufferhelper.h" "${BUILD_INSTALL_PREFIX}/include/"
+    if [ $? -ne 0 ]; then
+        echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}* ${RED}Failed to install avbufferhelper.h. Exiting.${RESET}"
+        echo -e "${BOLD}╚══════════════════════════════════════════════════════╝${RESET}"
+        exit 1
+    fi
+
     touch "${AVBUFFER_READY}"
     cd -
     rm -rf $AVBUFFER_HELPER_DIR/build
@@ -666,9 +716,11 @@ install_test()
     mkdir -p ${INSTALL_PATH}/assets/streams/reference
     rm -rf ${INSTALL_LIB_PATH}/libavbufferhelper.so
 
-    # Drop the generic binder runtime libs - device already provides these
-    rm -rf ${INSTALL_LIB_PATH}/libbinder.so ${INSTALL_LIB_PATH}/libutils.so ${INSTALL_LIB_PATH}/liblog.so \
-           ${INSTALL_LIB_PATH}/libcutils.so ${INSTALL_LIB_PATH}/libcutils_sockets.so ${INSTALL_LIB_PATH}/libbase.so
+    # Drop the generic binder runtime libs - device already provides these. The trailing "*"
+    # also catches SONAME-versioned variants (e.g. libbinder.so.1) that install_linux_binder()
+    # may have staged alongside the unversioned names.
+    rm -rf ${INSTALL_LIB_PATH}/libbinder.so* ${INSTALL_LIB_PATH}/libutils.so* ${INSTALL_LIB_PATH}/liblog.so* \
+           ${INSTALL_LIB_PATH}/libcutils.so* ${INSTALL_LIB_PATH}/libcutils_sockets.so* ${INSTALL_LIB_PATH}/libbase.so*
 
     cd ${TOP_BUILD_DIR}
     tar -zcf ${OUT_TAR_FILE} bin
@@ -732,6 +784,7 @@ help()
     echo -e "${BOLD}* ${GREEN}$0 clean${RESET}           ${YELLOW}- Cleans the build folder${RESET}                           ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 dist_clean${RESET}      ${YELLOW}- Deletes all build and checkout folders${RESET}            ${BOLD}*${RESET}"
     echo -e "${BOLD}* ${GREEN}$0 help/-h/--help${RESET}  ${YELLOW}- Prints this message${RESET}                               ${BOLD}*${RESET}"
+    echo -e "${BOLD}* ${GREEN}FORCE_REPO_SYNC=1${RESET}  ${YELLOW}- Re-syncs the manifest even if already checked out${RESET}       ${BOLD}*${RESET}"
     echo -e "${BOLD}╚════════════════════════════════════════════════════════════════════════════════╝${RESET}"
 }
 

@@ -259,6 +259,11 @@ check-halif-built:
 		echo "       Run: ./build.sh Target=$(TARGET)"; \
 		exit 1; \
 	}
+	@[ -n "$(HALIF_MODULE_LIBS)" ] || { \
+		echo "ERROR: HAL interface headers found but module libs are missing (softlinks not created)."; \
+		echo "       Run: ./build.sh Target=$(TARGET)"; \
+		exit 1; \
+	}
 
 $(TARGET_EXEC): check-halif-built
 	make -C $(UT_CORE_DIR) -j $(shell nproc) TARGET=$(TARGET) VARIANT=$(VARIANT)
