@@ -414,6 +414,45 @@ TOOLCHAIN_EOF
 }
 
 ###############################################################################
+# Look up a component's pinned version from versions_released.yaml (the same
+# manifest build_halif_modules()/create_halif_softlinks() build against, so
+# any header/lib pulled via this lookup stays version-matched to what was
+# actually built). Falls back to the manifest's `default:` value (normally
+# "current") if the component has no explicit entry, or to "current" outright
+# if the manifest itself is missing.
+###############################################################################
+get_halif_component_version()
+{
+    local component="$1"
+    local yaml="${RDK_HAL_DIR}/versions_released.yaml"
+    local default_version="current"
+    local version=""
+
+    if [ ! -f "$yaml" ]; then
+        echo "$default_version"
+        return
+    fi
+
+    local in_components=0
+    while IFS= read -r line; do
+        if [[ "$line" =~ ^default:[[:space:]]*([A-Za-z0-9._]+) ]]; then
+            default_version="${BASH_REMATCH[1]}"
+        elif [[ "$line" =~ ^components: ]]; then
+            in_components=1
+        elif [[ $in_components -eq 1 ]]; then
+            if [[ "$line" =~ ^[[:space:]]+${component}:[[:space:]]*([A-Za-z0-9._]+) ]]; then
+                version="${BASH_REMATCH[1]}"
+                break
+            elif [[ "$line" =~ ^[^[:space:]] && ! "$line" =~ ^# ]]; then
+                in_components=0
+            fi
+        fi
+    done < "$yaml"
+
+    echo "${version:-$default_version}"
+}
+
+###############################################################################
 # Rename each halif module lib to lib<module>-cpp_vts.so (filename only - SONAME
 # rewrite via patchelf dropped for now) and symlink the old versioned name to it,
 # so it can't collide with a vendor lib.
@@ -690,10 +729,14 @@ generate_avbufferhelper_skeleton()
         return
     fi
 
+    local AVBUFFER_VERSION
+    AVBUFFER_VERSION=$(get_halif_component_version "avbuffer")
+    echo "Using avbuffer interface version: ${AVBUFFER_VERSION}"
+
     mkdir -p $AVBUFFER_HELPER_DIR/build
     cd $AVBUFFER_HELPER_DIR/build
 
-    cmake ..
+    cmake -DAVBUFFER_VERSION="${AVBUFFER_VERSION}" ..
     if [ $? -ne 0 ]; then
         echo -e "${BOLD}╔═══════════════════════════════════════════════════╗${RESET}"
         echo -e "${BOLD}* ${RED}Failed to generate av buffer skeleton. Exiting.${RESET}"
@@ -717,7 +760,7 @@ generate_avbufferhelper_skeleton()
         exit 1
     fi
 
-    install -m 644 "${RDK_HAL_DIR}/avbuffer/current/avbufferhelper.h" "${BUILD_INSTALL_PREFIX}/include/"
+    install -m 644 "${RDK_HAL_DIR}/avbuffer/${AVBUFFER_VERSION}/avbufferhelper.h" "${BUILD_INSTALL_PREFIX}/include/"
     if [ $? -ne 0 ]; then
         echo -e "${BOLD}╔══════════════════════════════════════════════════════╗${RESET}"
         echo -e "${BOLD}* ${RED}Failed to install avbufferhelper.h. Exiting.${RESET}"
@@ -780,6 +823,15 @@ install_test()
     done
     if [ -d "${L4_TEST_DIR}/av_test_configurations" ]; then
         cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/
+    fi
+
+    # Consolidated mock-only config for videodecoder lives under mockservice/config/
+    # (not videodecoder_test_configuration/, since it's mock-specific, not shared with
+    # real-device testing). Install it alongside the real config so the relative path
+    # getVideoDecoderTestConfigPath() builds still resolves at runtime.
+    if [ -f "${RDK_HAL_TEST_DIR}/videodecoder/mockservice/config/L3_stream_mock.yaml" ]; then
+        mkdir -p ${INSTALL_PATH}/videodecoder_test_configuration
+        cp -f ${RDK_HAL_TEST_DIR}/videodecoder/mockservice/config/L3_stream_mock.yaml ${INSTALL_PATH}/videodecoder_test_configuration/
     fi
 
     # Install halif module libs from the snapshot build
