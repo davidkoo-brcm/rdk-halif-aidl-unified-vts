@@ -58,6 +58,7 @@ VTS:
           - flush_neg
           - signalDiscontinuity_pos
           - signalDiscontinuity_neg
+          - signalEOS_neg
           - parseCodecSpecificData_pos
           - parseCodecSpecificData_neg
           - setProperty_pos
@@ -72,6 +73,7 @@ VTS:
           - SetandGetProperties_multipleInstance
           - StateTransitions
           - StateTransitions_mutipleInstance
+          - SignalEndOfStreamLifecycle
       2:
         name: "VTS_L1_AudioSink"
         tests:
@@ -184,20 +186,11 @@ VTS:
           - flush_neg
           - signalDiscontinuity_pos
           - signalDiscontinuity_neg
+          - signalEOS_neg
           - parseCodecSpecificData_pos
           - parseCodecSpecificData_neg
-          - setStreamResolution_pos
-          - setStreamResolution_neg
-          - setFrameRate_pos
-          - setFrameRate_neg
-          - setColorimetry_pos
-          - setColorimetry_neg
-          - setMasteringDisplayInfo_pos
-          - setMasteringDisplayInfo_neg
-          - setContentLightLevel_pos
-          - setContentLightLevel_neg
-          - setDolbyVisionLayerFlags_pos
-          - setDolbyVisionLayerFlags_neg
+          - setStreamConfig_pos
+          - setStreamConfig_neg
       6:
         name: "VTS_L2_VideoDecoder"
         tests:
@@ -205,6 +198,7 @@ VTS:
           - TestGetAndSetProperties_multipleInstance
           - TestDecoderStateTransitions
           - TestDecoderStateTransitions_multipleInstance
+          - TestSignalEndOfStreamStateContract
       7:
         name: "VTS_L1_VideoSink"
         tests:
