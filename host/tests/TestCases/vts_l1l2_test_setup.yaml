@@ -501,9 +501,9 @@ VTS:
             - SetandGetEDID
             - MaxConcurrentPorts
       26:
-        name: "VTS_L1_FLASH"
+        name: "VTS_L1_FIRMWAREUPDATE"
         tests:
-          - flashImageFromFile_invalid_params
+          - updateFirmwareFromFile_neg
       27:
         name: "VTS_L1_MOTIONSENSOR"
         tests:

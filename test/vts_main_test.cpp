@@ -116,7 +116,7 @@ int main(int argc, char **argv)
     UT_LOG("\t VTS UNIFIED Deep Sleep HALIF Test Version: \033[0;32m%s\033[0m",DEEPSLEEP_VERSION);
     UT_LOG("\t VTS UNIFIED Device Info HALIF Test Version: \033[0;32m%s\033[0m",DEVICEINFO_VERSION);
     UT_LOG("\t VTS UNIFIED Boot HALIF Test Version: \033[0;32m%s\033[0m",BOOT_VERSION);
-    UT_LOG("\t VTS UNIFIED Flash HALIF Test Version: \033[0;32m%s\033[0m",FLASH_VERSION);
+    UT_LOG("\t VTS UNIFIED Firmware Update HALIF Test Version: \033[0;32m%s\033[0m",FLASH_VERSION);
     UT_LOG("\t VTS UNIFIED Thermal Sensor HALIF Test Version: \033[0;32m%s\033[0m",THERMALSENSOR_VERSION);
     UT_LOG("\t VTS UNIFIED Motion Sensor HALIF Test Version: \033[0;32m%s\033[0m",MOTIONSENSOR_VERSION);
     UT_LOG("\t VTS UNIFIED Indicator HALIF Test Version: \033[0;32m%s\033[0m",INDICATOR_VERSION);

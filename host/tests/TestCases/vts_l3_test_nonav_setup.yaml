@@ -22,11 +22,11 @@
 nonAvL3Tests:
   description: "Config-driven Non-AV L3 python tests"
   tests:
-    - module: "flash"
+    - module: "firmwareupdate"
       tests:
-        - "VTS_FLASH_L3_ConcurrentImage"
-        - "VTS_FLASH_L3_TestAllImages"
-        - "VTS_FLASH_L3_ValidateAllErrorCodes"
+        - "VTS_FIRMWAREUPDATE_L3_ConcurrentImage"
+        - "VTS_FIRMWAREUPDATE_L3_TestAllImages"
+        - "VTS_FIRMWAREUPDATE_L3_ValidateAllErrorCodes"
 
     - module: "motionsensor"
       tests:
