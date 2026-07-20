@@ -646,7 +646,7 @@ bool VTSGStreamerPlayer::switchAudioTrack(uint32_t trackIndex)
 
     if(trackIndex >= mNumAudioTracks)
     {
-	UT_LOG_ERROR("Invalid audio track %u", trackIndex);
+	UT_LOG_INFO("Audio tracks : %u", trackIndex);
     }
 
     gint currentTrack = -1;
