@@ -27,7 +27,7 @@ VTS:
   num_of_instances: 1
   test:
     artifacts:
-      - "../../../build/vts_unified.tar.gz.bz"
+      - "../../../build/vts_unified.tar.gz"
     execute: "./run.sh"
     type: UT-C # C (UT-C Cunit) / C++ (UT-G (g++ ut-core gtest backend))
     suites:
