@@ -114,6 +114,7 @@ public:
 	
 	/* Switch audio codec on the fly (true = AAC, false = EAC3) */
     virtual bool switchAudioCodec(bool isAudioAAC) = 0;
+    virtual bool switchAudioTrack(uint32_t trackIndex) = 0;
 
     /* Factory method to create a player of the given type */
     static std::unique_ptr<VTSPlayer> create(const std::string &type);

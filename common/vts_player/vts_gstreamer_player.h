@@ -101,6 +101,7 @@ public:
 	
 	// Switch audio codec on the fly (true = AAC, false = EAC3)
     bool switchAudioCodec(bool isAudioAAC) override;
+    bool switchAudioTrack(uint32_t trackIndex) override;
 
 private:
     // Helper methods for dynamic replugging
@@ -125,6 +126,8 @@ private:
     GstElement *mCurAudioSink;
     bool isAudioAAC_current;
     bool linkTypefindParser;
+    guint mNumAudioTracks = 0;
+    guint mCurrentAudioTrack = 0;
 };
 
 void gstGlobalInitWrapper();

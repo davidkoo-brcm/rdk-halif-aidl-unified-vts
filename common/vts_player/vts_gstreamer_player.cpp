@@ -540,49 +540,66 @@ void VTSGStreamerPlayer::deepElementAddedCallback(GstBin *bin, GstBin *sub_bin, 
     
     if (parent == GST_OBJECT_CAST(sub_bin)) {
         gchar *elementName = gst_element_get_name(element);
+	gchar *subBinName = gst_element_get_name(GST_ELEMENT(sub_bin));
         if (elementName) {
             if (g_strrstr(elementName, "typefind")) {
                 player->curAudioTypefind = element;
                 g_signal_connect(G_OBJECT(element), "have-type", G_CALLBACK(typeFoundCallback), player);
             }
-            g_free(elementName);
-        }
 
-        if (GST_OBJECT_CAST(sub_bin) == GST_OBJECT_CAST(player->curAudioDecodeBin)) {
-            gchar *elementName = gst_element_get_name(element);
-            if (elementName) {
-                if (g_strrstr(elementName, "parse")) {
-                    player->curAudioParse = element;
-                }
-                else if (g_strrstr(elementName, "dec")) {
-                    player->curAudioDecoder = element;
-                }
-                g_free(elementName);
+	    if (subBinName && g_strrstr(subBinName,"decodebin")) {
+		player->curAudioDecodeBin = GST_ELEMENT(sub_bin);
+
+		if (g_strrstr(elementName, "parse"))
+		{
+		    player->curAudioParse = element;
+		    UT_LOG_INFO("[DeepAdded] Found Audio Parser: %s",
+				elementName);
+		}
+	        else if (g_strrstr(elementName, "dec"))
+		{
+		    player->curAudioDecoder = element;
+	            UT_LOG_INFO("[DeepAdded] Found Audio Decoder: %s",
+			        elementName);
+	        }
             }
-        }
-        else {
-            gchar *elementName = gst_element_get_name(element);
-            if (elementName) {
-                if (g_strrstr(elementName, "audiosink")) {
-                    player->mCurAudioSink = element;
-                    GstElement *audioSinkParent = (GstElement *)gst_element_get_parent(element);
-                    if (audioSinkParent) {
-                        gchar *audioSinkParentName = gst_element_get_name(audioSinkParent);
-                        if (audioSinkParentName && g_strrstr(audioSinkParentName, "bin")) {
-                            player->curAudioPlaysinkBin = audioSinkParent;
-                        }
-                        g_free(audioSinkParentName);
-                        gst_object_unref(audioSinkParent);
-                    }
-                }
-                g_free(elementName);
-            }
-        }
+            else
+	    {
+	        if (g_strrstr(elementName, "audiosink"))
+	        {
+	            player->mCurAudioSink = element;
+                    
+                    GstElement *audioSinkParent = 
+	                GST_ELEMENT(gst_element_get_parent(element));
+                    if (audioSinkParent)
+	            {
+			gchar *audioSinkParentName = 
+		            gst_element_get_name(audioSinkParent);
+
+			if (audioSinkParentName &&
+			    g_strrstr(audioSinkParentName, "bin"))
+			{
+			    player->curAudioPlaysinkBin = audioSinkParent;
+			    UT_LOG_INFO("[DeepAdded] Found Audio Playsink Bin");
+			}
+
+			g_free(audioSinkParentName);
+			gst_object_unref(audioSinkParent);
+		    }
+		}
+	    }
+
+	    g_free(elementName);
+	}
+
+	if (subBinName)
+	    g_free(subBinName);
     }
-    if (parent) {
-        gst_object_unref(parent);
-    }
+
+    if (parent)
+	gst_object_unref(parent);
 }
+
 
 void VTSGStreamerPlayer::typeFoundCallback(GstElement *typefind, guint probability, const GstCaps *caps, gpointer user_data)
 {
@@ -620,6 +637,41 @@ void VTSGStreamerPlayer::typeFoundCallback(GstElement *typefind, guint probabili
         }
         g_free(caps_str);
     }
+}
+
+bool VTSGStreamerPlayer::switchAudioTrack(uint32_t trackIndex)
+{
+    if(!playbin)
+        return false;
+
+    if(trackIndex >= mNumAudioTracks)
+    {
+	UT_LOG_ERROR("Invalid audio track %u", trackIndex);
+    }
+
+    gint currentTrack = -1;
+
+    g_object_get(playbin,
+		 "current-audio",
+		 &currentTrack,
+		 nullptr);
+    UT_LOG_INFO("Current audio track = %d",currentTrack);
+
+    if ((guint)currentTrack == trackIndex)
+    {
+	UT_LOG_INFO("Already on requested track.");
+	return true;
+    }
+
+    g_object_set(playbin,
+		 "current-audio",
+		 trackIndex,
+		 nullptr);
+    mCurrentAudioTrack = trackIndex;
+
+    UT_LOG_INFO("Switched to audio track %u", trackIndex);
+
+    return true;
 }
 
 /** @} */ // End of AV_MODULE_HALTEST_GST_PLAYER
