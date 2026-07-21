@@ -777,6 +777,9 @@ install_test()
         if [ -d "${RDK_HAL_TEST_DIR}/${component}/profiles" ]; then
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/profiles ${INSTALL_PATH}/
         fi
+        if [ -d "${RDK_HAL_TEST_DIR}/${component}/test_configuration" ]; then
+            cp -rf ${RDK_HAL_TEST_DIR}/${component}/test_configuration ${INSTALL_PATH}/
+        fi
     done
     if [ -d "${L4_TEST_DIR}/av_test_configurations" ]; then
         cp -rf ${L4_TEST_DIR}/av_test_configurations ${INSTALL_PATH}/
