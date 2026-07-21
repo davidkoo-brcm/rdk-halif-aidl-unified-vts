@@ -635,6 +635,7 @@ build_halif_modules()
 
     if [ -f "${HALIF_READY}" ]; then
         echo "HAL module .so files already present, skipping build_modules.sh..."
+        create_halif_softlinks
         return
     fi
 
@@ -657,8 +658,8 @@ build_halif_modules()
         echo -e "${BOLD}╚══════════════════════════════════════════════════════════════════════╝${RESET}"
         exit 1
     }
-    touch "${HALIF_READY}"
     create_halif_softlinks
+    touch "${HALIF_READY}"
 }
 
 ###############################################################################
