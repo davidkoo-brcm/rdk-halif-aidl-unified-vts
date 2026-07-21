@@ -493,8 +493,8 @@ create_halif_softlinks()
                     ln -sf "${vts}" "${LIB_DIR}/${versioned}"
                     echo "  ${versioned} -> ${vts} (local lib renamed)"
                 elif [ -e "${SRC_LIB_DIR}/${versioned}" ]; then
-                    # Current layout: create compatibility links in halif/ that point to source libs.
-                    ln -sf "../rdk-halif-aidl/${versioned}" "${LIB_DIR}/${versioned}"
+                    # Current layout: copy real lib as versioned name, symlink vts name to it.
+                    cp -f "${SRC_LIB_DIR}/${versioned}" "${LIB_DIR}/${versioned}"
                     ln -sf "${versioned}" "${LIB_DIR}/${vts}"
                     echo "  ${versioned} -> ${vts} (linked from rdk-halif-aidl/)"
                 fi
