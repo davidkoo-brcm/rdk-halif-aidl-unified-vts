@@ -85,7 +85,7 @@
 #include "vts_deepsleep_init.h"
 #include "vts_deviceinfo_init.h"
 #include "vts_boot_init.h"
-#include "vts_flash_init.h"
+#include "vts_firmwareupdate_init.h"
 #include "vts_thermalsensor_init.h"
 #include "vts_motionsensor_init.h"
 #include "vts_indicator_init.h"
@@ -224,10 +224,10 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
-    result = VTS_FLASH_init();
+    result = VTS_FIRMWAREUPDATE_init();
     if (result != UT_STATUS_OK)
     {
-        UT_LOG_ERROR("VTS_FLASH_init() failed!");
+        UT_LOG_ERROR("VTS_FIRMWAREUPDATE_init() failed!");
         result = UT_STATUS_FAILURE;
     }
 
@@ -281,7 +281,7 @@ int main(int argc, char **argv)
     VTS_DEEPSLEEP_destroy();
     VTS_DEVICEINFO_destroy();
     VTS_BOOT_destroy();
-    VTS_FLASH_destroy();
+    VTS_FIRMWAREUPDATE_destroy();
     VTS_THERMALSENSOR_destroy();
     VTS_MOTIONSENSOR_destroy();
     VTS_INDICATOR_destroy();
