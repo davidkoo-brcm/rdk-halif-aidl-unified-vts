@@ -207,7 +207,7 @@ SRC_DIRS += $(ROOT_DIR)/test
 # HAL interface libs/headers come from rdk-halif-aidl's versioned build; halif_generated.mk
 # (written by build.sh) pins the exact paths since wildcard/find would return empty on a clean tree.
 HALIF_OUT_DIR        := $(ROOT_DIR)/rdk-halif-aidl/out
-HALIF_LIB_DIR        := $(HALIF_OUT_DIR)/target/lib/halif
+HALIF_LIB_DIR        := $(HALIF_OUT_DIR)/target/lib/rdk-halif-aidl
 
 -include $(HALIF_OUT_DIR)/halif_generated.mk
 
