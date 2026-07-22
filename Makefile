@@ -41,10 +41,6 @@ BOOT_TEST_DIR := $(VTS_TEST_DIR)/boot
 FLASH_TEST_DIR := $(VTS_TEST_DIR)/flash
 INDICATOR_TEST_DIR := $(VTS_TEST_DIR)/indicator
 AUDIOMIXER_TEST_DIR := $(VTS_TEST_DIR)/audiomixer
-CDM_TEST_DIR := $(VTS_TEST_DIR)/cdm
-BROADCAST_TEST_DIR := $(VTS_TEST_DIR)/broadcast
-PANEL_TEST_DIR := $(VTS_TEST_DIR)/panel
-FARFIELDVOICE_TEST_DIR := $(VTS_TEST_DIR)/farfieldvoice
 THERMALSENSOR_TEST_DIR := $(VTS_TEST_DIR)/thermalsensor
 MOTIONSENSOR_TEST_DIR := $(VTS_TEST_DIR)/motionsensor
 COMPOSITEINPUT_TEST_DIR := $(VTS_TEST_DIR)/compositeinput
@@ -88,10 +84,6 @@ BOOT_VERSION := $(shell cd $(BOOT_TEST_DIR) && git describe --tags --always 2>/d
 FLASH_VERSION := $(shell cd $(FLASH_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 INDICATOR_VERSION := $(shell cd $(INDICATOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 AUDIOMIXER_VERSION := $(shell cd $(AUDIOMIXER_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
-CDM_VERSION := $(shell cd $(CDM_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
-BROADCAST_VERSION := $(shell cd $(BROADCAST_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
-PANEL_VERSION := $(shell cd $(PANEL_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
-FARFIELDVOICE_VERSION := $(shell cd $(FARFIELDVOICE_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 THERMALSENSOR_VERSION := $(shell cd $(THERMALSENSOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 MOTIONSENSOR_VERSION := $(shell cd $(MOTIONSENSOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 L4_TESTS_VERSION := $(shell cd $(L4_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
@@ -115,10 +107,6 @@ $(info BOOT_VERSION: $(BOOT_VERSION))
 $(info FLASH_VERSION: $(FLASH_VERSION))
 $(info INDICATOR_VERSION: $(INDICATOR_VERSION))
 $(info AUDIOMIXER_VERSION: $(AUDIOMIXER_VERSION))
-$(info CDM_VERSION: $(CDM_VERSION))
-$(info BROADCAST_VERSION: $(BROADCAST_VERSION))
-$(info PANEL_VERSION: $(PANEL_VERSION))
-$(info FARFIELDVOICE_VERSION: $(FARFIELDVOICE_VERSION))
 $(info THERMALSENSOR_VERSION: $(THERMALSENSOR_VERSION))
 $(info MOTIONSENSOR_VERSION: $(MOTIONSENSOR_VERSION))
 $(info L4_TESTS_VERSION: $(L4_TESTS_VERSION))
@@ -151,10 +139,6 @@ CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DFLASH_VERSION=\"$(FLASH_VERSION)\" \
             -DINDICATOR_VERSION=\"$(INDICATOR_VERSION)\" \
             -DAUDIOMIXER_VERSION=\"$(AUDIOMIXER_VERSION)\" \
-            -DCDM_VERSION=\"$(CDM_VERSION)\" \
-            -DBROADCAST_VERSION=\"$(BROADCAST_VERSION)\" \
-            -DPANEL_VERSION=\"$(PANEL_VERSION)\" \
-            -DFARFIELDVOICE_VERSION=\"$(FARFIELDVOICE_VERSION)\" \
             -DTHERMALSENSOR_VERSION=\"$(THERMALSENSOR_VERSION)\" \
             -DMOTIONSENSOR_VERSION=\"$(MOTIONSENSOR_VERSION)\" \
             -DL4_TESTS_VERSION=\"$(L4_TESTS_VERSION)\"
@@ -191,10 +175,6 @@ SRC_DIRS += $(BOOT_TEST_DIR)/src
 SRC_DIRS += $(FLASH_TEST_DIR)/src
 SRC_DIRS += $(INDICATOR_TEST_DIR)/src
 SRC_DIRS += $(AUDIOMIXER_TEST_DIR)/src
-SRC_DIRS += $(CDM_TEST_DIR)/src
-SRC_DIRS += $(BROADCAST_TEST_DIR)/src
-SRC_DIRS += $(PANEL_TEST_DIR)/src
-SRC_DIRS += $(FARFIELDVOICE_TEST_DIR)/src
 SRC_DIRS += $(THERMALSENSOR_TEST_DIR)/src
 SRC_DIRS += $(MOTIONSENSOR_TEST_DIR)/src
 ifeq ($(ENABLE_AV_L4_TEST),1)
