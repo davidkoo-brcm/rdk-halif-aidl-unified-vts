@@ -18,14 +18,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Attach to a real branch
-        # actions/checkout leaves detached HEAD, which breaks build.sh's branch detection
-        run: git checkout -B "${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
-
       - name: Configure git safe.directory
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global --add safe.directory /__w/rdk-halif-aidl-unified-vts/rdk-halif-aidl-unified-vts
+
+      - name: Attach to a real branch
+        # actions/checkout leaves detached HEAD, which breaks build.sh's branch detection
+        run: git checkout -B "${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
 
       - name: Configure GitHub auth for repo tool
         env:
