@@ -954,7 +954,10 @@ elif [[ "$1" == [Tt]arget=* ]]; then
     if [ "${ENABLE_PLANE_CONTROL_TEST}" = "1" ]; then
         validate_egl_lib_path
     fi
-    unified_manifest
+    unified_manifest || {
+        echo -e "${BOLD}${RED}Failed to sync unified manifest. Exiting.${RESET}"
+        exit 1
+    }
     generate_hal_interfaces
     install_linux_binder
     if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
