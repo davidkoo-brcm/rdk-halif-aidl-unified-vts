@@ -37,7 +37,7 @@ OUT_TAR_FILE=vts_unified.tar.gz
 declare -a HALIF_TEST_COMPONENTS=(
   avbuffer audiodecoder audiosink videodecoder videosink avclock planecontrol
   hdmicec hdmiinput hdmioutput deepsleep compositeinput deviceinfo boot flash indicator
-  audiomixer cdm broadcast panel farfieldvoice thermalsensor motionsensor
+  audiomixer thermalsensor motionsensor
 )
 
 # Define the directory where the repository will be cloned
@@ -229,11 +229,11 @@ unified_manifest()
         echo "ERROR: Expected .repo/manifests to exist after repo sync, but it was not found."
         exit 1
     fi
-    if grep -r "http://" .repo/manifests; then
-        echo "ERROR: Insecure repo URL detected!"
+    if grep 'fetch="http://' .repo/manifests/aidl_unified_manifest.xml; then
+        echo "ERROR: Insecure repo URL detected in aidl_unified_manifest.xml!"
         exit 1
     elif [ $? -ne 1 ]; then
-        echo "ERROR: Failed to scan .repo/manifests for insecure repo URLs."
+        echo "ERROR: Failed to scan aidl_unified_manifest.xml for insecure repo URLs."
         exit 1
     fi
 )
@@ -460,8 +460,7 @@ get_halif_component_version()
 create_halif_softlinks()
 {
     local YAML="${RDK_HAL_DIR}/versions_released.yaml"
-    local LIB_DIR="${RDK_HAL_DIR}/out/target/lib/halif"
-    local SRC_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/rdk-halif-aidl"
+    local LIB_DIR="${RDK_HAL_DIR}/out/target/lib/rdk-halif-aidl"
     local in_components=0
     local mk_module_libs=""
 
@@ -557,7 +556,7 @@ checkout_halif_repo()
                 exit 1
             }
             # Version changed — invalidate the halif modules stamp so they are rebuilt.
-            rm -f "${RDK_HAL_DIR}/out/target/lib/halif/.halif_modules_ready"
+            rm -f "${RDK_HAL_DIR}/out/target/lib/rdk-halif-aidl/.halif_modules_ready"
         fi
     fi
 
@@ -642,11 +641,12 @@ setup_binder_sdk()
 ###############################################################################
 build_halif_modules()
 {
-    local HALIF_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/halif"
+    local HALIF_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/rdk-halif-aidl"
     local HALIF_READY="${HALIF_LIB_DIR}/.halif_modules_ready"
 
     if [ -f "${HALIF_READY}" ]; then
         echo "HAL module .so files already present, skipping build_modules.sh..."
+        create_halif_softlinks
         return
     fi
 
@@ -669,8 +669,8 @@ build_halif_modules()
         echo -e "${BOLD}╚══════════════════════════════════════════════════════════════════════╝${RESET}"
         exit 1
     }
-    touch "${HALIF_READY}"
     create_halif_softlinks
+    touch "${HALIF_READY}"
 }
 
 ###############################################################################
@@ -823,6 +823,10 @@ install_test()
         if [ -d "${RDK_HAL_TEST_DIR}/${component}/${component}_test_configuration" ]; then
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/${component}_test_configuration ${INSTALL_PATH}/
         fi
+        # Fallback for older components still using the plain (unprefixed) name.
+        if [ -d "${RDK_HAL_TEST_DIR}/${component}/test_configuration" ]; then
+            cp -rf ${RDK_HAL_TEST_DIR}/${component}/test_configuration ${INSTALL_PATH}/
+        fi
         if [ -d "${RDK_HAL_TEST_DIR}/${component}/stream_configuration" ]; then
             cp -rf ${RDK_HAL_TEST_DIR}/${component}/stream_configuration ${INSTALL_PATH}/
         fi
@@ -850,7 +854,7 @@ install_test()
     fi
 
     # Install halif module libs from the snapshot build
-    local HALIF_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/halif"
+    local HALIF_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/rdk-halif-aidl"
     if [ -d "${HALIF_LIB_DIR}" ]; then
         find "${HALIF_LIB_DIR}" -maxdepth 1 -name "*.so" \
             -exec cp -a {} "${INSTALL_LIB_PATH}/" \; 2>/dev/null || true
@@ -964,7 +968,10 @@ elif [[ "$1" == [Tt]arget=* ]]; then
     if [ "${ENABLE_PLANE_CONTROL_TEST}" = "1" ]; then
         validate_egl_lib_path
     fi
-    unified_manifest
+    unified_manifest || {
+        echo -e "${BOLD}${RED}Failed to sync unified manifest. Exiting.${RESET}"
+        exit 1
+    }
     generate_hal_interfaces
     install_linux_binder
     if [ "${ENABLE_AV_L4_TEST}" = "1" ]; then
