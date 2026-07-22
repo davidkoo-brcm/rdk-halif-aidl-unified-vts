@@ -134,6 +134,10 @@ source /opt/toolchains/rdk-glibc-x86_64-arm-toolchain/environment-setup-armv7vet
 # Override UT Core version (default: 5.1.0)
 export UT_CORE_VERSION=5.1.0
 
+# Optional. RDK HALIF AIDL version to build against (default: main). Set this
+# only if you need a released version instead of the latest main branch.
+export RDK_HALIF_AIDL_VERSION=0.22.0
+
 # Override UT log level (default: WARNING)
 export UT_LOG_LEVEL=3
 
