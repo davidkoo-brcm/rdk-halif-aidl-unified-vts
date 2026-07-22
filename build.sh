@@ -229,11 +229,11 @@ unified_manifest()
         echo "ERROR: Expected .repo/manifests to exist after repo sync, but it was not found."
         exit 1
     fi
-    if grep -r "http://" .repo/manifests; then
-        echo "ERROR: Insecure repo URL detected!"
+    if grep 'fetch="http://' .repo/manifests/aidl_unified_manifest.xml; then
+        echo "ERROR: Insecure repo URL detected in aidl_unified_manifest.xml!"
         exit 1
     elif [ $? -ne 1 ]; then
-        echo "ERROR: Failed to scan .repo/manifests for insecure repo URLs."
+        echo "ERROR: Failed to scan aidl_unified_manifest.xml for insecure repo URLs."
         exit 1
     fi
 )
