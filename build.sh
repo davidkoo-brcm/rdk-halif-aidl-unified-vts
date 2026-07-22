@@ -460,7 +460,7 @@ get_halif_component_version()
 create_halif_softlinks()
 {
     local YAML="${RDK_HAL_DIR}/versions_released.yaml"
-    local LIB_DIR="${RDK_HAL_DIR}/out/target/lib/halif"
+    local LIB_DIR="${RDK_HAL_DIR}/out/target/lib/rdk-halif-aidl"
     local in_components=0
 
     if [ ! -f "$YAML" ]; then
@@ -545,7 +545,7 @@ checkout_halif_repo()
                 exit 1
             }
             # Version changed — invalidate the halif modules stamp so they are rebuilt.
-            rm -f "${RDK_HAL_DIR}/out/target/lib/halif/.halif_modules_ready"
+            rm -f "${RDK_HAL_DIR}/out/target/lib/rdk-halif-aidl/.halif_modules_ready"
         fi
     fi
 
@@ -630,7 +630,7 @@ setup_binder_sdk()
 ###############################################################################
 build_halif_modules()
 {
-    local HALIF_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/halif"
+    local HALIF_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/rdk-halif-aidl"
     local HALIF_READY="${HALIF_LIB_DIR}/.halif_modules_ready"
 
     if [ -f "${HALIF_READY}" ]; then
@@ -840,7 +840,7 @@ install_test()
     fi
 
     # Install halif module libs from the snapshot build
-    local HALIF_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/halif"
+    local HALIF_LIB_DIR="${RDK_HAL_DIR}/out/target/lib/rdk-halif-aidl"
     if [ -d "${HALIF_LIB_DIR}" ]; then
         find "${HALIF_LIB_DIR}" -maxdepth 1 -name "*.so" \
             -exec cp -a {} "${INSTALL_LIB_PATH}/" \; 2>/dev/null || true
