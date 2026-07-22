@@ -75,21 +75,9 @@
            path="vts_hal_test_components/audiomixer"
 	   revision="feature/gh2_testcases_audiomixer" />
 
-   <project name="rdk-halif-aidl-test-cdm"
-           path="vts_hal_test_components/cdm"
-           revision="main" />
-
-   <project name="rdk-halif-aidl-test-broadcast"
-           path="vts_hal_test_components/broadcast"
-           revision="main" />
-
    <project name="rdk-halif-aidl-test-compositeinput"
            path="vts_hal_test_components/compositeinput"
            revision="develop" />
-
-   <project name="rdk-halif-aidl-test-panel"
-           path="vts_hal_test_components/panel"
-           revision="main" />
 
    <project name="rdk-halif-aidl-test-motion-sensor"
            path="vts_hal_test_components/motionsensor"
@@ -97,10 +85,6 @@
 
    <project name="rdk-halif-aidl-test-thermal-sensor"
            path="vts_hal_test_components/thermalsensor"
-           revision="develop" />
-
-   <project name="rdk-halif-aidl-test-farfieldvoice"
-           path="vts_hal_test_components/farfieldvoice"
            revision="develop" />
 
 </manifest>
