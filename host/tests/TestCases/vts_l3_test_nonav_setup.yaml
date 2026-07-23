@@ -24,9 +24,9 @@ nonAvL3Tests:
   tests:
     - module: "flash"
       tests:
-        - "VTS_FLASH_L3_ConcurrentImage"
-        - "VTS_FLASH_L3_TestAllImages"
-        - "VTS_FLASH_L3_ValidateAllErrorCodes"
+        - "VTS_FIRMWAREUPDATE_L3_ConcurrentImage"
+        - "VTS_FIRMWAREUPDATE_L3_TestAllImages"
+        - "VTS_FIRMWAREUPDATE_L3_ValidateAllErrorCodes"
 
     - module: "motionsensor"
       tests:
@@ -36,26 +36,20 @@ nonAvL3Tests:
 
     - module: "thermalsensor"
       tests:
-        - "VTS_THERMALSENSOR_L3_CriticalShutdownWithSuppression"
         - "VTS_THERMALSENSOR_L3_ThermalExceedRecoveryLifecycle"
+        - "VTS_THERMALSENSOR_L3_CriticalShutdownWithSuppression"
 
     - module: "hdmicec"
       tests:
         - "VTS_HDMICEC_L3_ReceiveMessage"
         - "VTS_HDMICEC_L3_SendMessage"
 
-    - module: "boot"
-      tests:
-        - "VTS_BOOT_L3_VerifyBootReasonExternalCause"
-        - "VTS_BOOT_L3_VerifyOverrideBootReason"
-        - "VTS_BOOT_L3_VerifyReboot"
-
     - module: "deepsleep"
       tests:
+        - "VTS_DEEPSLEEP_L3_NoWakeFromUnspecifiedOrUnsupportedTrigger"
         - "VTS_DEEPSLEEP_L3_WakeFromSupportedTrigger"
         - "VTS_DEEPSLEEP_L3_WakeFromPreconfiguredTrigger"
         - "VTS_DEEPSLEEP_L3_VerifyWakeWithMixedInputTriggerList"
-        - "VTS_DEEPSLEEP_L3_NoWakeFromUnspecifiedOrUnsupportedTrigger"
 
     - module: "hdmioutput"
       tests:
@@ -81,3 +75,9 @@ nonAvL3Tests:
       tests:
         - "VTS_INDICATOR_L3_SetStates"
         - "VTS_INDICATOR_L3_StressTest"
+
+    - module: "boot"
+      tests:
+        - "VTS_BOOT_L3_VerifyBootReasonExternalCause"
+        - "VTS_BOOT_L3_VerifyOverrideBootReason"
+        - "VTS_BOOT_L3_VerifyReboot"

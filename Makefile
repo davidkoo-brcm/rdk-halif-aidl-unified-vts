@@ -41,10 +41,6 @@ BOOT_TEST_DIR := $(VTS_TEST_DIR)/boot
 FLASH_TEST_DIR := $(VTS_TEST_DIR)/flash
 INDICATOR_TEST_DIR := $(VTS_TEST_DIR)/indicator
 AUDIOMIXER_TEST_DIR := $(VTS_TEST_DIR)/audiomixer
-CDM_TEST_DIR := $(VTS_TEST_DIR)/cdm
-BROADCAST_TEST_DIR := $(VTS_TEST_DIR)/broadcast
-PANEL_TEST_DIR := $(VTS_TEST_DIR)/panel
-FARFIELDVOICE_TEST_DIR := $(VTS_TEST_DIR)/farfieldvoice
 THERMALSENSOR_TEST_DIR := $(VTS_TEST_DIR)/thermalsensor
 MOTIONSENSOR_TEST_DIR := $(VTS_TEST_DIR)/motionsensor
 COMPOSITEINPUT_TEST_DIR := $(VTS_TEST_DIR)/compositeinput
@@ -88,10 +84,6 @@ BOOT_VERSION := $(shell cd $(BOOT_TEST_DIR) && git describe --tags --always 2>/d
 FLASH_VERSION := $(shell cd $(FLASH_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 INDICATOR_VERSION := $(shell cd $(INDICATOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 AUDIOMIXER_VERSION := $(shell cd $(AUDIOMIXER_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
-CDM_VERSION := $(shell cd $(CDM_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
-BROADCAST_VERSION := $(shell cd $(BROADCAST_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
-PANEL_VERSION := $(shell cd $(PANEL_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
-FARFIELDVOICE_VERSION := $(shell cd $(FARFIELDVOICE_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 THERMALSENSOR_VERSION := $(shell cd $(THERMALSENSOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 MOTIONSENSOR_VERSION := $(shell cd $(MOTIONSENSOR_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
 L4_TESTS_VERSION := $(shell cd $(L4_TEST_DIR) && git describe --tags --always 2>/dev/null || echo "$(VERSION)")
@@ -115,10 +107,6 @@ $(info BOOT_VERSION: $(BOOT_VERSION))
 $(info FLASH_VERSION: $(FLASH_VERSION))
 $(info INDICATOR_VERSION: $(INDICATOR_VERSION))
 $(info AUDIOMIXER_VERSION: $(AUDIOMIXER_VERSION))
-$(info CDM_VERSION: $(CDM_VERSION))
-$(info BROADCAST_VERSION: $(BROADCAST_VERSION))
-$(info PANEL_VERSION: $(PANEL_VERSION))
-$(info FARFIELDVOICE_VERSION: $(FARFIELDVOICE_VERSION))
 $(info THERMALSENSOR_VERSION: $(THERMALSENSOR_VERSION))
 $(info MOTIONSENSOR_VERSION: $(MOTIONSENSOR_VERSION))
 $(info L4_TESTS_VERSION: $(L4_TESTS_VERSION))
@@ -126,8 +114,8 @@ $(info BUILD_TIMESTAMP: $(BUILD_TIMESTAMP))
 $(info TARGET: $(TARGET))
 $(info VARIANT: $(VARIANT))
 
-# Read RDK_HALIF_AIDL_VERSION from environment, default to 'main'
-RDK_HALIF_AIDL_VERSION ?= main
+# Read the actual version from the checked-out rdk-halif-aidl repo (set by repo sync)
+RDK_HALIF_AIDL_VERSION := $(shell git -C $(ROOT_DIR)/rdk-halif-aidl describe --tags --always 2>/dev/null || echo unknown)
 $(info RDK_HALIF_AIDL_VERSION: $(RDK_HALIF_AIDL_VERSION))
 
 # Compiler flags with version and debug info
@@ -151,10 +139,6 @@ CXXFLAGS := -std=c++17 -g3 -O0 -Wno-unknown-pragmas -Wno-attributes\
             -DFLASH_VERSION=\"$(FLASH_VERSION)\" \
             -DINDICATOR_VERSION=\"$(INDICATOR_VERSION)\" \
             -DAUDIOMIXER_VERSION=\"$(AUDIOMIXER_VERSION)\" \
-            -DCDM_VERSION=\"$(CDM_VERSION)\" \
-            -DBROADCAST_VERSION=\"$(BROADCAST_VERSION)\" \
-            -DPANEL_VERSION=\"$(PANEL_VERSION)\" \
-            -DFARFIELDVOICE_VERSION=\"$(FARFIELDVOICE_VERSION)\" \
             -DTHERMALSENSOR_VERSION=\"$(THERMALSENSOR_VERSION)\" \
             -DMOTIONSENSOR_VERSION=\"$(MOTIONSENSOR_VERSION)\" \
             -DL4_TESTS_VERSION=\"$(L4_TESTS_VERSION)\"
@@ -191,10 +175,6 @@ SRC_DIRS += $(BOOT_TEST_DIR)/src
 SRC_DIRS += $(FLASH_TEST_DIR)/src
 SRC_DIRS += $(INDICATOR_TEST_DIR)/src
 SRC_DIRS += $(AUDIOMIXER_TEST_DIR)/src
-SRC_DIRS += $(CDM_TEST_DIR)/src
-SRC_DIRS += $(BROADCAST_TEST_DIR)/src
-SRC_DIRS += $(PANEL_TEST_DIR)/src
-SRC_DIRS += $(FARFIELDVOICE_TEST_DIR)/src
 SRC_DIRS += $(THERMALSENSOR_TEST_DIR)/src
 SRC_DIRS += $(MOTIONSENSOR_TEST_DIR)/src
 ifeq ($(ENABLE_AV_L4_TEST),1)
@@ -204,9 +184,24 @@ endif
 SRC_DIRS += $(HELPER_FUNCTIONS_DIR)
 SRC_DIRS += $(ROOT_DIR)/test
 
-INC_DIRS := $(ROOT_DIR)/build/current/h/
+# HAL interface libs/headers come from rdk-halif-aidl's versioned build; halif_generated.mk
+# (written by build.sh) pins the exact paths since wildcard/find would return empty on a clean tree.
+HALIF_OUT_DIR        := $(ROOT_DIR)/rdk-halif-aidl/out
+HALIF_LIB_DIR        := $(HALIF_OUT_DIR)/target/lib/rdk-halif-aidl
 
-INC_DIRS += $(ROOT_DIR)/rdk-halif-aidl/avbuffer/current
+-include $(HALIF_OUT_DIR)/halif_generated.mk
+
+INC_DIRS             := $(HALIF_INC_DIRS)
+
+XLDFLAGS             := -rdynamic
+XLDFLAGS             += -L$(ROOT_DIR)/build/usr/lib
+XLDFLAGS             += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib
+XLDFLAGS             += -L$(HALIF_LIB_DIR)
+XLDFLAGS             += -Wl,-rpath-link=$(HALIF_LIB_DIR)
+XLDFLAGS             += $(HALIF_MODULE_LIBS)
+XLDFLAGS             += -lbinder -lutils
+XLDFLAGS             += -lavbufferhelper
+
 INC_DIRS += $(ROOT_DIR)/build/usr/include
 INC_DIRS += $(ROOT_DIR)/common/avbufferhelper_skeleton/
 INC_DIRS += $(SRC_DIRS)
@@ -221,12 +216,6 @@ INC_DIRS += $(ROOT_DIR)/build/usr/include/KHR/
 INC_DIRS += $(ROOT_DIR)/build/usr/include/gstreamer-1.0/
 INC_DIRS += $(ROOT_DIR)/build/usr/include/glib-2.0/
 INC_DIRS += $(ROOT_DIR)/build/usr/lib/glib-2.0/include/
-
-XLDFLAGS := -L$(ROOT_DIR)/build/usr/lib
-XLDFLAGS += -Wl,-rpath-link=$(ROOT_DIR)/build/usr/lib
-XLDFLAGS += -lbinder -lutils
-XLDFLAGS += -laidl_client
-XLDFLAGS += -lavbufferhelper
 ifeq ($(ENABLE_AV_L4_TEST),1)
 XLDFLAGS += -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lpcre
 endif
@@ -255,11 +244,23 @@ export XLDFLAGS
 export CXXFLAGS
 export TARGET
 
-.PHONY: all clean
+.PHONY: all clean check-halif-built
 
 all: $(TARGET_EXEC)
 
-$(TARGET_EXEC):
+check-halif-built:
+	@[ -n "$(HALIF_INC_DIRS)" ] || { \
+		echo "ERROR: HAL interfaces not built."; \
+		echo "       Run: ./build.sh Target=$(TARGET)"; \
+		exit 1; \
+	}
+	@[ -n "$(HALIF_MODULE_LIBS)" ] || { \
+		echo "ERROR: HAL interface headers found but module libs are missing (softlinks not created)."; \
+		echo "       Run: ./build.sh Target=$(TARGET)"; \
+		exit 1; \
+	}
+
+$(TARGET_EXEC): check-halif-built
 	make -C $(UT_CORE_DIR) -j $(shell nproc) TARGET=$(TARGET) VARIANT=$(VARIANT)
 
 clean:

@@ -21,5 +21,5 @@
 
 export PATH="$HOME/.local/bin:$PATH"
 export UT_CORE_VERSION=5.1.0
-export RDK_HALIF_AIDL_VERSION=0.15.0
+export RDK_HALIF_AIDL_VERSION=0.22.0
 ./build.sh Target=linux
