@@ -353,8 +353,8 @@ VTS:
         name: "VTS_L1_BOOT"
         tests:
             - getCapabilities_pos
-            - setBootReason_pos
-            - setBootReason_neg
+            - setBootCause_pos
+            - setBootCause_neg
             - getBootReason_pos
             - reboot_neg
             - getPowerSource_pos
@@ -503,9 +503,9 @@ VTS:
             - SetandGetEDID
             - MaxConcurrentPorts
       26:
-        name: "VTS_L1_FLASH"
+        name: "VTS_L1_FIRMWAREUPDATE"
         tests:
-          - flashImageFromFile_invalid_params
+          - updateFirmwareFromFile_neg
       27:
         name: "VTS_L1_MOTIONSENSOR"
         tests:

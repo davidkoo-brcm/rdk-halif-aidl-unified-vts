@@ -507,7 +507,6 @@ create_halif_softlinks()
     } > "${MK_FILE}"
     echo "  Generated ${MK_FILE}"
 }
-
 ###############################################################################
 # Clone rdk-halif-aidl or switch branches; invalidates the halif modules sentinel on a branch change.
 ###############################################################################
