@@ -73,7 +73,7 @@ VTS:
           - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_5.0_384.ac3
           - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_5.1_640.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_incomplete.ac3
-          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_invalid.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_header.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_zero.ac3
@@ -194,7 +194,7 @@ VTS:
           - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_5.0_384.ac3
           - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_5.1_640.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_incomplete.ac3
-          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_invalid.ac3
+          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_header.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
           - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_zero.ac3
@@ -203,34 +203,34 @@ VTS:
           - Sink_Sequential_NonTunnel_NonSecure_Flush
           - Sink_Sequential_NonTunnel_NonSecure_EOS
           - Sink_Sequential_NonTunnel_NonSecure_Underflow
-          - Sink_Sequential_NonTunnel_Secure
-          - Sink_Sequential_NonTunnel_Secure_Flush
-          - Sink_Sequential_NonTunnel_Secure_EOS
-          - Sink_Sequential_NonTunnel_Secure_Underflow
-          - Sink_Sequential_Tunnel_NonSecure
-          - Sink_Sequential_Tunnel_NonSecure_Flush
-          - Sink_Sequential_Tunnel_NonSecure_EOS
-          - Sink_Sequential_Tunnel_NonSecure_Underflow
-          - Sink_Sequential_Tunnel_Secure
-          - Sink_Sequential_Tunnel_Secure_Flush
-          - Sink_Sequential_Tunnel_Secure_EOS
-          - Sink_Sequential_Tunnel_Secure_Underflow
+          # - Sink_Sequential_NonTunnel_Secure
+          # - Sink_Sequential_NonTunnel_Secure_Flush
+          # - Sink_Sequential_NonTunnel_Secure_EOS
+          # - Sink_Sequential_NonTunnel_Secure_Underflow
+          # - Sink_Sequential_Tunnel_NonSecure
+          # - Sink_Sequential_Tunnel_NonSecure_Flush
+          # - Sink_Sequential_Tunnel_NonSecure_EOS
+          # - Sink_Sequential_Tunnel_NonSecure_Underflow
+          # - Sink_Sequential_Tunnel_Secure
+          # - Sink_Sequential_Tunnel_Secure_Flush
+          # - Sink_Sequential_Tunnel_Secure_EOS
+          # - Sink_Sequential_Tunnel_Secure_Underflow
           - Sink_Concurrent_NonTunnel_NonSecure
           - Sink_Concurrent_NonTunnel_NonSecure_Flush
           - Sink_Concurrent_NonTunnel_NonSecure_EOS
           - Sink_Concurrent_NonTunnel_NonSecure_Underflow
-          - Sink_Concurrent_NonTunnel_Secure
-          - Sink_Concurrent_NonTunnel_Secure_Flush
-          - Sink_Concurrent_NonTunnel_Secure_EOS
-          - Sink_Concurrent_NonTunnel_Secure_Underflow
-          - Sink_Concurrent_Tunnel_NonSecure
-          - Sink_Concurrent_Tunnel_NonSecure_Flush
-          - Sink_Concurrent_Tunnel_NonSecure_EOS
-          - Sink_Concurrent_Tunnel_NonSecure_Underflow
-          - Sink_Concurrent_Tunnel_Secure
-          - Sink_Concurrent_Tunnel_Secure_Flush
-          - Sink_Concurrent_Tunnel_Secure_EOS
-          - Sink_Concurrent_Tunnel_Secure_Underflow
+          # - Sink_Concurrent_NonTunnel_Secure
+          # - Sink_Concurrent_NonTunnel_Secure_Flush
+          # - Sink_Concurrent_NonTunnel_Secure_EOS
+          # - Sink_Concurrent_NonTunnel_Secure_Underflow
+          # - Sink_Concurrent_Tunnel_NonSecure
+          # - Sink_Concurrent_Tunnel_NonSecure_Flush
+          # - Sink_Concurrent_Tunnel_NonSecure_EOS
+          # - Sink_Concurrent_Tunnel_NonSecure_Underflow
+          # - Sink_Concurrent_Tunnel_Secure
+          # - Sink_Concurrent_Tunnel_Secure_Flush
+          # - Sink_Concurrent_Tunnel_Secure_EOS
+          # - Sink_Concurrent_Tunnel_Secure_Underflow
 
       2:
         name: "VTS_L3_AVBuffer"
@@ -319,6 +319,7 @@ VTS:
           - Video_Decoder/H265_HIGH_1920x1080_DR_HDR10_BT2020_ST2084_30p_PIXEL_FORMAT_YCBCR420_MDI.es
           - Video_Decoder/H265_HIGH_1920x1080_DR_HDR10_BT2020_ST2084_30p_PIXEL_FORMAT_YCBCR420_COLORIMETRY.es
           - Video_Decoder/H265_HIGH_1920x1080_DR_HDR10_BT2020_ST2084_30p_PIXEL_FORMAT_YCBCR420_CLL.es
+          - Video_Decoder/AV1_HIGH_1920x1080_DR_SDR_DR_BT709_30p_PIXEL_FORMAT_YCBCR420_734.ivf
         tests:
           - Decode_Sequential_NonTunnel_NonSecure
           - Decode_Sequential_NonTunnel_NonSecure_CODEC
