@@ -65,7 +65,6 @@
 
 #include <ut.h>
 #include <ut_log.h>
-#if 0
 #include "vts_avbuffer_init.h"
 #include "vts_audiodecoder_init.h"
 #include "vts_audiosink_init.h"
@@ -77,7 +76,6 @@
 #endif
 #ifdef ENABLE_AV_L4_TEST
 #include "vts_av_l4_init.h"
-#endif
 #endif
 
 #include "vts_hdmicec_init.h"
@@ -122,7 +120,6 @@ int main(int argc, char **argv)
     UT_LOG("\t VTS UNIFIED Indicator HALIF Test Version: \033[0;32m%s\033[0m",INDICATOR_VERSION);
     UT_LOG("\t VTS UNIFIED Compositeinput HALIF Test Version: \033[0;32m%s\033[0m",COMPOSITEINPUT_VERSION);
     UT_LOG("==========================================================================");
-#if 0
     result = VTS_AVBuffer_init();
     if(result != UT_STATUS_OK)
     {
@@ -181,7 +178,6 @@ int main(int argc, char **argv)
         UT_LOG_ERROR("Failed to initialize AV L4 Tests");
         result = UT_STATUS_FAILURE;
     }
-#endif
 #endif
 
     result = VTS_HDMICEC_init();
@@ -271,12 +267,10 @@ int main(int argc, char **argv)
     {
         result = UT_STATUS_OK;
     }
-#if 0
     VTS_AudioDecoder_destroy();
     VTS_VideoDecoder_destroy();
     VTS_AudioSink_destroy();
     VTS_VideoSink_destroy();
-#endif
     VTS_HDMICEC_destroy();
     VTS_HDMIINPUT_destroy();
     VTS_HDMIOUTPUT_destroy();

@@ -9,31 +9,31 @@
 
   <project name="rdk-halif-aidl-test-avbuffer"
            path="vts_hal_test_components/avbuffer"
-	   revision="feature/gh94_AvBufferMock" />
+	   revision="develop" />
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
-	   revision="feature/gh118_update_0_21_aidl" />
+	   revision="develop" />
 
   <project name="rdk-halif-aidl-test-videodecoder"
            path="vts_hal_test_components/videodecoder"
-	   revision="feature/gh128_update_vts_0_21_aidl" />
+	   revision="develop" />
 
   <project name="rdk-halif-aidl-test-audiosink"
            path="vts_hal_test_components/audiosink"
-	   revision="feature/gh98_0_21_0_vts_update" />
+	   revision="develop" />
 
   <project name="rdk-halif-aidl-test-videosink"
            path="vts_hal_test_components/videosink"
-	   revision="feature/gh91_upgrade_21_spec" />
+	   revision="develop" />
 
    <project name="rdk-halif-aidl-test-avclock"
            path="vts_hal_test_components/avclock"
-	   revision="feature/gh107_avclock_0_21_0_changes" />
+	   revision="develop" />
 
    <project name="rdk-halif-aidl-test-planecontrol"
            path="vts_hal_test_components/planecontrol"
-	   revision="feature/gh54_update_vts_0_21_aidl" />
+	   revision="develop" />
 
    <project name="rdk-halif-aidl-L4-Vendor"
            path="vts_hal_test_components/l4_tests"
@@ -41,50 +41,50 @@
 
    <project name="rdk-halif-aidl-test-cec"
            path="vts_hal_test_components/hdmicec"
-	   revision="develop" />
+	   revision="refs/tags/0.5.0" />
 
    <project name="rdk-halif-aidl-test-hdmiinput"
            path="vts_hal_test_components/hdmiinput"
-	   revision="develop" />
+	   revision="refs/tags/0.4.0" />
 
    <project name="rdk-halif-aidl-test-hdmioutput"
            path="vts_hal_test_components/hdmioutput"
-           revision="develop" />
+           revision="refs/tags/0.3.0" />
 
    <project name="rdk-halif-aidl-test-deepsleep"
            path="vts_hal_test_components/deepsleep"
-	   revision="develop" />
+	   revision="refs/tags/0.4.0" />
 
    <project name="rdk-halif-aidl-test-device-info"
            path="vts_hal_test_components/deviceinfo"
-	   revision="develop" />
+	   revision="refs/tags/0.4.0" />
 
    <project name="rdk-halif-aidl-test-boot"
            path="vts_hal_test_components/boot"
-           revision="develop" />
+           revision="refs/tags/0.3.0" />
 
    <project name="rdk-halif-aidl-test-flash"
            path="vts_hal_test_components/flash"
-           revision="develop" />
+           revision="refs/tags/0.3.0" />
 
    <project name="rdk-halif-aidl-test-indicator"
            path="vts_hal_test_components/indicator"
-           revision="develop" />
+           revision="refs/tags/0.4.0" />
  
    <project name="rdk-halif-aidl-test-audiomixer"
            path="vts_hal_test_components/audiomixer"
-	   revision="feature/gh2_testcases_audiomixer" />
+           revision="develop" />
 
    <project name="rdk-halif-aidl-test-compositeinput"
            path="vts_hal_test_components/compositeinput"
-           revision="develop" />
+           revision="refs/tags/0.3.0" />
 
    <project name="rdk-halif-aidl-test-motion-sensor"
            path="vts_hal_test_components/motionsensor"
-           revision="develop" />
+           revision="refs/tags/0.3.0" />
 
    <project name="rdk-halif-aidl-test-thermal-sensor"
            path="vts_hal_test_components/thermalsensor"
-           revision="develop" />
+           revision="refs/tags/0.3.0" />
 
 </manifest>
