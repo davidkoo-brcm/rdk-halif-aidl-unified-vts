@@ -33,4 +33,6 @@ AVModule:
   include_1: streams_config/trick_modes.yaml
   include_2: streams_config/av_sync.yaml
   include_3: streams_config/error_handling.yaml
-  # include_4: streams_config/longevity.yaml
+  include_4: streams_config/audio_switch.yaml
+  include_5: streams_config/resolution_switch.yaml
+  # include_6: streams_config/longevity.yaml
