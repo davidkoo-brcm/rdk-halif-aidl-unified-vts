@@ -121,7 +121,7 @@ bool VTSGStreamerPlayer::init()
     bus = gst_element_get_bus(playbin);
 	
     // Register deep element added callback to dynamically trace pipeline creation
-    g_signal_connect(G_OBJECT(playbin), "deep-element-added", G_CALLBACK(deepElementAddedCallback), this);
+    // g_signal_connect(G_OBJECT(playbin), "deep-element-added", G_CALLBACK(deepElementAddedCallback), this);
 	
     return true;
 }
