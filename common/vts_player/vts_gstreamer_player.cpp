@@ -273,7 +273,7 @@ void VTSGStreamerPlayer::close()
     //gst_deinit();
 }
 
-// OTF Switch audio codec on the fly (true = AAC, false = EAC3)
+/* OTF Switch audio codec on the fly (true = AAC, false = EAC3)
 bool VTSGStreamerPlayer::switchAudioCodec(bool isAudioAAC)
 {
     UT_LOG_INFO("[GStreamer] switchAudioCodec: Current AAC = %d, Target AAC = %d", 
@@ -367,6 +367,8 @@ bool VTSGStreamerPlayer::switchAudioCodec(bool isAudioAAC)
     UT_LOG_INFO("[GStreamer] switchAudioCodec: Dynamic codec switch finished.");
     return true;
 }
+
+*/
 
 void VTSGStreamerPlayer::configAudioPipe(GstCaps *newAudioCaps)
 {
