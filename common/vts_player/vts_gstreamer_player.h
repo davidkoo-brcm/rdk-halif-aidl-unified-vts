@@ -100,7 +100,6 @@ public:
     void close() override;
 	
 	// Switch audio codec on the fly (true = AAC, false = EAC3)
-    bool switchAudioCodec(bool isAudioAAC) override;
     bool switchAudioTrack(uint32_t trackIndex) override;
 
 private:
