@@ -27,7 +27,7 @@ VTS:
   num_of_instances: 1
   test:
     artifacts:
-      - "../../../build/vts_unified.tar.gz.bz"
+      - "../../../build/vts_unified.tar.gz"
     execute: "./run.sh"
     type: UT-C # C (UT-C Cunit) / C++ (UT-G (g++ ut-core gtest backend))
     suites:
@@ -58,6 +58,7 @@ VTS:
           - flush_neg
           - signalDiscontinuity_pos
           - signalDiscontinuity_neg
+          - signalEOS_neg
           - parseCodecSpecificData_pos
           - parseCodecSpecificData_neg
           - setProperty_pos
@@ -72,6 +73,7 @@ VTS:
           - SetandGetProperties_multipleInstance
           - StateTransitions
           - StateTransitions_mutipleInstance
+          - SignalEndOfStreamLifecycle
       2:
         name: "VTS_L1_AudioSink"
         tests:
@@ -105,6 +107,8 @@ VTS:
           - stop_pos
           - stop_neg
           - queueAudioFrame_neg
+          - signalEndOfStream_pos
+          - signalEndOfStream_neg
           - flush_pos
           - flush_neg
           - getVolume_pos
@@ -184,20 +188,11 @@ VTS:
           - flush_neg
           - signalDiscontinuity_pos
           - signalDiscontinuity_neg
+          - signalEOS_neg
           - parseCodecSpecificData_pos
           - parseCodecSpecificData_neg
-          - setStreamResolution_pos
-          - setStreamResolution_neg
-          - setFrameRate_pos
-          - setFrameRate_neg
-          - setColorimetry_pos
-          - setColorimetry_neg
-          - setMasteringDisplayInfo_pos
-          - setMasteringDisplayInfo_neg
-          - setContentLightLevel_pos
-          - setContentLightLevel_neg
-          - setDolbyVisionLayerFlags_pos
-          - setDolbyVisionLayerFlags_neg
+          - setStreamConfig_pos
+          - setStreamConfig_neg
       6:
         name: "VTS_L2_VideoDecoder"
         tests:
@@ -205,6 +200,7 @@ VTS:
           - TestGetAndSetProperties_multipleInstance
           - TestDecoderStateTransitions
           - TestDecoderStateTransitions_multipleInstance
+          - TestSignalEndOfStreamStateContract
       7:
         name: "VTS_L1_VideoSink"
         tests:
@@ -228,7 +224,6 @@ VTS:
           - setVideodecoder_pos
           - setVideodecoder_neg
           - getVideodecoder_pos
-          - getVideodecoder_neg
           - start_pos
           - start_neg
           - stop_pos
@@ -241,9 +236,9 @@ VTS:
           - attachClock_pos
           - attachClock_neg
           - getClock_pos
-          - getClock_neg
-          - detachClock_getClock_pos
-
+          - detachClock_pos
+          - signalEndOfStream_pos
+          - signalEndOfStream_neg
       8:
         name: "VTS_L2_VideoSink"
         tests:
@@ -251,6 +246,7 @@ VTS:
           - TestSetAndGetProperty_multipleInstance
           - TestStateTransitions
           - TestStateTransitions_multipleInstance
+          - TestAttachDetachClock
       9:
         name: "VTS_L1_AVClock"
         tests:
@@ -357,8 +353,8 @@ VTS:
         name: "VTS_L1_BOOT"
         tests:
             - getCapabilities_pos
-            - setBootReason_pos
-            - setBootReason_neg
+            - setBootCause_pos
+            - setBootCause_neg
             - getBootReason_pos
             - reboot_neg
             - getPowerSource_pos
@@ -507,9 +503,9 @@ VTS:
             - SetandGetEDID
             - MaxConcurrentPorts
       26:
-        name: "VTS_L1_FLASH"
+        name: "VTS_L1_FIRMWAREUPDATE"
         tests:
-          - flashImageFromFile_invalid_params
+          - updateFirmwareFromFile_neg
       27:
         name: "VTS_L1_MOTIONSENSOR"
         tests:

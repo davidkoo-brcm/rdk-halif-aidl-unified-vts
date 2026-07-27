@@ -28,8 +28,11 @@ if [ ! -w "$DEV_BINDER" ]; then
     exit 1
 fi
 
-# Put RUN_DIR at the front of LD_LIBRARY_PATH to ensure our test binaries use the correct libraries
-export LD_LIBRARY_PATH=$RUN_DIR:/usr/lib:/lib:/home/root:./:$LD_LIBRARY_PATH
+# Put RUN_DIR/lib and RUN_DIR at the front of LD_LIBRARY_PATH so our test binaries use the correct libraries.
+# Deliberately no "./" or unconditional trailing ":$LD_LIBRARY_PATH" here: this runs as root (see the
+# binder check above), and either would put the caller's current directory on the dynamic loader's
+# search path, allowing library hijacking from an untrusted cwd.
+export LD_LIBRARY_PATH=$RUN_DIR/lib:$RUN_DIR:/usr/lib:/lib:/home/root${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 
 echo "Executing [vts_hal_test]"
 "${RUN_DIR}/vts_hal_test" "$@"
