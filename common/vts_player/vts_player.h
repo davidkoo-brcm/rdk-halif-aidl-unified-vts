@@ -112,7 +112,7 @@ public:
     /* Close the player and free resources */
     virtual void close() = 0;
 	
-	/* Switch audio codec on the fly (true = AAC, false = EAC3) */
+    /* Switch audio codec on the fly (true = AAC, false = EAC3) */
     virtual bool switchAudioTrack(uint32_t trackIndex) = 0;
 
     /* Factory method to create a player of the given type */
