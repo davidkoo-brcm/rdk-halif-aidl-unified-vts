@@ -533,6 +533,7 @@ void VTSGStreamerPlayer::reconfigAudioPipe(GstCaps *newAudioCaps)
     if (newAudioDecoderSinkPad) gst_object_unref(newAudioDecoderSinkPad);
 }
 
+/* This maybe useful for RDKE hence keeping the implementation here
 void VTSGStreamerPlayer::deepElementAddedCallback(GstBin *bin, GstBin *sub_bin, GstElement *element, gpointer user_data)
 {
     VTSGStreamerPlayer *player = static_cast<VTSGStreamerPlayer *>(user_data);
@@ -638,6 +639,7 @@ void VTSGStreamerPlayer::typeFoundCallback(GstElement *typefind, guint probabili
         g_free(caps_str);
     }
 }
+*/
 
 bool VTSGStreamerPlayer::switchAudioTrack(uint32_t trackIndex)
 {
@@ -646,7 +648,7 @@ bool VTSGStreamerPlayer::switchAudioTrack(uint32_t trackIndex)
 
     if(trackIndex >= mNumAudioTracks)
     {
-	UT_LOG_INFO("Audio tracks : %u", trackIndex);
+        UT_LOG_INFO("Audio tracks : %u", trackIndex);
     }
 
     gint currentTrack = -1;

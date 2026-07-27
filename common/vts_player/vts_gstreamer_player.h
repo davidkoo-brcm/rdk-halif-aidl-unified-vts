@@ -108,7 +108,7 @@ private:
     void configAudioPipe(GstCaps *newAudioCaps);
     void reconfigAudioPipe(GstCaps *newAudioCaps);
 
-    // GStreamer signal callbacks
+    // GStreamer signal callbacks kept for old SDK RDKE impementation
     static void deepElementAddedCallback(GstBin *bin, GstBin *sub_bin, GstElement *element, gpointer user_data);
     static void typeFoundCallback(GstElement *typefind, guint probability, const GstCaps *caps, gpointer user_data);
 	
