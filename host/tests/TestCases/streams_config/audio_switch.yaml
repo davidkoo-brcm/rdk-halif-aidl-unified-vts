@@ -40,10 +40,10 @@ AVModule:
     use_case: "Codec Switch stream"
     action: audio_switch
     codec: "H265 AAC EAC3"
-    stream_name: "Audio_Video/Audio_Switch/vts_H265_EAC3_AAC_300sec.ts"
+    stream_name: "Audio_Video/Audio_Switch/vts_H265_EAC3_AAC_300sec.mp4"
 
   - tcid: vts_H265_AC3
     use_case: "Language Switch stream"
     action: audio_switch
     codec: "H265 AC3"
-    stream_name: "Audio_Video/Audio_Switch/vts_H265_AC3_multilanguage.ts"
+    stream_name: "Audio_Video/Audio_Switch/vts_H265_AC3_multilanguage.mp4"

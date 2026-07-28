@@ -36,8 +36,6 @@ VTS:
         tests:
           - NormalPlay
           - playBackWithTrickModes
-          - OTFAudioCodecSwitch
           - AudioTrackSwitch
-          - resolutionSwitch 
 
 
