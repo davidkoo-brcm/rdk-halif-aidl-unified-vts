@@ -36,14 +36,14 @@ AVModule:
   # queue operations, callback handling, stop/flush/EOS sequences, and basic
   # audio-video synchronization
   # ---------------------------------------------------------------------------
-  - tcid: vts_H265_EAC3_AAC
+  - tcid: VTS_L4_H265_EAC3_AAC_8001
     use_case: "Codec Switch stream"
     action: audio_switch
-    codec: "H265 AAC EAC3"
-    stream_name: "Audio_Video/Audio_Switch/vts_H265_EAC3_AAC_300sec.mp4"
+    codec: "H265 EAC3 AAC"
+    stream_name: "Audio_Video/Audio_Switch/vts_h265_2160p_hdr10_60.0f_BT2020_yuv420p_15M_eac3_aac_48k_6ch_256k_a9375_v18000_300sec.mp4"
 
-  - tcid: vts_H265_AC3
+  - tcid: VTS_L4_H265_AC3_8002
     use_case: "Language Switch stream"
     action: audio_switch
     codec: "H265 AC3"
-    stream_name: "Audio_Video/Audio_Switch/vts_H265_AC3_multilanguage.mp4"
+    stream_name: "Audio_Video/Audio_Switch/vts_h265_2160p_hdr10_60.0f_BT2020_yuv420p_15M_ac3_48k_2ch_256k_a5625_v10800_180sec.mp4"

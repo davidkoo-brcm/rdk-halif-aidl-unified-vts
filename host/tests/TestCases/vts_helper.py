@@ -44,6 +44,17 @@ class VTSTestHelperClass(utHelperClass):
     and L4 YAML generation. Can be used for any module (VTS,AVModule, DSModule, etc.).
     """
 
+    def get_stream_extension(self, stream_name):
+        """
+        Extracts the file extension from a stream name.
+
+        Args:
+            stream_name (str): The name of the stream file.
+        """
+        _, stream_ext = os.path.splitext(stream_name)
+        return stream_ext.lstrip('.') if stream_ext else "mp4"
+
+
     def __init__(self, module_name: str, test_name: str, qc_id: str,
                  test_suites: list = None, l4_yaml_path: str = None,
                  setup_file_name: str = None, test_config_file_name: str = None,
@@ -182,8 +193,9 @@ class VTSTestHelperClass(utHelperClass):
             dict: Extracted stream information.
         """
 
-        # Remove .mp4 extension for parsing
-        base_name = stream_name.replace(".mp4", "")
+        # Remove extension for parsing
+        base_name = os.path.splitext(stream_name)[0]
+        stream_ext = self.get_stream_extension(stream_name)
 
         # Pattern to match: ..._aXXX_vYYY_ZZsec where:
         # aXXX = audio frames (e.g., a939)
@@ -191,19 +203,26 @@ class VTSTestHelperClass(utHelperClass):
         # ZZsec = duration in seconds (e.g., 61sec)
         # Optional: aeXXX = audio error frames, veYYY = video error frames
 
-        pattern = r'^(.*?)_a(\d+)_v(\d+)_(\d+)sec(_ae(\d+))?(_ve(\d+))?$'
+        pattern = r'^(.*?)_a(\d+)_v(\d+)_(\d+)sec(_ae(\d+))?(_ve(\d+))?(?:\.[^.]+)?$'
         match = re.match(pattern, base_name)
 
         if not match:
             self.log.info(f"Could not parse stream name pattern: {stream_name}")
+            if not stream_ext:
+                self.log.info(f"No extension found in stream name: {stream_name}. Defaulting to .mp4")
+                stream_ext = "mp4"
             # Return defaults if parsing fails
+            input == stream_name
+
+            str_name = f"{self.tcid}.{stream_ext}" # Use original extension
+
             return {
-                "input": stream_name,
-                "duration": 60,
-                "audio_frames": 48,
-                "video_frames": 60,
-                "audio_error_frames": 0,
-                "video_error_frames": 0
+            "input": str_name,  # Original stream name
+            "duration": 60,
+            "audio_frames": 00,
+            "video_frames": 00,
+            "audio_error_frames": 0,
+            "video_error_frames": 0
             }
 
         # Extract groups from regex match
@@ -215,10 +234,12 @@ class VTSTestHelperClass(utHelperClass):
         # Check for error frames (optional groups)
         audio_error_frames = int(groups[5]) if groups[5] else 0  # aeXXX
         video_error_frames = int(groups[7]) if groups[7] else 0  # veYYY
-        str_name = f"{self.tcid}.mp4"
+        if not stream_ext:
+            stream_ext = "mp4"
+        str_name = f"{self.tcid}.{stream_ext}" # Use original extension
 
         stream_info = {
-            "input": str_name,  # Original stream name with .mp4
+            "input": str_name,  # Original stream name
             "duration": duration,
             "audio_frames": audio_frames,
             "video_frames": video_frames,
@@ -229,7 +250,7 @@ class VTSTestHelperClass(utHelperClass):
         self.log.debug(f"Parsed stream {stream_name}: duration={duration}s, audio_frames={audio_frames}, video_frames={video_frames}, audio_errors={audio_error_frames}, video_errors={video_error_frames}")
         return stream_info
 
-    def generate_l4_yaml_files_for_test_case(self, test_case: dict, test_config_path: str, stream_config_path: str):
+    def generate_l4_yaml_files_for_test_case(self, test_case: dict, test_config_path: str, stream_config_path: str, stream_name: str) -> bool:
         """
         Generates vts_l4_av_test_config.yaml and vts_l4_av_stream_config.yaml for a single test case.
 
@@ -257,11 +278,12 @@ class VTSTestHelperClass(utHelperClass):
 
             self.tcid = test_case.get("tcid")
             action = test_case.get("action")
-            # Get original stream name with .mp4 extension
+            # Get original stream name with extension
             original_stream_name = test_case.get("stream_name")
 
-            # Create stream_name without tcid_mp4 extension for YAML key
-            stream_name = [f"{self.tcid}_mp4"]
+            # Create stream_name without tcid extension for YAML key
+            stream_ext = self.get_stream_extension(stream_name)
+            stream_name = [f"{self.tcid}_{stream_ext}"]
             #stream_name = test_case.get("stream_name")
 
 
@@ -285,7 +307,7 @@ class VTSTestHelperClass(utHelperClass):
                             "controls": {
                                 "delay_between_play": 100
                             },
-                            "streams": stream_name # Use stream_name without .mp4
+                            "streams": stream_name # Use stream_name without tcid extension for YAML key
                         }
                     }
                 }
@@ -293,7 +315,7 @@ class VTSTestHelperClass(utHelperClass):
             # Generate vts_l4_av_stream_config.yaml
             stream_info = self.parse_stream_name(original_stream_name, self.tcid)
 
-            if test_case_name == "NormalPlay":
+            if test_case_name == "NormalPlay" or test_case_name == "AudioTrackSwitch":
                 test_config["AVModule"]["L4"][test_case_name]["controls"]["trick_modes"] = [
                     {"action": "play", "duration": stream_info["duration"]}
                 ]
@@ -318,7 +340,7 @@ class VTSTestHelperClass(utHelperClass):
             # Generate vts_l4_av_stream_config.yaml
             stream_config = {
                 "AVStreams": {
-                    f"{self.tcid}_mp4": self.parse_stream_name(original_stream_name, self.tcid)
+                    f"{self.tcid}_{stream_ext}": self.parse_stream_name(original_stream_name, self.tcid)
                 }
             }
 
@@ -363,7 +385,8 @@ class VTSTestHelperClass(utHelperClass):
 
             # Copy stream file to input_streams_path
             stream_url = os.path.join(self.stream_download_url, stream_name.lstrip("/"))
-            target_stream_path = os.path.join(self.download_path, f"{self.tcid}.mp4")
+            stream_ext = self.get_stream_extension(stream_name)
+            target_stream_path = os.path.join(self.download_path, f"{self.tcid}.{stream_ext}").replace("\\", "/")
             self.downloadToDevice([stream_url], self.download_path, self.rack_device, True)
             str_name = os.path.basename(stream_name)
             cmd = f"mv {self.download_path}{str_name} {target_stream_path}"

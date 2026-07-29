@@ -176,7 +176,7 @@ class L4TestClass(VTSTestHelperClass):
             # Generate YAML files for this test case
             test_config_path = os.path.join(dir_path, "vts_l4_av_test_config.yaml")
             stream_config_path = os.path.join(dir_path, "vts_l4_av_stream_config.yaml")
-            if not self.generate_l4_yaml_files_for_test_case(test_case, test_config_path, stream_config_path):
+            if not self.generate_l4_yaml_files_for_test_case(test_case, test_config_path, stream_config_path, stream_name):
                 self.log.error(f"Failed to generate YAML files for TCID: {tcid}")
                 final_result = False
                 continue
@@ -188,10 +188,10 @@ class L4TestClass(VTSTestHelperClass):
                 continue
 
             self.stream_info = ConfigRead(stream_config_path, "AVStreams")
-
-            duration = self.stream_info.get(f"{tcid}_mp4.duration")
+            stream_ext = self.get_stream_extension(stream_name)
+            duration = self.stream_info.get(f"{tcid}_{stream_ext}.duration")
             if duration is None:
-                self.log.info(f"No stream duration found for {tcid}_mp4 in stream config")
+                self.log.info(f"No stream duration found for {tcid}_{stream_ext} in stream config")
                 wait_time = self.wait_time  # fallback
             else:
                 wait_time = duration + 10 #
