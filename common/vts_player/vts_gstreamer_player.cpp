@@ -678,6 +678,29 @@ bool VTSGStreamerPlayer::switchAudioTrack(uint32_t trackIndex)
     return true;
 }
 
+bool VTSGStreamerPlayer::switchVideoTrack(uint32_t trackIndex)
+{
+    if (!playbin)
+        return false;
+
+    gint nVideo = 0;
+    g_object_get(playbin, "n-video", &nVideo, nullptr);
+
+    UT_LOG_INFO("[Gstreamer] Number of video tracks : %d", nVideo);
+    
+    if (trackIndex >= static_cast<uint32_t>(nVideo))
+    {
+        UT_LOG_INFO("Video tracks : %u", trackIndex);
+    }
+
+    UT_LOG_INFO("[GSTREAMER] Switching video track to : %u", trackIndex);
+
+    g_object_set(playbin,"current-video",static_cast<gint>(trackIndex),nullptr);
+
+    return true;
+
+}
+
 /** @} */ // End of AV_MODULE_HALTEST_GST_PLAYER
 /** @} */ // End of AV_MODULE_HALTEST_PLAYER
 /** @} */ // End of AV_MODULE_HALTEST
