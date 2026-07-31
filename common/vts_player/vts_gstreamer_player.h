@@ -99,8 +99,11 @@ public:
     void loop() override;
     void close() override;
 	
-	// Switch audio codec on the fly (true = AAC, false = EAC3)
+	// Switch audio track on the fly
     bool switchAudioTrack(uint32_t trackIndex) override;
+
+	// Switch video channel on the fly
+    bool switchVideoTrack(uint32_t trackIndex) override;
 
 private:
     // Helper methods for dynamic replugging
