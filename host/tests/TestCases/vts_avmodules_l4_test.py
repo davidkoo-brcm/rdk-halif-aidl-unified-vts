@@ -167,7 +167,8 @@ class L4TestClass(VTSTestHelperClass):
             action_to_test_case = {
                 "normal_play": "NormalPlay",
                 "trick_play": "playBackWithTrickModes",
-                "audio_switch": "AudioTrackSwitch"
+                "audio_switch": "AudioTrackSwitch",
+                "video_switch": "VideoTrackSwitch"
             }
             test_case_name = action_to_test_case.get(action, action)
 

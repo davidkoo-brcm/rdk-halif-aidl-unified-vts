@@ -291,7 +291,8 @@ class VTSTestHelperClass(utHelperClass):
             action_to_test_case = {
                 "normal_play": "NormalPlay",
                 "trick_play": "playBackWithTrickModes",
-                "audio_switch": "AudioTrackSwitch"
+                "audio_switch": "AudioTrackSwitch",
+                "video_switch": "VideoTrackSwitch"
             }
             test_case_name = action_to_test_case.get(action, action)
 
@@ -315,7 +316,7 @@ class VTSTestHelperClass(utHelperClass):
             # Generate vts_l4_av_stream_config.yaml
             stream_info = self.parse_stream_name(original_stream_name, self.tcid)
 
-            if test_case_name == "NormalPlay" or test_case_name == "AudioTrackSwitch":
+            if test_case_name == "NormalPlay" or test_case_name == "AudioTrackSwitch" or test_case_name == "VideoTrackSwitch":
                 test_config["AVModule"]["L4"][test_case_name]["controls"]["trick_modes"] = [
                     {"action": "play", "duration": stream_info["duration"]}
                 ]
