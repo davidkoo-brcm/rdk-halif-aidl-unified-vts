@@ -26,10 +26,22 @@ project(IAVBufferHelperSkeleton)
 # Determine the workspace root (2 levels up from this CMakeLists.txt)
 get_filename_component(WORKSPACE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
 
+set(AVBUFFER_VERSION "${AVBUFFER_VERSION}" CACHE STRING "AVBuffer interface version")
+
+message(STATUS "AVBUFFER_VERSION=${AVBUFFER_VERSION}")
+
+if(NOT AVBUFFER_VERSION)
+    message(FATAL_ERROR "AVBUFFER_VERSION is empty")
+endif()
 # Use absolute paths
-set(HEADER_FILE "${WORKSPACE_ROOT}/rdk-halif-aidl/avbuffer/current/avbufferhelper.h")
+set(HEADER_FILE_CANDIDATE "${WORKSPACE_ROOT}/rdk-halif-aidl/avbuffer/${AVBUFFER_VERSION}/avbufferhelper.h")
 set(SKELETON_CPP "${CMAKE_BINARY_DIR}/IAVBufferHelper_skeleton.cpp")
 set(SCRIPT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/generate_skeleton.sh")
+
+set(HEADER_FILE "${HEADER_FILE_CANDIDATE}")
+get_filename_component(HEADER_INCLUDE_DIR "${HEADER_FILE}" DIRECTORY)
+message(STATUS "HEADER_FILE=${HEADER_FILE}")
+message(STATUS "HEADER_INCLUDE_DIR=${HEADER_INCLUDE_DIR}")
 
 # Generate the skeleton .cpp file using full path to the script
 add_custom_command(
@@ -46,4 +58,6 @@ add_custom_target(generate_skeleton DEPENDS ${SKELETON_CPP})
 # Build the .so
 add_library(avbufferhelper SHARED ${SKELETON_CPP})
 add_dependencies(avbufferhelper generate_skeleton)
-target_include_directories(avbufferhelper PUBLIC ${WORKSPACE_ROOT}/rdk-halif-aidl/avbuffer/current)
+target_include_directories(avbufferhelper PUBLIC
+    ${HEADER_INCLUDE_DIR}
+)
