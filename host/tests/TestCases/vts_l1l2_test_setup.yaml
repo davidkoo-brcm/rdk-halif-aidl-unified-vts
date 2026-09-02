@@ -355,7 +355,7 @@ VTS:
             - getCapabilities_pos
             - setBootCause_pos
             - setBootCause_neg
-            - getBootReason_pos
+            - getBootCause_pos
             - reboot_neg
             - getPowerSource_pos
       16:
