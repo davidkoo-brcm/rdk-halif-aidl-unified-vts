@@ -44,7 +44,7 @@ SOURCE_FILE_MAP = {
     "motionsensor": [
         os.path.join(
             "sensor",
-            "current",
+            "{version}",
             "com",
             "rdk",
             "hal",
@@ -56,7 +56,7 @@ SOURCE_FILE_MAP = {
     "thermalsensor": [
         os.path.join(
             "sensor",
-            "current",
+            "{version}",
             "com",
             "rdk",
             "hal",
@@ -73,25 +73,56 @@ def get_source_components(target_component):
     return SOURCE_COMPONENT_MAP.get(target_component, [target_component])
 
 
-def get_explicit_source_files(source_dir, target_component):
+def load_released_versions(source_dir):
+    """Load the released component-version map and its default version."""
+    manifest_path = os.path.join(source_dir, "versions_released.yaml")
+    try:
+        manifest = load_yaml(manifest_path)
+    except Exception:
+        return "current", {}
+
+    if not isinstance(manifest, dict):
+        return "current", {}
+
+    default_version = manifest.get("default", "current")
+    components = manifest.get("components", {})
+    return default_version, components if isinstance(components, dict) else {}
+
+
+def get_component_version(source_component, default_version, component_versions):
+    """Return the released version configured for a source component."""
+    return component_versions.get(source_component, default_version)
+
+
+def get_explicit_source_files(
+    source_dir, target_component, default_version, component_versions
+):
     """Return explicit source YAML files for target components with file-level aliases."""
     rel_paths = SOURCE_FILE_MAP.get(target_component, [])
     candidates = []
     for rel_path in rel_paths:
-        abs_path = os.path.join(source_dir, rel_path)
+        path_parts = rel_path.split(os.sep)
+        source_component = path_parts[0]
+        version = get_component_version(
+            source_component, default_version, component_versions
+        )
+        abs_path = os.path.join(source_dir, rel_path.format(version=version))
         if os.path.isfile(abs_path):
             candidates.append(abs_path)
     return candidates
 
 
-def get_candidate_source_files(source_dir, source_component):
+def get_candidate_source_files(
+    source_dir, source_component, default_version, component_versions
+):
     """Return YAML files under the source component to consider for matching."""
     candidates = []
-    current_dir = os.path.join(source_dir, source_component, "current")
-    if os.path.isdir(current_dir):
-        for entry in sorted(os.listdir(current_dir)):
+    version = get_component_version(source_component, default_version, component_versions)
+    version_dir = os.path.join(source_dir, source_component, version)
+    if os.path.isdir(version_dir):
+        for entry in sorted(os.listdir(version_dir)):
             if entry.endswith(".yaml"):
-                candidates.append(os.path.join(current_dir, entry))
+                candidates.append(os.path.join(version_dir, entry))
     return candidates
 
 
@@ -260,6 +291,7 @@ def discover_pairs(dir1, dir2, warn_on_unmatched=True):
     Falls back to matching by YAML root node.
     """
     pairs = []
+    default_version, component_versions = load_released_versions(dir2)
     for root, _, files in os.walk(dir1):
         if not root.endswith("profiles") and "/profiles" not in root:
             continue
@@ -282,12 +314,16 @@ def discover_pairs(dir1, dir2, warn_on_unmatched=True):
                 root_key = None
 
             match = None
-            explicit_candidate_files = get_explicit_source_files(dir2, component)
+            explicit_candidate_files = get_explicit_source_files(
+                dir2, component, default_version, component_versions
+            )
             if explicit_candidate_files:
                 source_component_candidates = [explicit_candidate_files]
             else:
                 source_component_candidates = [
-                    get_candidate_source_files(dir2, source_component)
+                    get_candidate_source_files(
+                        dir2, source_component, default_version, component_versions
+                    )
                     for source_component in source_components
                 ]
             for candidate_files in source_component_candidates:
@@ -345,7 +381,7 @@ def main():
     if args.dirs:
         # Directory mode convention:
         #   target repository contains <component>/profiles/*.yaml
-        #   source repository contains <component>/current/*.yaml
+        #   source repository contains <component>/<released-version>/*.yaml
         # If args are reversed, auto-detect and swap.
         arg1, arg2 = args.file_or_dir1, args.file_or_dir2
         target_dir, source_dir = arg1, arg2
