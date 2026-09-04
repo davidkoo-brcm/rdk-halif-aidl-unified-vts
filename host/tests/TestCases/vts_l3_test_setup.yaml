@@ -495,6 +495,10 @@ VTS:
           - /Audio_Decoder/DOLBY_AC3/Valid/tones_44.1k_2_96.ac3
           - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_1_128.ac3
           - /Audio_Decoder/DOLBY_AC3/Valid/tones_48k_2_192.ac3
+          - Video_Decoder/H264_HIGH_1920x1080_DR_SDR_DR_BT709_60p_PIXEL_FORMAT_YCBCR420_734.es
+          - Video_Decoder/H265_HIGH_1920x1080_DR_SDR_DR_BT709_30p_PIXEL_FORMAT_YCBCR420_734.es
+          - Video_Decoder/Ves_ColorChecker_300nits_1920x1080_23976_dvhestn_L0_1000.265
+          - Video_Decoder/VP9_HIGH_1920x1080_DR_SDR_DR_BT709_30p_PIXEL_FORMAT_YCBCR420_734.es
           - Video_Sink/H264_HD_30_YUV420.es
           - Video_Sink/H264_HD_30_YUV444.es
           - Video_Sink/H264_HD_60_YUV420.es
