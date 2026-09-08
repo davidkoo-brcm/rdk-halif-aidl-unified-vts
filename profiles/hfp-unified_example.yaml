@@ -21,7 +21,7 @@
 #** ******************************************************************************
 
 AVModule:
-  description: "hfp profiles for puck device"
+  description: "hfp profiles for vdevice"
 
 include_0: profiles/hfp-audiodecoder_vdevice.yaml
 include_1: profiles/hfp-audiosink_vdevice.yaml
@@ -31,12 +31,15 @@ include_4: profiles/hfp-videodecoder_vdevice.yaml
 include_5: profiles/hfp-avclock.yaml
 include_6: profiles/hfp-planecontrol.yaml
 
-include_7: profiles/hfp-hdmicec_vcomponent.yaml
-include_8: profiles/hfp-hdmioutput.yaml
-include_9: profiles/hfp-deepsleep-vcomponent.yaml
-include_10: profiles/hfp-deviceinfo-vcomponent.yaml
-include_11: profiles/hfp-boot-vcomponent.yaml
-include_12: profiles/hfp-firmwareupdate-vcomponent.yaml
-include_13: profiles/hfp-indicator-vcomponent.yaml
-include_14: profiles/hfp-thermalsensor-vcomponent.yaml
-include_15: profiles/hfp-motionsensor-vcomponent.yaml
+include_7: profiles/hfp-hdmicec.yaml
+include_8: profiles/hfp-hdmiinput.yaml
+include_9: profiles/hfp-hdmioutput.yaml
+include_10: profiles/hfp-deepsleep.yaml
+include_11: profiles/hfp-deviceinfo.yaml
+include_12: profiles/hfp-boot.yaml
+include_13: profiles/hfp-firmwareupdate.yaml
+include_14: profiles/hfp-indicator.yaml
+include_15: profiles/hfp-thermalsensor.yaml
+include_16: profiles/hfp-motionsensor.yaml
+include_17: profiles/hfp-compositeinput.yaml
+include_18: profiles/hfp-vts-deepsleep.yaml
