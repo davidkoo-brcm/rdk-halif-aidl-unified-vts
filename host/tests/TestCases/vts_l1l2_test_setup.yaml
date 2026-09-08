@@ -361,7 +361,7 @@ VTS:
       16:
         name: "VTS_L2_BOOT"
         tests:
-            - setAndGetBootReason
+            - setAndGetBootCause
       17:
         name: "VTS_L1_DEVICEINFO"
         tests:
