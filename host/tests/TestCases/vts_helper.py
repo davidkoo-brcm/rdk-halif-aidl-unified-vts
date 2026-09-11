@@ -579,7 +579,8 @@ class VTSTestHelperClass(utHelperClass):
             use_all_wait_time (bool): Use all_wait_time instead of wait_time for L2/L3/L4 tests.
 
         Returns:
-            bool: True if all tests pass, False otherwise.
+            True if all tests pass, False if any fail, or the string "SKIPPED"
+            if every instance reported the suite as skipped.
         """
         return self.runTest(test_suite, None, use_all_wait_time)
 
