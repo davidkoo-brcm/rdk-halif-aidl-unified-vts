@@ -45,7 +45,7 @@
 
    <project name="rdk-halif-aidl-test-cec"
            path="vts_hal_test_components/hdmicec"
-	   revision="refs/tags/0.6.0" />
+           revision="refs/heads/develop" />
 
    <project name="rdk-halif-aidl-test-hdmiinput"
            path="vts_hal_test_components/hdmiinput"
