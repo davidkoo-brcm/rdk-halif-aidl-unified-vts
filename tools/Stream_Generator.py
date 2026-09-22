@@ -1,29 +1,7 @@
-#!/usr/bin/env python3
-#** *****************************************************************************
-# *
-# * If not stated otherwise in this file or this component's LICENSE file the
-# * following copyright and licenses apply:
-# *
-# * Copyright 2026 RDK Management
-# *
-# * Licensed under the Apache License, Version 2.0 (the "License");
-# * you may not use this file except in compliance with the License.
-# * You may obtain a copy of the License at
-# *
-# * http://www.apache.org/licenses/LICENSE-2.0
-# *
-# * Unless required by applicable law or agreed to in writing, software
-# * distributed under the License is distributed on an "AS IS" BASIS,
-# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# * See the License for the specific language governing permissions and
-# * limitations under the License.
-# *
-#* ******************************************************************************
-
-
 # VTS_Main_and_Error_Stream_Generator_Tool
 # -------------------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------
+
 import os, sys, re, json, math, random, subprocess
 from pathlib import Path
 from typing import Optional
@@ -36,6 +14,83 @@ from itertools import product
 import Audio_Error_Types as AET
 import Video_Error_Types as VET
 
+# ---- RAW output filename helper ----
+def _make_raw_error_name(base_path: str, mode: str, stats: dict, output_dir: str = ''):
+    '''Build RAW error output filename consistent with other outputs.
+    Pattern: <stem_with_mode>_aX_vY_<dur>sec<ext> stored under output_dir.
+    Inserts mode just before trailing bitrate token if present.
+    '''
+    p = Path(base_path)
+    stem = p.stem
+    ext = p.suffix
+
+    # Insert mode before bitrate token (e.g. _20M or _128k)
+    m = re.match(r'^(.*)_(\d+[kM])$', stem)
+    if m:
+        stem2 = f"{m.group(1)}_{mode}_{m.group(2)}"
+    else:
+        stem2 = f"{stem}_{mode}"
+
+    a = int(stats.get('audio_frames', 0) or 0)
+    v = int(stats.get('video_frames', 0) or 0)
+    d = int(stats.get('duration_sec', 0) or 0)
+    stem2 = f"{stem2}_a{a}_v{v}_{d}sec"
+
+    out_dir = Path(output_dir) if output_dir else p.parent
+    return str(out_dir / (stem2 + ext))
+
+def _allowed_video_error_modes(codecs=None):
+    '''Return list of allowed video error modes for the given codec(s).
+    Accepts None, a single codec string, or a list/tuple.
+    '''
+    if codecs is None:
+        codec = (getattr(VET, 'CURRENT_VIDEO_CODEC', None) or '')
+    elif isinstance(codecs, str):
+        codec = codecs
+    elif isinstance(codecs, (list, tuple)) and codecs:
+        codec = codecs[0]
+    else:
+        codec = ''
+    codec = (codec or '').lower()
+
+    modes = list(getattr(VET, 'GENERIC_VIDEO_MODES', []))
+    if codec.startswith('libx264') or codec in ('h264', 'avc'):
+        modes += list(getattr(VET, 'H264_CODEC_SPECIFIC_MODES', []))
+    elif codec.startswith('libx265') or codec in ('hevc', 'h265'):
+        modes += list(getattr(VET, 'HEVC_CODEC_SPECIFIC_MODES', []))
+    elif 'mpeg2' in codec or codec in ('mpeg2video', 'mpegvideo'):
+        modes += list(getattr(VET, 'MPEG2_CODEC_SPECIFIC_MODES', []))
+    elif 'vp9' in codec or codec in ('libvpx-vp9', 'vp9'):
+        modes += list(getattr(VET, 'VP9_CODEC_SPECIFIC_MODES', []))
+    elif 'av1' in codec or codec in ('libsvtav1', 'libaom-av1', 'av1'):
+        modes += list(getattr(VET, 'AV1_CODEC_SPECIFIC_MODES', []))
+
+    allm = getattr(VET, 'ALL_VIDEO_ERROR_MODES', None)
+    if isinstance(allm, (list, tuple)) and allm:
+        modes = [m for m in modes if m in allm]
+
+    seen = set(); out = []
+    for m in modes:
+        if m not in seen:
+            seen.add(m); out.append(m)
+    return out
+
+
+# ---- FFmpeg command normaliser ----
+
+def _normalise_ffmpeg_cmd(cmd):
+    """Ensure all items in ffmpeg cmd are strings (flatten single-item lists)."""
+    norm = []
+    for x in cmd or []:
+        if isinstance(x, (list, tuple)):
+            if len(x) == 1:
+                norm.append(str(x[0]))
+            else:
+                # flatten nested lists conservatively
+                norm.extend(str(i) for i in x)
+        else:
+            norm.append(str(x))
+    return norm
 
 try:
     from Combopicker import Combopicker as _CombopickerReal
@@ -88,10 +143,39 @@ def _ensure_listbox_export_off(widget):
     except Exception:
         pass
 
+def _derive_duration_from_frames(frames_count: int, vid_dict=None, aud_dict=None) -> int:
+    """Derive an approximate duration (seconds) from a frames count.
+    Used only for naming/stats when user selects frame-count mode and leaves Duration empty.
+    - If video FPS known: ceil(frames / fps)
+    - Else if audio sample-rate known: ceil(frames*1024 / sr)
+    - Else: 0
+    """
+    try:
+        fc = int(frames_count)
+    except Exception:
+        return 0
+    if fc <= 0:
+        return 0
+    try:
+        if vid_dict and vid_dict.get('Framerate'):
+            fps = float(vid_dict.get('Framerate'))
+            if fps > 0:
+                return int(math.ceil(fc / fps))
+    except Exception:
+        pass
+    try:
+        if aud_dict and aud_dict.get('Sample Rate'):
+            sr = float(aud_dict.get('Sample Rate'))
+            if sr > 0:
+                return int(math.ceil((fc * 1024.0) / sr))
+    except Exception:
+        pass
+    return 0
+
 # ---- UI Parameters Selection ----
 video_params = {
     "Resolution": ["3840x2160", "2560x1440", "1920x1080", "1280x720", "960x540", "720x576", "720x480", "640x360", "320x240"],
-    "Codec": ["libx264", "libx265", "mpeg1video", "mpeg2video", "vp9", "wmv2", "libaom-av1"],
+    "Codec": ["libx264", "libx265", "mpeg1video", "mpeg2video", "mpeg4", "libvpx-vp9", "wmv2", "libsvtav1"],
     "Profile": ["main", "main10", "None"],
     "Framerate": [23.976, 24, 25, 29.97, 30, 50, 59.94, 60],
     "Dynamic Range": ["SDR", "HDR10", "HDR10+", "HLG"],
@@ -111,8 +195,8 @@ audio_params = {
 samplerate_mapping = {8000:"8k",11025:"11.025k",12000:"12k",16000:"16k",22050:"22.05k",24000:"24k",32000:"32k",44100:"44.1k",48000:"48k",64000:"64k",88200:"88.2k",96000:"96k"}
 
 fileformat_mapping = {
-    "libx264": "h264", "libx265": "h265", "mpeg1video": "mpg", "mpeg2video": "mpg",
-    "libaom-av1": "av1", "wmv2": "wmv", "vp9":"vp9",
+    "libx264": "h264", "libx265": "h265", "mpeg1video": "mpg", "mpeg2video": "mpg", "mpeg4": "mpeg4",
+    "libsvtav1": "av1", "wmv2": "wmv", "libvpx-vp9":"vp9",
     "aac": "aac", "mp3": "mp3", "ac3": "ac3", "eac3": "eac3", "pcm_s16le": "wav",
     "flac": "flac", "libvorbis": "ogg", "wma": "wma", "libopus" : "opus"
 }
@@ -126,8 +210,9 @@ RAW_VIDEO_ES_MAP = {
     'libx265': ('hevc', '.h265'),
     'mpeg1video': ('mpeg', '.mpg'),
     'mpeg2video': ('mpeg', '.mpg'),
-    'vp9': ('ivf', '.ivf'),
-    'libaom-av1': ('ivf', '.ivf'),
+    'mpeg4': ('m4v','.m4v'),
+    'libvpx-vp9': ('ivf', '.ivf'),
+    'libsvtav1': ('ivf', '.ivf'),
     # WMV is typically stored in ASF; keep extension as .wmv for user expectation.
     'wmv2': ('asf', '.wmv'),
 }
@@ -177,8 +262,8 @@ def _get_raw_es_format_and_ext(vid_dict=None, aud_dict=None):
         if codec not in RAW_AUDIO_ES_MAP:
             raise ValueError(f"Raw elementary output not supported for audio codec: {codec}")
         mux, ext = RAW_AUDIO_ES_MAP[codec]
-        if codec == 'libopus' and mux == 'opus' and not _ffmpeg_has_muxer('opus'):
-            mux = 'ogg'
+        # if codec == 'libopus' and mux == 'opus' and not _ffmpeg_has_muxer('opus'):
+        #     mux = 'ogg'
         return mux, ext
     raise ValueError('Either vid_dict or aud_dict must be provided for raw output.')
 
@@ -288,9 +373,9 @@ def get_color_params(video_selection):
     dynamic_range = video_selection.get("Dynamic Range", "SDR")
     colorspace_ui = video_selection.get("Color Space", "BT.709")
 
-    # Allow HDR only for these codecs libx265, libaom-av1, and VP9
-    if dynamic_range in ["HDR10", "HDR10+", "HLG"] and codec not in ["libx265", "libaom-av1", "vp9"]:
-        return None, f"Invalid combination: HDR requires libx265, libaom-av1, or vp9"
+    # Allow HDR only for these codecs libx265, libsvtav1, and VP9
+    if dynamic_range in ["HDR10", "HDR10+", "HLG"] and codec not in ["libx265", "libsvtav1", "libvpx-vp9"]:
+        return None, f"Invalid combination: HDR requires libx265, libsvtav1, or libvpx-vp9"
 
     # Profile validation only for x264/x265
     if codec in ["libx264", "libx265"]:
@@ -356,7 +441,7 @@ def _build_scale_filter(target_res: str) -> str:
 def generate_ffmpeg_command(
     vid_dict=None, aud_dict=None, video_input="", audio_input="",
     video_source="testsrc", audio_source="sine",
-    duration_sec=10, volume=1.0, file_format="", output_dir=""):
+    duration_sec=10, frames_count=None, volume=1.0, file_format="", output_dir="", error_enabled=False):
     if not _ffmpeg_exists():
         raise RuntimeError("FFmpeg/ffprobe not found in PATH.")
     if not output_dir:
@@ -365,6 +450,17 @@ def generate_ffmpeg_command(
         raise ValueError("Both vid_dict and aud_dict cannot be empty")
 
     file_format_norm = (file_format or '').strip().lower()
+
+
+    # If frame-count mode is used with lavfi sources, ensure lavfi duration is >0
+    src_duration = duration_sec
+    if frames_count and (not src_duration or float(src_duration) <= 0):
+        try:
+            src_duration = _derive_duration_from_frames(frames_count, vid_dict=vid_dict, aud_dict=aud_dict)
+        except Exception:
+            src_duration = 0
+        if not src_duration or int(src_duration) <= 0:
+            src_duration = 1
 
     # WMA cannot be muxed into MP4/TS/WEBM reliably. If user forced those, fall back to ASF (.wma).
 
@@ -379,7 +475,7 @@ def generate_ffmpeg_command(
             raise ValueError('Raw File Format supports only Video OR Audio. Disable one of them.')
     if (file_format or "").strip().lower() == "webm":
         # Ensure video codec is VP9 or AV1
-        if vid_dict and vid_dict.get("Codec") not in ["vp9", "libaom-av1"]:
+        if vid_dict and vid_dict.get("Codec") not in ["libvpx-vp9", "libsvtav1"]:
             raise ValueError(f"Invalid video codec '{vid_dict.get('Codec')}' for WebM. Use VP9 or AV1.")
         # Ensure audio codec is Vorbis or Opus (if audio is enabled)
         if aud_dict and aud_dict.get("Codec") not in ["libvorbis", "libopus"]:
@@ -425,7 +521,7 @@ def generate_ffmpeg_command(
             coloropt = ""; vsrc = video_source
             if ("color" in video_source):
                 coloropt = ":c=" + video_source.split("_")[1]; vsrc = "color"
-            video_src_cmd = ["-f", "lavfi", "-i", f"{vsrc}=rate={framerate}:size={vid_dict['Resolution']}:duration={duration_sec}{coloropt}"]
+            video_src_cmd = ["-f", "lavfi", "-i", f"{vsrc}=rate={framerate}:size={vid_dict['Resolution']}:duration={src_duration}{coloropt}"]
         video_opt_cmd = [
             "-c:v", vid_dict["Codec"],
             "-b:v", vid_dict["Bitrate"],
@@ -435,6 +531,25 @@ def generate_ffmpeg_command(
             "-color_trc", color_param["color_trc"],
             "-colorspace", color_param["colorspace"]
         ]
+        # ---- Fast encode params for VP9/AV1 (adds to existing options) ----
+        _codec = (vid_dict.get('Codec') or '').strip()
+        if _codec == 'libvpx-vp9':
+         video_opt_cmd += [
+          '-deadline', 'realtime',
+          '-cpu-used', '8',
+          '-row-mt', '1',
+          '-tile-rows','1',
+          '-tile-columns', '2',
+          '-threads', '8'
+         ]
+         
+        elif _codec == 'libsvtav1':
+         # libsvtav1 speed knobs
+         video_opt_cmd += [
+          '-preset', '8',
+          '-svtav1-params', 'lp=0'
+         ]
+
          # Always scale to the requested output resolution (and make it encoder-safe)
         vf_chain = [_build_scale_filter(vid_dict.get('Resolution',''))]
 
@@ -490,7 +605,7 @@ def generate_ffmpeg_command(
         pf_token = (filename_pix_fmt or '').replace(':', '')
 
         output_file_parts += [
-            vid_dict['Codec'].replace("libx", "h").replace("mpeg1video", "mpeg1").replace("mpeg2video", "mpeg2").replace("libaom-av1", "av1").replace("wmv2", "wmv"),
+            vid_dict['Codec'].replace("libx", "h").replace("mpeg1video", "mpeg1").replace("mpeg2video", "mpeg2").replace("libvpx-vp9", "vp9").replace("libsvtav1", "av1").replace("wmv2", "wmv"),
             res_label,
             vid_dict['Dynamic Range'].lower(),
             f"{framerate}f",
@@ -509,9 +624,9 @@ def generate_ffmpeg_command(
             audio_src_cmd = ["-stream_loop","-1","-i", audio_input] if duration_sec and (duration_sec > (_a_dur or 0)) else ["-i", audio_input]
         else:
             if audio_source == "sine":
-                audio_src_cmd = ["-f", "lavfi", "-i", f"{audio_source}=frequency=1000:sample_rate={aud_dict['Sample Rate']}:duration={duration_sec}"]
+                audio_src_cmd = ["-f", "lavfi", "-i", f"{audio_source}=frequency=1000:sample_rate={aud_dict['Sample Rate']}:duration={src_duration}"]
             elif audio_source == "anoisesrc":
-                audio_src_cmd = ["-f", "lavfi", "-i", f"{audio_source}=sample_rate={aud_dict['Sample Rate']}:duration={duration_sec}:c=pink"]
+                audio_src_cmd = ["-f", "lavfi", "-i", f"{audio_source}=sample_rate={aud_dict['Sample Rate']}:duration={src_duration}:c=pink"]
             elif audio_source == "sweep":
                 audio_src_cmd = ["-f", "lavfi", "-i", f"aevalsrc=sin(2*PI*(20+(20000-20)*t/{duration_sec})*t):s={aud_dict['Sample Rate']}"]
         enc_a = AUDIO_CODEC_ALIAS.get(aud_dict['Codec'], aud_dict['Codec'])
@@ -532,14 +647,14 @@ def generate_ffmpeg_command(
                 output_file_parts.append(aud_dict["Bitrate"])
     if file_format_norm != 'raw' and not file_format:
             if vid_dict and aud_dict:
-                if vid_dict["Codec"] in ["vp9", "libaom-av1"] and aud_dict["Codec"] in ["libvorbis", "libopus"]:
+                if vid_dict["Codec"] in ["libvpx-vp9", "libsvtav1"] and aud_dict["Codec"] in ["libvorbis", "libopus"]:
                     file_format = "webm"
                 elif vid_dict["Codec"] in ["mpeg1video", "mpeg2video", "wmv2"]:
                     file_format = "mp4"
                 else:
                     file_format = "mp4"
             elif vid_dict:
-                if vid_dict["Codec"] in ["vp9", "libaom-av1"]:
+                if vid_dict["Codec"] in ["libvpx-vp9", "libsvtav1"]:
                     file_format = "webm"
                 elif vid_dict["Codec"] in ["mpeg1video", "mpeg2video", "wmv2"]:
                     file_format = "mp4"
@@ -557,14 +672,36 @@ def generate_ffmpeg_command(
         raw_mux, raw_ext = _get_raw_es_format_and_ext(vid_dict, aud_dict)
         output_file = "_".join(output_file_parts) + raw_ext
         output_path = os.path.join(output_dir, output_file)
-        tail = stream_disable_cmd + ["-t", str(duration_sec), "-f", raw_mux, output_path]
+        # RAW + Error single-track only
+        if error_enabled and vid_dict and aud_dict:
+            raise ValueError('RAW error supports only Video OR Audio (not both)')
+        # Apply RAW error corruption
+        # NOTE: RAW error corruption is byte-level (VET/AET) and is handled outside ffmpeg.
+        # Keep ffmpeg command clean here.
+        # RAW duration / frames
+        if frames_count:
+            frame_tail = []
+            if vid_dict: frame_tail += ['-frames:v', str(frames_count)]
+            if aud_dict: frame_tail += ['-frames:a', str(frames_count)]
+            tail = stream_disable_cmd + frame_tail + ['-f', raw_mux, output_path]
+        else:
+            tail = stream_disable_cmd + ['-t', str(duration_sec), '-f', raw_mux, output_path]
         cmd += video_src_cmd + audio_src_cmd + video_opt_cmd + audio_opt_cmd + tail
         return cmd, output_path
 
+    # -------- NON-RAW path --------
     output_file = "_".join(output_file_parts) + "." + file_format
     output_path = os.path.join(output_dir, output_file)
-    cmd += video_src_cmd + audio_src_cmd + video_opt_cmd + audio_opt_cmd + stream_disable_cmd + ["-t", str(duration_sec), output_path]
+    if frames_count:
+        frame_tail = []
+        if vid_dict: frame_tail += ['-frames:v', str(frames_count)]
+        if aud_dict: frame_tail += ['-frames:a', str(frames_count)]
+        cmd += video_src_cmd + audio_src_cmd + video_opt_cmd + audio_opt_cmd + stream_disable_cmd + frame_tail + [output_path]
+    else:
+        cmd += video_src_cmd + audio_src_cmd + video_opt_cmd + audio_opt_cmd + stream_disable_cmd + ['-t', str(duration_sec), output_path]
     return cmd, output_path
+
+
 # ---- Fallback stats helper (for cases where ffprobe cannot count packets) ----
 def _fallback_stats_from_params(duration_sec: int, vid_dict=None, aud_dict=None):
     try:
@@ -576,9 +713,9 @@ def _fallback_stats_from_params(duration_sec: int, vid_dict=None, aud_dict=None)
         if aud_dict and aud_dict.get('Sample Rate'):
             sr = int(aud_dict.get('Sample Rate'))
             a_frames = int(round((sr * float(duration_sec)) / 1024.0))
-        return {'duration_sec': int(duration_sec), 'audio_frames': a_frames, 'video_frames': v_frames}
+        return {'duration_sec': int(duration_sec or 0), 'audio_frames': a_frames, 'video_frames': v_frames}
     except Exception:
-        return {'duration_sec': int(duration_sec), 'audio_frames': 0, 'video_frames': 0}
+        return {'duration_sec': int(duration_sec or 0), 'audio_frames': 0, 'video_frames': 0}
 
 # ---- Probe & rename helpers ----
 def get_stream_info(file_path):
@@ -677,7 +814,7 @@ def rename_file_with_stats(filename: str, stats: dict) -> str:
     if not outputfile.exists() or not stats:
         return str(outputfile)
     base = outputfile.stem; ext = outputfile.suffix
-    new_filename = f"{base}_a{stats['audio_frames']}_v{stats['video_frames']}_{int(stats['duration_sec'])}sec{ext}"
+    new_filename = f"{base}_a{stats['audio_frames']}_v{stats['video_frames']}_{int(stats.get('duration_sec') or 0)}sec{ext}"
     new_path = outputfile.with_name(new_filename)
     if new_path.exists():
         try: os.remove(new_path)
@@ -707,7 +844,7 @@ def _rename_error_output(original_path: str, base_stem: str, suffix: str, stats:
 
     tokens = base_stem.split('_') if base_stem else []
 
-    VIDEO_CODECS = {'h264','h265','mpeg1','mpeg2','vp9','wmv','av1'}
+    VIDEO_CODECS = {'h264','h265','mpeg1','mpeg2', 'mpeg4','vp9','wmv','av1'}
     AUDIO_CODECS = {'aac','mp3','ac3','eac3','flac','pcm','vorbis','opus','wma'}
     def is_bitrate(t):
         return bool(re.fullmatch(r"\d+(?:k|M)", t))
@@ -893,6 +1030,8 @@ def _remux_video_audio_raw(v_raw: Optional[str] = None, v_fmt: Optional[str] = N
         cmd += ["-r", str(fps_hint)]
     if a_raw and a_demux:
         cmd += ["-f", a_demux, "-i", a_raw]
+    elif a_raw:
+        cmd += ["-i", a_raw]
     maps = []
     if v_raw:
         maps += ["-map", "0:v:0?"]
@@ -911,7 +1050,12 @@ def _remux_video_audio_raw(v_raw: Optional[str] = None, v_fmt: Optional[str] = N
     extra = []
     if (final_fmt or '').lower() == 'ts':
         extra = ['-mpegts_flags', '+resend_headers']
-    cmd += maps + ['-c:v', 'copy', '-c:a', 'copy'] + bsf + flags + extra + [final_out]
+    if (a_demux or "").lower() == "eac3":
+        audio_codec_param = ["-c:a", "eac3"]
+    else:
+        audio_codec_param = ["-c:a", "copy"]
+
+    cmd += maps + ['-c:v', 'copy'] + audio_codec_param + bsf + flags + extra + [final_out]
     try:
         subprocess.run(cmd, check=True)
         return True
@@ -927,6 +1071,16 @@ def _get_selected_lists(mapper: dict):
         except Exception: vals = []
         out[k] = [v for v in vals if str(v) != '']
     return out
+
+def _safe_var_str(var):
+    """Safely read a Tk variable (StringVar/IntVar/etc.) as a stripped string.
+    Returns '' if var is None or var.get() is None.
+    """
+    try:
+        val = var.get() if var is not None else ''
+    except Exception:
+        val = ''
+    return ('' if val is None else str(val)).strip()
 
 def _expand_video_combos(sel: dict):
     res_list = sel.get('Resolution', [])
@@ -986,9 +1140,15 @@ def build_ui():
     ttk.Checkbutton(toggle_frame, text="Enable Audio", variable=audio_enabled).grid(row=0, column=1, sticky='w', padx=15, pady=5)
 
     io_frame = ttk.Frame(root, padding=10); io_frame.pack(anchor='w', fill='x')
-    duration_var = tk.StringVar(value="10"); fileformat_var = tk.StringVar(value=""); output_path_var = tk.StringVar()
+    duration_var = tk.StringVar(value="")
+    frame_count_var = tk.StringVar(value=""); fileformat_var = tk.StringVar(value=""); output_path_var = tk.StringVar()
     ttk.Label(io_frame, text="Duration (sec):").grid(row=0, column=0, sticky='w', padx=5, pady=5)
     entry_duration = ttk.Entry(io_frame, textvariable=duration_var, width=10); entry_duration.grid(row=0, column=1, sticky='w', padx=5, pady=5)
+    ttk.Label(io_frame, text="(or)").grid(row=0, column=2, sticky='w', padx=5, pady=5)
+    ttk.Label(io_frame, text="Number of Frames:").grid(row=0, column=3, sticky='w', padx=5, pady=5)
+    frame_count_var = tk.StringVar(value="")
+    entry_frames = ttk.Entry(io_frame, textvariable=frame_count_var, width=10)
+    entry_frames.grid(row=0, column=4, sticky='w', padx=5, pady=5)
     ttk.Label(io_frame, text="File Format").grid(row=1, column=0, sticky='w', padx=5, pady=5)
     file_format_combo = ttk.Combobox(io_frame, textvariable=fileformat_var, values=["mp4","ts","webm","raw"], state="readonly", width=10); file_format_combo.grid(row=1, column=1, sticky='w', padx=5, pady=5)
 
@@ -1278,19 +1438,19 @@ def build_ui():
             is_err = (video_mode_var.get() == 'Error Stream Generator')
         except Exception:
             is_err = False
-        if is_err and (('vp9' in sc) or ('libaom-av1' in sc)):
+        if is_err and (('libvpx-vp9' in sc) or ('libsvtav1' in sc)):
             only = set()
             if 'libx264' in sc: only |= set(VET.H264_CODEC_SPECIFIC_MODES)
             if 'libx265' in sc: only |= set(VET.HEVC_CODEC_SPECIFIC_MODES)
             if 'mpeg2video' in sc: only |= set(VET.MPEG2_CODEC_SPECIFIC_MODES)
-            if 'vp9' in sc: only |= set(VET.VP9_CODEC_SPECIFIC_MODES)
-            if 'libaom-av1' in sc: only |= set(VET.AV1_CODEC_SPECIFIC_MODES)
+            if 'libvpx-vp9' in sc: only |= set(VET.VP9_CODEC_SPECIFIC_MODES)
+            if 'libsvtav1' in sc: only |= set(VET.AV1_CODEC_SPECIFIC_MODES)
             return sorted(list(only))
         if 'libx264' in sc: allowed |= set(VET.H264_CODEC_SPECIFIC_MODES)
         if 'libx265' in sc: allowed |= set(VET.HEVC_CODEC_SPECIFIC_MODES)
         if 'mpeg2video' in sc: allowed |= set(VET.MPEG2_CODEC_SPECIFIC_MODES)
-        if 'vp9' in sc: allowed |= set(VET.VP9_CODEC_SPECIFIC_MODES)
-        if 'libaom-av1' in sc: allowed |= set(VET.AV1_CODEC_SPECIFIC_MODES)
+        if 'libvpx-vp9' in sc: allowed |= set(VET.VP9_CODEC_SPECIFIC_MODES)
+        if 'libsvtav1' in sc: allowed |= set(VET.AV1_CODEC_SPECIFIC_MODES)
         return sorted(list(allowed))
     
     def _update_error_picker_values_fast(picker, new_vals):
@@ -1306,7 +1466,7 @@ def build_ui():
         selected_codecs = _current_codec_selection()
         new_vals = _allowed_video_error_modes(selected_codecs)
         try:
-            if video_mode_var.get() == 'Error Stream Generator' and (('vp9' in selected_codecs) or ('libaom-av1' in selected_codecs)):
+            if video_mode_var.get() == 'Error Stream Generator' and (('libvpx-vp9' in selected_codecs) or ('libsvtav1' in selected_codecs)):
                 new_vals = [m for m in new_vals if m not in VET.GENERIC_VIDEO_MODES]
         except Exception:
             pass
@@ -1317,10 +1477,10 @@ def build_ui():
                 is_err = (video_mode_var.get() == 'Error Stream Generator')
             except Exception:
                 is_err = False
-            if is_err and (('vp9' in selected_codecs) or ('libaom-av1' in selected_codecs)):
+            if is_err and (('libvpx-vp9' in selected_codecs) or ('libsvtav1' in selected_codecs)):
                 parts = []
-                if 'vp9' in selected_codecs: parts.append('VP9')
-                if 'libaom-av1' in selected_codecs: parts.append('AV1')
+                if 'libvpx-vp9' in selected_codecs: parts.append('VP9')
+                if 'libsvtav1' in selected_codecs: parts.append('AV1')
                 if 'libx264' in selected_codecs: parts.append('H.264')
                 if 'libx265' in selected_codecs: parts.append('HEVC')
                 if 'mpeg2video' in selected_codecs: parts.append('MPEG-2')
@@ -1330,8 +1490,8 @@ def build_ui():
                 if 'libx264' in selected_codecs: label += ' + H.264'
                 if 'libx265' in selected_codecs: label += ' + HEVC'
                 if 'mpeg2video' in selected_codecs: label += ' + MPEG-2'
-                if 'vp9' in selected_codecs: label += ' + VP9'
-                if 'libaom-av1' in selected_codecs: label += ' + AV1'
+                if 'libvpx-vp9' in selected_codecs: label += ' + VP9'
+                if 'libsvtav1' in selected_codecs: label += ' + AV1'
                 label += ')'
             state['error_picker'] = picker
             error_label.configure(text=label)
@@ -1374,10 +1534,10 @@ def build_ui():
             is_err = (video_mode_var.get() == 'Error Stream Generator')
         except Exception:
             is_err = False
-        if is_err and (('vp9' in selected_codecs) or ('libaom-av1' in selected_codecs)):
+        if is_err and (('libvpx-vp9' in selected_codecs) or ('libsvtav1' in selected_codecs)):
             parts = []
-            if 'vp9' in selected_codecs: parts.append('VP9')
-            if 'libaom-av1' in selected_codecs: parts.append('AV1')
+            if 'libvpx-vp9' in selected_codecs: parts.append('VP9')
+            if 'libsvtav1' in selected_codecs: parts.append('AV1')
             if 'libx264' in selected_codecs: parts.append('H.264')
             if 'libx265' in selected_codecs: parts.append('HEVC')
             if 'mpeg2video' in selected_codecs: parts.append('MPEG-2')
@@ -1387,8 +1547,8 @@ def build_ui():
             if 'libx264' in selected_codecs: label += ' + H.264'
             if 'libx265' in selected_codecs: label += ' + HEVC'
             if 'mpeg2video' in selected_codecs: label += ' + MPEG-2'
-            if 'vp9' in selected_codecs: label += ' + VP9'
-            if 'libaom-av1' in selected_codecs: label += ' + AV1'
+            if 'libvpx-vp9' in selected_codecs: label += ' + VP9'
+            if 'libsvtav1' in selected_codecs: label += ' + AV1'
             label += ')'
         error_label.configure(text=label)
         state['error_picker'] = new_picker
@@ -1575,7 +1735,18 @@ def build_ui():
         try:
             if not (video_enabled.get() or audio_enabled.get()):
                 messagebox.showwarning("Error", "Enable at least Video or Audio"); return
-            duration_sec = int(float(duration_var.get().strip()))
+            duration_val = _safe_var_str(duration_var)
+            frames_val = _safe_var_str(frame_count_var)
+            if duration_val and frames_val:
+                messagebox.showerror("Input Error", "Select either Duration OR Frames, not both.")
+                return
+            if not duration_val and not frames_val:
+                messagebox.showerror("Input Error", "Enter either Duration OR Frames.")
+                return
+            duration_sec = int(float(duration_val)) if duration_val else None
+            frames_count = int(frames_val) if frames_val else None
+            if duration_sec is None and frames_count is not None:
+                duration_sec = _derive_duration_from_frames(frames_count, vid_dict=vid_combos[0] if 'vid_combos' in locals() and vid_combos else None, aud_dict=aud_combos[0] if 'aud_combos' in locals() and aud_combos else None)
             gop_sec = float(gop_size_var.get().strip() or 1)
             key_sec = float(keyint_var.get().strip() or 1)
             volume = float(volume_var.get().strip() or 1.0)
@@ -1638,13 +1809,13 @@ def build_ui():
                         v, a,
                         video_input=v_input, audio_input=a_input,
                         video_source=v_source, audio_source=a_source,
-                        duration_sec=duration_sec, volume=volume,
+                        duration_sec=duration_sec, frames_count=frames_count, volume=volume,
                         file_format=file_fmt, output_dir=output_dir,
                     )
                     print("Running:", " ".join(cmd)); subprocess.run(cmd, check=True)
                     stats = get_stream_info(outfile)
                     if stats and int(stats.get('duration_sec',0) or 0) == 0:
-                        stats['duration_sec'] = int(duration_sec)
+                        stats['duration_sec'] = int(duration_sec or 0)
                     if (not stats) or (int(stats.get('audio_frames',0))==0 and int(stats.get('video_frames',0))==0):
                         stats = _fallback_stats_from_params(duration_sec, v, a)
                     new_name = rename_file_with_stats(outfile, stats)
@@ -1655,13 +1826,13 @@ def build_ui():
                         v, None,
                         video_input=v_input, audio_input=a_input,
                         video_source=v_source, audio_source=a_source,
-                        duration_sec=duration_sec, volume=volume,
+                        duration_sec=duration_sec, frames_count=frames_count, volume=volume,
                         file_format=file_fmt, output_dir=output_dir,
                     )
                     print("Running:", " ".join(cmd)); subprocess.run(cmd, check=True)
                     stats = get_stream_info(outfile)
                     if stats and int(stats.get('duration_sec',0) or 0) == 0:
-                        stats['duration_sec'] = int(duration_sec)
+                        stats['duration_sec'] = int(duration_sec or 0)
                     if (not stats) or (int(stats.get('audio_frames',0))==0 and int(stats.get('video_frames',0))==0):
                         stats = _fallback_stats_from_params(duration_sec, v, None)
                     new_name = rename_file_with_stats(outfile, stats)
@@ -1672,13 +1843,13 @@ def build_ui():
                         None, a,
                         video_input=v_input, audio_input=a_input,
                         video_source=v_source, audio_source=a_source,
-                        duration_sec=duration_sec, volume=volume,
+                        duration_sec=duration_sec, frames_count=frames_count, volume=volume,
                         file_format=file_fmt, output_dir=output_dir,
                     )
                     print("Running:", " ".join(cmd)); subprocess.run(cmd, check=True)
                     stats = get_stream_info(outfile)
                     if stats and int(stats.get('duration_sec',0) or 0) == 0:
-                        stats['duration_sec'] = int(duration_sec)
+                        stats['duration_sec'] = int(duration_sec or 0)
                     if (not stats) or (int(stats.get('audio_frames',0))==0 and int(stats.get('video_frames',0))==0):
                         stats = _fallback_stats_from_params(duration_sec, None, a)
                     new_name = rename_file_with_stats(outfile, stats)
@@ -1698,7 +1869,21 @@ def build_ui():
                 messagebox.showwarning("Mode", "Select Error Stream Generator in Video or Audio tab."); return
             final_out_dir = output_path_var.get().strip() or str(Path.cwd())
             tmp_dir = str(Path(final_out_dir) / ".tmp_vts"); Path(tmp_dir).mkdir(parents=True, exist_ok=True)
-            duration_sec_ui = int(float(duration_var.get().strip() or 10))
+            #duration_sec_ui = int(float(duration_var.get().strip() or 10))
+            duration_val = _safe_var_str(duration_var)
+            frames_val = _safe_var_str(frame_count_var)
+            if duration_val and frames_val:
+                messagebox.showerror("Input Error", "Select either Duration OR Frames, not both.")
+                return
+            if not duration_val and not frames_val:
+                messagebox.showerror("Input Error", "Enter either Duration OR Frames.")
+                return
+            duration_sec_ui = int(float(duration_val)) if duration_val else None
+            frames_count_ui = int(frames_val) if frames_val else None
+            if duration_sec_ui is None and frames_count_ui is not None:
+                # derive duration for naming/stats when user chose frame-count mode
+                # actual encoding still uses -frames option
+                duration_sec_ui = _derive_duration_from_frames(frames_count_ui, vid_dict=vid_combos[0] if 'vid_combos' in locals() and vid_combos else None, aud_dict=aud_combos[0] if 'aud_combos' in locals() and aud_combos else None)
             gop_sec = float(gop_size_var.get().strip() or 1)
             key_sec = float(keyint_var.get().strip() or 1)
             volume = float(volume_var.get().strip() or 1.0)
@@ -1727,8 +1912,167 @@ def build_ui():
                 base_param_sets = [(None, a) for a in aud_combos]
             else:
                 messagebox.showerror("Params", "Please select at least video or audio parameters for Error mode."); return
+            # If frame-count mode selected, derive duration for naming/stats
+            if frames_count_ui and (not duration_sec_ui or int(duration_sec_ui) == 0):
+                duration_sec_ui = _derive_duration_from_frames(frames_count_ui, vid_dict=vid_combos[0] if vid_combos else None, aud_dict=aud_combos[0] if aud_combos else None)
+                if not duration_sec_ui:
+                    duration_sec_ui = 0
+
             final_count = 0
+            # FIX: ensure selected_fmt always defined
+            # FIX: ensure vid_dict and aud_dict always defined
+            # FIX: ensure v_input and a_input always defined
+            # FIX: ensure v_source and a_source always defined
+            v_source = v_source if 'v_source' in locals() else 'testsrc'
+            a_source = a_source if 'a_source' in locals() else 'sine'
+            v_input = v_input if 'v_input' in locals() else None
+            a_input = a_input if 'a_input' in locals() else None
+            vid_dict = vid_dict if 'vid_dict' in locals() else None
+            aud_dict = aud_dict if 'aud_dict' in locals() else None
+            selected_fmt = (fileformat_var.get().strip() if 'fileformat_var' in locals() else (selected_fmt if 'selected_fmt' in locals() else ''))
+
+            
+            # ================= RAW ERROR STREAM HANDLING (INSIDE COMBO LOGIC) =================
+            # NOTE: VET/AET corruption modes are byte-level, not FFmpeg filters.
+            # For RAW error streams we:
+            #   1) Generate a clean RAW elementary stream
+            #   2) Apply selected error modes in windows on the raw bytes
+            #   3) Write corrupted RAW outputs (no remux)
+            if selected_fmt == 'raw':
+                # Enforce RAW rule: Video OR Audio only
+                if vid_combos and aud_combos:
+                    messagebox.showerror(
+                        "RAW Error Stream",
+                        "RAW error streams support only Video OR Audio. Please select only one.")
+                    return
+
+                v_input = video_input_var.get().strip() or None
+                a_input = audio_input_var.get().strip() or None
+                v_source = video_source_var.get().strip() or video_test_sources[0]
+                a_source = audio_source_var.get().strip() or audio_test_sources[0]
+
+                picker_v = state.get('error_picker', None)
+                picker_a = state.get('audio_error_picker', None)
+                modes_v_all = picker_v.get_selected_list() if (video_err and picker_v) else []
+                modes_a_all = picker_a.get_selected_list() if (audio_err and picker_a) else []
+
+                # derive duration if needed for windows
+                total_sec = int(duration_sec_ui or 0)
+                if total_sec <= 0:
+                    total_sec = int(duration_sec_ui or 10)
+                windows = _compute_error_windows(total_sec)
+
+                # RAW Video-only
+                if vid_combos:
+                    if not modes_v_all:
+                        messagebox.showwarning("Video Error Types", "Select at least one video error type for RAW.")
+                        return
+                    for vid_dict in vid_combos:
+                        codec = (vid_dict.get('Codec') if vid_dict else None)
+                        allowed = _allowed_video_error_modes([codec] if codec else [])
+                        modes_v = [m for m in modes_v_all if m in allowed] if allowed else list(modes_v_all)
+                        if not modes_v:
+                            messagebox.showwarning("Video Error Types", f"No applicable video error types for {codec}.")
+                            continue
+
+                        base_cmd, base_path = generate_ffmpeg_command(
+                            vid_dict=vid_dict,
+                            aud_dict=None,
+                            video_input=v_input,
+                            audio_input=None,
+                            video_source=v_source,
+                            audio_source='sine',
+                            duration_sec=duration_sec_ui,
+                            frames_count=frames_count_ui,
+                            volume=volume,
+                            file_format='raw',
+                            output_dir=tmp_dir,
+                            error_enabled=False
+                        )
+                        base_cmd = _normalise_ffmpeg_cmd(base_cmd)
+                        print('[ErrorMode][RAW][Video] Base:', ' '.join(base_cmd))
+                        subprocess.run(base_cmd, check=True)
+
+                        raw_bytes = Path(base_path).read_bytes()
+                        VET.CURRENT_VIDEO_CODEC = codec
+                        try:
+                            VET.CURRENT_FPS_HINT = float(vid_dict.get('Framerate')) if vid_dict and vid_dict.get('Framerate') else None
+                        except Exception:
+                            VET.CURRENT_FPS_HINT = None
+
+                        for mv in modes_v:
+                            vdata = VET.apply_video_mode_in_windows(mv, raw_bytes, total_sec, windows)
+                            stats = get_stream_info(base_path) or {}
+                            if int(stats.get('duration_sec',0) or 0) == 0:
+                                stats['duration_sec'] = int(duration_sec_ui or duration_sec or 0)
+                            out_file = _make_raw_error_name(base_path, mv, stats, output_dir=final_out_dir)
+                            Path(out_file).write_bytes(vdata)
+                            print('[ErrorMode][RAW][Video] Corrupted:', out_file)
+                            final_count += 1
+
+                    if final_count == 0:
+                        messagebox.showwarning("Error Mode", "No RAW video error streams produced.")
+                    else:
+                        messagebox.showinfo("RAW Error Streams", f"RAW error streams generated: {final_count} \nOutput directory:{final_out_dir}")
+                    return
+
+                # RAW Audio-only
+                if aud_combos:
+                    if not modes_a_all:
+                        messagebox.showwarning("Audio Error Types", "Select at least one audio error type for RAW.")
+                        return
+                    for aud_dict in aud_combos:
+                        a_codec = aud_dict.get('Codec') if aud_dict else None
+                        allowed_by_codec = set(getattr(AET, 'GENERIC_AUDIO_ERROR_MODES', []))
+                        if a_codec == 'aac': allowed_by_codec |= set(getattr(AET, 'AAC_AUDIO_SPECIFIC_MODES', []))
+                        if a_codec == 'mp3': allowed_by_codec |= set(getattr(AET, 'MP3_AUDIO_SPECIFIC_MODES', []))
+                        if a_codec == 'ac3': allowed_by_codec |= set(getattr(AET, 'AC3_AUDIO_SPECIFIC_MODES', []))
+                        if a_codec == 'eac3': allowed_by_codec |= set(getattr(AET, 'EAC3_AUDIO_SPECIFIC_MODES', []))
+                        if a_codec == 'flac': allowed_by_codec |= set(getattr(AET, 'FLAC_AUDIO_SPECIFIC_MODES', []))
+                        if a_codec == 'pcm_s16le': allowed_by_codec |= set(getattr(AET, 'PCM_AUDIO_SPECIFIC_MODES', []))
+                        if a_codec == 'libvorbis': allowed_by_codec |= set(getattr(AET, 'VORBIS_AUDIO_SPECIFIC_MODES', []))
+                        if a_codec == 'libopus': allowed_by_codec |= set(getattr(AET, 'OPUS_AUDIO_SPECIFIC_MODES', []))
+                        modes_a = [m for m in modes_a_all if m in allowed_by_codec] if allowed_by_codec else list(modes_a_all)
+                        if not modes_a:
+                            messagebox.showwarning("Audio Error Types", f"No applicable audio error types for {a_codec}.")
+                            continue
+
+                        base_cmd, base_path = generate_ffmpeg_command(
+                            vid_dict=None,
+                            aud_dict=aud_dict,
+                            video_input=None,
+                            audio_input=a_input,
+                            video_source='testsrc',
+                            audio_source=a_source,
+                            duration_sec=duration_sec_ui,
+                            frames_count=frames_count_ui,
+                            volume=volume,
+                            file_format='raw',
+                            output_dir=tmp_dir,
+                            error_enabled=False
+                        )
+                        base_cmd = _normalise_ffmpeg_cmd(base_cmd)
+                        print('[ErrorMode][RAW][Audio] Base:', ' '.join(base_cmd))
+                        subprocess.run(base_cmd, check=True)
+
+                        raw_bytes = Path(base_path).read_bytes()
+                        for ma in modes_a:
+                            adata = AET.apply_audio_mode_in_windows(ma, raw_bytes, total_sec, windows)
+                            out_file = str(Path(final_out_dir) / f"{Path(base_path).stem}__{ma}{Path(base_path).suffix}")
+                            Path(out_file).write_bytes(adata)
+                            print('[ErrorMode][RAW][Audio] Corrupted:', out_file)
+                            final_count += 1
+
+                    if final_count == 0:
+                        messagebox.showwarning("Error Mode", "No RAW audio error streams produced.")
+                    else:
+                        messagebox.showinfo("RAW Error Streams", f"RAW error streams generated: {final_count} \nOutput directory:{final_out_dir}")
+                    return
+
+            # ================= END RAW ERROR STREAM HANDLING =================
+
             v_outfile = None
+
             v_input = video_input_var.get().strip()
             a_input = audio_input_var.get().strip()
             # Cross-use embedded tracks when in Video-only or Audio-only mode
@@ -1769,13 +2113,12 @@ def build_ui():
             for (vid_dict, aud_dict) in base_param_sets:
                 selected_fmt = fileformat_var.get().strip() or ""
                 if (selected_fmt or '').strip().lower() == 'raw':
-                    messagebox.showwarning('Raw File Format', 'Raw (elementary) output is not supported in Error Stream Generator mode. Please choose mp4/ts/webm.');
                     continue
                 base_cmd, base_path = generate_ffmpeg_command(
                     vid_dict, aud_dict,
                     video_input=v_input, audio_input=a_input,
                     video_source=v_source, audio_source=a_source,
-                    duration_sec=duration_sec_ui, volume=volume,
+                    duration_sec=duration_sec_ui, frames_count=frames_count_ui, volume=volume,
                     file_format=selected_fmt, output_dir=tmp_dir,
                 )
                 print("[ErrorMode] Base gen:", " ".join(base_cmd)); subprocess.run(base_cmd, check=True)
@@ -1795,10 +2138,11 @@ def build_ui():
                     v_map = {
                             'libx264': ('h264', '.h264'),
                             'libx265': ('hevc', '.h265'),
-                            'vp9': ('ivf', '.ivf'),
-                            'libaom-av1': ('ivf', '.ivf'),
+                            'libvpx-vp9': ('ivf', '.ivf'),
+                            'libsvtav1': ('ivf', '.ivf'),
                             'mpeg1video': (fmt_mpeg, ext_m1),
                             'mpeg2video': (fmt_mpeg, ext_m2),
+                            'mpeg4': ('m4v','.m4v'),
                             'wmv2': ('asf', '.asf'),
                             }
                     v_fmt, v_ext = v_map.get(codec, (None, None))
@@ -1823,10 +2167,11 @@ def build_ui():
                         v_map_main = {
                                     'libx264': ('h264', '.h264'),
                                     'libx265': ('hevc', '.h265'),
-                                    'vp9': ('ivf', '.ivf'),
-                                    'libaom-av1': ('ivf', '.ivf'),
+                                    'libvpx-vp9': ('ivf', '.ivf'),
+                                    'libsvtav1': ('ivf', '.ivf'),
                                     'mpeg1video': (fmt_mpeg, ext_m1),
                                     'mpeg2video': (fmt_mpeg, ext_m2),
+                                    'mpeg4': ('m4v','.m4v'),
                                     'wmv2': ('asf', '.asf'),
                                     }
                         v_fmt, v_ext = v_map_main.get(codec_main, (None, None))
@@ -1882,7 +2227,11 @@ def build_ui():
                                 Path(a_out).write_bytes(adata)
                                 corrupted_pairs.append((v_outfile, a_out, a_demux, f"__{mv}__{ma}"))
                         else:
-                            corrupted_pairs.append((v_outfile, None, None, f"__{mv}"))
+                            if audio_enabled.get() and aud_dict:
+                                # Keep MAIN audio from the clean base container when only video is corrupted
+                                corrupted_pairs.append((v_outfile, base_path, None, f"__{mv}"))
+                            else:
+                                corrupted_pairs.append((v_outfile, None, None, f"__{mv}"))
                 elif audio_err_local and a_raw_path and modes_a_filtered:
                     orig_a = Path(a_raw_path).read_bytes()
                     for ma in modes_a_filtered:
@@ -1912,12 +2261,29 @@ def build_ui():
                     except Exception:
                         pass
                     if chosen_final_fmt == "webm":
-                        if (v_out and v_fmt in ('h264','hevc')) or (a_out and ademux not in ('ogg',)):
+                        # WebM supports only VP9/AV1 video and Vorbis/Opus audio.
+                        if v_out and v_fmt in ('h264','hevc'):
                             chosen_final_fmt = "mp4"
+                        if a_out and chosen_final_fmt == "webm":
+                            if ademux is not None:
+                                if ademux not in ('ogg',):
+                                    chosen_final_fmt = "mp4"
+                            else:
+                                # Audio comes from a container (base file). Decide using selected audio codec.
+                                if not (aud_dict and aud_dict.get('Codec') in ('libvorbis','libopus')):
+                                    chosen_final_fmt = "mp4"
                     # Additional guard: avoid invalid MP4 muxes
-                    mp4_ok_audio = ('adts','mp3','ac3','eac3')
-                    if a_out and (ademux or '') not in mp4_ok_audio and chosen_final_fmt == 'mp4':
-                        chosen_final_fmt = 'webm' if (ademux or '') in ('ogg',) else 'mkv'
+                    mp4_ok_audio_demux = ('adts','mp3','ac3','eac3')
+                    mp4_ok_audio_codec = ('aac','mp3','ac3','eac3')
+                    if a_out and chosen_final_fmt == 'mp4':
+                        # When audio is provided as RAW (ademux set), validate using demux.
+                        # When audio comes from a container (ademux None), validate using selected codec.
+                        ok_mp4_audio = (ademux in mp4_ok_audio_demux) if (ademux is not None) else (aud_dict and aud_dict.get('Codec') in mp4_ok_audio_codec)
+                        if not ok_mp4_audio:
+                            if aud_dict and aud_dict.get('Codec') == 'aac':
+                                chosen_final_fmt = 'mp4'
+                            else:
+                                chosen_final_fmt = 'webm' if (ademux or '') in ('ogg',) else 'mkv'
                     base_stem = Path(base_path).stem
                     final_out = Path(final_out_dir) / f"{base_stem}{suffix}.{chosen_final_fmt}"
                     if v_out and v_fmt == 'h264' and not a_out:
@@ -1926,6 +2292,8 @@ def build_ui():
                         ok = _remux_video_audio_raw(v_out, v_fmt if v_out else None, a_out, ademux if a_out else None, str(final_out), chosen_final_fmt)
                     if ok:
                         stats = get_stream_info(str(final_out))
+                        if not stats or stats.get('video_frames', 0) == 0:
+                            stats = _fallback_stats_from_params(duration_sec if 'duration_sec' in locals() else total_sec, vid_dict, aud_dict)
                         new_name = _rename_error_output(str(final_out), base_stem, suffix, stats or {'audio_frames':0,'video_frames':0,'duration_sec':total_sec})
                         print(f'[ErrorMode] Final corrupted stream: {new_name}'); final_count += 1
                     else:

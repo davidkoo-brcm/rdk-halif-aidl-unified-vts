@@ -1,26 +1,3 @@
-#!/usr/bin/env python3
-#** *****************************************************************************
-# *
-# * If not stated otherwise in this file or this component's LICENSE file the
-# * following copyright and licenses apply:
-# *
-# * Copyright 2026 RDK Management
-# *
-# * Licensed under the Apache License, Version 2.0 (the "License");
-# * you may not use this file except in compliance with the License.
-# * You may obtain a copy of the License at
-# *
-# * http://www.apache.org/licenses/LICENSE-2.0
-# *
-# * Unless required by applicable law or agreed to in writing, software
-# * distributed under the License is distributed on an "AS IS" BASIS,
-# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# * See the License for the specific language governing permissions and
-# * limitations under the License.
-# *
-#* ******************************************************************************
-
-
 # Video_Error_Types.py
 # --------------------------------------------------------------------------------------
 # Video error types and logic (registries + windowed application).
@@ -808,6 +785,7 @@ def vp9_resolution_change_stress(data: bytes):
                 payload[j] ^= 0x01
     return _vp9_ivf_edit(data, _edit)
 
+
 # ===== AV1 IVF-safe corruption helpers & modes =====
 
 def _av1_ivf_edit(data: bytes, per_frame_editor):
@@ -1023,7 +1001,7 @@ def _apply_video_mode_in_windows(mode: str, data: bytes, total_sec: int, windows
     # pick frames inside CURRENT_ERROR_WINDOWS based on PTS/fps.
     try:
         codec = (globals().get('CURRENT_VIDEO_CODEC', '') or '').lower()
-        if (codec == 'vp9' and mode.startswith('vp9-')) or (codec == 'libaom-av1' and mode.startswith('av1-')):
+        if (codec == 'libvpx-vp9' and mode.startswith('vp9-')) or (codec == 'libsvtav1' and mode.startswith('av1-')):
             globals()['CURRENT_ERROR_WINDOWS'] = windows
             fn = _MODE_FN.get(mode)
             return fn(data) if fn else data
