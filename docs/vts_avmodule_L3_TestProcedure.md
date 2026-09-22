@@ -153,15 +153,15 @@ VTS:
       0:
         name: "VTS_L3_AudioDecoder"
         streams:
-          - /Audio_Decoder/AAC_LC/Valid/tones_8k_2_64.aac
-          - /Audio_Decoder/AAC_LC/Valid/tones_11.025k_2_64.aac
-          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
-          - /Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
+          - Audio_Decoder/AAC_LC/Valid/tones_8k_2_64.aac
+          - Audio_Decoder/AAC_LC/Valid/tones_11.025k_2_64.aac
+          - Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_random.ac3
+          - Audio_Decoder/DOLBY_AC3/Invalid/tones_48k_2_192_sync.ac3
         tests:
-          - Decode_Sequential_NonTunnel_NonSecure
-          - Decode_Sequential_NonTunnel_NonSecure_Error
-          - Decode_Sequential_NonTunnel_NonSecure_Trim
-          - Decode_Sequential_NonTunnel_NonSecure_Discontinuity
+          - ADecode_Sequential_NonTunnel_NonSecure
+          - ADecode_Sequential_NonTunnel_NonSecure_Error
+          - ADecode_Sequential_NonTunnel_NonSecure_Trim
+          - ADecode_Sequential_NonTunnel_NonSecure_Discontinuity
       1:
         name: "VTS_L3_AVBuffer"
         tests:
