@@ -536,7 +536,8 @@ class VTSTestHelperClass(utHelperClass):
             use_all_wait_time (bool): Use all_wait_time instead of wait_time for L2/L3/L4 tests.
 
         Returns:
-            bool: True if the test passes, False otherwise.
+            True if the test passes, False if it fails, or the string "SKIPPED"
+            if every instance reported the test as skipped.
         """
         outputs = []
         results = []
@@ -583,7 +584,16 @@ class VTSTestHelperClass(utHelperClass):
                 results.append(result if result is not None else False)
             self.log.info(f"[Instance {i}] Result: {result}")
 
-        return all(results)
+        # "SKIPPED" is truthy but must not be collapsed into True by all() -
+        # a run where anything explicitly failed is still FAILED, a run where
+        # every instance was skipped is SKIPPED, otherwise it's a pass.
+        if not results:
+            return False
+        if any(r is False for r in results):
+            return False
+        if all(r == "SKIPPED" for r in results):
+            return "SKIPPED"
+        return True
 
     def run_all(self, test_suite: str, use_all_wait_time: bool = False):
         """
@@ -594,7 +604,8 @@ class VTSTestHelperClass(utHelperClass):
             use_all_wait_time (bool): Use all_wait_time instead of wait_time for L2/L3/L4 tests.
 
         Returns:
-            bool: True if all tests pass, False otherwise.
+            True if all tests pass, False if any fail, or the string "SKIPPED"
+            if every instance reported the suite as skipped.
         """
         return self.runTest(test_suite, None, use_all_wait_time)
 

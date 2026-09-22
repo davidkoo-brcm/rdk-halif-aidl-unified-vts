@@ -284,6 +284,51 @@ install_egl_package()
 }
 
 ###############################################################################
+# Validate that target profile YAMLs follow source YAML structure.
+# Non-blocking: reports failed modules as info and never fails the build.
+###############################################################################
+validate_yaml_profiles_non_blocking()
+{
+    local diff_script="${TOP}/tools/yaml_profile_diff.py"
+
+    if [ ! -f "${diff_script}" ]; then
+        echo -e "${BOLD}${CYAN}[INFO] YAML profile check skipped: ${diff_script} not found${RESET}"
+        return 0
+    fi
+
+    echo -e "${BOLD}${CYAN}[INFO] YAML profile check (source: rdk-halif-aidl, target: vts_hal_test_components)${RESET}"
+
+    local diff_output
+    diff_output=$(python3 "${diff_script}" --dirs "${RDK_HAL_DIR}" "${RDK_HAL_TEST_DIR}" --quiet 2>&1)
+    local rc=$?
+
+    if [ ${rc} -eq 0 ]; then
+        echo -e "${BOLD}${CYAN}[INFO] YAML profile check passed for all discovered modules${RESET}"
+        return 0
+    fi
+
+    local fail_lines
+    fail_lines=$(echo "${diff_output}" | grep -E '^\s*\[FAIL\]\s+target\s+' || true)
+    if [ -n "${fail_lines}" ]; then
+        local failed_modules
+        failed_modules=$(echo "${fail_lines}" \
+            | sed -E 's/^.*\[FAIL\][[:space:]]+target[[:space:]]+([^/]+)\/.*$/\1/' \
+            | sort -u | tr '\n' ' ' | sed 's/[[:space:]]*$//')
+        echo -e "${BOLD}${CYAN}[INFO] YAML profile check found source/target mismatches in module(s): ${failed_modules}${RESET}"
+    else
+        local err_line
+        err_line=$(echo "${diff_output}" | grep -E '^(ERROR:|\[WARN\])' | head -n 1)
+        if [ -n "${err_line}" ]; then
+            echo -e "${BOLD}${CYAN}[INFO] YAML profile check could not complete cleanly: ${err_line}${RESET}"
+        else
+            echo -e "${BOLD}${CYAN}[INFO] YAML profile check could not complete cleanly; continuing build${RESET}"
+        fi
+    fi
+
+    return 0
+}
+
+###############################################################################
 # Cross-compile ARM binder runtime - build_modules.sh doesn't build it for ARM.
 # BUILD_HOST_AIDL=OFF skips the host-only AIDL compiler.
 ###############################################################################
@@ -969,6 +1014,7 @@ elif [[ "$1" == [Tt]arget=* ]]; then
     generate_avbufferhelper_skeleton
     build_halif_test
     install_test
+    validate_yaml_profiles_non_blocking
 else
     echo -e "${BOLD}${RED}Invalid Arguments${RESET}"
     help

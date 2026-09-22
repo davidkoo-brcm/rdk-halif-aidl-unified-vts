@@ -355,13 +355,13 @@ VTS:
             - getCapabilities_pos
             - setBootCause_pos
             - setBootCause_neg
-            - getBootReason_pos
+            - getBootCause_pos
             - reboot_neg
             - getPowerSource_pos
       16:
         name: "VTS_L2_BOOT"
         tests:
-            - setAndGetBootReason
+            - setAndGetBootCause
       17:
         name: "VTS_L1_DEVICEINFO"
         tests:
