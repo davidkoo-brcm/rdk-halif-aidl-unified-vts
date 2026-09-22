@@ -98,10 +98,38 @@ public:
     void stop() override;
     void loop() override;
     void close() override;
+	
+	// Switch audio track on the fly
+    bool switchAudioTrack(uint32_t trackIndex) override;
+
+	// Switch video channel on the fly
+    bool switchVideoTrack(uint32_t trackIndex) override;
+
+private:
+    // Helper methods for dynamic replugging
+    void configAudioPipe(GstCaps *newAudioCaps);
+    void reconfigAudioPipe(GstCaps *newAudioCaps);
+
+    // GStreamer signal callbacks kept for old SDK RDKE impementation
+    // static void deepElementAddedCallback(GstBin *bin, GstBin *sub_bin, GstElement *element, gpointer user_data);
+    // static void typeFoundCallback(GstElement *typefind, guint probability, const GstCaps *caps, gpointer user_data);
+	
 private:
     GstElement *playbin;
     GstBus *bus;
     bool terminate;
+	
+	// Track audio decoders, parsers, and sinks for OTF switching
+    GstElement *curAudioDecodeBin;
+    GstElement *curAudioTypefind;
+    GstElement *curAudioParse;
+    GstElement *curAudioDecoder;
+    GstElement *curAudioPlaysinkBin;
+    GstElement *mCurAudioSink;
+    bool isAudioAAC_current;
+    bool linkTypefindParser;
+    guint mNumAudioTracks = 0;
+    guint mCurrentAudioTrack = 0;
 };
 
 void gstGlobalInitWrapper();
