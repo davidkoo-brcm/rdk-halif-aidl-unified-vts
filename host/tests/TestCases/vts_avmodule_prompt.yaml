@@ -117,9 +117,9 @@ VTS:
     - query_type: "Direct"
       query: "Validate Planecontrol_Position: did the plane position change ?"
       input: "user_prompt"
-  Planecontrol_Size:
+  Planecontrol_WindowSize:
     - query_type: "Direct"
-      query: "Validate Planecontrol_Size: did the plane Size change ?"
+      query: "Validate Planecontrol_WindowSize: did the plane WindowSize change ?"
       input: "user_prompt"
   Planecontrol_Dynamicrange:
     - query_type: "Direct"
@@ -129,7 +129,7 @@ VTS:
     - query_type: "Direct"
       query: "Validate Planecontrol_Pixelformat: is plane displaying video properly ?"
       input: "user_prompt"
-  Planecontrol_Graphicsplane:
+  Planecontrol_Graphicsplane_Client:
     - query_type: "Direct"
-      query: "Validate Planecontrol_Graphicsplane: is graphics rendered on the plane ?"
+      query: "Validate Planecontrol_Graphicsplane_Client: is graphics rendered on the plane ?"
       input: "user_prompt"
