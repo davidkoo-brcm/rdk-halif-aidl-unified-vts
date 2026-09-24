@@ -90,6 +90,8 @@
 #include "vts_indicator_init.h"
 #include "vts_compositeinput_init.h"
 
+#include "vts_audiomixer_init.h"
+
 int main(int argc, char **argv)
 {
     UT_status_t result;
@@ -257,6 +259,13 @@ int main(int argc, char **argv)
         result = UT_STATUS_FAILURE;
     }
 
+    result = VTS_AudioMixer_init();
+    if(result != UT_STATUS_OK)
+    {
+        UT_LOG_ERROR("Failed to initialize Audio Mixer");
+        result = UT_STATUS_FAILURE;
+    }
+
     UT_status_t ut_result = UT_run_tests();
 
     if (result != UT_STATUS_OK || ut_result != UT_STATUS_OK)
@@ -271,6 +280,7 @@ int main(int argc, char **argv)
     VTS_VideoDecoder_destroy();
     VTS_AudioSink_destroy();
     VTS_VideoSink_destroy();
+    VTS_AudioMixer_destroy();
     VTS_HDMICEC_destroy();
     VTS_HDMIINPUT_destroy();
     VTS_HDMIOUTPUT_destroy();
