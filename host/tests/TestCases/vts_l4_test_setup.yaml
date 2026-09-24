@@ -36,5 +36,7 @@ VTS:
         tests:
           - NormalPlay
           - playBackWithTrickModes
+          - AudioTrackSwitch
+          - VideoTrackSwitch
 
 

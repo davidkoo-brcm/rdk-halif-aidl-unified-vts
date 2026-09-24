@@ -50,6 +50,7 @@ nonAvL3Tests:
         - "VTS_DEEPSLEEP_L3_WakeFromSupportedTrigger"
         - "VTS_DEEPSLEEP_L3_WakeFromPreconfiguredTrigger"
         - "VTS_DEEPSLEEP_L3_VerifyWakeWithMixedInputTriggerList"
+        - "VTS_DEEPSLEEP_L3_SimulateErrorScenario"
 
     - module: "hdmioutput"
       tests:
@@ -57,6 +58,7 @@ nonAvL3Tests:
         - "VTS_HDMIOUTPUT_L3_SPDInfoFrameTransmission"
         - "VTS_HDMIOUTPUT_L3_HotPlugDetectStateBeforeStartCallback"
         - "VTS_HDMIOUTPUT_L3_HotPlugDetectStateAfterStartCallback"
+        - "VTS_HDMIOUTPUT_L3_VideoPlaybackEventVerification"
 
     - module: "compositeinput"
       tests:
