@@ -167,7 +167,7 @@ clone_repo git@github.com:rdkcentral/ut-raft.git "${PLUGINS_FRAMEWORK_DIR}/ut_ra
 install_pip_requirements "${PLUGINS_FRAMEWORK_DIR}"/ut_raft/requirements.txt
 
 # Setup rdk-raft alongside python_raft
-clone_repo git@github.com:rdkcentral/rdk-raft.git "${RDK_RAFT_DIR}" "feature/gh-raft-controller-migration" "in ./rdk_raft"
+clone_repo git@github.com:rdkcentral/rdk_raft.git "${RDK_RAFT_DIR}" "feature/gh-raft-controller-migration" "in ./rdk_raft"
 
 ## Install your own sub git repo's in here as required
 #
