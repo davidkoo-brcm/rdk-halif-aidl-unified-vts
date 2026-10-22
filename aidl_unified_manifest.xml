@@ -2,6 +2,8 @@
 <manifest>
   <remote name="rdkcentral"
           fetch="https://github.com/rdkcentral" />
+  <remote name="davidkoo-brcm"
+          fetch="https://github.com/davidkoo-brcm/" />
 
   <default revision="main"
            remote="rdkcentral"
@@ -9,27 +11,33 @@
 
   <project name="rdk-halif-aidl-test-avbuffer"
            path="vts_hal_test_components/avbuffer"
-	   revision="refs/tags/0.5.5" />
+           remote="davidkoo-brcm"
+           revision="refs/heads/work" />
 
   <project name="rdk-halif-aidl-test-audiodecoder"
            path="vts_hal_test_components/audiodecoder"
-	   revision="refs/tags/0.7.2" />
+           remote="davidkoo-brcm"
+           revision="refs/heads/work" />
 
   <project name="rdk-halif-aidl-test-videodecoder"
            path="vts_hal_test_components/videodecoder"
-	   revision="refs/tags/0.7.2" />
+           remote="davidkoo-brcm"
+           revision="refs/heads/work" />
 
   <project name="rdk-halif-aidl-test-audiosink"
            path="vts_hal_test_components/audiosink"
-	   revision="refs/tags/0.7.2" />
+           remote="davidkoo-brcm"
+           revision="refs/heads/work" />
 
   <project name="rdk-halif-aidl-test-videosink"
            path="vts_hal_test_components/videosink"
-	   revision="refs/tags/0.7.2" />
+           remote="davidkoo-brcm"
+           revision="refs/heads/work" />
 
    <project name="rdk-halif-aidl-test-avclock"
            path="vts_hal_test_components/avclock"
-	   revision="refs/tags/0.6.1" />
+           remote="davidkoo-brcm"
+           revision="refs/heads/work" />
 
    <project name="rdk-halif-aidl-test-planecontrol"
            path="vts_hal_test_components/planecontrol"
