@@ -207,12 +207,18 @@ unified_manifest()
         exit 0
     fi
 
+    BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    if [ "${BRANCH}" = "HEAD" ]; then
+        echo "ERROR: Detached HEAD state detected — cannot determine branch for repo init."
+        exit 1
+    fi
+
     echo "repo init unified manifest"
     repo init \
         --repo-url=https://gerrit.googlesource.com/git-repo \
         --no-clone-bundle \
         --repo-rev=stable \
-        -b work \
+        -b "${BRANCH}" \
         -m aidl_unified_manifest.xml \
         -u https://github.com/davidkoo-brcm/rdk-halif-aidl-unified-vts.git \
         -q
